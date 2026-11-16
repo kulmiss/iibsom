@@ -201,6 +201,13 @@ First add your Google keys: see docs/google-login.md.
 | 4 | Look at categories, ad page, post form, My ads, errors | All in Somali |
 | 5 | `php artisan iibsom:translations:export so` | CSV for a native speaker to check |
 
+## Manual (PR 22: matching demo photos)
+| # | Do this | Expected |
+|---|---------|----------|
+| 1 | `php artisan iib:demo-reset` → open Cars | Toyota ads show Toyotas, a Land Cruiser shows a Land Cruiser |
+| 2 | Open an iPhone ad | Brand = Apple |
+| 3 | An ad with no photo | Shows its category icon (car, phone…), not a tag |
+
 ## Manual (PR 21: "Edited" badge)
 | # | Do this | Expected |
 |---|---------|----------|

@@ -87,9 +87,11 @@ class DemoSeeder extends Seeder
                 if (! $category) {
                     continue;
                 }
-                [$title, $min, $max] = $content[$slug][array_rand($content[$slug])];
+                $item = $content[$slug][array_rand($content[$slug])];
+                [$title, $min, $max] = $item;
                 $ad = $this->ad($category, $title, $min, $max, $users[array_rand($users)], $mogadishu->id, $areas, $moderator, $i >= self::ADS);
-                $this->photos($ad, $photoPool[$slug] ?? []);
+                // Only photos of the same kind as the title (a Toyota ad never shows a Nissan).
+                $this->photos($ad, isset($item[3]) ? ($photoPool[self::kind($item[3])] ?? []) : []);
                 if ($i >= self::ADS && $i % 4 === 0) {
                     $this->wasApprovedThenEdited($ad, $moderator);
                 }
@@ -304,7 +306,7 @@ class DemoSeeder extends Seeder
         $values = [];
         foreach ($category->allFields() as $field) {
             $values[$field->key] = match ($field->type) {
-                'select' => $this->pickOption($field->optionList(), $title),
+                'select' => $this->pickOption($field->optionList(), $title, $field->key === 'brand'),
                 'boolean' => (bool) mt_rand(0, 1),
                 'number' => match ($field->key) {
                     'year' => preg_match('/\b(19|20)\d{2}\b/', $title, $m) ? (int) $m[0] : mt_rand(2006, 2022),
@@ -323,21 +325,40 @@ class DemoSeeder extends Seeder
     }
 
     /** @param  array<string, string>  $options */
-    private function pickOption(array $options, string $title): ?string
+    private function pickOption(array $options, string $title, bool $isBrand = false): ?string
     {
+        // Model names that tell the brand ("iPhone 13" is an Apple).
+        $aliases = ['iphone' => 'Apple', 'ipad' => 'Apple', 'macbook' => 'Apple', 'galaxy' => 'Samsung', 'thinkpad' => 'Lenovo',
+            'elitebook' => 'HP', 'latitude' => 'Dell', 'redmi' => 'Xiaomi', 'land cruiser' => 'Toyota', 'surf' => 'Toyota'];
+        foreach ($aliases as $word => $brand) {
+            if (stripos($title, $word) !== false && ($value = array_search($brand, $options, true)) !== false) {
+                return (string) $value;
+            }
+        }
         foreach ($options as $value => $label) {
             if ($label !== 'Other' && stripos($title, (string) $label) !== false) {
                 return (string) $value;
             }
         }
         $keys = array_keys($options);
+        if ($isBrand) { // never a wrong brand: "Other" when the title doesn't say
+            $other = array_search('Other', $options, true);
+
+            return $other !== false ? (string) $other : null;
+        }
 
         return $keys ? (string) $keys[array_rand($keys)] : null;
     }
 
     // ---- photos -----------------------------------------------------------
 
-    /** @return array<string, list<string>> category slug => photo files (from tools/download-demo-photos) */
+    /** Same as slugify() in tools/download-demo-photos: "Toyota Land Cruiser" → "toyota-land-cruiser". */
+    public static function kind(string $words): string
+    {
+        return trim(preg_replace('/[^a-z0-9]+/', '-', strtolower($words)) ?? '', '-');
+    }
+
+    /** @return array<string, list<string>> photo kind => photo files (from tools/download-demo-photos) */
     private function photoPool(): array
     {
         if (! $this->withPhotos || ! is_file($json = database_path('demo/photos.json'))) {
@@ -346,8 +367,8 @@ class DemoSeeder extends Seeder
         $pool = [];
         $list = json_decode((string) file_get_contents($json), true);
         foreach (is_array($list) ? $list : [] as $p) {
-            if (is_file(database_path('demo/photos/'.$p['file']))) {
-                $pool[$p['category']][] = $p['file'];
+            if (is_array($p) && isset($p['kind'], $p['file']) && is_file(database_path('demo/photos/'.$p['file']))) {
+                $pool[(string) $p['kind']][] = (string) $p['file'];
             }
         }
 

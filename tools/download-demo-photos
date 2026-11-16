@@ -7,38 +7,37 @@
  *   php tools/download-demo-photos --fresh    # start again
  *   php tools/download-demo-photos --credits  # only rebuild CREDITS.md (after you delete a photo you don't like)
  *
+ * Don't like a photo? Delete its file, add its source_url to database/demo/photos-rejected.json,
+ * run with --credits. Rules used: no people (above all no children), the photo shows the thing in the title.
+ *
  * Sources (first one that works):
  *   1. Pexels   (set PEXELS_API_KEY)      – Pexels licence, free to use
  *   2. Unsplash (set UNSPLASH_ACCESS_KEY) – Unsplash licence, free to use
  *   3. Openverse (no key)                 – only CC0, Public Domain or CC BY (credit given)
  *
- * Writes database/demo/photos/<category>-<n>.jpg (max 1024 px, EXIF removed),
+ * Writes database/demo/photos/<kind>-<n>.jpg (max 800 px, EXIF removed),
  * database/demo/photos.json and CREDITS.md. Safe to run again: it skips what it has.
  */
 
 const OUT = __DIR__.'/../database/demo/photos';
 const JSON_FILE = __DIR__.'/../database/demo/photos.json';
 const CREDITS = __DIR__.'/../CREDITS.md';
+const REJECTED = __DIR__.'/../database/demo/photos-rejected.json'; // source URLs never to use
 const UA = 'iibsom-demo-photos/1.0 (+https://iibsom.com)';
 
-// category slug => [search words, how many photos]
-$wanted = [
-    'cars' => ['toyota', 4], 'motorcycles' => ['motorbike', 3], 'trucks-buses' => ['truck', 2], 'vehicle-parts' => ['car tyre wheel', 2],
-    'houses-for-rent' => ['apartment building', 4], 'houses-for-sale' => ['villa house', 3], 'land' => ['empty plot land', 3], 'commercial-property' => ['shop front', 2],
-    'mobile-phones' => ['smartphone screen', 4], 'tablets' => ['ipad', 2], 'phone-accessories' => ['headphones', 2],
-    'laptops-computers' => ['laptop computer desk', 3], 'tv-audio' => ['television', 2], 'cameras' => ['dslr camera', 2], 'other-electronics' => ['speaker electronics', 2],
-    'furniture' => ['living room sofa', 3], 'home-appliances' => ['washing machine', 2], 'kitchen' => ['kitchen utensils', 2],
-    'mens-clothing' => ['shirts on hangers', 2], 'womens-clothing' => ['dresses rack', 2], 'shoes' => ['shoes', 2], 'bags' => ['handbag', 2], 'watches-jewellery' => ['wrist watch', 2],
-    'camels' => ['camel', 4], 'cattle' => ['cow cattle', 2], 'goats-sheep' => ['goats', 3], 'poultry' => ['hens farm', 2], 'pets' => ['kitten', 2],
-    'farm-machinery' => ['tractor', 2], 'seeds-plants' => ['seedlings pots', 2], 'food-drinks' => ['fruit market', 2],
-    'building-repair' => ['construction worker', 2], 'cleaning' => ['mop bucket', 1], 'transport-moving' => ['moving boxes', 1], 'computer-it' => ['computer repair', 1],
-    'events' => ['wedding decoration', 2], 'tutoring' => ['notebook pen books', 1],
-    'beauty' => ['cosmetics', 2], 'health' => ['pharmacy', 1],
-    'kids-clothing' => ['children clothes', 1], 'toys' => ['toys', 2], 'baby-gear' => ['pram', 1],
-    'sports-equipment' => ['soccer ball', 2], 'bicycles' => ['bicycle', 2], 'books-games' => ['books', 1],
-    'building-materials' => ['cement bags', 2], 'tools' => ['hand tools', 2], 'solar-generators' => ['solar panel', 3],
-    'other-items' => ['market items', 1],
-];
+// Photo words come from database/demo/content.php (4th value of each title).
+// Kinds used by 2+ titles get 2 photos, others 1. File names: <kind-slug>-<n>.jpg
+$wanted = [];
+foreach (require __DIR__.'/../database/demo/content.php' as $category => $items) {
+    foreach ($items as $item) {
+        if (! isset($item[3])) {
+            continue; // services and jobs: no photo, like most real ones
+        }
+        $kind = slugify($item[3]);
+        $wanted[$kind] ??= ['query' => $item[3], 'category' => $category, 'count' => 0];
+        $wanted[$kind]['count'] = min(2, $wanted[$kind]['count'] + 1);
+    }
+}
 
 if (in_array('--fresh', $argv, true)) {
     array_map('unlink', glob(OUT.'/*.jpg') ?: []);
@@ -49,8 +48,10 @@ if (in_array('--fresh', $argv, true)) {
 $photos = is_file(JSON_FILE) ? json_decode(file_get_contents(JSON_FILE), true) : [];
 $have = [];
 foreach ($photos as $p) {
-    $have[$p['category']][] = $p;
+    $have[$p['kind'] ?? ''][] = $p;
 }
+
+$rejected = is_file(REJECTED) ? (json_decode((string) file_get_contents(REJECTED), true) ?: []) : [];
 
 $pexels = getenv('PEXELS_API_KEY') ?: null;
 $unsplash = getenv('UNSPLASH_ACCESS_KEY') ?: null;
@@ -59,20 +60,21 @@ $unsplash = getenv('UNSPLASH_ACCESS_KEY') ?: null;
 $photos = array_values(array_filter($photos, fn ($p) => is_file(OUT.'/'.$p['file'])));
 $have = [];
 foreach ($photos as $p) {
-    $have[$p['category']][] = $p;
+    $have[$p['kind'] ?? ''][] = $p;
 }
 if (in_array('--credits', $argv, true)) {
     $wanted = [];
 }
 
-foreach ($wanted as $slug => [$query, $count]) {
+foreach ($wanted as $slug => ['query' => $query, 'category' => $category, 'count' => $count]) {
     $missing = $count - count($have[$slug] ?? []);
     if ($missing <= 0) {
         continue;
     }
 
     $found = $pexels ? pexels($query, $pexels) : ($unsplash ? unsplash($query, $unsplash) : openverse($query));
-    $used = array_column($have[$slug] ?? [], 'source_url');
+    // Photos already used, or rejected by hand (people, children, wrong thing): never again.
+    $used = [...array_column($have[$slug] ?? [], 'source_url'), ...$rejected];
 
     foreach ($found as $item) {
         if ($missing <= 0) {
@@ -89,7 +91,7 @@ foreach ($wanted as $slug => [$query, $count]) {
         if (! save($item['download'], OUT.'/'.$file, $item['fallback'] ?? null)) {
             continue;
         }
-        $row = ['file' => $file, 'category' => $slug] + array_diff_key($item, ['download' => 1, 'fallback' => 1]);
+        $row = ['file' => $file, 'kind' => $slug, 'category' => $category] + array_diff_key($item, ['download' => 1, 'fallback' => 1]);
         $photos[] = $row;
         $have[$slug][] = $row;
         $missing--;
@@ -108,6 +110,11 @@ writeCredits($photos);
 echo count($photos)." photos. Credits in CREDITS.md\n";
 
 // ---------------------------------------------------------------------------
+
+function slugify(string $text): string
+{
+    return trim(preg_replace('/[^a-z0-9]+/', '-', strtolower($text)) ?? '', '-');
+}
 
 function http(string $url, array $headers = []): ?string
 {
@@ -170,7 +177,7 @@ function unsplash(string $q, string $key): array
     ], $data['results'] ?? []);
 }
 
-/** Download, check it really is a photo, shrink to 1024 px, re-save as JPEG (drops EXIF/GPS). */
+/** Download, check it really is a photo, shrink to 800 px, re-save as JPEG (drops EXIF/GPS). */
 function save(string $url, string $path, ?string $fallback): bool
 {
     $raw = http($url) ?? ($fallback ? http($fallback) : null);
@@ -181,10 +188,10 @@ function save(string $url, string $path, ?string $fallback): bool
     if ($w < 480 || $h < 320) {
         return false;
     }
-    $scale = min(1, 1024 / max($w, $h));
+    $scale = min(1, 800 / max($w, $h));
     $out = imagescale($img, (int) round($w * $scale), (int) round($h * $scale), IMG_BICUBIC);
 
-    return imagejpeg($out, $path, 74);
+    return imagejpeg($out, $path, 72);
 }
 
 function writeCredits(array $photos): void

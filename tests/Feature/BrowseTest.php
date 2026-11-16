@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Ad;
 use App\Models\Category;
+use App\Models\City;
 use App\Support\Features\FeatureManager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -134,5 +135,18 @@ class BrowseTest extends TestCase
         $queries = collect(\DB::getQueryLog())->reject(fn ($q) => str_contains($q['query'], '`cache`'));
 
         $this->assertLessThanOrEqual(12, $queries->count(), $queries->pluck('query')->implode("\n"));
+    }
+
+    public function test_ad_without_photo_shows_its_category_icon(): void
+    {
+        Ad::factory()->live()->create([
+            'title' => 'Car without photo',
+            'category_id' => Category::where('slug', 'cars')->value('id'),
+            'city_id' => City::where('slug', 'mogadishu')->value('id'),
+        ]);
+
+        $carIcon = (string) icon('car', 'size-10');
+        $this->get('/cars')->assertOk()->assertSee($carIcon, false);
+        $this->get('/search?q=without')->assertOk()->assertSee($carIcon, false);
     }
 }

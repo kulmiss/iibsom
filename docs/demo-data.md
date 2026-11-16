@@ -22,6 +22,8 @@ Rules:
 ## Photos
 
 Real free-licence photos are in `database/demo/photos/` (list: `database/demo/photos.json`, credits: `CREDITS.md`).
+Each demo title in `database/demo/content.php` has "photo words"; an ad only shows photos of the same kind (a Toyota ad never shows a Nissan). Titles without photo words get no photo.
+Don't like a photo? Delete it, put its `source_url` in `database/demo/photos-rejected.json`, run `php tools/download-demo-photos`.
 To get new ones:
 
 ```bash

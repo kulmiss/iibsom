@@ -13,7 +13,7 @@ class DatabaseAdSearch implements AdSearch
     /** @return LengthAwarePaginator<int, Ad> */
     public function search(array $filters, int $perPage = 24, int $page = 1): LengthAwarePaginator
     {
-        $query = self::publicQuery()->with(['category:id,name,slug,parent_id', 'city:id,name,slug', 'cover']);
+        $query = self::publicQuery()->with(['category:id,name,slug,icon,parent_id', 'city:id,name,slug', 'cover']);
 
         if ($q = trim((string) ($filters['q'] ?? ''))) {
             $this->keyword($query, $q);

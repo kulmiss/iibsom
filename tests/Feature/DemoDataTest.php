@@ -68,6 +68,16 @@ class DemoDataTest extends TestCase
         $this->assertNotNull($mod->two_factor_confirmed_at);
         $this->assertArrayHasKey('support', $seeder->staffLogins);
 
+        // Brands follow the title (iPhone = Apple, never a random brand).
+        foreach (Ad::whereHas('category', fn ($q) => $q->where('slug', 'mobile-phones'))->get() as $phone) {
+            if (str_contains($phone->title, 'iPhone')) {
+                $this->assertSame('apple', $phone->fields['brand'] ?? null, $phone->title);
+            }
+            if (str_contains($phone->title, 'Samsung')) {
+                $this->assertSame('samsung', $phone->fields['brand'] ?? null, $phone->title);
+            }
+        }
+
         // Field values make sense.
         $car = Ad::whereHas('category', fn ($q) => $q->where('slug', 'cars'))->first();
         $this->assertArrayHasKey('brand', $car->fields);
