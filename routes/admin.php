@@ -5,8 +5,12 @@ use App\Http\Controllers\Admin\AdController;
 use App\Http\Controllers\Admin\AppearanceController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\BlockedPhoneController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\FeatureController;
+use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\SpaController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
@@ -16,21 +20,21 @@ use Illuminate\Support\Facades\Route;
 | Loaded with the "web" middleware (session + CSRF) in bootstrap/app.php.
 */
 
-Route::prefix('admin/api')->name('admin.api.')->group(function () {
+Route::prefix('admin/api')->group(function () {
     // Sign-in steps (not signed in yet).
     Route::middleware('throttle:20,1')->group(function () {
-        Route::post('/login', [AuthController::class, 'login'])->name('login');
-        Route::get('/2fa/setup', [AuthController::class, 'setup'])->name('2fa.setup');
-        Route::post('/2fa/confirm', [AuthController::class, 'confirm'])->name('2fa.confirm');
-        Route::post('/2fa/verify', [AuthController::class, 'verify'])->name('2fa.verify');
+        Route::post('/login', [AuthController::class, 'login'])->name('admin.api.login');
+        Route::get('/2fa/setup', [AuthController::class, 'setup'])->name('admin.api.2fa.setup');
+        Route::post('/2fa/confirm', [AuthController::class, 'confirm'])->name('admin.api.2fa.confirm');
+        Route::post('/2fa/verify', [AuthController::class, 'verify'])->name('admin.api.2fa.verify');
     });
 
     Route::middleware('admin')->group(function () {
-        Route::get('/me', [AuthController::class, 'me'])->name('me');
-        Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+        Route::get('/me', [AuthController::class, 'me'])->name('admin.api.me');
+        Route::post('/logout', [AuthController::class, 'logout'])->name('admin.api.logout');
 
-        Route::get('/dashboard', DashboardController::class)->middleware('admin.can:dashboard.view')->name('dashboard');
-        Route::get('/activity', ActivityController::class)->middleware('admin.can:activity.view')->name('activity');
+        Route::get('/dashboard', DashboardController::class)->middleware('admin.can:dashboard.view')->name('admin.api.dashboard');
+        Route::get('/activity', ActivityController::class)->middleware('admin.can:activity.view')->name('admin.api.activity');
 
         // Ads
         Route::get('/ads', [AdController::class, 'index'])->middleware('admin.can:ads.view');
@@ -54,8 +58,43 @@ Route::prefix('admin/api')->name('admin.api.')->group(function () {
         Route::get('/reports', [ReportController::class, 'index'])->middleware('admin.can:reports.view');
         Route::post('/reports/{report}/handle', [ReportController::class, 'handle'])->middleware('admin.can:reports.handle');
 
-        Route::get('/settings/appearance', [AppearanceController::class, 'show'])->name('appearance');
-        Route::put('/settings/appearance', [AppearanceController::class, 'update'])->middleware('admin.can:settings.manage')->name('appearance.update');
+        // Categories + custom fields
+        Route::middleware('admin.can:categories.manage')->group(function () {
+            Route::get('/categories', [CategoryController::class, 'index']);
+            Route::post('/categories', [CategoryController::class, 'store']);
+            Route::post('/categories/reorder', [CategoryController::class, 'reorder']);
+            Route::put('/categories/{category}', [CategoryController::class, 'update']);
+            Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
+            Route::get('/categories/{category}/fields', [CategoryController::class, 'fields']);
+            Route::post('/categories/{category}/fields', [CategoryController::class, 'storeField']);
+            Route::put('/categories/{category}/fields/{field}', [CategoryController::class, 'updateField']);
+            Route::delete('/categories/{category}/fields/{field}', [CategoryController::class, 'destroyField']);
+        });
+
+        // Regions, cities, areas
+        Route::middleware('admin.can:locations.manage')->group(function () {
+            Route::get('/locations', [LocationController::class, 'index']);
+            Route::put('/regions/{region}', [LocationController::class, 'updateRegion']);
+            Route::post('/cities', [LocationController::class, 'storeCity']);
+            Route::put('/cities/{city}', [LocationController::class, 'updateCity']);
+            Route::get('/cities/{city}/areas', [LocationController::class, 'areas']);
+            Route::post('/cities/{city}/areas', [LocationController::class, 'storeArea']);
+            Route::put('/areas/{area}', [LocationController::class, 'updateArea']);
+        });
+
+        // Feature switches
+        Route::middleware('admin.can:features.manage')->group(function () {
+            Route::get('/features', [FeatureController::class, 'index']);
+            Route::put('/features/{key}', [FeatureController::class, 'update'])->where('key', '[a-z0-9._]+');
+            Route::delete('/features/{key}', [FeatureController::class, 'reset'])->where('key', '[a-z0-9._]+');
+        });
+
+        // Settings → General
+        Route::get('/settings/general', [SettingsController::class, 'show'])->middleware('admin.can:settings.manage');
+        Route::put('/settings/general', [SettingsController::class, 'update'])->middleware('admin.can:settings.manage');
+
+        Route::get('/settings/appearance', [AppearanceController::class, 'show'])->name('admin.api.appearance');
+        Route::put('/settings/appearance', [AppearanceController::class, 'update'])->middleware('admin.can:settings.manage')->name('admin.api.appearance.update');
     });
 
     Route::any('/{any}', fn () => response()->json(['message' => 'Not found.'], 404))->where('any', '.*');

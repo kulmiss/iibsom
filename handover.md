@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-16 (PR 10)_
+_Last updated: 2026-11-16 (PR 11)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -12,6 +12,7 @@ _Last updated: 2026-11-16 (PR 10)_
 - **PR 8 (post an ad):** `ads` + `ad_photos` tables (indexes, fulltext), 2-step form (category → one form with custom fields), photos shrunk on the phone, uploaded one by one, background job (auto-rotate, re-encode = no GPS/EXIF, 3 sizes WebP + AVIF if possible) to the photos disk (R2 live), reorder, draft saved on the phone, every ad pending (decision #9), duplicate check, 5 ads/day, `iibsom:ads:expire` hourly.
 - **PR 9 (Super Admin foundation):** `admin/` = shadcn-admin template (pinned, MIT, cleaned), built to `public/admin-app`, served at `/admin` with CSP nonces. Staff login (password + **required TOTP 2FA**, recovery codes, rate limits, idle timeout 60 min), roles + permissions (`config/admin.php`), dashboard API + charts, activity log, brand colour, themes, Ctrl+K, phone cards, reusable `ServerDataTable`. `php artisan iibsom:staff`. Screens for ads/users/reports/categories/etc. are placeholders → next PRs.
 - **PR 10 (moderation):** admin ads list + approval queue (cover photos, detail panel, approve, reject with reason presets, edit, soft delete, bulk), users (search by phone, ban with take-down + block phone, unban), blocked phones (customers can't use them), reports queue (take ad down closes all its reports, dismiss). Live-ad counters on categories/cities kept up to date (demo never counted). Photo host allowed in CSP.
+- **PR 11 (catalogue + switches + settings):** categories editor (tree, add/edit/on-off, icon picker, popular, new/used, delete only without ads), custom fields editor (text/number/list/yes-no, units, required, filter), regions/cities/areas with switches (new cities start OFF), feature switches page (grouped, search, ON/OFF counts, "what changes" confirm, reset to default), Settings → General (expiry days, ads/day, photos/ad, languages). Route names unique (route:cache works).
 - Nothing is deployed yet.
 - Owner runs locally with **Laragon** on Windows (see docs/local-setup.md → A).
 
@@ -36,12 +37,13 @@ See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example 
 7. **PR 7:** Google sign-in + first-time profile (name, city, +252 phone, terms)
 8. **PR 8:** Post an ad (photos → R2 via queue, drafts offline)
 9. **PR 9:** Super Admin foundation: staff login + 2FA + roles, dashboard, activity log, themes, brand colour 
-10. **PR 10:** Admin: ads approval queue + all ads, users (ban, block phone), reports (this one)
-11. **PR 11:** Admin: categories + fields editor, cities/areas, feature switches, settings, pages, banners, staff, health
-12. Browse, search (DB full-text behind an interface), ad page, SEO
-13. My Ads (edit, sold, renew, delete), reports, safety (bad words, honeypot, block phone)
-14. "Recommended for you" (browsing history in the browser, similar ads)
-15. Demo data with real photos (`iib:demo-reset`), deploy guides (shared + VPS), Cloudflare R2, scaling docs
+10. **PR 10:** Admin: ads approval queue + all ads, users (ban, block phone), reports
+11. **PR 11:** Admin: categories + fields editor, cities/areas, feature switches, settings (this one)
+12. **PR 12:** Admin: pages, banners, staff, system health, demo data controls
+13. Browse, search (DB full-text behind an interface), ad page, SEO
+14. My Ads (edit, sold, renew, delete), reports, safety (bad words, honeypot, block phone)
+15. "Recommended for you" (browsing history in the browser, similar ads)
+16. Demo data with real photos (`iib:demo-reset`), deploy guides (shared + VPS), Cloudflare R2, scaling docs
 
 ## Known notes
 - Public pages currently set an XSRF/session cookie; the page-cache PR must make guest pages cookie-free so Cloudflare can cache them.

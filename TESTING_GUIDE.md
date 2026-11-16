@@ -106,3 +106,14 @@ First add your Google keys: see docs/google-signin.md.
 | 6 | As that customer, try to save the same phone on the profile page | "This phone number cannot be used on iibsom." |
 | 7 | **Reports** → **Take ad down** | The ad is rejected and every waiting report on it is closed |
 | 8 | Sign in as a **Support** staff member | You can look but there are no Approve / Ban / Take down buttons |
+
+## Manual (PR 11: categories, cities, switches, settings)
+| # | Do this | Expected |
+|---|---------|----------|
+| 1 | Admin → **Categories** → open Vehicles → **Add sub category in Vehicles** → "Boats", pick an icon → Save | "Boats" appears under Vehicles. On the site, **Sell** → Vehicles shows Boats |
+| 2 | Boats → **Fields** → **Add a field** → "Engine" → Number, unit "hp" → Save | Posting a Boats ad now asks "Engine (hp)" |
+| 3 | Switch **Jobs** OFF | Jobs disappears from the home page |
+| 4 | **Cities and areas** → switch **Kismayo** ON | Home page search shows "All Somalia / Mogadishu / Kismayo" |
+| 5 | Mogadishu → **areas** → add "KM4" | KM4 is in the area list when posting |
+| 6 | **Feature switches** → WhatsApp button | A box explains what changes before you confirm. After OFF it shows "changed" with a reset button |
+| 7 | **Settings → General** → Ads end after 30 days, tick Somali → Save | New approved ads end in 30 days. A language switch appears on the site |
