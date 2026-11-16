@@ -22,6 +22,7 @@
     @include('partials.header')
 
     <main id="main" class="flex-1" data-page>
+        @include('partials.flash')
         @yield('content')
     </main>
 

@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Middleware\EnsureFeatureEnabled;
+use App\Http\Middleware\EnsureProfileComplete;
+use App\Http\Middleware\LogoutBannedUsers;
 use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Foundation\Application;
@@ -17,11 +19,17 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->web(append: [
             SecurityHeaders::class,
+            LogoutBannedUsers::class,
         ]);
+
+        // Not signed in → go to the sign-in page (in the current language).
+        $middleware->redirectGuestsTo(fn () => lroute('login'));
+        $middleware->redirectUsersTo(fn () => lroute('home'));
 
         $middleware->alias([
             'feature' => EnsureFeatureEnabled::class,
             'locale' => SetLocale::class,
+            'profile.complete' => EnsureProfileComplete::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

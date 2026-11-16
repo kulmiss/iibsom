@@ -48,3 +48,18 @@ Most important tests first. "Expected" is what you should see.
 | 4 | `php artisan tinker --execute="App\\Models\\City::where('slug','kismayo')->first()->update(['enabled'=>true]);"` and reload | Picker shows "All Somalia", Mogadishu, Kismayo. Turn it back off with `false` |
 | 5 | Same for a category: `App\\Models\\Category::where('slug','jobs')->first()->update(['enabled'=>false]);` | "Jobs" disappears from home |
 | 6 | Run `php artisan db:seed` again | Nothing breaks, switches you changed stay as they are |
+
+## Manual (PR 7: Google sign-in + profile)
+First add your Google keys: see docs/google-signin.md.
+
+| # | Do this | Expected |
+|---|---------|----------|
+| 1 | Open http://localhost:8095/login | "Continue with Google" button |
+| 2 | Click it, choose your Google account | You come back to "Almost done" (welcome form) |
+| 3 | Leave Terms unticked, press Save | Red message under Terms |
+| 4 | Type phone `0612345` (too short) | "Please enter a Somali mobile number…" |
+| 5 | Fill name, phone `61 5123456`, tick Terms, Save | Home page with "Welcome! Your account is ready." Header shows your first letter |
+| 6 | Open http://localhost:8095/account | Your name, Mogadishu, +252 61 512 3456, Log out button |
+| 7 | Edit profile, change phone, Save | "Your profile is saved." |
+| 8 | Log out | Back to home, header shows the person icon again |
+| 9 | Look in `storage/logs/security-*.log` | `login.success` line with your user id |

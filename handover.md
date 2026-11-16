@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-16 (PR 6)_
+_Last updated: 2026-11-16 (PR 7)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -8,6 +8,7 @@ _Last updated: 2026-11-16 (PR 6)_
 - **PR 3 (languages + layout):** English-only at launch, Somali-ready (`lang/so`), `/so/...` URLs, in-place language switch (no reload, cookie), hreflang/canonical, CSV export for native review, mobile-first layout (header, footer, home hero), system fonts, Windows hint in health check. Docs: docs/translations.md.
 - **PR 4 (locations + categories + home):** regions → cities → areas (Somalia; only Mogadishu ON; 18 Mogadishu districts), 15 main categories / 52 sub categories with custom fields (cars, houses, land, phones, laptops, livestock, jobs), `Catalog` cached lists, Jiji-style home in Iibsom blue/yellow, Lucide icons (`icon()` helper). Seeders are production-safe and can run again.
 - **PR 5 (phone home):** Jiji-mobile style tiles, one-row search, bottom bar following switches. Removed stray `dump.rdb`.
+- **PR 7 (Google sign-in):** Socialite Google (state check, verified email only, banned blocked, session regenerated, language kept), welcome form (name, city, +252 phone + WhatsApp, Terms), account + profile edit, `profile.complete` middleware for posting, security log. Guide: docs/google-signin.md.
 - Nothing is deployed yet.
 - Owner runs locally with **Laragon** on Windows (see docs/local-setup.md → A).
 
@@ -27,8 +28,8 @@ See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example 
 3. **PR 3:** Language system (English, Somali-ready, switch without reload) + base layout (mobile-first)
 4. **PR 4:** Locations (Somalia regions/cities/areas, Mogadishu ON only) + data-driven categories + custom fields + Jiji-style home
 5. **PR 5:** Phone home like Jiji mobile + bottom bar
-6. **PR 6:** Hide city picker when only one city + roadmap "Recommended for you" (this one)
-7. **PR 7:** Google sign-in + first-time profile (name, city, +252 phone, terms)
+6. **PR 6:** Hide city picker when only one city + roadmap "Recommended for you"
+7. **PR 7:** Google sign-in + first-time profile (name, city, +252 phone, terms) (this one)
 8. **PR 8:** Post an ad (photos → R2 via queue, drafts offline, approval queue)
 9. **PR 9:** Browse, search (DB full-text behind an interface), ad page, SEO
 10. **PR 10:** "Recommended for you" (browsing history in the browser, similar ads)

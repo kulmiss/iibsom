@@ -19,13 +19,19 @@
                 <a href="#" class="icon-btn" title="{{ __('site.nav.alerts') }}">{{ icon('bell') }}<span class="sr-only">{{ __('site.nav.alerts') }}</span></a>
             @endfeature
 
-            @feature('login.google')
-                <a href="#" class="icon-btn hidden lg:flex" title="{{ __('site.nav.sign_in') }}">{{ icon('user') }}<span class="sr-only">{{ __('site.nav.sign_in') }}</span></a>
-            @endfeature
+            @auth
+                <a href="{{ lroute('account') }}" class="hidden size-9 items-center justify-center rounded-full bg-white font-bold text-brand-700 lg:flex" title="{{ __('site.nav.my_account') }}">
+                    {{ auth()->user()->initial() }}<span class="sr-only">{{ __('site.nav.my_account') }}</span>
+                </a>
+            @else
+                @feature('login.google')
+                    <a href="{{ lroute('login') }}" class="icon-btn hidden lg:flex" title="{{ __('site.nav.sign_in') }}">{{ icon('user') }}<span class="sr-only">{{ __('site.nav.sign_in') }}</span></a>
+                @endfeature
+            @endauth
 
-            @feature('ads.posting')
-                <a href="#" class="btn-sell hidden lg:inline-flex">{{ __('site.nav.sell') }}</a>
-            @endfeature
+            @if (feature('ads.posting') && (auth()->check() || feature('login.google')))
+                <a href="{{ auth()->check() ? '#' : lroute('login') }}" class="btn-sell hidden lg:inline-flex">{{ __('site.nav.sell') }}</a>
+            @endif
         </nav>
     </div>
 </header>

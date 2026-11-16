@@ -32,6 +32,7 @@ Every question, the owner's answer, and the date. Newest at the bottom.
 | H1 | 2026-11-16 | Which control panel does the host use (cPanel, Plesk, DirectAdmin…) and who is the host? | Waiting |
 | H2 | 2026-11-16 | Which PHP versions can be chosen on the host? (8.3+ needed) | Waiting |
 | H3 | 2026-11-16 | Is there SSH access, and can cron jobs be added? | Waiting |
+| S1 | 2026-11-16 | Phone + SMS login (switch OFF for later): which SMS provider? (e.g. Hormuud/Somtel SMS gateway, Africa's Talking, Twilio) | Waiting, not needed for launch |
 
 ## Small choices (taken by Claude, can be changed)
 
@@ -46,4 +47,6 @@ Every question, the owner's answer, and the date. Newest at the bottom.
 | 2026-11-16 | System fonts only (no web fonts): faster on slow 3G, nothing extra to download. |
 | 2026-11-16 | URLs: default language (English) has no prefix; other languages get a prefix (`/so/...`). Choice saved in a cookie; the page swaps language in place without a reload. |
 | 2026-11-16 | Logo text is lowercase "iibsom" (with a capital I it looks like "libsom"). Brand colours: Somali-flag blue + warm yellow. |
+| 2026-11-16 | Phone numbers: Somali mobiles only (start 6/7/9, 9 digits), typed any way (0615…, +252 61…), saved as +252XXXXXXXXX. "I use WhatsApp on this number" is ON by default. |
+| 2026-11-16 | Sign-in events go to `storage/logs/security.log` (90 days) until the admin activity log exists. |
 | 2026-11-16 | Language switch without reload: page HTML is fetched for the new language in the background and swapped in; the chosen language is saved in a cookie. Each language keeps its own cached pages and URL prefix for SEO. |

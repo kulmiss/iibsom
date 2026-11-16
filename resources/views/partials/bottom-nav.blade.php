@@ -9,14 +9,18 @@
         @feature('favourites')
             <li><a href="#" class="bottom-nav-item">{{ icon('bookmark', 'size-6') }}<span>{{ __('site.nav.saved') }}</span></a></li>
         @endfeature
-        @feature('ads.posting')
-            <li><a href="#" class="bottom-nav-item">{{ icon('square-plus', 'size-6') }}<span>{{ __('site.nav.sell') }}</span></a></li>
-        @endfeature
+        @if (feature('ads.posting') && (auth()->check() || feature('login.google')))
+            <li><a href="{{ auth()->check() ? '#' : lroute('login') }}" class="bottom-nav-item">{{ icon('square-plus', 'size-6') }}<span>{{ __('site.nav.sell') }}</span></a></li>
+        @endif
         @feature('chat')
             <li><a href="#" class="bottom-nav-item">{{ icon('message-circle', 'size-6') }}<span>{{ __('site.nav.messages') }}</span></a></li>
         @endfeature
-        @feature('login.google')
-            <li><a href="#" class="bottom-nav-item">{{ icon('user', 'size-6') }}<span>{{ __('site.nav.profile') }}</span></a></li>
-        @endfeature
+        @auth
+            <li><a href="{{ lroute('account') }}" class="bottom-nav-item {{ request()->routeIs('account*', 'loc.account*') ? 'text-brand-700' : '' }}">{{ icon('user', 'size-6') }}<span>{{ __('site.nav.profile') }}</span></a></li>
+        @else
+            @feature('login.google')
+                <li><a href="{{ lroute('login') }}" class="bottom-nav-item {{ request()->routeIs('login', 'loc.login') ? 'text-brand-700' : '' }}">{{ icon('user', 'size-6') }}<span>{{ __('site.nav.profile') }}</span></a></li>
+            @endfeature
+        @endauth
     </ul>
 </nav>
