@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Search\DatabaseAdSearch;
 use App\Support\Catalog;
+use App\Support\Seo\Landing;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
 
@@ -23,13 +24,28 @@ class SitemapController extends Controller
                     $urls[] = ['loc' => url('/'.$sub['slug']), 'changefreq' => 'hourly'];
                 }
             }
+            // Landing pages that have at least one live ad: category + city, and brand + category + city.
+            $landing = [];
+            $brands = [];
             DatabaseAdSearch::publicQuery()->with(['category:id,slug,parent_id,enabled', 'category.parent:id,enabled', 'city:id,slug'])
-                ->latest('published_at')->limit(45000)->get(['id', 'slug', 'category_id', 'city_id', 'updated_at'])
-                ->each(function ($ad) use (&$urls) {
-                    if ($ad->category->isLive()) {
-                        $urls[] = ['loc' => url("/{$ad->category->slug}/{$ad->city->slug}/{$ad->slug}-{$ad->id}"), 'lastmod' => $ad->updated_at?->toAtomString()];
+                ->latest('published_at')->limit(45000)->get(['id', 'slug', 'category_id', 'city_id', 'fields', 'updated_at'])
+                ->each(function ($ad) use (&$urls, &$landing, &$brands) {
+                    if (! $ad->category->isLive()) {
+                        return;
+                    }
+                    $urls[] = ['loc' => url("/{$ad->category->slug}/{$ad->city->slug}/{$ad->slug}-{$ad->id}"), 'lastmod' => $ad->updated_at?->toAtomString()];
+                    $landing["/{$ad->category->slug}/{$ad->city->slug}"] = true;
+                    $brand = $ad->fields['brand'] ?? null;
+                    if (is_string($brand) && feature('seo.landing_pages')) {
+                        $brands[$ad->category_id] ??= Landing::brands($ad->category);
+                        if (isset($brands[$ad->category_id][$brand])) {
+                            $landing["/{$ad->category->slug}/{$ad->city->slug}/{$brand}"] = true;
+                        }
                     }
                 });
+            foreach (array_keys($landing) as $path) {
+                $urls[] = ['loc' => url($path), 'changefreq' => 'daily'];
+            }
 
             $body = '<?xml version="1.0" encoding="UTF-8"?>'."\n".'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
             foreach ($urls as $u) {

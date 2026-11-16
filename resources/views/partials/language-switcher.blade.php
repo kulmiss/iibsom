@@ -6,7 +6,7 @@
                hreflang="{{ $code }}"
                lang="{{ $code }}"
                data-lang-switch="{{ $code }}"
-               @class(['rounded px-2 py-1', 'bg-white/25 font-semibold' => $code === app()->getLocale(), 'hover:bg-white/15' => $code !== app()->getLocale()])
+               @class(['rounded px-2 py-1', 'bg-white font-semibold text-brand-800' => $code === app()->getLocale(), 'hover:bg-white/15' => $code !== app()->getLocale()])
                @if ($code === app()->getLocale()) aria-current="true" @endif>
                 {{ $locales->supported()[$code]['native'] }}
             </a>

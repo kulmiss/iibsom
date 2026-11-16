@@ -1,32 +1,72 @@
 @extends('layouts.app')
 
 @php
-    $title = $category ? $category->label.($city ? ' '.__('ads.browse.in_city', ['city' => $city->label]) : '') : (!empty($filters['q']) ? __('ads.browse.search_for', ['q' => $filters['q']]) : __('ads.browse.all_ads'));
-    $action = $category ? lroute('browse.category', array_filter(['category' => $category->slug, 'city' => $city?->slug])) : lroute('search');
+    $what = $category ? ($brand ? __('ads.browse.brand_title', ['brand' => $brand['label'], 'category' => $category->label]) : $category->label) : null;
+    $title = $what ? $what.($city ? ' '.__('ads.browse.in_city', ['city' => $city->label]) : '') : (!empty($filters['q']) ? __('ads.browse.search_for', ['q' => $filters['q']]) : __('ads.browse.all_ads'));
+    $action = $brand ? lroute('browse.brand', ['category' => $category->slug, 'city' => $city->slug, 'brand' => $brand['value']])
+        : ($category ? lroute('browse.category', array_filter(['category' => $category->slug, 'city' => $city?->slug])) : lroute('search'));
+    // Breadcrumbs: Home › Vehicles › Cars › Mogadishu › Toyota (also given to Google as BreadcrumbList).
+    $crumbs = [[__('site.nav.home'), lroute('home')]];
+    if ($category?->parent) { $crumbs[] = [$category->parent->label, lroute('browse.category', ['category' => $category->parent->slug])]; }
+    if ($category) { $crumbs[] = [$category->label, lroute('browse.category', ['category' => $category->slug])]; }
+    if ($category && $city) { $crumbs[] = [$city->label, lroute('browse.category', ['category' => $category->slug, 'city' => $city->slug])]; }
+    if ($brand) { $crumbs[] = [$brand['label'], $action]; }
 @endphp
 
 @section('title', $title)
 @section('description', trans_choice('ads.browse.results', $results->total(), ['count' => number_format($results->total())]).' · '.$title.' · iibsom')
 
 @push('head')
-    @if ($results->currentPage() > 1 || !empty($filters['q']) || !empty($filters['f']) || !empty($filters['min']) || !empty($filters['max']))
+    {{-- Not for Google: later pages, searches, filters (a brand page's own brand is not a filter), and empty pages. --}}
+    @php
+        $extraFilters = array_diff_key($filters['f'] ?? [], $brand ? ['brand' => 1] : []);
+    @endphp
+    @if ($results->currentPage() > 1 || !empty($filters['q']) || $extraFilters || !empty($filters['min']) || !empty($filters['max']) || !empty($filters['condition']) || $results->total() === 0)
         <meta name="robots" content="noindex, follow">
+    @endif
+    @if (count($crumbs) > 1)
+        @php
+            $breadcrumbLd = ['@context' => 'https://schema.org', '@type' => 'BreadcrumbList', 'itemListElement' => []];
+            foreach ($crumbs as $i => [$name, $url]) {
+                $breadcrumbLd['itemListElement'][] = ['@type' => 'ListItem', 'position' => $i + 1, 'name' => $name, 'item' => $url];
+            }
+        @endphp
+        <script type="application/ld+json" nonce="{{ Vite::cspNonce() }}">{!! json_encode($breadcrumbLd, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) !!}</script>
     @endif
 @endpush
 
 @section('content')
     <div class="mx-auto max-w-6xl px-4 py-5" @if (feature('recommendations') && $category) data-track-cat="{{ $category->id }}" @endif>
         <nav class="text-sm text-stone-500" aria-label="Breadcrumb">
-            <a href="{{ lroute('home') }}" class="hover:underline">{{ __('site.nav.home') }}</a>
-            @if ($category?->parent)
-                › <a href="{{ lroute('browse.category', ['category' => $category->parent->slug]) }}" class="hover:underline">{{ $category->parent->label }}</a>
-            @endif
-            @if ($category)
-                › <span>{{ $category->label }}</span>
-            @endif
+            <ol class="flex flex-wrap items-center gap-x-1">
+                @foreach ($crumbs as $k => [$name, $url])
+                    <li class="flex items-center gap-x-1">
+                        @if ($k > 0)<span aria-hidden="true">›</span>@endif
+                        @if ($loop->last)<span aria-current="page">{{ $name }}</span>@else<a href="{{ $url }}" class="hover:underline">{{ $name }}</a>@endif
+                    </li>
+                @endforeach
+            </ol>
         </nav>
         <h1 class="mt-1 text-2xl font-bold">{{ $title }}</h1>
         <p class="text-sm text-stone-600">{{ trans_choice('ads.browse.results', $results->total(), ['count' => number_format($results->total())]) }}</p>
+
+        {{-- Links Google (and people) can follow: popular brands here, the same category in other cities. --}}
+        @if ($brandLinks)
+            <nav class="-mx-4 mt-3 overflow-x-auto px-4" aria-label="{{ __('ads.browse.popular_brands') }}">
+                <ul class="flex gap-2">
+                    @foreach ($brandLinks as $b)
+                        <li class="shrink-0"><a href="{{ lroute('browse.brand', ['category' => $category->slug, 'city' => $city->slug, 'brand' => $b['value']]) }}" class="btn-chip">{{ $b['label'] }} <span class="text-stone-500">{{ $b['count'] }}</span></a></li>
+                    @endforeach
+                </ul>
+            </nav>
+        @endif
+        @if ($cityLinks)
+            <p class="mt-2 text-sm text-stone-600">{{ __('ads.browse.other_cities') }}
+                @foreach ($cityLinks as $c)
+                    <a href="{{ $brand ? lroute('browse.brand', ['category' => $category->slug, 'city' => $c['slug'], 'brand' => $brand['value']]) : lroute('browse.category', ['category' => $category->slug, 'city' => $c['slug']]) }}" class="font-medium text-brand-800 underline">{{ translated($c['name']) }}</a>@if (! $loop->last), @endif
+                @endforeach
+            </p>
+        @endif
 
         <div class="mt-4 grid gap-5 lg:grid-cols-[16rem_1fr]">
             {{-- Filters: a fold-out box on phones, a sidebar on desktop --}}

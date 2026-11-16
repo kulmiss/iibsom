@@ -80,6 +80,10 @@ $publicRoutes = function () {
     // Category pages and ad pages: /cars, /cars/mogadishu, /cars/mogadishu/toyota-hilux-2016-123 (last, catch-all).
     Route::get('/{category}/{city}/{slugId}', [AdPageController::class, 'show'])
         ->where(['category' => '[a-z0-9-]+', 'city' => '[a-z0-9-]+', 'slugId' => '[a-z0-9-]*-[0-9]+'])->name('ad.show');
+    // Brand landing pages: /cars/mogadishu/toyota (brand words never contain digits, ad addresses always end in digits).
+    Route::get('/{category}/{city}/{brand}', [BrowseController::class, 'brand'])
+        ->where(['category' => '[a-z0-9-]+', 'city' => '[a-z0-9-]+', 'brand' => '[a-z]+(-[a-z]+)*'])
+        ->middleware('feature:seo.landing_pages')->name('browse.brand');
     Route::get('/{category}/{city?}', [BrowseController::class, 'category'])
         ->where(['category' => '[a-z0-9-]+', 'city' => '[a-z0-9-]+'])->name('browse.category');
 };

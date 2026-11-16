@@ -119,6 +119,8 @@ class BrowseTest extends TestCase
 
     public function test_filtered_pages_are_not_indexed(): void
     {
+        $this->get('/cars')->assertSee('noindex, follow', false); // no ads yet: an empty page is not for Google
+        $this->car();
         $this->get('/cars?min=10')->assertSee('noindex, follow', false);
         $this->get('/cars')->assertDontSee('noindex', false);
     }

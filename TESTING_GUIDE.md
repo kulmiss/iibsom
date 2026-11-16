@@ -201,6 +201,15 @@ First add your Google keys: see docs/google-login.md.
 | 4 | Look at categories, ad page, post form, My ads, errors | All in Somali |
 | 5 | `php artisan iibsom:translations:export so` | CSV for a native speaker to check |
 
+## Manual (PR 24: SEO landing pages)
+| # | Do this | Expected |
+|---|---------|----------|
+| 1 | Open /cars/mogadishu | Title "Cars in Mogadishu", breadcrumb Home › Vehicles › Cars › Mogadishu, brand chips with numbers |
+| 2 | Tap "Toyota" | /cars/mogadishu/toyota: only Toyotas, title "Toyota Cars in Mogadishu" |
+| 3 | /cars/mogadishu/ferrari | Not found |
+| 4 | /sitemap.xml | Has /cars/mogadishu and /cars/mogadishu/toyota |
+| 5 | View page source of a page with 0 ads | `noindex` |
+
 ## Manual (PR 23: weekly email)
 | # | Do this | Expected |
 |---|---------|----------|

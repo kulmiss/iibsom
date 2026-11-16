@@ -19,6 +19,9 @@ Tick `[x]` with the date when done.
 - [ ] Admin → Settings → General → **Weekly summary email to**: add your email, press "Send me a test now" (needs working MAIL_ settings in `.env`)
 - [ ] Create your Super Admin account on the live site: `php artisan iibsom:staff you@iibsom.com` and set up 2FA
 
+## After going live
+- [ ] Add iibsom.com to Google Search Console and submit https://iibsom.com/sitemap.xml
+
 ## Can wait
 - [ ] SMS provider for phone login (S1), only if phone login is wanted
 - [ ] Choose staff accounts (Moderator / Support) and give them 2FA apps

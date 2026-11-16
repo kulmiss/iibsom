@@ -173,6 +173,7 @@ jobs:
           php artisan key:generate
           php artisan migrate --seed --force
           php artisan iib:demo-reset --force
+          php artisan tinker --execute='app(App\Support\Settings\SettingsManager::class)->set("languages.enabled", ["en", "so"]);'
           php artisan storage:link
           php artisan serve --port=8095 > /tmp/serve.log 2>&1 &
           sleep 3

@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-16 (PR 23)_
+_Last updated: 2026-11-16 (PR 24)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -25,6 +25,7 @@ _Last updated: 2026-11-16 (PR 23)_
 - **PR 21 (Edited badge):** `AdSnapshot` saves the approved version; the admin queue shows "Edited" and the ad panel shows what changed (title, description, price, condition, place, fields, photos). Switch `ads.edit_changes`. Demo data has 6 edited examples.
 - **PR 22 (matching demo photos):** photo words per demo title (`database/demo/content.php`), photos by kind, rejected list, brand follows title. Fixed: ads without photos showed a tag icon instead of their category icon on category/search pages.
 - **PR 23 (weekly email):** `iibsom:weekly-summary` (Monday 07:00 Mogadishu, once per week), `WeeklySummary` numbers, admin field + test button. Fixed: shared rate-limit counter across pages (posting could be blocked after photo uploads); app name lowercase.
+- **PR 24 (SEO landing pages):** `browse.brand` route + `Landing` helper (brands, top brands, other cities), better titles/breadcrumbs/JSON-LD, empty pages noindex, sitemap landing URLs. Fixed: active language pill had too little contrast. Lighthouse now also checks a brand page and /so.
 - Nothing is deployed yet.
 - Owner runs locally with **Laragon** on Windows (see docs/local-setup.md → A).
 
@@ -62,7 +63,8 @@ See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example 
 20. **PR 20:** Quality gates.
 21. **PR 21:** "Edited" badge.
 22. **PR 22:** Demo photos that match each title.
-23. **PR 23:** Weekly summary email (this one). Next: Part A polish, Part B (Phase 2, OFF), Part C (Phase 3), Part D review — owner's big job list of 2026-11-16.
+23. **PR 23:** Weekly summary email.
+24. **PR 24:** SEO landing pages (this one). Next: Part A polish, Part B (Phase 2, OFF), Part C (Phase 3), Part D review — owner's big job list of 2026-11-16.
 
 ## Known notes
 - The local PHP Docker image could not be built inside Claude's sandbox (the Alpine package site is blocked there). CI builds it on GitHub to prove it works.
