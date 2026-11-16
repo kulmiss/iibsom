@@ -2,24 +2,22 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Support\Catalog;
 use Illuminate\Database\Seeder;
 
+/**
+ * Real starting data, safe for production: Somalia locations + categories.
+ * (Demo ads come later in a separate DemoSeeder that refuses to run in production.)
+ */
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $this->call([
+            LocationSeeder::class,
+            CategorySeeder::class,
         ]);
+
+        app(Catalog::class)->flush();
     }
 }

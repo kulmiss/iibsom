@@ -8,6 +8,6 @@
             <li>{{ __('site.footer.privacy') }}</li>
             <li>{{ __('site.footer.contact') }}</li>
         </ul>
-        <p class="mt-4">© {{ now()->year }} {{ config('app.name') }}. {{ __('site.footer.rights') }}</p>
+        <p class="mt-4">© {{ now()->year }} {{ \Illuminate\Support\Str::lower(config('app.name')) }}. {{ __('site.footer.rights') }}</p>
     </div>
 </footer>

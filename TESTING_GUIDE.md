@@ -38,3 +38,13 @@ Most important tests first. "Expected" is what you should see.
 | 5 | Open http://localhost:8095/ again | It switches to /so by itself (choice remembered) |
 | 6 | `php artisan iibsom:translations:export so` | Creates `storage/app/translations-so.csv`, open in Excel |
 | 7 | Turn Somali OFF again: same as step 3 with `['en']` | Switch disappears |
+
+## Manual (PR 4: locations, categories, Jiji-style home)
+| # | Do this | Expected |
+|---|---------|----------|
+| 1 | `php artisan migrate` then `php artisan db:seed` | 15 main categories, Somalia cities, Mogadishu districts |
+| 2 | `npm run build`, open http://localhost:8095 (desktop) | Blue search box with "Mogadishu" picker, category list on the left with icons + "No ads yet", popular category tiles, "Trending ads" box |
+| 3 | Phone size (F12 → phone icon) | Categories as a 3-column icon grid |
+| 4 | `php artisan tinker --execute="App\\Models\\City::where('slug','kismayo')->first()->update(['enabled'=>true]);"` and reload | Picker shows "All Somalia", Mogadishu, Kismayo. Turn it back off with `false` |
+| 5 | Same for a category: `App\\Models\\Category::where('slug','jobs')->first()->update(['enabled'=>false]);` | "Jobs" disappears from home |
+| 6 | Run `php artisan db:seed` again | Nothing breaks, switches you changed stay as they are |

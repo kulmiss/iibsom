@@ -20,12 +20,20 @@ class LayoutTest extends TestCase
             ->assertSee('Safety tips');
     }
 
-    public function test_post_ad_button_follows_its_switch(): void
+    public function test_sell_button_follows_its_switch(): void
     {
-        $this->get('/')->assertSee('Post an ad');
+        $this->get('/')->assertSee('class="btn-sell"', false)->assertSee('Post an ad');
 
         app(FeatureManager::class)->set('ads.posting', false);
-        $this->get('/')->assertDontSee('Post an ad');
+        $this->get('/')->assertDontSee('btn-sell', false)->assertDontSee('Post an ad');
+    }
+
+    public function test_phase_2_header_icons_are_hidden_until_switched_on(): void
+    {
+        $this->get('/')->assertDontSee('Saved ads')->assertDontSee('Messages');
+
+        app(FeatureManager::class)->set('chat', true);
+        $this->get('/')->assertSee('Messages');
     }
 
     public function test_page_has_title_and_description_for_google(): void

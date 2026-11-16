@@ -25,7 +25,7 @@ class LocalizationTest extends TestCase
         $this->get('/')
             ->assertOk()
             ->assertSee('<html lang="en"', false)
-            ->assertSee('Buy and sell anything in Somalia')
+            ->assertSee('What are you looking for?')
             ->assertSee('hreflang="en"', false);
     }
 
@@ -56,7 +56,7 @@ class LocalizationTest extends TestCase
         $this->get('/so')
             ->assertOk()
             ->assertSee('<html lang="so"', false)
-            ->assertSee('Buy and sell anything in Somalia') // no Somali text yet → English
+            ->assertSee('What are you looking for?') // no Somali text yet → English
             ->assertSee('<link rel="canonical" href="'.url('/so').'">', false);
     }
 
