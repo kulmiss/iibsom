@@ -50,7 +50,7 @@ class SwitchCrawlTest extends TestCase
     /** @return list<string> */
     private function sellerUrls(): array
     {
-        return ['/', '/account', '/account/profile', '/account/ads', '/account/ads?tab=ended', "/account/ads/{$this->ad->id}/edit", '/post', '/post/cars'];
+        return ['/', '/account', '/account/profile', '/account/saved', '/account/ads', '/account/ads?tab=ended', "/account/ads/{$this->ad->id}/edit", '/post', '/post/cars'];
     }
 
     private function crawl(string $label): void

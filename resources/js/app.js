@@ -1,9 +1,11 @@
 import { initLanguageSwitch } from './language-switch';
+import { initFavourites } from './favourite';
 import { initForYou } from './for-you';
 import { initPwa } from './pwa';
 import { initTour } from './tour';
 
 initLanguageSwitch();
+initFavourites();
 initForYou();
 initPwa();
 initTour();

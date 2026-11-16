@@ -172,6 +172,17 @@ ads.mine.deleted,"Ad deleted.","Xayeysiiska waa la tirtiray.","needs native revi
 ads.mine.edit_title,"Edit ad","Wax ka beddel xayeysiiska","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
 ads.mine.save,"Save changes","Keydi isbeddelka","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
 ads.mine.edit_note,"After you save, our team checks the ad again before it is live.","Markaad keydiso kadib, kooxdayadu mar kale ayay hubin doontaa xayeysiiska ka hor inta uusan muuqan.","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
+ads.saved.title,"Saved ads","Xayeysiisyada la kaydiyey","needs native review",resources/views/account/saved.blade.php,
+ads.saved.save,Save,Kaydi,"needs native review",resources/views/ads/_save-button.blade.php,
+ads.saved.saved,Saved,"La kaydiyey","needs native review",resources/views/ads/_save-button.blade.php,
+ads.saved.save_label,"Save this ad","Kaydi xayeysiiskan","needs native review",resources/views/ads/_save-button.blade.php,
+ads.saved.unsave_label,"Remove from saved ads","Ka saar xayeysiisyada la kaydiyey","needs native review",resources/views/ads/_save-button.blade.php,
+ads.saved.added,"Saved. Find it in Saved ads.","Waa la kaydiyey. Ka hel Xayeysiisyada la kaydiyey.","needs native review",app/Http/Controllers/Account/FavouriteController.php,
+ads.saved.removed,"Removed from your saved ads.","Waa laga saaray xayeysiisyadaada la kaydiyey.","needs native review",app/Http/Controllers/Account/FavouriteController.php,
+ads.saved.full,"You can save up to :max ads. Remove some first.","Waxaad kaydin kartaa ilaa :max xayeysiis. Marka hore qaar ka saar.","needs native review",app/Http/Controllers/Account/FavouriteController.php,
+ads.saved.empty,"No saved ads yet. Tap Save on an ad to keep it here.","Weli xayeysiis lama kaydin. Riix Kaydi xayeysiis si aad halkan ugu hayso.","needs native review",resources/views/account/saved.blade.php,
+ads.saved.gone,"No longer available","Hadda lama heli karo","needs native review",resources/views/account/saved.blade.php,
+ads.saved.sign_in,"Sign in to save ads","Gal si aad xayeysiisyo u kaydiso","needs native review",resources/views/ads/_save-button.blade.php,
 pagination.previous,"&laquo; Previous","&laquo; Hore","needs native review","Next / Previous page buttons under lists",
 pagination.next,"Next &raquo;","Xiga &raquo;","needs native review","Next / Previous page buttons under lists",
 reports.reason.scam,"Scam or fraud","Khiyaano ama musuqmaasuq","needs native review","app/Http/Controllers/Admin/ReportController.php | resources/views/ads/show.blade.php",ads-show.png

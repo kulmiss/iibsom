@@ -37,6 +37,7 @@ class AdPageController extends Controller
             'sellerLiveAds' => DatabaseAdSearch::publicQuery()->where('user_id', $ad->user_id)->count(),
             'fieldRows' => $this->fieldRows($ad),
             'reported' => $request->user() !== null && Report::where('ad_id', $ad->id)->where('user_id', $request->user()->id)->exists(),
+            'saved' => feature('favourites') && $request->user() !== null && $request->user()->favourites()->whereKey($ad->id)->exists(),
         ]);
     }
 

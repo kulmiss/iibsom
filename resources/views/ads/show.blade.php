@@ -94,7 +94,12 @@
                 </section>
 
                 <section class="rounded-xl bg-white p-4 ring-1 ring-stone-200">
-                    <h1 class="text-xl font-bold sm:text-2xl">{{ $ad->title }}</h1>
+                    <div class="flex items-start justify-between gap-3">
+                        <h1 class="text-xl font-bold sm:text-2xl">{{ $ad->title }}</h1>
+                        @feature('favourites')
+                            @include('ads._save-button')
+                        @endfeature
+                    </div>
                     <p class="mt-1 text-2xl font-extrabold text-brand-800">{{ $ad->priceLabel() ?: __('ads.page.negotiable') }}</p>
                     <p class="mt-1 flex flex-wrap gap-x-3 text-sm text-stone-600">
                         <span>{{ icon('map-pin', 'inline size-4') }} {{ $ad->city->label }}@if ($ad->area), {{ $ad->area->label }}@endif</span>

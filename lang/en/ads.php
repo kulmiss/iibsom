@@ -166,4 +166,18 @@ return [
         'save' => 'Save changes',
         'edit_note' => 'After you save, our team checks the ad again before it is live.',
     ],
+
+    'saved' => [
+        'title' => 'Saved ads',
+        'save' => 'Save',
+        'saved' => 'Saved',
+        'save_label' => 'Save this ad',
+        'unsave_label' => 'Remove from saved ads',
+        'added' => 'Saved. Find it in Saved ads.',
+        'removed' => 'Removed from your saved ads.',
+        'full' => 'You can save up to :max ads. Remove some first.',
+        'empty' => 'No saved ads yet. Tap Save on an ad to keep it here.',
+        'gone' => 'No longer available',
+        'sign_in' => 'Sign in to save ads',
+    ],
 ];

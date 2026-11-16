@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Account\FavouriteController;
 use App\Http\Controllers\Account\MyAdsController;
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\AdPageController;
@@ -59,6 +60,12 @@ $publicRoutes = function () {
                 Route::post('/{ad}/sold', [MyAdsController::class, 'sold'])->whereNumber('ad')->middleware('throttle:30,1')->name('.sold');
                 Route::post('/{ad}/renew', [MyAdsController::class, 'renew'])->whereNumber('ad')->middleware('throttle:30,1')->name('.renew');
                 Route::delete('/{ad}', [MyAdsController::class, 'destroy'])->whereNumber('ad')->middleware('throttle:30,1')->name('.destroy');
+            });
+
+            // Favourites (Phase 2): saved ads.
+            Route::middleware('feature:favourites')->group(function () {
+                Route::get('/account/saved', [FavouriteController::class, 'index'])->name('saved');
+                Route::post('/favourites/{ad}', [FavouriteController::class, 'toggle'])->whereNumber('ad')->middleware('throttle:60,1')->name('favourite.toggle');
             });
 
             Route::view('/account', 'account.index')->name('account');

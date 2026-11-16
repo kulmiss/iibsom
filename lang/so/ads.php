@@ -168,4 +168,18 @@ return [
         'save' => 'Keydi isbeddelka',
         'edit_note' => 'Markaad keydiso kadib, kooxdayadu mar kale ayay hubin doontaa xayeysiiska ka hor inta uusan muuqan.',
     ],
+
+    'saved' => [
+        'title' => 'Xayeysiisyada la kaydiyey',
+        'save' => 'Kaydi',
+        'saved' => 'La kaydiyey',
+        'save_label' => 'Kaydi xayeysiiskan',
+        'unsave_label' => 'Ka saar xayeysiisyada la kaydiyey',
+        'added' => 'Waa la kaydiyey. Ka hel Xayeysiisyada la kaydiyey.',
+        'removed' => 'Waa laga saaray xayeysiisyadaada la kaydiyey.',
+        'full' => 'Waxaad kaydin kartaa ilaa :max xayeysiis. Marka hore qaar ka saar.',
+        'empty' => 'Weli xayeysiis lama kaydin. Riix Kaydi xayeysiis si aad halkan ugu hayso.',
+        'gone' => 'Hadda lama heli karo',
+        'sign_in' => 'Gal si aad xayeysiisyo u kaydiso',
+    ],
 ];
