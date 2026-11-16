@@ -97,7 +97,6 @@ return [
 
     'page' => [
         'posted' => 'La dhigay :when',
-        'location' => 'Goobta',
         'details' => 'Faahfaahin',
         'description' => 'Sharaxaad',
         'seller' => 'Iibiyaha',

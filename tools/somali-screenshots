@@ -1,0 +1,93 @@
+#!/usr/bin/env python3
+"""Phone pictures (390 px) of every page in Somali, for the Somali review sheet.
+
+    python3 tools/somali-screenshots [base-url] [out-folder]
+        base-url    default http://localhost:8095
+        out-folder  default docs/somali-review/screens
+
+Needs: a running site with demo data, Somali switched ON (admin > Settings > Languages),
+and Python Playwright (pip install playwright && playwright install chromium).
+Signed-in pages (account, my ads, post an ad) are taken only when IIBSOM_COOKIE holds
+a signed-in session cookie as "name=value" (copy it from your browser on a test site).
+Each picture is named after its page file, e.g. account/my-ads -> account-my-ads.png,
+so `php artisan iibsom:translations:export so --screens=<out-folder>` can link them.
+"""
+import os
+import re
+import sys
+
+from playwright.sync_api import sync_playwright
+
+BASE = (sys.argv[1] if len(sys.argv) > 1 else 'http://localhost:8095').rstrip('/')
+OUT = sys.argv[2] if len(sys.argv) > 2 else 'docs/somali-review/screens'
+
+GUEST_PAGES = {
+    'home': '/so',
+    'browse-index': '/so/cars',
+    'pages-about': '/so/about',
+    'pages-safety': '/so/safety',
+    'pages-terms': '/so/terms',
+    'pages-privacy': '/so/privacy',
+    'auth-login': '/so/login',
+    'errors-404': '/so/this-page-does-not-exist',
+}
+SIGNED_IN_PAGES = {
+    'account-index': '/so/account',
+    'account-my-ads': '/so/account/ads',
+    'account-profile-form': '/so/account/profile',
+    'ads-post-choose': '/so/post',
+    'ads-post-form': '/so/post/{post_category}',
+}
+
+
+def shoot(page, name, path):
+    page.goto(BASE + path, wait_until='networkidle')
+    # A full-page picture would draw bars stuck to the screen bottom (menu, "post" button)
+    # in the middle of the page; put them at the end instead so no text is hidden.
+    page.evaluate("""() => document.querySelectorAll('body *').forEach(el => {
+        const s = getComputedStyle(el);
+        if ((s.position === 'fixed' || s.position === 'sticky') && s.bottom !== 'auto') el.style.position = 'static';
+    })""")
+    page.screenshot(path=os.path.join(OUT, name + '.png'), full_page=True)
+    print(f'  {name}.png  <- {path}')
+
+
+def main():
+    os.makedirs(OUT, exist_ok=True)
+    with sync_playwright() as p:
+        browser = p.chromium.launch(executable_path=os.environ.get('CHROME') or None)
+        ctx = browser.new_context(viewport={'width': 390, 'height': 844}, is_mobile=True, device_scale_factor=1)
+        page = ctx.new_page()
+        if page.goto(BASE + '/so').status != 200:
+            sys.exit('Somali is OFF on this site: switch it on in admin > Settings > Languages.')
+
+        for name, path in GUEST_PAGES.items():
+            shoot(page, name, path)
+
+        # The first ad on the cars page.
+        page.goto(BASE + '/so/cars', wait_until='networkidle')
+        ad = page.locator('a[href*="/so/cars/"]').filter(has=page.locator('img')).first
+        if ad.count():
+            href = ad.get_attribute('href') or ''
+            shoot(page, 'ads-show', re.sub(r'^https?://[^/]+', '', href))
+
+        cookie = os.environ.get('IIBSOM_COOKIE', '')
+        if '=' not in cookie:
+            print('IIBSOM_COOKIE not set: signed-in pages skipped.')
+        else:
+            name, value = cookie.split('=', 1)
+            ctx.add_cookies([{'name': name, 'value': value, 'url': BASE}])
+            page.goto(BASE + '/so/post', wait_until='networkidle')
+            link = page.locator('a[href*="/so/post/"]').first
+            category = (link.get_attribute('href') or '').rsplit('/', 1)[-1] if link.count() else ''
+            for pname, path in SIGNED_IN_PAGES.items():
+                if '{post_category}' in path:
+                    if not category:
+                        continue
+                    path = path.replace('{post_category}', category)
+                shoot(page, pname, path)
+        browser.close()
+
+
+if __name__ == '__main__':
+    main()

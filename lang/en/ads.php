@@ -95,7 +95,6 @@ return [
 
     'page' => [
         'posted' => 'Posted :when',
-        'location' => 'Location',
         'details' => 'Details',
         'description' => 'Description',
         'seller' => 'Seller',

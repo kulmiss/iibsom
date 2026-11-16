@@ -6,7 +6,6 @@
 // lang/so/_reviewed.php. Export a review sheet: php artisan iibsom:translations:export so
 
 return [
-    'tagline' => 'Ka iibso oo iibi wax kasta Soomaaliya',
     'meta_description' => 'Ka iibso oo iibi baabuur, guryo, dhul, taleefanno, xoolo, adeegyo iyo shaqooyin Soomaaliya. Bilaash oo fudud.',
 
     'nav' => [
@@ -19,8 +18,6 @@ return [
         'my_account' => 'Akoonkayga',
         'profile' => 'Akoon',
         'sign_in' => 'Gal',
-        'menu' => 'Liiska',
-        'close_menu' => 'Xir liiska',
         'language' => 'Luqadda',
         'skip_to_content' => 'U gudub nuxurka',
     ],
@@ -28,7 +25,6 @@ return [
     'home' => [
         'title' => 'Ka iibso oo iibi Soomaaliya',
         'heading' => 'Maxaad raadinaysaa?',
-        'intro' => 'Baabuur, guryo, dhul, taleefanno, xoolo, adeegyo iyo shaqooyin. Hal meel.',
         'search_placeholder' => 'Waxaan raadinayaa...',
         'search_button' => 'Raadi',
         'location_label' => 'Goobta',
@@ -57,7 +53,6 @@ return [
         'terms' => 'Shuruudaha',
         'privacy' => 'Qarsoodiga',
         'safety' => 'Talooyin ammaan',
-        'contact' => 'Nala soo xiriir',
         'rights' => 'Xuquuqda oo dhan way dhowran tahay.',
     ],
 

@@ -4,7 +4,6 @@
 // Somali goes in lang/so/site.php with the same keys.
 
 return [
-    'tagline' => 'Buy and sell anything in Somalia',
     'meta_description' => 'Buy and sell cars, houses, land, phones, livestock, services and jobs in Somalia. Free and easy.',
 
     'nav' => [
@@ -17,8 +16,6 @@ return [
         'my_account' => 'My account',
         'profile' => 'Profile',
         'sign_in' => 'Sign in',
-        'menu' => 'Menu',
-        'close_menu' => 'Close menu',
         'language' => 'Language',
         'skip_to_content' => 'Skip to content',
     ],
@@ -26,7 +23,6 @@ return [
     'home' => [
         'title' => 'Buy and sell in Somalia',
         'heading' => 'What are you looking for?',
-        'intro' => 'Cars, houses, land, phones, livestock, services and jobs. All in one place.',
         'search_placeholder' => 'I am looking for...',
         'search_button' => 'Search',
         'location_label' => 'Location',
@@ -55,7 +51,6 @@ return [
         'terms' => 'Terms',
         'privacy' => 'Privacy',
         'safety' => 'Safety tips',
-        'contact' => 'Contact',
         'rights' => 'All rights reserved.',
     ],
 

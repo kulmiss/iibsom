@@ -11,7 +11,7 @@ Tick `[x]` with the date when done.
 - [ ] Point iibsom.com DNS to Cloudflare; SSL "Full (strict)"; set `TRUSTED_PROXIES=*` in `.env`
 - [ ] Hosting panel: turn off or shorten web server access logs (they keep visitor IPs)
 - [ ] Live `.env`: `APP_ENV=production`, `APP_DEBUG=false`
-- [ ] Native Somali speaker reviews the translation CSV (`php artisan iibsom:translations:export so`)
+- [ ] Native Somali speaker reviews `docs/somali-review/somali-texts.csv` (pictures in `docs/somali-review/screens`; how-to in its README)
 - [ ] Check and approve the **draft** Terms and Privacy text (admin → Pages); add Somali versions
 - [ ] Add Somali bad words to admin → Settings → General → Bad words
 - [ ] Delete all demo data before launch (admin → Settings → Delete all demo data)
