@@ -167,6 +167,10 @@ class HealthChecker
 
     private function cronHint(): string
     {
+        if (PHP_OS_FAMILY === 'Windows') {
+            return 'On your PC: run "php artisan schedule:work" in a second window and keep it open.';
+        }
+
         return 'Add this cron job (every minute): cd '.base_path().' && php artisan schedule:run >> /dev/null 2>&1';
     }
 

@@ -40,14 +40,13 @@ return [
     'site.demo_data' => ['group' => 'Site', 'default' => false, 'label' => 'Show demo data', 'description' => 'Show the demo ads. Never ON in production.'],
 
     // Phase 2: money + trust (build only when the owner says)
-    'boosts' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Paid boosts', 'description' => 'Top / VIP / Diamond ads.'],
-    'payments' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Payments', 'description' => 'EVC Plus, Zaad, Sahal, eDahab.'],
+    'boosts' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Boosts', 'description' => 'Top / VIP / Diamond ads. Paid outside the site; an admin turns them on.'],
     'verified_badge' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Verified badge', 'description' => 'Sellers verified by phone + ID.'],
-    'shops' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Business shop pages', 'description' => 'Shop pages with monthly plans.'],
+    'shops' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Business shop pages', 'description' => 'Shop pages with monthly plans, activated by an admin.'],
     'chat' => ['group' => 'Phase 2', 'default' => false, 'label' => 'In-app chat', 'description' => 'Buyers and sellers chat inside the site.'],
     'favourites' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Favourites', 'description' => 'Save ads to a list.'],
     'saved_searches' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Saved search alerts', 'description' => 'Get alerts for new matching ads.'],
-    'banner_ads' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Banner ads', 'description' => 'Paid banner ads for businesses.'],
+    'banner_ads' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Banner ads', 'description' => 'Banner ads for businesses, activated by an admin.'],
     'ad_stats' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Ad stats', 'description' => 'Views, calls and WhatsApp clicks per ad.'],
 
     // Phase 3: growth

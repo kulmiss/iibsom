@@ -13,5 +13,8 @@ abstract class TestCase extends BaseTestCase
 
         // Redis/database caches live outside the test transaction, so start every test clean.
         Cache::flush();
+
+        // Pages render without a built front-end (npm run build) in tests.
+        $this->withoutVite();
     }
 }

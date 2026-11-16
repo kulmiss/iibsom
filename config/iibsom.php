@@ -15,8 +15,20 @@ return [
     // The scheduler writes a heartbeat; older than this = "not running".
     'heartbeat_max_age' => 180,
 
+    /*
+    | Languages the site knows. The default language has no URL prefix;
+    | others use /{code}/... Which ones are ON is a setting (languages.enabled).
+    | Add a language: add it here + create lang/{code}/ files.
+    */
+    'default_locale' => 'en',
+    'locales' => [
+        'en' => ['name' => 'English', 'native' => 'English', 'dir' => 'ltr'],
+        'so' => ['name' => 'Somali', 'native' => 'Soomaali', 'dir' => 'ltr'],
+    ],
+
     // Default values for settings the Super Admin can change.
     'settings' => [
+        'languages.enabled' => ['en'],
         'ads.expiry_days' => 60,
         'ads.max_per_day' => 5,
         'ads.max_photos' => 8,
