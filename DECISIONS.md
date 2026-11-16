@@ -18,6 +18,7 @@ Every question, the owner's answer, and the date. Newest at the bottom.
 | 11 | 2026-11-16 | Which cities ON at launch? | **Only Mogadishu ON.** All other Somalia cities exist but are OFF; admin can switch each on. Somaliland cities not added. |
 | 12 | 2026-11-16 | Domain? | Owner **already owns iibsom.com** (currently on shared hosting). Site itself will run on VPS + Cloudflare. |
 | 13 | 2026-11-16 | VPS or shared hosting? | **Both.** Same code; a hosting mode in `.env` (`IIBSOM_HOSTING=vps` or `shared`) switches the fallbacks. Deploy guides for both, tests in both modes, admin health page. Replaces the earlier "NOT shared hosting" line. |
+| 14 | 2026-11-16 | Payments? | **No payments through the system** (site like jiji.com). Paid extras (boosts, shop plans, banner ads) are paid to the owner outside the site (EVC/Zaad etc.); an **admin activates** them in the admin panel. No payment code. |
 
 ## Open questions (must be answered before going live)
 
@@ -38,4 +39,7 @@ Every question, the owner's answer, and the date. Newest at the bottom.
 | 2026-11-16 | Shared hosting mode defaults: database for cache/sessions/queue, cron runs the queue every minute (`--stop-when-empty`), GD for images if Imagick is missing, database search only. |
 | 2026-11-16 | Feature switches: every feature has a key in `config/features.php` with a default; Super Admin changes are stored in the database. Phase 2/3 features default OFF. OFF = 404 on its routes. |
 | 2026-11-16 | Repo is public for one day (2026-11-16) for CI testing; owner makes it private on 2026-11-17. |
+| 2026-11-16 | System fonts only (no web fonts): faster on slow 3G, nothing extra to download. |
+| 2026-11-16 | URLs: default language (English) has no prefix; other languages get a prefix (`/so/...`). Choice saved in a cookie; the page swaps language in place without a reload. |
+| 2026-11-16 | Logo text is lowercase "iibsom" (with a capital I it looks like "libsom"). Brand colours: Somali-flag blue + warm yellow. |
 | 2026-11-16 | Language switch without reload: page HTML is fetched for the new language in the background and swapped in; the chosen language is saved in a cookie. Each language keeps its own cached pages and URL prefix for SEO. |

@@ -4,12 +4,12 @@
 Google sign-in, post an ad, browse + search, ad page, My Ads, safety (reports, approval of every ad, filters, limits, bans), Super Admin (shadcn), feature switches, English with instant language switch (Somali-ready), SEO + speed, scale-ready base (R2, queues, search interface, /api/v1), demo data, docs. Runs on **both VPS and shared hosting** (decision #13).
 
 ## Phase 2 — Money + trust (build only when owner says)
-- Paid boosts (Top / VIP / Diamond) via EVC Plus, Zaad, Sahal, eDahab
+- Boosts (Top / VIP / Diamond): seller pays the owner outside the site; **admin activates** (no payment code, decision #14)
 - Verified badge (phone + ID)
-- Business shop pages with monthly plans
+- Business shop pages with monthly plans (activated by admin)
 - In-app chat
 - Favourites + saved-search alerts
-- Banner ads
+- Banner ads (activated by admin)
 - Ad stats (views, calls, WhatsApp clicks)
 
 ## Phase 3 — Growth (build only when owner says)

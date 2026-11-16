@@ -18,3 +18,17 @@ if (! function_exists('setting')) {
         return app(SettingsManager::class)->get($key, $fallback);
     }
 }
+
+if (! function_exists('lroute')) {
+    /** Link to a public page in the current language (adds /so/ when needed). */
+    function lroute(string $name, array $parameters = [], bool $absolute = true): string
+    {
+        $locale = app()->getLocale();
+
+        if ($locale === config('iibsom.default_locale')) {
+            return route($name, $parameters, $absolute);
+        }
+
+        return route('loc.'.$name, ['locale' => $locale] + $parameters, $absolute);
+    }
+}
