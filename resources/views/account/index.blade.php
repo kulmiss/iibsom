@@ -28,6 +28,20 @@
                     </a>
                 </li>
             @endfeature
+            @feature('favourites')
+                <li>
+                    <a href="{{ lroute('saved') }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50">
+                        {{ icon('bookmark', 'size-5 text-brand-700') }}<span class="flex-1">{{ __('ads.saved.title') }}</span>{{ icon('chevron-right', 'size-4 text-stone-400') }}
+                    </a>
+                </li>
+            @endfeature
+            @feature('saved_searches')
+                <li>
+                    <a href="{{ lroute('searches') }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50">
+                        {{ icon('bell', 'size-5 text-brand-700') }}<span class="flex-1">{{ __('account.account.searches') }}</span>{{ icon('chevron-right', 'size-4 text-stone-400') }}
+                    </a>
+                </li>
+            @endfeature
             @feature('site.welcome_tour')
                 <li>
                     <a href="{{ lroute('account', ['tour' => 1]) }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50">

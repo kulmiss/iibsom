@@ -47,8 +47,15 @@
                 @endforeach
             </ol>
         </nav>
-        <h1 class="mt-1 text-2xl font-bold">{{ $title }}</h1>
-        <p class="text-sm text-stone-600">{{ trans_choice('ads.browse.results', $results->total(), ['count' => number_format($results->total())]) }}</p>
+        <div class="flex flex-wrap items-end justify-between gap-2">
+            <div>
+                <h1 class="mt-1 text-2xl font-bold">{{ $title }}</h1>
+                <p class="text-sm text-stone-600">{{ trans_choice('ads.browse.results', $results->total(), ['count' => number_format($results->total())]) }}</p>
+            </div>
+            @feature('saved_searches')
+                @include('browse._save-search')
+            @endfeature
+        </div>
 
         {{-- Links Google (and people) can follow: popular brands here, the same category in other cities. --}}
         @if ($brandLinks)

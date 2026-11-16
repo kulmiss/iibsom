@@ -94,6 +94,12 @@ class User extends Authenticatable
         return $this->belongsToMany(Ad::class, 'favourites')->withTimestamps();
     }
 
+    /** @return HasMany<SavedSearch, $this> */
+    public function savedSearches(): HasMany
+    {
+        return $this->hasMany(SavedSearch::class);
+    }
+
     public function isBanned(): bool
     {
         return $this->banned_at !== null;

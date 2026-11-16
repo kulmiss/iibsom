@@ -180,4 +180,21 @@ return [
         'gone' => 'No longer available',
         'sign_in' => 'Sign in to save ads',
     ],
+
+    'searches' => [
+        'title' => 'Saved searches',
+        'save' => 'Save this search',
+        'sign_in' => 'Sign in to save this search',
+        'intro' => 'We email you once a day when new ads match one of these searches.',
+        'saved' => 'Search saved. We will email you when new ads match it.',
+        'already' => 'You already saved this search.',
+        'full' => 'You can save up to :max searches. Delete one first.',
+        'too_wide' => 'Choose a category or type a word first, then save the search.',
+        'deleted' => 'Search deleted. No more emails for it.',
+        'delete' => 'Delete',
+        'delete_confirm' => 'Delete this saved search? You will get no more emails for it.',
+        'open' => 'See ads',
+        'empty' => 'No saved searches yet. On a list of ads, tap "Save this search".',
+        'last_sent' => 'Last email: :date',
+    ],
 ];

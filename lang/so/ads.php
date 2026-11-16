@@ -182,4 +182,21 @@ return [
         'gone' => 'Hadda lama heli karo',
         'sign_in' => 'Gal si aad xayeysiisyo u kaydiso',
     ],
+
+    'searches' => [
+        'title' => 'Raadintayada la kaydiyey',
+        'save' => 'Kaydi raadintan',
+        'sign_in' => 'Gal si aad raadintan u kaydiso',
+        'intro' => 'Maalintii hal mar ayaan kuu soo diraynaa iimayl marka xayeysiisyo cusub ay la mid noqdaan raadintan mid ka mid ah.',
+        'saved' => 'Raadinta waa la kaydiyey. Iimayl ayaan kuu soo diri doonnaa marka xayeysiisyo cusub la helo.',
+        'already' => 'Raadintan horay ayaad u kaydisay.',
+        'full' => 'Waxaad kaydin kartaa ilaa :max raadin. Marka hore mid tirtir.',
+        'too_wide' => 'Marka hore dooro qayb ama qor eray, kadib kaydi raadinta.',
+        'deleted' => 'Raadinta waa la tirtiray. Iimayl dambe looma soo diri doono.',
+        'delete' => 'Tirtir',
+        'delete_confirm' => 'Ma tirtirtaa raadintan la kaydiyey? Iimayl dambe ma heli doontid.',
+        'open' => 'Arag xayeysiisyada',
+        'empty' => 'Weli raadin lama kaydin. Liiska xayeysiisyada, riix "Kaydi raadintan".',
+        'last_sent' => 'Iimaylkii ugu dambeeyey: :date',
+    ],
 ];

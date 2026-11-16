@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\City;
 use App\Search\AdSearch;
+use App\Search\SearchCriteria;
 use App\Search\SearchRequest;
 use App\Support\Catalog;
 use App\Support\Seo\Landing;
@@ -74,12 +75,7 @@ class BrowseController extends Controller
         }
 
         // A main category shows the ads of all its live sub categories.
-        $categoryIds = null;
-        if ($category) {
-            $categoryIds = $category->parent_id === null
-                ? SearchRequest::ids($category->children()->where('enabled', true)->pluck('id'))
-                : [$category->id];
-        }
+        $categoryIds = SearchCriteria::categoryIds($category);
 
         // Only filters the category really has (and that are marked "filterable").
         $fields = $category && $category->parent_id ? $category->allFields()->where('filterable', true)->values() : collect();

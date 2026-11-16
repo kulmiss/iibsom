@@ -33,6 +33,10 @@ class DatabaseAdSearch implements AdSearch
         if (! empty($filters['condition'])) {
             $query->where('condition', $filters['condition']);
         }
+        // Saved-search alerts: only ads published since the last check.
+        if (($filters['published_after'] ?? null) instanceof \DateTimeInterface) {
+            $query->where('ads.published_at', '>', $filters['published_after']);
+        }
         foreach ($filters['fields'] ?? [] as $key => $value) {
             $this->field($query, $key, $value);
         }

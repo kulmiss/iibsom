@@ -59,3 +59,7 @@ Artisan::command('iibsom:health', function (HealthChecker $health) {
 
     return $health->healthy() ? 0 : 1;
 })->purpose('Check what works on this server (database, cache, cron, queue, storage, images)');
+
+// Saved-search alerts (Phase 2, switch "saved_searches"): new matching ads, once a day.
+Schedule::command('iibsom:saved-search-alerts')->name('saved-search-alerts')
+    ->dailyAt('08:00')->timezone('Africa/Mogadishu')->withoutOverlapping();

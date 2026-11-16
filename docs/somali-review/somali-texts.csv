@@ -20,6 +20,7 @@ account.account.title,"My account",Akoonkayga,"needs native review",resources/vi
 account.account.edit_profile,"Edit profile","Wax ka beddel akoonka","needs native review",resources/views/account/index.blade.php,account-index.png
 account.account.help,Help,Caawimaad,"needs native review",resources/views/account/index.blade.php,account-index.png
 account.account.tour,"Quick tour","Socod gaaban","needs native review",resources/views/account/index.blade.php,account-index.png
+account.account.searches,"Saved searches","Raadintayada la kaydiyey","needs native review",resources/views/account/index.blade.php,account-index.png
 account.account.my_ads,"My ads",Xayeysiisyadayda,"needs native review",resources/views/account/index.blade.php,account-index.png
 account.account.member_since,"Member since :date","Xubin tan iyo :date","needs native review",resources/views/account/index.blade.php,account-index.png
 account.account.logout,"Log out","Ka bax","needs native review",resources/views/account/index.blade.php,account-index.png
@@ -172,7 +173,7 @@ ads.mine.deleted,"Ad deleted.","Xayeysiiska waa la tirtiray.","needs native revi
 ads.mine.edit_title,"Edit ad","Wax ka beddel xayeysiiska","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
 ads.mine.save,"Save changes","Keydi isbeddelka","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
 ads.mine.edit_note,"After you save, our team checks the ad again before it is live.","Markaad keydiso kadib, kooxdayadu mar kale ayay hubin doontaa xayeysiiska ka hor inta uusan muuqan.","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
-ads.saved.title,"Saved ads","Xayeysiisyada la kaydiyey","needs native review",resources/views/account/saved.blade.php,
+ads.saved.title,"Saved ads","Xayeysiisyada la kaydiyey","needs native review","resources/views/account/index.blade.php | resources/views/account/saved.blade.php",account-index.png
 ads.saved.save,Save,Kaydi,"needs native review",resources/views/ads/_save-button.blade.php,
 ads.saved.saved,Saved,"La kaydiyey","needs native review",resources/views/ads/_save-button.blade.php,
 ads.saved.save_label,"Save this ad","Kaydi xayeysiiskan","needs native review",resources/views/ads/_save-button.blade.php,
@@ -183,6 +184,20 @@ ads.saved.full,"You can save up to :max ads. Remove some first.","Waxaad kaydin 
 ads.saved.empty,"No saved ads yet. Tap Save on an ad to keep it here.","Weli xayeysiis lama kaydin. Riix Kaydi xayeysiis si aad halkan ugu hayso.","needs native review",resources/views/account/saved.blade.php,
 ads.saved.gone,"No longer available","Hadda lama heli karo","needs native review",resources/views/account/saved.blade.php,
 ads.saved.sign_in,"Sign in to save ads","Gal si aad xayeysiisyo u kaydiso","needs native review",resources/views/ads/_save-button.blade.php,
+ads.searches.title,"Saved searches","Raadintayada la kaydiyey","needs native review",resources/views/account/searches.blade.php,
+ads.searches.save,"Save this search","Kaydi raadintan","needs native review",resources/views/browse/_save-search.blade.php,
+ads.searches.sign_in,"Sign in to save this search","Gal si aad raadintan u kaydiso","needs native review",resources/views/browse/_save-search.blade.php,
+ads.searches.intro,"We email you once a day when new ads match one of these searches.","Maalintii hal mar ayaan kuu soo diraynaa iimayl marka xayeysiisyo cusub ay la mid noqdaan raadintan mid ka mid ah.","needs native review",resources/views/account/searches.blade.php,
+ads.searches.saved,"Search saved. We will email you when new ads match it.","Raadinta waa la kaydiyey. Iimayl ayaan kuu soo diri doonnaa marka xayeysiisyo cusub la helo.","needs native review",app/Http/Controllers/Account/SavedSearchController.php,
+ads.searches.already,"You already saved this search.","Raadintan horay ayaad u kaydisay.","needs native review",app/Http/Controllers/Account/SavedSearchController.php,
+ads.searches.full,"You can save up to :max searches. Delete one first.","Waxaad kaydin kartaa ilaa :max raadin. Marka hore mid tirtir.","needs native review",app/Http/Controllers/Account/SavedSearchController.php,
+ads.searches.too_wide,"Choose a category or type a word first, then save the search.","Marka hore dooro qayb ama qor eray, kadib kaydi raadinta.","needs native review",app/Http/Controllers/Account/SavedSearchController.php,
+ads.searches.deleted,"Search deleted. No more emails for it.","Raadinta waa la tirtiray. Iimayl dambe looma soo diri doono.","needs native review",app/Http/Controllers/Account/SavedSearchController.php,
+ads.searches.delete,Delete,Tirtir,"needs native review",resources/views/account/searches.blade.php,
+ads.searches.delete_confirm,"Delete this saved search? You will get no more emails for it.","Ma tirtirtaa raadintan la kaydiyey? Iimayl dambe ma heli doontid.","needs native review",resources/views/account/searches.blade.php,
+ads.searches.open,"See ads","Arag xayeysiisyada","needs native review",resources/views/account/searches.blade.php,
+ads.searches.empty,"No saved searches yet. On a list of ads, tap ""Save this search"".","Weli raadin lama kaydin. Liiska xayeysiisyada, riix ""Kaydi raadintan"".","needs native review",resources/views/account/searches.blade.php,
+ads.searches.last_sent,"Last email: :date","Iimaylkii ugu dambeeyey: :date","needs native review",resources/views/account/searches.blade.php,
 pagination.previous,"&laquo; Previous","&laquo; Hore","needs native review","Next / Previous page buttons under lists",
 pagination.next,"Next &raquo;","Xiga &raquo;","needs native review","Next / Previous page buttons under lists",
 reports.reason.scam,"Scam or fraud","Khiyaano ama musuqmaasuq","needs native review","app/Http/Controllers/Admin/ReportController.php | resources/views/ads/show.blade.php",ads-show.png

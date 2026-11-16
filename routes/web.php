@@ -3,6 +3,7 @@
 use App\Http\Controllers\Account\FavouriteController;
 use App\Http\Controllers\Account\MyAdsController;
 use App\Http\Controllers\Account\ProfileController;
+use App\Http\Controllers\Account\SavedSearchController;
 use App\Http\Controllers\AdPageController;
 use App\Http\Controllers\Ads\AdPhotoController;
 use App\Http\Controllers\Ads\PostAdController;
@@ -66,6 +67,13 @@ $publicRoutes = function () {
             Route::middleware('feature:favourites')->group(function () {
                 Route::get('/account/saved', [FavouriteController::class, 'index'])->name('saved');
                 Route::post('/favourites/{ad}', [FavouriteController::class, 'toggle'])->whereNumber('ad')->middleware('throttle:60,1')->name('favourite.toggle');
+            });
+
+            // Saved searches + daily alerts (Phase 2).
+            Route::middleware('feature:saved_searches')->group(function () {
+                Route::get('/account/searches', [SavedSearchController::class, 'index'])->name('searches');
+                Route::post('/account/searches', [SavedSearchController::class, 'store'])->middleware('throttle:20,1')->name('searches.store');
+                Route::delete('/account/searches/{search}', [SavedSearchController::class, 'destroy'])->whereNumber('search')->middleware('throttle:30,1')->name('searches.destroy');
             });
 
             Route::view('/account', 'account.index')->name('account');

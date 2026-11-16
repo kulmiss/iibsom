@@ -34,6 +34,7 @@ return [
         'edit_profile' => 'Wax ka beddel akoonka',
         'help' => 'Caawimaad',
         'tour' => 'Socod gaaban',
+        'searches' => 'Raadintayada la kaydiyey',
         'my_ads' => 'Xayeysiisyadayda',
         'member_since' => 'Xubin tan iyo :date',
         'logout' => 'Ka bax',
