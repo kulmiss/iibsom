@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\AdStatus;
 use App\Support\Ads\AdCounters;
+use App\Support\Cache\PageCache;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -36,6 +37,8 @@ class Ad extends Model
     protected static function booted(): void
     {
         // Live-ad counters on categories and cities follow every change.
+        static::saved(fn () => PageCache::bump());
+        static::deleted(fn () => PageCache::bump());
         static::saved(function (Ad $ad) {
             if ($ad->wasChanged(['status', 'category_id', 'city_id', 'expires_at', 'is_demo']) || $ad->wasRecentlyCreated) {
                 AdCounters::refreshFor($ad);

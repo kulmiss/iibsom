@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Cache\PageCache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
@@ -13,6 +14,12 @@ class Page extends Model
     protected $fillable = ['slug', 'title', 'body', 'enabled'];
 
     protected $casts = ['title' => 'array', 'body' => 'array', 'enabled' => 'boolean'];
+
+    protected static function booted(): void
+    {
+        static::saved(fn () => PageCache::bump());
+        static::deleted(fn () => PageCache::bump());
+    }
 
     public function titleText(): string
     {

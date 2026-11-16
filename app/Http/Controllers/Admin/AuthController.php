@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Support\Admin\Activity;
+use App\Support\Privacy\Ip;
 use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 use BaconQrCode\Renderer\ImageRenderer;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
@@ -30,7 +31,7 @@ class AuthController extends Controller
     public function login(Request $request): JsonResponse
     {
         $data = $request->validate(['email' => ['required', 'email'], 'password' => ['required', 'string']]);
-        $key = 'admin-login:'.Str::lower($data['email']).'|'.$request->ip();
+        $key = 'admin-login:'.hash('sha256', Str::lower($data['email'])).'|'.Ip::key($request);
 
         if (RateLimiter::tooManyAttempts($key, 5)) {
             throw ValidationException::withMessages(['email' => 'Too many tries. Wait '.RateLimiter::availableIn($key).' seconds.']);

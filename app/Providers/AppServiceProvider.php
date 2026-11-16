@@ -9,11 +9,13 @@ use App\Models\City;
 use App\Models\Region;
 use App\Search\AdSearch;
 use App\Search\DatabaseAdSearch;
+use App\Session\PrivateDatabaseSessionHandler;
 use App\Support\Catalog;
 use App\Support\Features\FeatureManager;
 use App\Support\Health\HealthChecker;
 use App\Support\Settings\SettingsManager;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -31,6 +33,14 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        // Sessions in the database never keep the IP of visitors who are not signed in.
+        Session::extend('database', fn ($app) => new PrivateDatabaseSessionHandler(
+            $app['db']->connection($app['config']['session.connection']),
+            $app['config']['session.table'],
+            $app['config']['session.lifetime'],
+            $app,
+        ));
+
         // @feature('contact.whatsapp') ... @endfeature
         Blade::if('feature', fn (string $key) => app(FeatureManager::class)->enabled($key));
 

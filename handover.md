@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-16 (PR 17)_
+_Last updated: 2026-11-16 (PR 18)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -19,6 +19,7 @@ _Last updated: 2026-11-16 (PR 17)_
 - **PR 15 (Recommended for you):** `for-you.js` remembers viewed ads/categories in localStorage only; home asks `/for-you?c[]=&v[]=` (validated, nothing stored) and shows "Recommended for you" + "Recently viewed"; clear button; switch `recommendations`. Language swap fires `page:swapped`.
 - **PR 16 (demo data):** `php artisan iib:demo-reset` (refuses in production) → `DemoSeeder`: 324 ads, 64 users, 18 reports, 2 demo staff with 2FA, 110 days of history, real free-licence photos from `database/demo/photos` (`tools/download-demo-photos`, CREDITS.md). `DemoData::deleteAll()` used by admin. Guide: docs/demo-data.md.
 - **PR 17 (Somali):** all site texts in Somali (`lang/so`: site, account, ads, reports, validation, pagination), Somali names for categories/fields/places (`database/seeders/data/somali.php`) and the 4 pages. Seeders only add missing languages (admin edits are safe). Somali stays OFF until a native speaker checks it. Test fails if a new English text has no Somali text.
+- **PR 18 (speed + security):** `GuestPages` middleware (guest pages: no session saved, no cookies, `Cache-Control: public`), server page cache (switch `performance.page_cache`, cleared on every change, fresh CSP nonce), `PrivateDatabaseSessionHandler` (no guest IP), HMAC-IP rate limits, read-only `/api/v1` (switch `api`), switch-crawl test, query budgets, secure-cookie default, `TRUSTED_PROXIES`. Docs: performance.md, security.md.
 - Nothing is deployed yet.
 - Owner runs locally with **Laragon** on Windows (see docs/local-setup.md → A).
 
@@ -50,12 +51,11 @@ See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example 
 14. **PR 14:** My Ads + safety
 15. **PR 15:** "Recommended for you"
 16. **PR 16:** Demo data with real photos
-17. **PR 17:** Somali translations (this one)
-18. Speed + security check (page cache, cookie-free guest pages, `/api/v1`, switch crawl test)
+17. **PR 17:** Somali translations
+18. **PR 18:** Speed + security check (this one)
 19. Docs: deploy guides (shared + VPS), Cloudflare R2, scaling
 
 ## Known notes
-- Public pages currently set an XSRF/session cookie; the page-cache PR must make guest pages cookie-free so Cloudflare can cache them.
 - The local PHP Docker image could not be built inside Claude's sandbox (the Alpine package site is blocked there). CI builds it on GitHub to prove it works.
 
 ## Before going live (open questions in DECISIONS.md)

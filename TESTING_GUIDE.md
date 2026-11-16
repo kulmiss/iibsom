@@ -180,3 +180,12 @@ First add your Google keys: see docs/google-signin.md.
 | 3 | Tap **Soomaali** | Page changes to Somali without reloading; URL starts with /so |
 | 4 | Look at categories, ad page, post form, My ads, errors | All in Somali |
 | 5 | `php artisan iibsom:translations:export so` | CSV for a native speaker to check |
+
+## Manual (PR 18: speed + security)
+| # | Do this | Expected |
+|---|---------|----------|
+| 1 | Private window → open the home page twice → dev tools → Network → the page | 2nd time: header `X-Page-Cache: HIT`; no cookies |
+| 2 | Approve an ad in the admin, reload the home page | The new ad shows at once (cache cleared) |
+| 3 | Sign in, open the home page | No `X-Page-Cache` header (signed-in pages are never shared) |
+| 4 | http://localhost:8095/api/v1/ads and /api/v1/ads/1 | JSON, no phone numbers |
+| 5 | Admin → Feature switches → Public API OFF | /api/v1/... answers 404 |

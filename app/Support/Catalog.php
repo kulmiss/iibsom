@@ -4,6 +4,7 @@ namespace App\Support;
 
 use App\Models\Category;
 use App\Models\City;
+use App\Support\Cache\PageCache;
 use Illuminate\Contracts\Cache\Repository as Cache;
 
 /**
@@ -68,6 +69,7 @@ class Catalog
     {
         $this->cache->forget(self::CATEGORIES_KEY);
         $this->cache->forget(self::CITIES_KEY);
+        PageCache::bump();
     }
 
     private function categoryRow(Category $c): array

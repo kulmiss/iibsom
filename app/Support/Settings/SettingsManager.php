@@ -2,6 +2,7 @@
 
 namespace App\Support\Settings;
 
+use App\Support\Cache\PageCache;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
@@ -64,6 +65,7 @@ class SettingsManager
 
     public function flush(): void
     {
+        PageCache::bump();
         $this->cache->forget(self::CACHE_KEY);
         $this->resolved = null;
     }

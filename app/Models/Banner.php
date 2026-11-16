@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Cache\PageCache;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
@@ -15,7 +16,10 @@ class Banner extends Model
 
     protected static function booted(): void
     {
-        $forget = fn () => Cache::forget('iibsom.home.banners');
+        $forget = function () {
+            Cache::forget('iibsom.home.banners');
+            PageCache::bump();
+        };
         static::saved($forget);
         static::deleted($forget);
     }

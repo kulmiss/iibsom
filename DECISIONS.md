@@ -60,3 +60,7 @@ Every question, the owner's answer, and the date. Newest at the bottom.
 | 2026-11-16 | Demo data: 324 ads, 64 users, 18 reports, 2 demo staff (moderator + support) with 2FA; same result every run (fixed seed). "Delete all demo data" now also removes demo staff (never the person deleting). Each photo is resized once and shared by the ads that use it. |
 | 2026-11-16 | Somali texts written by Claude for every screen, catalogue and page; marked "needs native review". Somali stays OFF (decision #10) until the owner turns it on after review. Admin panel stays English (staff only). A test makes sure every new English text also gets a Somali text. |
 | 2026-11-16 | Seeders now only ADD missing names/languages; they never overwrite names an admin edited (before, they reset names to English). |
+| 2026-11-16 | Guest pages (home, category, search, ad, pages) send no cookies and save no session; server page cache 2 min for clean URLs only (filters/search queries are not kept), cleared on any change. Switch `performance.page_cache` ON. |
+| 2026-11-16 | Rate limits for guests use HMAC(APP_KEY, IP), never the IP; database sessions keep IP/browser only for signed-in users. |
+| 2026-11-16 | `/api/v1` is read-only and ON by default (switch `api`): categories, cities, ads list/detail; no phone numbers or emails; 60 requests/minute. |
+| 2026-11-16 | Session cookies are encrypted by default and Secure on production by default. `TRUSTED_PROXIES` in .env for Cloudflare. |

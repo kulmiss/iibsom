@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Category;
 use App\Models\City;
+use App\Support\Features\FeatureManager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
@@ -77,6 +78,7 @@ class HomePageTest extends TestCase
 
     public function test_home_uses_few_database_queries(): void
     {
+        app(FeatureManager::class)->set('performance.page_cache', false); // measure the real work
         $this->get('/'); // warm caches
 
         DB::enableQueryLog();

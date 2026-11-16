@@ -47,6 +47,10 @@ return [
     'recommendations' => ['group' => 'Site', 'default' => true, 'label' => 'Recommended for you', 'description' => 'Home page shows ads like the ones a visitor looked at, and recently viewed ads. History stays in the visitor\'s browser only.'],
     'site.demo_data' => ['group' => 'Site', 'default' => false, 'label' => 'Show demo data', 'description' => 'Show the demo ads. Never ON in production.'],
 
+    // Speed and API
+    'performance.page_cache' => ['group' => 'Speed', 'default' => true, 'label' => 'Page cache', 'description' => 'Pages for visitors who are not signed in are kept for 2 minutes. Changes show at once (the cache is cleared on every change).'],
+    'api' => ['group' => 'Speed', 'default' => true, 'label' => 'Public API (/api/v1)', 'description' => 'Read-only JSON for the future mobile app: categories, cities, ads. No personal data.'],
+
     // Phase 2: money + trust (build only when the owner says)
     'boosts' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Boosts', 'description' => 'Top / VIP / Diamond ads. Paid outside the site; an admin turns them on.'],
     'verified_badge' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Verified badge', 'description' => 'Sellers verified by phone + ID.'],

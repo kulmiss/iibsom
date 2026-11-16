@@ -8,7 +8,9 @@ Tick `[x]` with the date when done.
 - [ ] What else uses iibsom.com today, e.g. email or an old site (C)
 - [ ] Google sign-in keys → `.env` (docs/google-signin.md)
 - [ ] Cloudflare account + R2 bucket + keys → `.env` (docs/cloudflare-r2.md, comes with the deploy PR)
-- [ ] Point iibsom.com DNS to Cloudflare
+- [ ] Point iibsom.com DNS to Cloudflare; SSL "Full (strict)"; set `TRUSTED_PROXIES=*` in `.env`
+- [ ] Hosting panel: turn off or shorten web server access logs (they keep visitor IPs)
+- [ ] Live `.env`: `APP_ENV=production`, `APP_DEBUG=false`
 - [ ] Native Somali speaker reviews the translation CSV (`php artisan iibsom:translations:export so`)
 - [ ] Check and approve the **draft** Terms and Privacy text (admin → Pages); add Somali versions
 - [ ] Add Somali bad words to admin → Settings → General → Bad words
