@@ -10,13 +10,13 @@
 @section('content')
     {{-- Big search (inspired by jiji.com, in Iibsom colours) --}}
     <section class="rounded-b-3xl bg-brand-700 text-white">
-        <div class="mx-auto max-w-3xl px-4 pb-10 pt-8 text-center sm:pb-16 sm:pt-14">
-            <h1 class="text-2xl font-bold sm:text-3xl">{{ __('site.home.heading') }}</h1>
+        <div class="mx-auto max-w-3xl px-4 pb-7 pt-6 text-center sm:pb-16 sm:pt-14">
+            <h1 class="text-xl font-bold sm:text-3xl">{{ __('site.home.heading') }}</h1>
 
             {{-- Search results page comes in the search PR. --}}
-            <form class="mt-5 flex flex-col gap-2 sm:flex-row" role="search" action="#" method="get">
+            <form class="mt-5 flex gap-2" role="search" action="#" method="get">
                 <label for="city" class="sr-only">{{ __('site.home.location_label') }}</label>
-                <select id="city" name="city" class="rounded-lg border-0 bg-white px-4 py-3 text-stone-800 sm:w-48">
+                <select id="city" name="city" class="w-32 shrink-0 truncate rounded-lg border-0 bg-white px-3 py-3 text-stone-800 sm:w-48 sm:px-4">
                     @if (count($cities) > 1)
                         <option value="">{{ __('site.home.all_somalia') }}</option>
                     @endif
@@ -28,7 +28,7 @@
                 <div class="relative flex-1">
                     <label for="q" class="sr-only">{{ __('site.home.search_placeholder') }}</label>
                     <input id="q" name="q" type="search" placeholder="{{ __('site.home.search_placeholder') }}"
-                           class="w-full rounded-lg border-0 bg-white py-3 pl-4 pr-12 text-stone-900 placeholder:text-stone-500 focus:ring-2 focus:ring-accent-400">
+                           class="w-full rounded-lg border-0 bg-white py-3 pl-3 pr-11 sm:pl-4 text-stone-900 placeholder:text-stone-500 focus:ring-2 focus:ring-accent-400">
                     <button type="submit" class="absolute inset-y-0 right-0 flex w-12 items-center justify-center text-stone-500 hover:text-brand-700">
                         {{ icon('search') }}
                         <span class="sr-only">{{ __('site.home.search_button') }}</span>
@@ -58,23 +58,35 @@
         </aside>
 
         <div class="min-w-0">
-            {{-- Category grid (phones) --}}
-            <nav class="grid grid-cols-3 gap-2 sm:grid-cols-5 lg:hidden" aria-label="{{ __('site.home.categories') }}">
-                @foreach ($categories as $category)
-                    <a href="#" class="flex flex-col items-center gap-1.5 rounded-xl bg-white p-3 text-center shadow-sm ring-1 ring-stone-200">
-                        <span class="flex size-11 items-center justify-center rounded-full bg-brand-50 text-brand-700">{{ icon($category['icon'], 'size-6') }}</span>
-                        <span class="text-xs font-medium leading-tight">{{ translated($category['name']) }}</span>
-                    </a>
-                @endforeach
-            </nav>
-
             {{-- Quick links --}}
-            <div class="mt-5 flex flex-wrap gap-2 lg:mt-0">
+            <div class="flex flex-wrap gap-2">
                 <a href="#" class="chip bg-accent-400/30 ring-accent-400">{{ icon('tag', 'size-4') }} {{ __('site.home.how_to_sell') }}</a>
                 @feature('site.safety_box')
                     <a href="#" class="chip bg-brand-50 ring-brand-200">{{ icon('shield-check', 'size-4') }} {{ __('site.home.safety_tips') }}</a>
                 @endfeature
             </div>
+
+            {{-- Category tiles (phones), like a mobile app --}}
+            <nav class="mt-4 grid grid-cols-4 gap-x-2 gap-y-4 sm:grid-cols-6 lg:hidden" aria-label="{{ __('site.home.categories') }}">
+                @feature('ads.posting')
+                    <a href="#" class="tile">
+                        <span class="tile-icon bg-accent-400 text-white">
+                            <span class="flex size-9 items-center justify-center rounded-full bg-white/90 text-accent-500">{{ icon('plus', 'size-6') }}</span>
+                        </span>
+                        <span>{{ __('site.home.post_ad_tile') }}</span>
+                    </a>
+                @endfeature
+                <a href="#trending" class="tile">
+                    <span class="tile-icon bg-orange-50 text-orange-500">{{ icon('trending-up', 'size-8') }}</span>
+                    <span>{{ __('site.home.trending') }}</span>
+                </a>
+                @foreach ($categories as $category)
+                    <a href="#" class="tile">
+                        <span class="tile-icon bg-brand-50 text-brand-700">{{ icon($category['icon'], 'size-8') }}</span>
+                        <span>{{ translated($category['name']) }}</span>
+                    </a>
+                @endforeach
+            </nav>
 
             {{-- Popular categories --}}
             @if ($popular)
@@ -90,7 +102,7 @@
             @endif
 
             {{-- Trending ads (filled in the ads PRs) --}}
-            <h2 class="mt-8 text-lg font-semibold">{{ __('site.home.trending_ads') }}</h2>
+            <h2 id="trending" class="mt-8 scroll-mt-20 text-lg font-semibold">{{ __('site.home.trending_ads') }}</h2>
             <div class="mt-3 rounded-xl border border-dashed border-stone-300 bg-white p-8 text-center">
                 <span class="mx-auto flex size-12 items-center justify-center rounded-full bg-brand-50 text-brand-700">{{ icon('trending-up', 'size-6') }}</span>
                 <p class="mt-3 font-semibold">{{ __('site.home.no_ads_title') }}</p>

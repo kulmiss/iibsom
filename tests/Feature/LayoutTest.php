@@ -22,10 +22,35 @@ class LayoutTest extends TestCase
 
     public function test_sell_button_follows_its_switch(): void
     {
-        $this->get('/')->assertSee('class="btn-sell"', false)->assertSee('Post an ad');
+        $this->get('/')->assertSee('btn-sell', false)->assertSee('Post an ad');
 
         app(FeatureManager::class)->set('ads.posting', false);
-        $this->get('/')->assertDontSee('btn-sell', false)->assertDontSee('Post an ad');
+        $this->get('/')->assertDontSee('btn-sell', false)->assertDontSee('Post an ad')->assertDontSee('>Post ad<', false);
+    }
+
+    public function test_phone_bottom_bar_has_home_sell_and_profile(): void
+    {
+        $html = $this->get('/')->assertSee('aria-label="Bottom"', false)->getContent();
+        $bar = substr($html, strpos($html, 'aria-label="Bottom"'));
+
+        $this->assertStringContainsString('>Home<', $bar);
+        $this->assertStringContainsString('>Sell<', $bar);
+        $this->assertStringContainsString('>Profile<', $bar);
+        $this->assertStringContainsString('aria-current="page"', $bar);
+        $this->assertStringNotContainsString('>Saved ads<', $bar);
+        $this->assertStringNotContainsString('>Messages<', $bar);
+    }
+
+    public function test_bottom_bar_items_follow_switches(): void
+    {
+        app(FeatureManager::class)->set('favourites', true);
+        app(FeatureManager::class)->set('login.google', false);
+
+        $html = $this->get('/')->getContent();
+        $bar = substr($html, strpos($html, 'aria-label="Bottom"'));
+
+        $this->assertStringContainsString('>Saved ads<', $bar);
+        $this->assertStringNotContainsString('>Profile<', $bar);
     }
 
     public function test_phase_2_header_icons_are_hidden_until_switched_on(): void
