@@ -56,8 +56,13 @@ class LocalizationTest extends TestCase
         $this->get('/so')
             ->assertOk()
             ->assertSee('<html lang="so"', false)
-            ->assertSee('What are you looking for?') // no Somali text yet → English
+            ->assertSee('Maxaad raadinaysaa?')
             ->assertSee('<link rel="canonical" href="'.url('/so').'">', false);
+
+        // A text with no Somali version falls back to English.
+        app('translator')->addLines(['site.only_in_english' => 'Only English here'], 'en');
+        app()->setLocale('so');
+        $this->assertSame('Only English here', __('site.only_in_english'));
     }
 
     public function test_switcher_and_hreflang_show_when_two_languages_are_on(): void

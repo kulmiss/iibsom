@@ -171,3 +171,12 @@ First add your Google keys: see docs/google-signin.md.
 | 4 | Admin → Settings → Demo data → Show demo data OFF | Demo ads disappear from the site and the counts |
 | 5 | Delete all demo data (type DELETE) | All demo ads, users, staff and reports are gone; your own data stays |
 | 6 | Set `APP_ENV=production` in .env and run `php artisan iib:demo-reset` | Refused |
+
+## Manual (PR 17: Somali)
+| # | Do this | Expected |
+|---|---------|----------|
+| 1 | `php artisan db:seed` (adds Somali names to existing data) | Nothing you edited changes |
+| 2 | Admin → Settings → General → tick Somali → Save | "English / Soomaali" switch appears on the site |
+| 3 | Tap **Soomaali** | Page changes to Somali without reloading; URL starts with /so |
+| 4 | Look at categories, ad page, post form, My ads, errors | All in Somali |
+| 5 | `php artisan iibsom:translations:export so` | CSV for a native speaker to check |

@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-16 (PR 16)_
+_Last updated: 2026-11-16 (PR 17)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -18,6 +18,7 @@ _Last updated: 2026-11-16 (PR 16)_
 - **PR 14 (My Ads + safety):** `/account/ads` tabs (live, waiting, rejected with reason, sold/ended), edit (same form, photos kept/reordered/removed, back to approval), mark sold, renew (expired or ending in 7 days), soft delete. `SpamGuard`: bad words (admin list), no links, bot trap. Switches: `ads.my_ads`, `safety.*`.
 - **PR 15 (Recommended for you):** `for-you.js` remembers viewed ads/categories in localStorage only; home asks `/for-you?c[]=&v[]=` (validated, nothing stored) and shows "Recommended for you" + "Recently viewed"; clear button; switch `recommendations`. Language swap fires `page:swapped`.
 - **PR 16 (demo data):** `php artisan iib:demo-reset` (refuses in production) → `DemoSeeder`: 324 ads, 64 users, 18 reports, 2 demo staff with 2FA, 110 days of history, real free-licence photos from `database/demo/photos` (`tools/download-demo-photos`, CREDITS.md). `DemoData::deleteAll()` used by admin. Guide: docs/demo-data.md.
+- **PR 17 (Somali):** all site texts in Somali (`lang/so`: site, account, ads, reports, validation, pagination), Somali names for categories/fields/places (`database/seeders/data/somali.php`) and the 4 pages. Seeders only add missing languages (admin edits are safe). Somali stays OFF until a native speaker checks it. Test fails if a new English text has no Somali text.
 - Nothing is deployed yet.
 - Owner runs locally with **Laragon** on Windows (see docs/local-setup.md → A).
 
@@ -48,8 +49,8 @@ See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example 
 13. **PR 13:** Browse, search (DB full-text behind an interface), ad page, SEO
 14. **PR 14:** My Ads + safety
 15. **PR 15:** "Recommended for you"
-16. **PR 16:** Demo data with real photos (this one)
-17. Somali translations
+16. **PR 16:** Demo data with real photos
+17. **PR 17:** Somali translations (this one)
 18. Speed + security check (page cache, cookie-free guest pages, `/api/v1`, switch crawl test)
 19. Docs: deploy guides (shared + VPS), Cloudflare R2, scaling
 

@@ -141,7 +141,23 @@ class CatalogTest extends TestCase
         app()->setLocale('en');
         $this->assertSame('Hodan', $area->fresh()->label);
 
+        // Starting catalogue has Somali names; a missing one falls back to English.
         app()->setLocale('so');
+        $this->assertSame('Baabuur', Category::where('slug', 'cars')->first()->label);
+        Category::where('slug', 'cars')->first()->update(['name' => ['en' => 'Cars']]);
         $this->assertSame('Cars', Category::where('slug', 'cars')->first()->label);
+    }
+
+    public function test_seeding_again_never_overwrites_admin_names(): void
+    {
+        $cars = Category::where('slug', 'cars')->first();
+        $cars->update(['name' => ['en' => 'Cars & SUVs']]);
+        $city = City::where('slug', 'mogadishu')->first();
+        $city->update(['name' => ['en' => 'Mogadishu city', 'so' => 'Xamar']]);
+
+        $this->seed();
+
+        $this->assertSame(['en' => 'Cars & SUVs', 'so' => 'Baabuur'], $cars->fresh()->name); // only the missing Somali was added
+        $this->assertSame(['en' => 'Mogadishu city', 'so' => 'Xamar'], $city->fresh()->name);
     }
 }

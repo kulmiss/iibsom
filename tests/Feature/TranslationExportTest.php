@@ -12,7 +12,7 @@ class TranslationExportTest extends TestCase
         @unlink($path);
 
         $this->artisan('iibsom:translations:export', ['locale' => 'so', '--path' => $path])
-            ->expectsOutputToContain('missing')
+            ->expectsOutputToContain('needs native review')
             ->assertSuccessful();
 
         $lines = array_map(fn ($l) => str_getcsv($l, escape: ''), file($path, FILE_IGNORE_NEW_LINES));
@@ -20,7 +20,7 @@ class TranslationExportTest extends TestCase
         $header[0] = ltrim($header[0], "\xEF\xBB\xBF");
 
         $this->assertSame(['key', 'english', 'translation', 'status'], $header);
-        $this->assertContains(['site.tagline', 'Buy and sell anything in Somalia', '', 'missing'], $lines);
+        $this->assertContains(['site.tagline', 'Buy and sell anything in Somalia', 'Ka iibso oo iibi wax kasta Soomaaliya', 'needs native review'], $lines);
 
         @unlink($path);
     }
