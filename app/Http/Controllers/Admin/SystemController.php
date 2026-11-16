@@ -3,11 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Ad;
-use App\Models\AdminActivity;
-use App\Models\Report;
-use App\Models\User;
 use App\Support\Admin\Activity;
+use App\Support\Demo\DemoData;
 use App\Support\Health\HealthChecker;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -42,11 +39,7 @@ class SystemController extends Controller
     {
         return response()->json([
             'show' => feature('site.demo_data'),
-            'counts' => [
-                'ads' => Ad::withTrashed()->where('is_demo', true)->count(),
-                'users' => User::where('is_demo', true)->count(),
-                'reports' => Report::where('is_demo', true)->count(),
-            ],
+            'counts' => DemoData::counts(),
         ]);
     }
 
@@ -56,25 +49,7 @@ class SystemController extends Controller
         $request->validate(['confirm' => ['required', 'in:DELETE']], ['confirm.in' => 'Type DELETE to confirm.']);
 
         try {
-            $counts = DB::transaction(function () {
-                $reports = Report::where('is_demo', true)->delete();
-                $ads = 0;
-                Ad::withTrashed()->where('is_demo', true)->with('photos')->chunkById(200, function ($chunk) use (&$ads) {
-                    foreach ($chunk as $ad) {
-                        foreach ($ad->photos as $photo) {
-                            foreach ($photo->variants ?? [] as $formats) {
-                                rescue(fn () => \Storage::disk($photo->disk)->delete(array_values($formats)), report: false);
-                            }
-                        }
-                        $ad->forceDelete();
-                        $ads++;
-                    }
-                });
-                $users = User::where('is_demo', true)->where('role', User::CUSTOMER)->delete();
-                AdminActivity::where('is_demo', true)->delete();
-
-                return compact('ads', 'users', 'reports');
-            });
+            $counts = DemoData::deleteAll($request->user()->id);
         } catch (Throwable $e) {
             report($e);
 

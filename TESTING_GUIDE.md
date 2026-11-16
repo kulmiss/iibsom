@@ -161,3 +161,13 @@ First add your Google keys: see docs/google-signin.md.
 | 2 | Tap **Clear my history** | Both lists disappear |
 | 3 | Admin → Feature switches → Recommended for you OFF | Home shows no lists |
 | 4 | Browser dev tools → Application → Local storage | `iibsom-history` is there; nothing is saved on the server |
+
+## Manual (PR 16: demo data)
+| # | Do this | Expected |
+|---|---------|----------|
+| 1 | `php artisan iib:demo-reset` | About 1 minute. Prints 2 demo staff logins with 2FA keys |
+| 2 | Open the site | 300+ ads with real photos in every category |
+| 3 | Sign in to /admin as demo moderator (add the 2FA key to your phone app) | Dashboard shows charts for the last 3 months, 24 waiting ads, 12 reports |
+| 4 | Admin → Settings → Demo data → Show demo data OFF | Demo ads disappear from the site and the counts |
+| 5 | Delete all demo data (type DELETE) | All demo ads, users, staff and reports are gone; your own data stays |
+| 6 | Set `APP_ENV=production` in .env and run `php artisan iib:demo-reset` | Refused |

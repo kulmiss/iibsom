@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-16 (PR 15)_
+_Last updated: 2026-11-16 (PR 16)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -17,6 +17,7 @@ _Last updated: 2026-11-16 (PR 15)_
 - **PR 13 (browse + search + ad page):** `AdSearch` interface (MySQL full-text now, Meilisearch later), `/search` and `/{category}/{city?}` with price, condition, sort and custom field filters, ad page `/{category}/{city}/{slug-id}` (gallery with zoom, number shown only after a tap, WhatsApp, share, safety tips, report, similar ads), JSON-LD + Open Graph, `sitemap.xml`, `robots.txt` blocks everything outside production, home shows latest 12 ads.
 - **PR 14 (My Ads + safety):** `/account/ads` tabs (live, waiting, rejected with reason, sold/ended), edit (same form, photos kept/reordered/removed, back to approval), mark sold, renew (expired or ending in 7 days), soft delete. `SpamGuard`: bad words (admin list), no links, bot trap. Switches: `ads.my_ads`, `safety.*`.
 - **PR 15 (Recommended for you):** `for-you.js` remembers viewed ads/categories in localStorage only; home asks `/for-you?c[]=&v[]=` (validated, nothing stored) and shows "Recommended for you" + "Recently viewed"; clear button; switch `recommendations`. Language swap fires `page:swapped`.
+- **PR 16 (demo data):** `php artisan iib:demo-reset` (refuses in production) → `DemoSeeder`: 324 ads, 64 users, 18 reports, 2 demo staff with 2FA, 110 days of history, real free-licence photos from `database/demo/photos` (`tools/download-demo-photos`, CREDITS.md). `DemoData::deleteAll()` used by admin. Guide: docs/demo-data.md.
 - Nothing is deployed yet.
 - Owner runs locally with **Laragon** on Windows (see docs/local-setup.md → A).
 
@@ -46,8 +47,11 @@ See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example 
 12. **PR 12:** Admin: pages, banners, staff, system health, demo data controls
 13. **PR 13:** Browse, search (DB full-text behind an interface), ad page, SEO
 14. **PR 14:** My Ads + safety
-15. **PR 15:** "Recommended for you" (this one)
-16. Demo data with real photos (`iib:demo-reset`), deploy guides (shared + VPS), Cloudflare R2, scaling docs
+15. **PR 15:** "Recommended for you"
+16. **PR 16:** Demo data with real photos (this one)
+17. Somali translations
+18. Speed + security check (page cache, cookie-free guest pages, `/api/v1`, switch crawl test)
+19. Docs: deploy guides (shared + VPS), Cloudflare R2, scaling
 
 ## Known notes
 - Public pages currently set an XSRF/session cookie; the page-cache PR must make guest pages cookie-free so Cloudflare can cache them.
