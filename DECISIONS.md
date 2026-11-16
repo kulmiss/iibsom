@@ -51,3 +51,7 @@ Every question, the owner's answer, and the date. Newest at the bottom.
 | 2026-11-16 | Phone numbers: Somali mobiles only (start 6/7/9, 9 digits), typed any way (0615…, +252 61…), saved as +252XXXXXXXXX. "I use WhatsApp on this number" is ON by default. |
 | 2026-11-16 | Sign-in events go to `storage/logs/security.log` (90 days) until the admin activity log exists. |
 | 2026-11-16 | Language switch without reload: page HTML is fetched for the new language in the background and swapped in; the chosen language is saved in a cookie. Each language keeps its own cached pages and URL prefix for SEO. |
+| 2026-11-16 | Edits go back to the approval queue (decision #9 covers edits). Category can't be changed on edit (post a new ad instead). Sold ads can't be edited. |
+| 2026-11-16 | Renew: allowed for expired ads and live ads ending within 7 days; renew does NOT need approval again (text unchanged). |
+| 2026-11-16 | Delete from My Ads = soft delete (staff can still see it for reports/fraud). |
+| 2026-11-16 | Spam: bad-word list (admin editable, whole words, look-alike letters), no web links in ads, hidden bot-trap field, plus the existing limits (5 ads/day, duplicates, rate limits, blocked phones). Each has its own switch. Starter list is short English; owner adds Somali words. |

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('ads.post.title').' · '.$category->label)
+@section('title', ($ad ? __('ads.mine.edit_title') : __('ads.post.title')).' · '.$category->label)
 
 @push('scripts')
     @vite('resources/js/post-ad.js')
@@ -8,25 +8,43 @@
 
 @section('content')
     <section class="mx-auto max-w-2xl px-4 py-6">
-        <p class="text-sm font-medium text-brand-700">{{ __('ads.post.step', ['step' => 2]) }}</p>
-        <div class="flex items-center gap-2">
+        @if ($ad)
+            <p class="text-sm font-medium text-brand-700">{{ __('ads.mine.edit_title') }}</p>
             <h1 class="text-2xl font-bold">{{ $category->label }}</h1>
-            <a href="{{ lroute('post') }}" class="text-sm font-medium text-brand-700 underline">{{ __('ads.post.change_category') }}</a>
-        </div>
+            @feature('ads.approval')
+                <p class="mt-2 rounded-lg bg-accent-400/20 px-3 py-2 text-sm">{{ __('ads.mine.edit_note') }}</p>
+            @endfeature
+        @else
+            <p class="text-sm font-medium text-brand-700">{{ __('ads.post.step', ['step' => 2]) }}</p>
+            <div class="flex items-center gap-2">
+                <h1 class="text-2xl font-bold">{{ $category->label }}</h1>
+                <a href="{{ lroute('post') }}" class="text-sm font-medium text-brand-700 underline">{{ __('ads.post.change_category') }}</a>
+            </div>
+        @endif
 
         <p data-draft-restored class="mt-3 hidden rounded-lg bg-accent-400/20 px-3 py-2 text-sm">
             {{ __('ads.post.draft_restored') }}
             <button type="button" data-draft-clear class="ml-1 font-semibold underline">{{ __('ads.post.clear_draft') }}</button>
         </p>
 
-        <form method="post" action="{{ lroute('post.store', ['category' => $category->slug]) }}"
+        <form method="post" action="{{ $ad ? lroute('account.ads.update', ['ad' => $ad->id]) : lroute('post.store', ['category' => $category->slug]) }}"
               class="mt-5 space-y-6" novalidate
               data-post-form
-              data-draft-key="iibsom-draft-{{ $category->slug }}"
+              data-draft-key="{{ $ad ? '' : 'iibsom-draft-'.$category->slug }}"
+              data-photos='@json($photos)'
               data-upload-url="{{ lroute('post.photos.store') }}"
               data-delete-url="{{ lroute('post.photos.store') }}"
               data-max-photos="{{ $maxPhotos }}">
             @csrf
+            @if ($ad) @method('put') @endif
+
+            {{-- Bot trap: hidden from people (and screen readers); robots fill it. --}}
+            @feature('safety.honeypot')
+                <div class="hidden" aria-hidden="true">
+                    <label for="website">Website</label>
+                    <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+                </div>
+            @endfeature
 
             {{-- Photos --}}
             <fieldset class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-stone-200">
@@ -49,7 +67,7 @@
             <fieldset class="space-y-5 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-stone-200">
                 <div>
                     <label for="title" class="form-label">{{ __('ads.form.title') }}</label>
-                    <input id="title" name="title" type="text" required minlength="5" maxlength="80" value="{{ old('title') }}" class="form-input" aria-describedby="title-help">
+                    <input id="title" name="title" type="text" required minlength="5" maxlength="80" value="{{ old('title', $ad?->title) }}" class="form-input" aria-describedby="title-help">
                     <p id="title-help" class="form-help">{{ __('ads.form.title_help') }}</p>
                     @error('title') <p class="form-error">{{ $message }}</p> @enderror
                 </div>
@@ -60,7 +78,7 @@
                         @foreach ($fields as $field)
                             @php($name = "fields[{$field->key}]")
                             @php($id = "field-{$field->key}")
-                            @php($value = old("fields.{$field->key}"))
+                            @php($value = (string) old("fields.{$field->key}", isset($ad->fields[$field->key]) ? (is_bool($ad->fields[$field->key]) ? (int) $ad->fields[$field->key] : $ad->fields[$field->key]) : null))
                             <div>
                                 <label for="{{ $id }}" class="form-label">{{ $field->label_text }}@if ($field->unit) <span class="font-normal text-stone-500">({{ $field->unit }})</span>@endif @if ($field->required)<span class="text-red-700" aria-hidden="true">*</span>@endif</label>
                                 @switch($field->type)
@@ -97,7 +115,7 @@
                         <div class="grid grid-cols-2 gap-2">
                             @foreach (['new', 'used'] as $condition)
                                 <label class="flex cursor-pointer items-center justify-center rounded-lg border border-stone-300 px-3 py-2.5 font-medium has-checked:border-brand-700 has-checked:bg-brand-50 has-checked:text-brand-800">
-                                    <input type="radio" name="condition" value="{{ $condition }}" class="sr-only" @checked(old('condition') === $condition)>
+                                    <input type="radio" name="condition" value="{{ $condition }}" class="sr-only" @checked(old('condition', $ad?->condition) === $condition)>
                                     {{ __('ads.form.'.$condition) }}
                                 </label>
                             @endforeach
@@ -108,7 +126,7 @@
 
                 <div>
                     <label for="description" class="form-label">{{ __('ads.form.description') }}</label>
-                    <textarea id="description" name="description" rows="5" required minlength="20" maxlength="3000" class="form-input" aria-describedby="description-help">{{ old('description') }}</textarea>
+                    <textarea id="description" name="description" rows="5" required minlength="20" maxlength="3000" class="form-input" aria-describedby="description-help">{{ old('description', $ad?->description) }}</textarea>
                     <p id="description-help" class="form-help">{{ __('ads.form.description_help') }}</p>
                     @error('description') <p class="form-error">{{ $message }}</p> @enderror
                 </div>
@@ -118,11 +136,11 @@
                     <div class="flex items-center gap-3">
                         <div class="relative flex-1">
                             <span class="pointer-events-none absolute inset-y-0 left-3 flex items-center text-stone-500">$</span>
-                            <input id="price" name="price" type="number" inputmode="numeric" min="0" value="{{ old('price') }}" class="form-input pl-7">
+                            <input id="price" name="price" type="number" inputmode="numeric" min="0" value="{{ old('price', $ad?->price) }}" class="form-input pl-7">
                         </div>
                         <label class="flex items-center gap-2 text-sm font-medium">
                             <input type="hidden" name="price_negotiable" value="0">
-                            <input type="checkbox" name="price_negotiable" value="1" class="size-4 rounded border-stone-300 text-brand-700" @checked(old('price_negotiable'))>
+                            <input type="checkbox" name="price_negotiable" value="1" class="size-4 rounded border-stone-300 text-brand-700" @checked(old('price_negotiable', $ad?->price_negotiable))>
                             {{ __('ads.form.negotiable') }}
                         </label>
                     </div>
@@ -136,14 +154,14 @@
                     <label for="city_id" class="form-label">{{ __('ads.form.city') }}</label>
                     <select id="city_id" name="city_id" class="form-input" required data-city-select>
                         @foreach ($cities as $city)
-                            <option value="{{ $city['id'] }}" @selected((int) old('city_id', auth()->user()->city_id) === $city['id'])>{{ translated($city['name']) }}</option>
+                            <option value="{{ $city['id'] }}" @selected((int) old('city_id', $ad?->city_id ?? auth()->user()->city_id) === $city['id'])>{{ translated($city['name']) }}</option>
                         @endforeach
                     </select>
                     @error('city_id') <p class="form-error">{{ $message }}</p> @enderror
                 </div>
                 <div>
                     <label for="area_id" class="form-label">{{ __('ads.form.area') }}</label>
-                    <select id="area_id" name="area_id" class="form-input" data-area-select data-areas='@json($areas)' data-selected="{{ old('area_id') }}">
+                    <select id="area_id" name="area_id" class="form-input" data-area-select data-areas='@json($areas)' data-selected="{{ old('area_id', $ad?->area_id) }}">
                         <option value="">{{ __('ads.form.area_any') }}</option>
                     </select>
                     @error('area_id') <p class="form-error">{{ $message }}</p> @enderror
@@ -151,7 +169,7 @@
             </fieldset>
 
             <div class="sticky bottom-16 z-10 -mx-4 bg-stone-50/95 px-4 py-3 backdrop-blur lg:bottom-0">
-                <button type="submit" class="btn-sell w-full py-3 text-base">{{ __('ads.post.submit') }}</button>
+                <button type="submit" class="btn-sell w-full py-3 text-base">{{ $ad ? __('ads.mine.save') : __('ads.post.submit') }}</button>
                 <p data-draft-status class="mt-1 hidden text-center text-xs text-stone-500">{{ __('ads.post.draft_saved') }}</p>
             </div>
         </form>

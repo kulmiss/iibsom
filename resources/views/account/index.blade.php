@@ -21,9 +21,13 @@
                     {{ icon('user', 'size-5 text-brand-700') }}<span class="flex-1">{{ __('account.account.edit_profile') }}</span>{{ icon('chevron-right', 'size-4 text-stone-400') }}
                 </a>
             </li>
-            <li class="flex items-center gap-3 px-5 py-4 text-stone-500">
-                {{ icon('list', 'size-5') }}<span class="flex-1">{{ __('account.account.my_ads') }} <span class="block text-xs">{{ __('account.account.my_ads_soon') }}</span></span>
-            </li>
+            @feature('ads.my_ads')
+                <li>
+                    <a href="{{ lroute('account.ads') }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50">
+                        {{ icon('list', 'size-5 text-brand-700') }}<span class="flex-1">{{ __('account.account.my_ads') }}</span>{{ icon('chevron-right', 'size-4 text-stone-400') }}
+                    </a>
+                </li>
+            @endfeature
         </ul>
 
         <form method="post" action="{{ lroute('logout') }}" class="mt-4">

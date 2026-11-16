@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Account\MyAdsController;
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\AdPageController;
 use App\Http\Controllers\Ads\AdPhotoController;
@@ -47,6 +48,16 @@ $publicRoutes = function () {
 
             Route::post('/ads/{ad}/report', [AdPageController::class, 'report'])->whereNumber('ad')
                 ->middleware(['feature:ads.reports', 'throttle:10,1'])->name('ad.report');
+
+            // My Ads: edit, mark sold, renew, delete (own ads only).
+            Route::middleware('feature:ads.my_ads')->prefix('/account/ads')->name('account.ads')->group(function () {
+                Route::get('/', [MyAdsController::class, 'index']);
+                Route::get('/{ad}/edit', [MyAdsController::class, 'edit'])->whereNumber('ad')->name('.edit');
+                Route::put('/{ad}', [MyAdsController::class, 'update'])->whereNumber('ad')->middleware('throttle:20,1')->name('.update');
+                Route::post('/{ad}/sold', [MyAdsController::class, 'sold'])->whereNumber('ad')->middleware('throttle:30,1')->name('.sold');
+                Route::post('/{ad}/renew', [MyAdsController::class, 'renew'])->whereNumber('ad')->middleware('throttle:30,1')->name('.renew');
+                Route::delete('/{ad}', [MyAdsController::class, 'destroy'])->whereNumber('ad')->middleware('throttle:30,1')->name('.destroy');
+            });
 
             Route::view('/account', 'account.index')->name('account');
             Route::get('/account/profile', [ProfileController::class, 'edit'])->name('account.profile');

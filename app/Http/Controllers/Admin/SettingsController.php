@@ -25,6 +25,7 @@ class SettingsController extends Controller
             'ads_max_photos' => ['required', 'integer', 'min:1', 'max:20'],
             'languages' => ['required', 'array', 'min:1'],
             'languages.*' => [Rule::in(array_keys(config('iibsom.locales')))],
+            'bad_words' => ['nullable', 'string', 'max:20000'],
         ]);
 
         $before = $this->values();
@@ -34,6 +35,11 @@ class SettingsController extends Controller
         $settings->set('ads.max_per_day', (int) $data['ads_max_per_day'], $request->user()->id);
         $settings->set('ads.max_photos', (int) $data['ads_max_photos'], $request->user()->id);
         $settings->set('languages.enabled', $languages, $request->user()->id);
+        if ($request->has('bad_words')) {
+            $words = collect(preg_split('/\r?\n/', (string) ($data['bad_words'] ?? '')))
+                ->map(fn ($w) => mb_strtolower(trim($w)))->filter()->unique()->take(1000)->values()->all();
+            $settings->set('safety.bad_words', $words, $request->user()->id);
+        }
 
         Activity::log('settings.general', 'Changed general settings', null, ['before' => $before]);
 
@@ -49,6 +55,7 @@ class SettingsController extends Controller
             'languages' => setting('languages.enabled'),
             'available_languages' => collect(config('iibsom.locales'))->map(fn ($l, $code) => ['code' => $code, 'name' => $l['name'], 'default' => $code === config('iibsom.default_locale')])->values(),
             'currency' => setting('currency'),
+            'bad_words' => implode("\n", setting('safety.bad_words') ?? []),
         ];
     }
 }

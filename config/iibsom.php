@@ -45,6 +45,9 @@ return [
         'ads.max_photos' => 8,
         'currency' => 'USD',
         'phone.country_codes' => ['+252'],
+        // One word or phrase per line. Matched as whole words, any case. Admin → Settings → General.
+        'safety.bad_words' => ['fuck', 'shit', 'bitch', 'porn', 'escort', 'sex service', 'western union only', 'send money first'],
+        'ads.renew_days_before' => 7, // "Renew" shows this many days before an ad ends
     ],
 
 ];

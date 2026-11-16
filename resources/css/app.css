@@ -21,6 +21,9 @@
     .btn-sell {
         @apply inline-flex items-center justify-center rounded-lg bg-accent-500 px-4 py-2 text-sm font-bold uppercase tracking-wide text-stone-900 shadow-sm hover:bg-accent-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-500;
     }
+    .btn-chip {
+        @apply inline-flex items-center gap-1 rounded-lg bg-white px-3 py-1.5 font-medium ring-1 ring-stone-300 hover:bg-stone-50;
+    }
     .icon-btn {
         @apply flex size-9 items-center justify-center rounded-full bg-white/15 text-white hover:bg-white/25;
     }

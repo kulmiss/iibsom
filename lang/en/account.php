@@ -31,7 +31,6 @@ return [
         'title' => 'My account',
         'edit_profile' => 'Edit profile',
         'my_ads' => 'My ads',
-        'my_ads_soon' => 'Your ads will show here.',
         'member_since' => 'Member since :date',
         'logout' => 'Log out',
     ],

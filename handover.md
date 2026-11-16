@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-16 (PR 13)_
+_Last updated: 2026-11-16 (PR 14)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -15,6 +15,7 @@ _Last updated: 2026-11-16 (PR 13)_
 - **PR 11 (catalogue + switches + settings):** categories editor (tree, add/edit/on-off, icon picker, popular, new/used, delete only without ads), custom fields editor (text/number/list/yes-no, units, required, filter), regions/cities/areas with switches (new cities start OFF), feature switches page (grouped, search, ON/OFF counts, "what changes" confirm, reset to default), Settings → General (expiry days, ads/day, photos/ad, languages). Route names unique (route:cache works).
 - **PR 12 (site content + staff + health):** pages table + public `/about /safety /terms /privacy` (Markdown, HTML escaped, EN/SO, starter text, never overwritten by seeder), admin page editor with preview, home banners (upload → 2 WebP sizes on photos disk, safe links only, dates, on/off, cached), staff management (add with one-time password, role, reset 2FA/password, remove; self + last Super Admin protected), System health page, Demo data settings (show switch recounts totals; delete all with typed DELETE).
 - **PR 13 (browse + search + ad page):** `AdSearch` interface (MySQL full-text now, Meilisearch later), `/search` and `/{category}/{city?}` with price, condition, sort and custom field filters, ad page `/{category}/{city}/{slug-id}` (gallery with zoom, number shown only after a tap, WhatsApp, share, safety tips, report, similar ads), JSON-LD + Open Graph, `sitemap.xml`, `robots.txt` blocks everything outside production, home shows latest 12 ads.
+- **PR 14 (My Ads + safety):** `/account/ads` tabs (live, waiting, rejected with reason, sold/ended), edit (same form, photos kept/reordered/removed, back to approval), mark sold, renew (expired or ending in 7 days), soft delete. `SpamGuard`: bad words (admin list), no links, bot trap. Switches: `ads.my_ads`, `safety.*`.
 - Nothing is deployed yet.
 - Owner runs locally with **Laragon** on Windows (see docs/local-setup.md → A).
 
@@ -42,8 +43,8 @@ See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example 
 10. **PR 10:** Admin: ads approval queue + all ads, users (ban, block phone), reports
 11. **PR 11:** Admin: categories + fields editor, cities/areas, feature switches, settings
 12. **PR 12:** Admin: pages, banners, staff, system health, demo data controls
-13. **PR 13:** Browse, search (DB full-text behind an interface), ad page, SEO (this one)
-14. My Ads (edit, sold, renew, delete), reports, safety (bad words, honeypot, block phone)
+13. **PR 13:** Browse, search (DB full-text behind an interface), ad page, SEO
+14. **PR 14:** My Ads + safety (this one)
 15. "Recommended for you" (browsing history in the browser, similar ads)
 16. Demo data with real photos (`iib:demo-reset`), deploy guides (shared + VPS), Cloudflare R2, scaling docs
 

@@ -11,6 +11,7 @@ Tick `[x]` with the date when done.
 - [ ] Point iibsom.com DNS to Cloudflare
 - [ ] Native Somali speaker reviews the translation CSV (`php artisan iibsom:translations:export so`)
 - [ ] Check and approve the **draft** Terms and Privacy text (admin → Pages); add Somali versions
+- [ ] Add Somali bad words to admin → Settings → General → Bad words
 - [ ] Delete all demo data before launch (admin → Settings → Delete all demo data)
 
 - [ ] Create your Super Admin account on the live site: `php artisan iibsom:staff you@iibsom.com` and set up 2FA

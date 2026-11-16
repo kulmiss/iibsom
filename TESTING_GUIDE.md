@@ -141,3 +141,15 @@ First add your Google keys: see docs/google-signin.md.
 | 6 | Signed in → **Report this ad** | "Thanks" message; reporting twice is not possible |
 | 7 | Open a pending ad link while signed out | Not found (404) |
 | 8 | http://localhost:8095/sitemap.xml and /robots.txt | Live ads listed; robots blocks all when not production |
+
+## Manual (PR 14: My Ads + safety)
+| # | Do this | Expected |
+|---|---------|----------|
+| 1 | Account → **My ads** | Tabs: Live / Waiting / Rejected / Sold-ended with numbers |
+| 2 | **Edit** a live ad, change the price, save | "Saved. Our team checks…"; ad moves to Waiting |
+| 3 | On edit, remove one photo and add a new one | After save the ad has the new set, in your order |
+| 4 | **Mark as sold** | Asks first; ad moves to Sold / ended and is gone from the site |
+| 5 | Admin sets an ad to end in 2 days (or wait) → **Renew** | Ends 60 days from today, still live |
+| 6 | **Delete** | Asks first; ad gone (staff can still see it) |
+| 7 | Post an ad with "send money first" or a web link | Refused with a clear message |
+| 8 | Admin → Settings → General → add a word to Bad words | Ads with that word are refused |

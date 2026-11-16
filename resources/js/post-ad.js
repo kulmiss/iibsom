@@ -165,6 +165,11 @@ function initPhotos(form, t) {
             photos = ids.map((id) => ({ key: String(id), id, preview: null, state: 'done' }));
             render();
         },
+        /** Edit: show the photos the ad already has. */
+        load: (items) => {
+            photos = items.map((p) => ({ key: String(p.id), id: p.id, preview: p.preview, state: 'done' }));
+            render();
+        },
     };
 }
 
@@ -249,5 +254,7 @@ if (form) {
     const t = { ...tpl?.dataset };
     const photos = initPhotos(form, t);
     initAreas(form);
-    initDraft(form, photos);
+    const existing = JSON.parse(form.dataset.photos || '[]');
+    if (existing.length) photos.load(existing);
+    if (form.dataset.draftKey) initDraft(form, photos); // new ads only; edits start from the saved ad
 }
