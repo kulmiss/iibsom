@@ -94,3 +94,15 @@ First add your Google keys: see docs/google-signin.md.
 | 11 | Activity log | Your sign-in and the colour change are listed |
 | 12 | Sign out, sign in again with a recovery code | Works once; the same code fails the second time |
 | 13 | As a customer (Google) open /admin | Staff sign-in page, no access |
+
+## Manual (PR 10: moderation)
+| # | Do this | Expected |
+|---|---------|----------|
+| 1 | Post an ad on the site, then admin → **Waiting for approval** | The ad is listed with its cover photo |
+| 2 | Click the ad | Side panel: photos, price, fields (Brand, Year…), description, seller, history |
+| 3 | **Approve** | "Ad approved, it is live now." The ad leaves the queue. Home page count for that category goes up by 1 |
+| 4 | Tick 2 ads → **Reject** → pick "Wrong category" → Reject | "2 done." Both show "Rejected" with the reason on **Ads** |
+| 5 | **Users** → click a user → **Ban user** (keep both boxes ticked) | User shows "Banned", their ads are taken down, their phone appears under **Blocked phone numbers** |
+| 6 | As that customer, try to save the same phone on the profile page | "This phone number cannot be used on iibsom." |
+| 7 | **Reports** → **Take ad down** | The ad is rejected and every waiting report on it is closed |
+| 8 | Sign in as a **Support** staff member | You can look but there are no Approve / Ban / Take down buttons |

@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-16 (PR 9)_
+_Last updated: 2026-11-16 (PR 10)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -11,6 +11,7 @@ _Last updated: 2026-11-16 (PR 9)_
 - **PR 7 (Google sign-in):** Socialite Google (state check, verified email only, banned blocked, session regenerated, language kept), welcome form (name, city, +252 phone + WhatsApp, Terms), account + profile edit, `profile.complete` middleware for posting, security log. Guide: docs/google-signin.md.
 - **PR 8 (post an ad):** `ads` + `ad_photos` tables (indexes, fulltext), 2-step form (category → one form with custom fields), photos shrunk on the phone, uploaded one by one, background job (auto-rotate, re-encode = no GPS/EXIF, 3 sizes WebP + AVIF if possible) to the photos disk (R2 live), reorder, draft saved on the phone, every ad pending (decision #9), duplicate check, 5 ads/day, `iibsom:ads:expire` hourly.
 - **PR 9 (Super Admin foundation):** `admin/` = shadcn-admin template (pinned, MIT, cleaned), built to `public/admin-app`, served at `/admin` with CSP nonces. Staff login (password + **required TOTP 2FA**, recovery codes, rate limits, idle timeout 60 min), roles + permissions (`config/admin.php`), dashboard API + charts, activity log, brand colour, themes, Ctrl+K, phone cards, reusable `ServerDataTable`. `php artisan iibsom:staff`. Screens for ads/users/reports/categories/etc. are placeholders → next PRs.
+- **PR 10 (moderation):** admin ads list + approval queue (cover photos, detail panel, approve, reject with reason presets, edit, soft delete, bulk), users (search by phone, ban with take-down + block phone, unban), blocked phones (customers can't use them), reports queue (take ad down closes all its reports, dismiss). Live-ad counters on categories/cities kept up to date (demo never counted). Photo host allowed in CSP.
 - Nothing is deployed yet.
 - Owner runs locally with **Laragon** on Windows (see docs/local-setup.md → A).
 
@@ -34,8 +35,8 @@ See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example 
 6. **PR 6:** Hide city picker when only one city + roadmap "Recommended for you"
 7. **PR 7:** Google sign-in + first-time profile (name, city, +252 phone, terms)
 8. **PR 8:** Post an ad (photos → R2 via queue, drafts offline)
-9. **PR 9:** Super Admin foundation: staff login + 2FA + roles, dashboard, activity log, themes, brand colour (this one)
-10. **PR 10:** Admin: ads approval queue + all ads, users (ban, block phone), reports
+9. **PR 9:** Super Admin foundation: staff login + 2FA + roles, dashboard, activity log, themes, brand colour 
+10. **PR 10:** Admin: ads approval queue + all ads, users (ban, block phone), reports (this one)
 11. **PR 11:** Admin: categories + fields editor, cities/areas, feature switches, settings, pages, banners, staff, health
 12. Browse, search (DB full-text behind an interface), ad page, SEO
 13. My Ads (edit, sold, renew, delete), reports, safety (bad words, honeypot, block phone)

@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Account;
 
 use App\Http\Controllers\Controller;
+use App\Models\BlockedPhone;
 use App\Rules\SomaliMobile;
 use App\Support\Catalog;
 use App\Support\Phone\SomaliPhone;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 /**
@@ -51,6 +53,10 @@ class ProfileController extends Controller
             'phone' => __('account.form.phone'),
             'terms' => __('account.form.terms_short'),
         ]);
+
+        if (BlockedPhone::isBlocked(SomaliPhone::normalize($data['phone']))) {
+            throw ValidationException::withMessages(['phone' => __('account.validation.phone_blocked')]);
+        }
 
         $user->fill([
             'name' => strip_tags(trim($data['name'])),

@@ -1,6 +1,8 @@
+import { z } from 'zod'
 import { createFileRoute } from '@tanstack/react-router'
-import { ComingSoon } from '@/components/coming-soon'
+import { Users } from '@/features/users'
 
 export const Route = createFileRoute('/_authenticated/users')({
-  component: () => <ComingSoon title='Users' what='All customers: view, ban, block phone numbers, see their ads.' />,
+  component: Users,
+  validateSearch: z.object({ open: z.coerce.number().int().optional() }),
 })

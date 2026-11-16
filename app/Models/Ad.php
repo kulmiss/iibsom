@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\AdStatus;
+use App\Support\Ads\AdCounters;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -29,6 +30,23 @@ class Ad extends Model
             'sold_at' => 'datetime',
             'reviewed_at' => 'datetime',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        // Live-ad counters on categories and cities follow every change.
+        static::saved(function (Ad $ad) {
+            if ($ad->wasChanged(['status', 'category_id', 'city_id', 'expires_at', 'is_demo']) || $ad->wasRecentlyCreated) {
+                AdCounters::refreshFor($ad);
+            }
+        });
+        static::deleted(fn (Ad $ad) => AdCounters::refreshFor($ad));
+        static::restored(fn (Ad $ad) => AdCounters::refreshFor($ad));
+    }
+
+    public function reports(): HasMany
+    {
+        return $this->hasMany(Report::class);
     }
 
     public function user(): BelongsTo

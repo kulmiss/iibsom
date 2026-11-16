@@ -39,9 +39,20 @@ class SecurityHeaders
         return $response;
     }
 
+    /** Where ad photos are served from (R2/CDN on the live site, the app itself locally). */
+    private function photosOrigin(): ?string
+    {
+        $url = config('filesystems.disks.'.config('iibsom.photos_disk').'.url');
+        $parts = $url ? parse_url($url) : null;
+
+        return isset($parts['scheme'], $parts['host'])
+            ? $parts['scheme'].'://'.$parts['host'].(isset($parts['port']) ? ':'.$parts['port'] : '')
+            : null;
+    }
+
     private function csp(string $nonce): string
     {
-        $images = array_filter(["'self'", 'data:', 'blob:', config('filesystems.disks.r2.url') ?: null]);
+        $images = array_values(array_unique(array_filter(["'self'", 'data:', 'blob:', $this->photosOrigin()])));
 
         $policy = [
             'default-src' => ["'self'"],

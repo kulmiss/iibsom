@@ -36,10 +36,13 @@ type Props<T> = {
   mobileCard?: (row: T) => React.ReactNode
   csvName?: string
   rowId?: (row: T) => string
+  /** Fixed query params (e.g. { status: 'pending' }). */
+  extraParams?: Record<string, string | number>
+  onRowClick?: (row: T) => void
 }
 
 /** Admin data table: server search/sort/filter/pagination, column show/hide, bulk select, CSV, phone cards. */
-export function ServerDataTable<T>({ url, queryKey, columns, filters = [], searchPlaceholder = 'Search…', bulkActions, mobileCard, csvName, rowId }: Props<T>) {
+export function ServerDataTable<T>({ url, queryKey, columns, filters = [], searchPlaceholder = 'Search…', bulkActions, mobileCard, csvName, rowId, extraParams, onRowClick }: Props<T>) {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 20 })
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -58,7 +61,7 @@ export function ServerDataTable<T>({ url, queryKey, columns, filters = [], searc
   }, [globalFilter])
 
   const params = useMemo(() => {
-    const p: Record<string, string | number> = { page: pagination.pageIndex + 1, per_page: pagination.pageSize }
+    const p: Record<string, string | number> = { ...extraParams, page: pagination.pageIndex + 1, per_page: pagination.pageSize }
     if (search) p.search = search
     if (sorting[0]) {
       p.sort = sorting[0].id
@@ -69,7 +72,7 @@ export function ServerDataTable<T>({ url, queryKey, columns, filters = [], searc
       p[f.id] = Array.isArray(v) ? v.join(',') : v
     }
     return p
-  }, [pagination, search, sorting, columnFilters])
+  }, [pagination, search, sorting, columnFilters, extraParams])
 
   const query = useQuery({
     queryKey: [queryKey, url, params],
@@ -120,7 +123,7 @@ export function ServerDataTable<T>({ url, queryKey, columns, filters = [], searc
         <ul className='grid gap-2 md:hidden'>
           {query.isLoading && [1, 2, 3].map((i) => <Skeleton key={i} className='h-20' />)}
           {rows.map((row) => (
-            <li key={row.id} className='rounded-lg border bg-card p-3'>
+            <li key={row.id} className={cn('rounded-lg border bg-card p-3', onRowClick && 'cursor-pointer active:bg-muted')} onClick={() => onRowClick?.(row.original)}>
               {mobileCard(row.original)}
             </li>
           ))}
@@ -152,7 +155,15 @@ export function ServerDataTable<T>({ url, queryKey, columns, filters = [], searc
                 </TableRow>
               ))}
             {rows.map((row) => (
-              <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'} className={cn(query.isFetching && 'opacity-70')}>
+              <TableRow
+                key={row.id}
+                data-state={row.getIsSelected() && 'selected'}
+                className={cn(query.isFetching && 'opacity-70', onRowClick && 'cursor-pointer')}
+                onClick={(e) => {
+                  // Clicks on buttons/checkboxes inside the row don't open the row.
+                  if (onRowClick && !(e.target as HTMLElement).closest('button,a,input,[role=checkbox],[role=menuitem]')) onRowClick(row.original)
+                }}
+              >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id} className={cn(cell.column.columnDef.meta?.className)}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}

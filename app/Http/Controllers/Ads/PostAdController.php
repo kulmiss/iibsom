@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Ad;
 use App\Models\AdPhoto;
 use App\Models\Area;
+use App\Models\BlockedPhone;
 use App\Models\Category;
 use App\Support\Ads\FieldRules;
 use App\Support\Catalog;
@@ -73,6 +74,10 @@ class PostAdController extends Controller
         ] + FieldRules::names($category));
 
         $this->checkDailyLimit($user->id);
+
+        if (BlockedPhone::isBlocked($user->phone)) {
+            throw ValidationException::withMessages(['title' => __('account.validation.phone_blocked')]);
+        }
 
         $title = Str::squish(strip_tags($data['title']));
         $description = trim(strip_tags($data['description']));

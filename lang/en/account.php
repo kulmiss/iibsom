@@ -51,5 +51,6 @@ return [
 
     'validation' => [
         'phone' => 'Please enter a Somali mobile number, for example 61 5123456.',
+        'phone_blocked' => 'This phone number cannot be used on iibsom. Contact us if you think this is a mistake.',
     ],
 ];
