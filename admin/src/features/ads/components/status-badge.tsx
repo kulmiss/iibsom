@@ -17,3 +17,16 @@ export function StatusBadge({ status, label }: { status: AdStatus; label: string
     </Badge>
   )
 }
+
+/** The seller changed the ad after it was approved. */
+export function EditedBadge() {
+  return (
+    <Badge
+      variant='outline'
+      title='Changed by the seller after approval'
+      className='ms-1 whitespace-nowrap border-violet-300 bg-violet-50 text-violet-800 dark:border-violet-800 dark:bg-violet-950 dark:text-violet-300'
+    >
+      Edited
+    </Badge>
+  )
+}

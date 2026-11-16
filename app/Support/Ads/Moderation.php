@@ -24,6 +24,7 @@ final class Moderation
             'expires_at' => feature('ads.expiry') ? now()->addDays(setting('ads.expiry_days')) : null,
             'reviewed_by' => $by->id,
             'reviewed_at' => now(),
+            'approved_snapshot' => AdSnapshot::take($ad), // "Edited" is measured against this
         ])->save();
 
         Activity::log('ad.approved', "Approved ad #{$ad->id} “{$ad->title}”", $ad);

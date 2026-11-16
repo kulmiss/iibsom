@@ -8,6 +8,7 @@ use App\Models\Ad;
 use App\Models\AdminActivity;
 use App\Models\CategoryField;
 use App\Support\Admin\Activity;
+use App\Support\Ads\AdSnapshot;
 use App\Support\Ads\Moderation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -88,6 +89,7 @@ class AdController extends Controller
             'reviewed_at' => $ad->reviewed_at?->toIso8601String(),
             'published_at' => $ad->published_at?->toIso8601String(),
             'expires_at' => $ad->expires_at?->toIso8601String(),
+            'changes' => AdSnapshot::changes($ad),
             'history' => AdminActivity::where('subject_type', 'ad')->where('subject_id', $ad->id)->latest('id')->limit(20)->with('user:id,name')->get()
                 ->map(fn ($a) => ['summary' => $a->summary, 'by' => $a->user?->name, 'at' => $a->created_at->toIso8601String()]),
         ]);
@@ -159,7 +161,12 @@ class AdController extends Controller
             'description' => trim(strip_tags($data['description'])),
             'price' => $data['price'] ?? null,
             'price_negotiable' => (bool) ($data['price_negotiable'] ?? false),
-        ])->save();
+        ]);
+        // Staff edits of a live ad are the new approved version (not "edited by the seller").
+        if ($ad->status === AdStatus::Live) {
+            $ad->approved_snapshot = AdSnapshot::take($ad);
+        }
+        $ad->save();
 
         Activity::log('ad.edited', "Edited ad #{$ad->id} “{$ad->title}”", $ad, ['before' => $before]);
 
@@ -200,6 +207,7 @@ class AdController extends Controller
             'thumb' => $cover?->url('thumb'),
             'photos_count' => $ad->relationLoaded('photos') ? $ad->photos->count() : null,
             'is_demo' => $ad->is_demo,
+            'edited' => AdSnapshot::isEdited($ad),
             'created_at' => $ad->created_at?->toIso8601String(),
         ];
     }

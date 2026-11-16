@@ -16,8 +16,12 @@ export type AdRow = {
   thumb: string | null
   photos_count: number | null
   is_demo: boolean
+  /** Approved before and changed by the seller since (waiting again). */
+  edited: boolean
   created_at: string
 }
+
+export type AdChange = { key: string; label: string; before: string; after: string }
 
 export type AdDetail = AdRow & {
   description: string
@@ -30,6 +34,8 @@ export type AdDetail = AdRow & {
   reviewed_at: string | null
   published_at: string | null
   expires_at: string | null
+  /** null = nothing to compare (new ad, or the switch is OFF) */
+  changes: AdChange[] | null
   history: { summary: string; by: string | null; at: string }[]
 }
 

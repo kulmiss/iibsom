@@ -40,6 +40,7 @@ class Ad extends Model
             'expires_at' => 'datetime',
             'sold_at' => 'datetime',
             'reviewed_at' => 'datetime',
+            'approved_snapshot' => 'array',
         ];
     }
 

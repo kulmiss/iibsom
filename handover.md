@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-16 (PR 20)_
+_Last updated: 2026-11-16 (PR 21)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -22,6 +22,7 @@ _Last updated: 2026-11-16 (PR 20)_
 - **PR 18 (speed + security):** `GuestPages` middleware (guest pages: no session saved, no cookies, `Cache-Control: public`), server page cache (switch `performance.page_cache`, cleared on every change, fresh CSP nonce), `PrivateDatabaseSessionHandler` (no guest IP), HMAC-IP rate limits, read-only `/api/v1` (switch `api`), switch-crawl test, query budgets, secure-cookie default, `TRUSTED_PROXIES`. Docs: performance.md, security.md.
 - **PR 19 (docs):** deploy-shared.md, deploy-vps.md, cloudflare-r2.md, scaling.md, google-login.md (renamed), README, `tools/make-release` (upload zip for shared hosting, AWS SDK trimmed to S3), 15-minute check in TESTING_GUIDE. **Phase 1 is complete.**
 - **PR 20 (quality gates):** Larastan level 8 = 0 errors (`vendor/bin/phpstan analyse`), Lighthouse in CI (`bash tools/lighthouse`), PR checklist template. Fixed: broken-UTF-8 input crashed posting (now 400 everywhere); admins could not remove a Somali city/area name; admin sign-in page had failed requests (favicon path, `/me` 401 → `/session`); ad page: preload matched the wrong image format, contrast and photo-button labels.
+- **PR 21 (Edited badge):** `AdSnapshot` saves the approved version; the admin queue shows "Edited" and the ad panel shows what changed (title, description, price, condition, place, fields, photos). Switch `ads.edit_changes`. Demo data has 6 edited examples.
 - Nothing is deployed yet.
 - Owner runs locally with **Laragon** on Windows (see docs/local-setup.md → A).
 
@@ -56,7 +57,8 @@ See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example 
 17. **PR 17:** Somali translations
 18. **PR 18:** Speed + security check
 19. **PR 19:** Docs + release zip
-20. **PR 20:** Quality gates (this one). Next: Part A polish, Part B (Phase 2, OFF), Part C (Phase 3), Part D review — owner's big job list of 2026-11-16.
+20. **PR 20:** Quality gates.
+21. **PR 21:** "Edited" badge (this one). Next: Part A polish, Part B (Phase 2, OFF), Part C (Phase 3), Part D review — owner's big job list of 2026-11-16.
 
 ## Known notes
 - The local PHP Docker image could not be built inside Claude's sandbox (the Alpine package site is blocked there). CI builds it on GitHub to prove it works.

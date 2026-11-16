@@ -14,7 +14,7 @@ import { ServerDataTable } from '@/components/server-data-table'
 import { STATUS_OPTIONS, type AdRow } from '../types'
 import { REJECT_PRESETS, useAdActions } from '../use-ad-actions'
 import { AdSheet } from './ad-sheet'
-import { StatusBadge } from './status-badge'
+import { EditedBadge, StatusBadge } from './status-badge'
 
 function Thumb({ ad, big }: { ad: AdRow; big?: boolean }) {
   const size = big ? 'size-20' : 'size-12'
@@ -90,6 +90,7 @@ export function AdsTable({ status, userId, queue }: { status?: string; userId?: 
             <p className='text-xs text-muted-foreground'>
               #{row.original.id} · {row.original.category} · {row.original.photos_count ?? 0} photos
               {row.original.is_demo && <Badge variant='secondary' className='ms-1'>Demo</Badge>}
+              {row.original.edited && <EditedBadge />}
             </p>
             {row.original.rejection_reason && <p className='truncate text-xs text-destructive'>{row.original.rejection_reason}</p>}
           </div>
@@ -134,7 +135,7 @@ export function AdsTable({ status, userId, queue }: { status?: string; userId?: 
               <p className='line-clamp-2 font-medium'>{ad.title}</p>
               <p className='text-sm font-semibold'>{ad.price}</p>
               <div className='flex flex-wrap items-center gap-1 text-xs text-muted-foreground'>
-                <StatusBadge status={ad.status} label={ad.status_label} /> {ad.city} · {ago(ad.created_at)}
+                <StatusBadge status={ad.status} label={ad.status_label} /> {ad.edited && <EditedBadge />} {ad.city} · {ago(ad.created_at)}
               </div>
             </div>
           </div>

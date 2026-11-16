@@ -57,6 +57,8 @@ class DemoDataTest extends TestCase
             $this->assertTrue(Ad::where('status', $status)->exists(), "no {$status->value} ads");
         }
         $this->assertGreaterThanOrEqual(20, Ad::where('status', AdStatus::Pending)->count());
+        $this->assertGreaterThanOrEqual(5, Ad::where('status', AdStatus::Pending)->whereNotNull('approved_snapshot')->count()); // "Edited" examples
+        $this->assertSame(0, Ad::whereIn('status', [AdStatus::Live, AdStatus::Sold, AdStatus::Expired])->whereNull('approved_snapshot')->count());
         $this->assertTrue(Ad::min('created_at') < now()->subDays(90));
         $this->assertGreaterThan(200, AdminActivity::where('is_demo', true)->count());
 

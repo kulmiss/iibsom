@@ -201,6 +201,15 @@ First add your Google keys: see docs/google-login.md.
 | 4 | Look at categories, ad page, post form, My ads, errors | All in Somali |
 | 5 | `php artisan iibsom:translations:export so` | CSV for a native speaker to check |
 
+## Manual (PR 21: "Edited" badge)
+| # | Do this | Expected |
+|---|---------|----------|
+| 1 | `php artisan iib:demo-reset` → Admin → **Waiting for approval** | Some ads show a purple **Edited** badge |
+| 2 | Click one | Top of the panel: "What the seller changed since approval", old (red, crossed out) and new (green) |
+| 3 | Approve it, then as the seller edit the price in My Ads | It comes back with **Edited** and only "Price" listed |
+| 4 | A brand-new ad | No badge |
+| 5 | Feature switches → "Show what sellers changed" OFF | No badges, no panel |
+
 ## Manual (PR 20: quality gates)
 | # | Do this | Expected |
 |---|---------|----------|

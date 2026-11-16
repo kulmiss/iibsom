@@ -13,6 +13,7 @@ use App\Models\City;
 use App\Models\Report;
 use App\Models\User;
 use App\Support\Ads\AdCounters;
+use App\Support\Ads\AdSnapshot;
 use App\Support\Features\FeatureManager;
 use Carbon\CarbonImmutable;
 use Faker\Factory;
@@ -89,6 +90,9 @@ class DemoSeeder extends Seeder
                 [$title, $min, $max] = $content[$slug][array_rand($content[$slug])];
                 $ad = $this->ad($category, $title, $min, $max, $users[array_rand($users)], $mogadishu->id, $areas, $moderator, $i >= self::ADS);
                 $this->photos($ad, $photoPool[$slug] ?? []);
+                if ($i >= self::ADS && $i % 4 === 0) {
+                    $this->wasApprovedThenEdited($ad, $moderator);
+                }
                 $made[] = $ad;
             }
         });
@@ -96,6 +100,7 @@ class DemoSeeder extends Seeder
         $this->reports($made, $users, $moderator);
         $this->history($made, $moderator, $support, $users);
 
+        AdSnapshot::backfill(); // approved demo ads get their "approved version" (for the Edited badge)
         app(FeatureManager::class)->set('site.demo_data', true);
         AdCounters::refreshAll();
 
@@ -244,6 +249,19 @@ class DemoSeeder extends Seeder
         $ad->save();
 
         return $ad;
+    }
+
+    /** A waiting ad that was live before: the seller lowered the price and added a line (shows "Edited" in the admin). */
+    private function wasApprovedThenEdited(Ad $ad, User $moderator): void
+    {
+        $before = AdSnapshot::take($ad);
+        $before['price'] = $ad->price !== null ? $this->nicePrice((int) round($ad->price * 1.1)) : null;
+        $before['description'] = Str::before($ad->description, "\n\n");
+        $ad->forceFill([
+            'approved_snapshot' => $before,
+            'published_at' => CarbonImmutable::parse($ad->created_at)->subDays(10)->toMutable(),
+            'reviewed_by' => $moderator->id,
+        ])->save();
     }
 
     private function nicePrice(int $price): int

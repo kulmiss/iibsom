@@ -28,7 +28,7 @@ Google sign-in, post an ad, browse + search, ad page, My Ads, safety (reports, a
 
 ## Ideas
 - ✅ Admin Health page (PR 12). ✅ "Move to VPS" checklist (docs/scaling.md, PR 19).
-- Admin "Edited" badge in the approval queue showing what changed since the last approval.
+- ✅ (PR 21) Admin "Edited" badge in the approval queue showing what changed since the last approval.
 - Match demo photos to the brand in the title (e.g. Toyota photo for Toyota ads).
 - Weekly email to the owner: new ads, users, reports (needs mail on the host).
 - Saved "Recommended for you" across devices for signed-in users (opt-in).

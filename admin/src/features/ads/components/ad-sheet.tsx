@@ -19,7 +19,8 @@ import { ConfirmDialog } from '@/components/confirm-dialog'
 import { ReasonDialog } from '@/components/reason-dialog'
 import { type AdDetail } from '../types'
 import { REJECT_PRESETS, useAdActions } from '../use-ad-actions'
-import { StatusBadge } from './status-badge'
+import { AdChanges } from './ad-changes'
+import { EditedBadge, StatusBadge } from './status-badge'
 
 /** Everything about one ad + approve / reject / edit / delete. */
 export function AdSheet({ adId, onOpenChange }: { adId: number | null; onOpenChange: (open: boolean) => void }) {
@@ -42,6 +43,7 @@ export function AdSheet({ adId, onOpenChange }: { adId: number | null; onOpenCha
           <SheetTitle className='pe-6'>{ad ? ad.title : 'Ad'}</SheetTitle>
           <SheetDescription className='flex flex-wrap items-center gap-2'>
             {ad && <StatusBadge status={ad.status} label={ad.status_label} />}
+            {ad?.edited && <EditedBadge />}
             {ad && <span>#{ad.id} · {ad.category} · {ad.city}{ad.area ? `, ${ad.area}` : ''}</span>}
             {ad?.is_demo && <Badge variant='secondary'>Demo</Badge>}
           </SheetDescription>
@@ -58,6 +60,8 @@ export function AdSheet({ adId, onOpenChange }: { adId: number | null; onOpenCha
             <EditForm ad={ad} onDone={() => setEditing(false)} />
           ) : (
             <div className='space-y-5 p-4'>
+              {ad.changes && <AdChanges changes={ad.changes} />}
+
               {ad.photos.length > 0 ? (
                 <div className='grid grid-cols-3 gap-2'>
                   {ad.photos.map((p, i) => (
