@@ -21,6 +21,7 @@ Every question, the owner's answer, and the date. Newest at the bottom.
 | 14 | 2026-11-16 | Payments? | **No payments through the system** (site like jiji.com). Paid extras (boosts, shop plans, banner ads) are paid to the owner outside the site (EVC/Zaad etc.); an **admin activates** them in the admin panel. No payment code. |
 | 15 | 2026-11-16 | Homepage style? | **Inspired by jiji.com layout** (big search with location picker, category list with icons + ad counts, popular categories, trending ads) but in **Iibsom's own blue + yellow**. Built in PR 4 with categories. |
 | 16 | 2026-11-16 | Phone home page? | **Like Jiji mobile:** location + search on one row, 4-column category tiles starting with "Post ad" and "Trending", bottom bar (Home, Saved*, Sell, Messages*, Profile; *only when switched on). Icons instead of photos. |
+| 17 | 2026-11-16 | Remember what people browse? | **Yes**: "Recommended for you" with similar ads (like Jiji). Guests: history stays in their browser only (privacy, cacheable pages). Planned as PR 9. |
 
 ## Open questions (must be answered before going live)
 

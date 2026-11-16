@@ -3,6 +3,9 @@
 ## Phase 1 — Minimal launch (now)
 Google sign-in, post an ad, browse + search, ad page, My Ads, safety (reports, approval of every ad, filters, limits, bans), Super Admin (shadcn), feature switches, English with instant language switch (Somali-ready), SEO + speed, scale-ready base (R2, queues, search interface, /api/v1), demo data, docs. Runs on **both VPS and shared hosting** (decision #13).
 
+### Phase 1 additions (owner request 2026-11-16)
+- **"Recommended for you"** on the home page (like Jiji): remember the categories and ads a visitor looked at and show similar ads. Guests: kept **only in their own browser** (no server tracking, no IP; page stays cacheable). Signed-in users: can also be saved to their account. Own feature switch `recommendations`. Build right after browse + ad pages (PR 8).
+
 ## Phase 2 — Money + trust (build only when owner says)
 - Boosts (Top / VIP / Diamond): seller pays the owner outside the site; **admin activates** (no payment code, decision #14)
 - Verified badge (phone + ID)

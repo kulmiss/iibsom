@@ -30,8 +30,9 @@ See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example 
 6. **PR 6:** Google sign-in + first-time profile (name, city, +252 phone, terms)
 7. **PR 7:** Post an ad (photos → R2 via queue, drafts offline, approval queue)
 8. **PR 8:** Browse, search (DB full-text behind an interface), ad page, SEO
-9. **PR 9:** My Ads, reports, safety (limits, bad words, duplicates, bans)
-10. **PR 10+:** Admin (shadcn-admin) with 2FA + roles + Feature switches page + Health page, demo data, deploy guides (VPS + shared), scaling docs
+9. **PR 9:** "Recommended for you" (browsing history in the browser, similar ads)
+10. **PR 10:** My Ads, reports, safety (limits, bad words, duplicates, bans)
+11. **PR 11+:** Admin (shadcn-admin) with 2FA + roles + Feature switches page + Health page, demo data, deploy guides (VPS + shared), scaling docs
 
 ## Known notes
 - Public pages currently set an XSRF/session cookie; the page-cache PR must make guest pages cookie-free so Cloudflare can cache them.
