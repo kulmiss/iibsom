@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-16 (PR 5)_
+_Last updated: 2026-11-16 (PR 6)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -26,13 +26,14 @@ See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example 
 2. **PR 2:** Feature switches + settings + hosting modes + health + security headers
 3. **PR 3:** Language system (English, Somali-ready, switch without reload) + base layout (mobile-first)
 4. **PR 4:** Locations (Somalia regions/cities/areas, Mogadishu ON only) + data-driven categories + custom fields + Jiji-style home
-5. **PR 5:** Phone home like Jiji mobile + bottom bar (this one)
-6. **PR 6:** Google sign-in + first-time profile (name, city, +252 phone, terms)
-7. **PR 7:** Post an ad (photos → R2 via queue, drafts offline, approval queue)
-8. **PR 8:** Browse, search (DB full-text behind an interface), ad page, SEO
-9. **PR 9:** "Recommended for you" (browsing history in the browser, similar ads)
-10. **PR 10:** My Ads, reports, safety (limits, bad words, duplicates, bans)
-11. **PR 11+:** Admin (shadcn-admin) with 2FA + roles + Feature switches page + Health page, demo data, deploy guides (VPS + shared), scaling docs
+5. **PR 5:** Phone home like Jiji mobile + bottom bar
+6. **PR 6:** Hide city picker when only one city + roadmap "Recommended for you" (this one)
+7. **PR 7:** Google sign-in + first-time profile (name, city, +252 phone, terms)
+8. **PR 8:** Post an ad (photos → R2 via queue, drafts offline, approval queue)
+9. **PR 9:** Browse, search (DB full-text behind an interface), ad page, SEO
+10. **PR 10:** "Recommended for you" (browsing history in the browser, similar ads)
+11. **PR 11:** My Ads, reports, safety (limits, bad words, duplicates, bans)
+12. **PR 12+:** Admin (shadcn-admin) with 2FA + roles + Feature switches page + Health page, demo data, deploy guides (VPS + shared), scaling docs
 
 ## Known notes
 - Public pages currently set an XSRF/session cookie; the page-cache PR must make guest pages cookie-free so Cloudflare can cache them.

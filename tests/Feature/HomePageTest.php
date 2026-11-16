@@ -42,14 +42,18 @@ class HomePageTest extends TestCase
 
     public function test_location_picker_has_only_live_cities(): void
     {
+        // Only Mogadishu is live → no picker at all.
         $this->get('/')
-            ->assertSee('<option value="mogadishu">Mogadishu</option>', false)
-            ->assertDontSee('All Somalia')
-            ->assertDontSee('Kismayo');
+            ->assertDontSee('<select id="city"', false)
+            ->assertDontSee('All Somalia');
 
         City::where('slug', 'kismayo')->first()->update(['enabled' => true]);
 
-        $this->get('/')->assertSee('All Somalia')->assertSee('Kismayo');
+        $this->get('/')
+            ->assertSee('<select id="city"', false)
+            ->assertSee('All Somalia')
+            ->assertSee('<option value="mogadishu">Mogadishu</option>', false)
+            ->assertSee('Kismayo');
     }
 
     public function test_disabled_category_disappears_from_home(): void

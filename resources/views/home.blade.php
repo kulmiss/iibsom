@@ -15,15 +15,16 @@
 
             {{-- Search results page comes in the search PR. --}}
             <form class="mt-5 flex gap-2" role="search" action="#" method="get">
-                <label for="city" class="sr-only">{{ __('site.home.location_label') }}</label>
-                <select id="city" name="city" class="w-32 shrink-0 truncate rounded-lg border-0 bg-white px-3 py-3 text-stone-800 sm:w-48 sm:px-4">
-                    @if (count($cities) > 1)
+                {{-- Picker only when there is a choice (2+ live cities). --}}
+                @if (count($cities) > 1)
+                    <label for="city" class="sr-only">{{ __('site.home.location_label') }}</label>
+                    <select id="city" name="city" class="w-32 shrink-0 truncate rounded-lg border-0 bg-white px-3 py-3 text-stone-800 sm:w-48 sm:px-4">
                         <option value="">{{ __('site.home.all_somalia') }}</option>
-                    @endif
-                    @foreach ($cities as $city)
-                        <option value="{{ $city['slug'] }}">{{ translated($city['name']) }}</option>
-                    @endforeach
-                </select>
+                        @foreach ($cities as $city)
+                            <option value="{{ $city['slug'] }}">{{ translated($city['name']) }}</option>
+                        @endforeach
+                    </select>
+                @endif
 
                 <div class="relative flex-1">
                     <label for="q" class="sr-only">{{ __('site.home.search_placeholder') }}</label>
