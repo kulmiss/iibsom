@@ -1,0 +1,27 @@
+# ROADMAP
+
+## Phase 1 — Minimal launch (now)
+Google sign-in, post an ad, browse + search, ad page, My Ads, safety (reports, approval of every ad, filters, limits, bans), Super Admin (shadcn), feature switches, English with instant language switch (Somali-ready), SEO + speed, scale-ready base (R2, queues, search interface, /api/v1), demo data, docs.
+
+## Phase 2 — Money + trust (build only when owner says)
+- Paid boosts (Top / VIP / Diamond) via EVC Plus, Zaad, Sahal, eDahab
+- Verified badge (phone + ID)
+- Business shop pages with monthly plans
+- In-app chat
+- Favourites + saved-search alerts
+- Banner ads
+- Ad stats (views, calls, WhatsApp clicks)
+
+## Phase 3 — Growth (build only when owner says)
+- Flutter app + push notifications
+- Somali language (texts reviewed by a native speaker)
+- Arabic
+- Diaspora features
+- Smart price suggestions
+- Seller ratings (real buyers only)
+- Delivery partners
+- Auto-post to social media
+- More regions (other countries) via region switches
+
+## Ideas
+- Auto-trust for good sellers (skip approval after N approved ads) — switch built, OFF per decision #9.
