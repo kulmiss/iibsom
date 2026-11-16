@@ -66,3 +66,6 @@ Every question, the owner's answer, and the date. Newest at the bottom.
 | 2026-11-16 | Session cookies are encrypted by default and Secure on production by default. `TRUSTED_PROXIES` in .env for Cloudflare. |
 | 2026-11-16 | Shared hosting deploy = upload a zip made by `tools/make-release` on the owner's PC (no Node/Composer needed on the host). AWS SDK trimmed to S3 only (zip ~40 MB). |
 | 2026-11-16 | Final merge: the top PR (#19) is based on `main`, so one merge brings PRs 7–19. The stacked PRs #7–#18 can then be closed. |
+| 2026-11-16 | Quality gates (owner's "zero mistakes" rules): Larastan **level 8** with zero errors and no baseline or ignore rules; Lighthouse in CI (phone): performance ≥ 85, accessibility/best-practices/SEO ≥ 95/95/90 ("is-crawlable" skipped: only the live site may be indexed); PR template with the 1–9 checklist. Level 9 (strict "mixed") not used: it would need casts everywhere for Laravel's untyped request data. |
+| 2026-11-16 | Text with broken characters (invalid UTF-8) is refused with 400 for every request (it crashed posting before). |
+| 2026-11-16 | Admin app asks `GET /admin/api/session` first (200 with `user: null` when signed out), so the sign-in page has no failed request in the console. |

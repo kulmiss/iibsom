@@ -83,6 +83,8 @@ class SpamGuard
         $map = ['0' => 'o', '1' => 'i', '3' => 'e', '4' => 'a', '5' => 's', '7' => 't', '@' => 'a', '$' => 's', '!' => 'i'];
 
         // Only inside a word or at its start ("sh1t", "$hit"), so "$100" and "great!" stay as they are.
-        return preg_replace_callback('/(?<=\p{L})[013457@$!](?=\p{L})|(?<![\p{L}\p{N}])[@$](?=\p{L})/u', fn ($m) => $map[$m[0]], Str::lower($text));
+        $lower = Str::lower($text);
+
+        return preg_replace_callback('/(?<=\p{L})[013457@$!](?=\p{L})|(?<![\p{L}\p{N}])[@$](?=\p{L})/u', fn ($m) => $map[$m[0]], $lower) ?? $lower;
     }
 }

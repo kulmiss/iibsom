@@ -177,4 +177,26 @@ class AdminAuthTest extends AdminTestCase
             ->expectsQuestion('Password (12+ characters, letters and numbers)', 'short')
             ->assertFailed();
     }
+
+    public function test_session_endpoint_never_errors(): void
+    {
+        // Nobody signed in: 200 with no user (the admin app asks this before showing sign-in).
+        $this->getJson('/admin/api/session')->assertOk()->assertExactJson(['user' => null])->assertHeader('Cache-Control', 'no-store, private');
+
+        // A customer signed in on the website is not admin.
+        $this->actingAs(User::factory()->completed()->create())->getJson('/admin/api/session')->assertOk()->assertJsonPath('user', null);
+
+        // Staff who passed 2FA.
+        $this->asStaff();
+        $this->getJson('/admin/api/session')->assertOk()->assertJsonPath('user.role', 'super_admin');
+    }
+
+    public function test_session_endpoint_ends_idle_sessions(): void
+    {
+        $this->asStaff();
+        $this->withSession(['admin.last_seen' => now()->subMinutes(61)->getTimestamp()]);
+
+        $this->getJson('/admin/api/session')->assertOk()->assertJsonPath('user', null);
+        $this->getJson('/admin/api/me')->assertUnauthorized(); // signed out for real
+    }
 }

@@ -20,7 +20,7 @@ class BlockedPhoneController extends Controller
 
         return response()->json([
             'data' => collect($page->items())->map(fn (BlockedPhone $b) => [
-                'id' => $b->id, 'phone' => $b->phone, 'reason' => $b->reason, 'by' => $b->blocker?->name, 'created_at' => $b->created_at->toIso8601String(),
+                'id' => $b->id, 'phone' => $b->phone, 'reason' => $b->reason, 'by' => $b->blocker?->name, 'created_at' => $b->created_at?->toIso8601String(),
             ]),
             'meta' => ['page' => $page->currentPage(), 'last_page' => $page->lastPage(), 'total' => $page->total()],
         ]);
@@ -33,7 +33,7 @@ class BlockedPhoneController extends Controller
 
         $blocked = BlockedPhone::firstOrNew(['phone' => $phone]);
         $blocked->reason = isset($data['reason']) ? strip_tags($data['reason']) : null;
-        $blocked->blocked_by = $request->user()->id;
+        $blocked->blocked_by = $this->authUser($request)->id;
         $blocked->save();
         Activity::log('phone.blocked', "Blocked phone {$phone}", $blocked);
 

@@ -33,7 +33,7 @@ class CategoryController extends Controller
         $data = $this->validated($request);
         $category = new Category;
         $this->fill($category, $data);
-        $category->sort = (int) Category::where('parent_id', $data['parent_id'] ?? null)->max('sort') + 1;
+        $category->sort = max(0, (int) Category::where('parent_id', $data['parent_id'] ?? null)->max('sort') + 1);
         $category->save();
         Activity::log('category.created', "Created category “{$category->label}”", $category);
 
@@ -93,7 +93,7 @@ class CategoryController extends Controller
         $field = new CategoryField(['category_id' => $category->id]);
         $this->fillField($field, $this->validatedField($request, $category));
         $field->category_id = $category->id;
-        $field->sort = (int) $category->fields()->max('sort') + 1;
+        $field->sort = max(0, (int) $category->fields()->max('sort') + 1);
         $field->save();
         Activity::log('field.created', "Added field “{$field->label_text}” to {$category->label}", $category);
 
@@ -121,6 +121,7 @@ class CategoryController extends Controller
 
     // --- helpers ------------------------------------------------------
 
+    /** @return array<string, mixed> */
     private function validated(Request $request, ?Category $category = null): array
     {
         return $request->validate([
@@ -135,6 +136,7 @@ class CategoryController extends Controller
         ]);
     }
 
+    /** @param  array<string, mixed>  $data */
     private function fill(Category $category, array $data): void
     {
         $category->name = array_filter(['en' => strip_tags($data['name_en']), 'so' => isset($data['name_so']) ? strip_tags($data['name_so']) : null]);
@@ -149,6 +151,7 @@ class CategoryController extends Controller
         $category->has_condition = (bool) ($data['has_condition'] ?? true);
     }
 
+    /** @return array<string, mixed> */
     private function validatedField(Request $request, Category $category, ?CategoryField $field = null): array
     {
         return $request->validate([
@@ -165,21 +168,33 @@ class CategoryController extends Controller
         ]);
     }
 
+    /** @param  array<string, mixed>  $data */
     private function fillField(CategoryField $field, array $data): void
     {
         $field->key = $data['key'];
         $field->type = $data['type'];
         $field->label = array_filter(['en' => strip_tags($data['label_en']), 'so' => isset($data['label_so']) ? strip_tags($data['label_so']) : null]);
-        $field->options = $data['type'] === 'select'
-            ? collect($data['options'] ?? [])->map(fn ($o) => trim(strip_tags($o)))->filter()->unique()->values()
-                ->map(fn ($o) => ['value' => Str::slug($o) ?: Str::random(6), 'label' => ['en' => $o]])->all()
-            : null;
+        $options = null;
+        if ($data['type'] === 'select') {
+            $options = [];
+            $seen = [];
+            foreach (is_array($data['options'] ?? null) ? $data['options'] : [] as $label) {
+                $label = is_string($label) ? trim(strip_tags($label)) : '';
+                if ($label === '' || isset($seen[$label])) {
+                    continue;
+                }
+                $seen[$label] = true;
+                $options[] = ['value' => Str::slug($label) ?: Str::random(6), 'label' => ['en' => $label]];
+            }
+        }
+        $field->options = $options;
         $field->unit = isset($data['unit']) ? strip_tags($data['unit']) : null;
         $field->required = (bool) ($data['required'] ?? false);
         $field->filterable = (bool) ($data['filterable'] ?? true);
         $field->enabled = (bool) ($data['enabled'] ?? true);
     }
 
+    /** @return array<string, mixed> */
     private function row(Category $c): array
     {
         return [
@@ -197,6 +212,7 @@ class CategoryController extends Controller
         ];
     }
 
+    /** @return array<string, mixed> */
     private function fieldRow(CategoryField $f): array
     {
         return [
@@ -216,8 +232,8 @@ class CategoryController extends Controller
     /** @return list<string> icon names available in resources/svg/icons */
     private function icons(): array
     {
-        return collect(glob(resource_path('svg/icons/*.svg')))->map(fn ($p) => basename($p, '.svg'))
-            ->reject(fn ($n) => in_array($n, ['chevron-down', 'chevron-right', 'search', 'plus', 'square-plus', 'bell', 'bookmark', 'message-circle', 'list', 'globe', 'circle-help'], true))
-            ->values()->all();
+        return array_values(collect(glob(resource_path('svg/icons/*.svg')) ?: [])->map(fn ($p) => basename($p, '.svg'))
+            ->reject(fn ($n) => in_array($n, ['chevron-down', 'chevron-right', 'search', 'plus', 'square-plus', 'bell', 'bookmark', 'message-circle', 'list', 'globe', 'circle-help', 'pencil', 'check', 'refresh-cw', 'trash-2', 'eye', 'x', 'clock', 'history'], true))
+            ->all());
     }
 }

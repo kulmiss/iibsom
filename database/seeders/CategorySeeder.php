@@ -32,6 +32,7 @@ class CategorySeeder extends Seeder
         }
     }
 
+    /** @param  array<string, mixed>  $data */
     private function upsert(?Category $parent, array $data, int $sort): Category
     {
         $slug = $data['slug'] ?? Str::slug($data['name']);
@@ -39,8 +40,8 @@ class CategorySeeder extends Seeder
         $category->fill([
             'parent_id' => $parent?->id,
             'name' => $this->names($category->exists ? $category->getAttribute('name') : null, $data['name']),
-            'icon' => $data['icon'] ?? $parent?->icon ?? 'tag',
-            'has_condition' => $data['condition'] ?? $parent?->has_condition ?? true,
+            'icon' => $data['icon'] ?? $parent->icon ?? 'tag',
+            'has_condition' => $data['condition'] ?? $parent->has_condition ?? true,
             'sort' => $sort,
         ]);
         if (! $category->exists) {
@@ -52,6 +53,7 @@ class CategorySeeder extends Seeder
         return $category;
     }
 
+    /** @param  array<string, mixed>  $f */
     private function field(Category $category, array $f, int $sort): void
     {
         $field = CategoryField::firstOrNew(['category_id' => $category->id, 'key' => $f['key']]);
@@ -75,6 +77,7 @@ class CategorySeeder extends Seeder
         ])->save();
     }
 
+    /** @return list<array<string, mixed>> */
     private function tree(): array
     {
         $year = ['key' => 'year', 'type' => 'number', 'label' => 'Year'];

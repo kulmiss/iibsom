@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Ad;
 use App\Support\Ads\AdForm;
 use App\Support\Catalog;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -24,7 +25,7 @@ class MyAdsController extends Controller
     public function index(Request $request): View
     {
         $tab = in_array($request->query('tab'), self::TABS, true) ? $request->query('tab') : 'live';
-        $mine = Ad::where('user_id', $request->user()->id);
+        $mine = Ad::where('user_id', $this->authUser($request)->id);
 
         $counts = [];
         foreach (self::TABS as $t) {
@@ -91,7 +92,8 @@ class MyAdsController extends Controller
         $form->publish($ad);
         $ad->save();
 
-        return redirect(lroute('account.ads'))->with('status', __('ads.mine.renewed', ['date' => $ad->expires_at->translatedFormat('j M Y')]));
+        // expires_at is always set here (renew needs the "ads expire" switch), but never crash on it.
+        return redirect(lroute('account.ads'))->with('status', __('ads.mine.renewed', ['date' => $ad->expires_at?->translatedFormat('j M Y') ?? '']));
     }
 
     public function destroy(Request $request, Ad $ad): RedirectResponse
@@ -116,17 +118,21 @@ class MyAdsController extends Controller
 
     private function own(Request $request, Ad $ad): void
     {
-        abort_unless($ad->user_id === $request->user()->id, 404);
+        abort_unless($ad->user_id === $this->authUser($request)->id, 404);
     }
 
-    private function tab($query, string $tab)
+    /**
+     * @param  Builder<Ad>  $query
+     * @return Builder<Ad>
+     */
+    private function tab(Builder $query, string $tab): Builder
     {
         return match ($tab) {
-            'live' => $query->live(),
             'pending' => $query->where('status', AdStatus::Pending),
             'rejected' => $query->where('status', AdStatus::Rejected),
             'ended' => $query->where(fn ($q) => $q->whereIn('status', [AdStatus::Sold, AdStatus::Expired])
                 ->orWhere(fn ($q) => $q->where('status', AdStatus::Live)->whereNotNull('expires_at')->where('expires_at', '<=', now()))),
+            default => $query->live(), // "live" (the only other tab; index() only passes known tabs)
         };
     }
 }

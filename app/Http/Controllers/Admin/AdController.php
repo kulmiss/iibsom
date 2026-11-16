@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use InvalidArgumentException;
+use LogicException;
 
 class AdController extends Controller
 {
@@ -70,7 +71,7 @@ class AdController extends Controller
                     default => (string) $value,
                 };
 
-                return ['label' => $f?->label_text ?? $key, 'value' => $shown.($f?->unit ? " {$f->unit}" : '')];
+                return ['label' => $f !== null ? $f->label_text : $key, 'value' => $shown.($f?->unit ? " {$f->unit}" : '')];
             })->values(),
             'photos' => $ad->photos->map(fn ($p) => ['id' => $p->id, 'status' => $p->status, 'thumb' => $p->url('thumb'), 'large' => $p->url('large')]),
             'seller_info' => [
@@ -80,7 +81,7 @@ class AdController extends Controller
                 'phone' => $ad->user->phone,
                 'city' => $ad->user->city?->label,
                 'banned' => $ad->user->isBanned(),
-                'member_since' => $ad->user->created_at->toDateString(),
+                'member_since' => $ad->user->created_at?->toDateString(),
                 'ads_total' => $ad->user->ads()->count(),
             ],
             'reviewed_by' => $ad->reviewer?->name,
@@ -95,20 +96,20 @@ class AdController extends Controller
     public function approve(Request $request, Ad $ad): JsonResponse
     {
         try {
-            Moderation::approve($ad, $request->user());
+            Moderation::approve($ad, $this->authUser($request));
         } catch (InvalidArgumentException $e) {
             return response()->json(['message' => $e->getMessage()], 422);
         }
 
-        return response()->json($this->row($ad->fresh()));
+        return response()->json($this->row($ad->refresh()));
     }
 
     public function reject(Request $request, Ad $ad): JsonResponse
     {
         $reason = $request->validate(['reason' => ['required', 'string', 'min:3', 'max:300']])['reason'];
-        Moderation::reject($ad, $request->user(), strip_tags($reason));
+        Moderation::reject($ad, $this->authUser($request), strip_tags($reason));
 
-        return response()->json($this->row($ad->fresh()));
+        return response()->json($this->row($ad->refresh()));
     }
 
     /** Many ads at once: approve, reject (one reason for all) or delete. */
@@ -122,16 +123,17 @@ class AdController extends Controller
         ]);
 
         $needed = $data['action'] === 'delete' ? 'ads.delete' : 'ads.moderate';
-        abort_unless($request->user()->hasPermission($needed), 403, 'You do not have permission to do this.');
+        abort_unless($this->authUser($request)->hasPermission($needed), 403, 'You do not have permission to do this.');
 
         $done = 0;
         $skipped = 0;
         foreach (Ad::whereIn('id', $data['ids'])->get() as $ad) {
             try {
                 match ($data['action']) {
-                    'approve' => Moderation::approve($ad, $request->user()),
-                    'reject' => Moderation::reject($ad, $request->user(), strip_tags($data['reason'])),
+                    'approve' => Moderation::approve($ad, $this->authUser($request)),
+                    'reject' => Moderation::reject($ad, $this->authUser($request), strip_tags($data['reason'])),
                     'delete' => $this->deleteAd($ad),
+                    default => throw new LogicException('Unknown bulk action.'), // validation allows only the 3 above
                 };
                 $done++;
             } catch (InvalidArgumentException) {
@@ -161,7 +163,7 @@ class AdController extends Controller
 
         Activity::log('ad.edited', "Edited ad #{$ad->id} “{$ad->title}”", $ad, ['before' => $before]);
 
-        return response()->json($this->row($ad->fresh()));
+        return response()->json($this->row($ad->refresh()));
     }
 
     public function destroy(Ad $ad): JsonResponse
@@ -177,6 +179,7 @@ class AdController extends Controller
         Activity::log('ad.deleted', "Deleted ad #{$ad->id} “{$ad->title}”", $ad);
     }
 
+    /** @return array<string, mixed> */
     private function row(Ad $ad): array
     {
         $cover = $ad->relationLoaded('photos') ? $ad->photos->firstWhere('status', 'ready') : $ad->photos()->where('status', 'ready')->first();
@@ -188,16 +191,16 @@ class AdController extends Controller
             'status_label' => $ad->status->label(),
             'rejection_reason' => $ad->rejection_reason,
             'price' => $ad->priceLabel(),
-            'category' => $ad->category?->label,
+            'category' => $ad->category->label,
             'category_id' => $ad->category_id,
-            'city' => $ad->city?->label,
-            'seller' => $ad->user?->name,
+            'city' => $ad->city->label,
+            'seller' => $ad->user->name,
             'seller_id' => $ad->user_id,
-            'seller_banned' => (bool) $ad->user?->isBanned(),
+            'seller_banned' => $ad->user->isBanned(),
             'thumb' => $cover?->url('thumb'),
             'photos_count' => $ad->relationLoaded('photos') ? $ad->photos->count() : null,
             'is_demo' => $ad->is_demo,
-            'created_at' => $ad->created_at->toIso8601String(),
+            'created_at' => $ad->created_at?->toIso8601String(),
         ];
     }
 }

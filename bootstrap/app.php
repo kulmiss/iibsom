@@ -7,6 +7,7 @@ use App\Http\Middleware\EnsureFeatureEnabled;
 use App\Http\Middleware\EnsureProfileComplete;
 use App\Http\Middleware\GuestPages;
 use App\Http\Middleware\LogoutBannedUsers;
+use App\Http\Middleware\RejectInvalidUtf8;
 use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\SetLocale;
 use App\Http\Middleware\ThrottleRequests;
@@ -28,6 +29,9 @@ return Application::configure(basePath: dirname(__DIR__))
         if ($proxies = env('TRUSTED_PROXIES')) {
             $middleware->trustProxies(at: $proxies === '*' ? '*' : array_map('trim', explode(',', $proxies)));
         }
+
+        // Broken characters → 400, for the website and the API.
+        $middleware->prepend(RejectInvalidUtf8::class);
 
         // Guests: no session saved, no cookies, page cache. Must run before the session starts.
         $middleware->web(prepend: [GuestPages::class]);

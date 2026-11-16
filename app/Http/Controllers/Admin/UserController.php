@@ -80,21 +80,21 @@ class UserController extends Controller
 
             if ($data['hide_ads'] ?? true) {
                 foreach ($user->ads()->whereIn('status', [AdStatus::Live, AdStatus::Pending])->get() as $ad) {
-                    $ad->forceFill(['status' => AdStatus::Rejected, 'rejection_reason' => 'Account blocked', 'reviewed_by' => $request->user()->id, 'reviewed_at' => now()])->save();
+                    $ad->forceFill(['status' => AdStatus::Rejected, 'rejection_reason' => 'Account blocked', 'reviewed_by' => $this->authUser($request)->id, 'reviewed_at' => now()])->save();
                 }
             }
 
             if (($data['block_phone'] ?? false) && $user->phone) {
                 $blocked = BlockedPhone::firstOrNew(['phone' => $user->phone]);
                 $blocked->reason = $reason;
-                $blocked->blocked_by = $request->user()->id;
+                $blocked->blocked_by = $this->authUser($request)->id;
                 $blocked->save();
             }
         });
 
         Activity::log('user.banned', "Banned {$user->name} (#{$user->id}): {$reason}", $user, $data);
 
-        return response()->json($this->row($user->fresh()->loadCount('ads')));
+        return response()->json($this->row($user->refresh()->loadCount('ads')));
     }
 
     public function unban(User $user): JsonResponse
@@ -102,9 +102,10 @@ class UserController extends Controller
         $user->forceFill(['banned_at' => null, 'ban_reason' => null])->save();
         Activity::log('user.unbanned', "Unbanned {$user->name} (#{$user->id})", $user);
 
-        return response()->json($this->row($user->fresh()->loadCount('ads')));
+        return response()->json($this->row($user->refresh()->loadCount('ads')));
     }
 
+    /** @return array<string, mixed> */
     private function row(User $u): array
     {
         return [
@@ -118,7 +119,7 @@ class UserController extends Controller
             'profile_complete' => $u->hasCompletedProfile(),
             'banned' => $u->isBanned(),
             'ban_reason' => $u->ban_reason,
-            'created_at' => $u->created_at->toIso8601String(),
+            'created_at' => $u->created_at?->toIso8601String(),
             'last_login_at' => $u->last_login_at?->toIso8601String(),
             'is_demo' => $u->is_demo,
         ];

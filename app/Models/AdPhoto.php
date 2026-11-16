@@ -2,24 +2,31 @@
 
 namespace App\Models;
 
+use Database\Factories\AdPhotoFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * @property array<string, array<string, string>>|null $variants size => [format => path]
+ */
 class AdPhoto extends Model
 {
+    /** @use HasFactory<AdPhotoFactory> */
     use HasFactory;
 
     protected $guarded = ['id'];
 
     protected $casts = ['variants' => 'array'];
 
+    /** @return BelongsTo<Ad, $this> */
     public function ad(): BelongsTo
     {
         return $this->belongsTo(Ad::class);
     }
 
+    /** @return BelongsTo<User, $this> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

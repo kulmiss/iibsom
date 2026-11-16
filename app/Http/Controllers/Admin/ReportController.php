@@ -49,21 +49,22 @@ class ReportController extends Controller
         $note = isset($data['note']) ? strip_tags($data['note']) : null;
 
         if ($data['action'] === 'dismiss') {
-            $report->forceFill(['status' => 'rejected', 'handled_by' => $request->user()->id, 'handled_at' => now(), 'staff_note' => $note])->save();
+            $report->forceFill(['status' => 'rejected', 'handled_by' => $this->authUser($request)->id, 'handled_at' => now(), 'staff_note' => $note])->save();
             Activity::log('report.dismissed', "Dismissed report #{$report->id} on ad #{$report->ad_id}", $report);
         } else {
             $ad = $report->ad;
-            if ($ad && ! $ad->trashed()) {
-                Moderation::reject($ad, $request->user(), $note ?: __('reports.reason.'.$report->reason));
+            if (! $ad->trashed()) {
+                Moderation::reject($ad, $this->authUser($request), $note ?: __('reports.reason.'.$report->reason));
             }
             Report::where('ad_id', $report->ad_id)->where('status', 'waiting')
-                ->update(['status' => 'handled', 'handled_by' => $request->user()->id, 'handled_at' => now(), 'staff_note' => $note]);
+                ->update(['status' => 'handled', 'handled_by' => $this->authUser($request)->id, 'handled_at' => now(), 'staff_note' => $note]);
             Activity::log('report.ad_removed', "Removed ad #{$report->ad_id} after report #{$report->id}", $report);
         }
 
-        return response()->json($this->row($report->fresh(['ad.user', 'user', 'handler'])));
+        return response()->json($this->row($report->refresh()->load(['ad.user', 'user', 'handler'])));
     }
 
+    /** @return array<string, mixed> */
     private function row(Report $r): array
     {
         return [
@@ -73,13 +74,13 @@ class ReportController extends Controller
             'details' => $r->details,
             'status' => $r->status,
             'ad_id' => $r->ad_id,
-            'ad_title' => $r->ad?->title,
-            'ad_status' => $r->ad?->status?->value,
-            'seller' => $r->ad?->user?->name,
-            'reporter' => $r->user?->name,
+            'ad_title' => $r->ad->title,
+            'ad_status' => $r->ad->status->value,
+            'seller' => $r->ad->user->name,
+            'reporter' => $r->user->name,
             'handled_by' => $r->handler?->name,
             'staff_note' => $r->staff_note,
-            'created_at' => $r->created_at->toIso8601String(),
+            'created_at' => $r->created_at?->toIso8601String(),
         ];
     }
 }

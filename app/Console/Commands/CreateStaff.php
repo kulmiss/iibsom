@@ -18,8 +18,8 @@ class CreateStaff extends Command
     public function handle(): int
     {
         $role = $this->option('role');
-        if (! array_key_exists($role, config('admin.roles'))) {
-            $this->error('Role must be one of: '.implode(', ', array_keys(config('admin.roles'))));
+        if (! is_string($role) || ! array_key_exists($role, config()->array('admin.roles'))) {
+            $this->error('Role must be one of: '.implode(', ', array_keys(config()->array('admin.roles'))));
 
             return self::FAILURE;
         }

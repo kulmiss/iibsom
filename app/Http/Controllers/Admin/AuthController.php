@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\AdminAuthenticate;
 use App\Models\User;
 use App\Support\Admin\Activity;
 use App\Support\Privacy\Ip;
@@ -101,8 +102,9 @@ class AuthController extends Controller
         $this->throttleCodes($request, $user);
 
         $ok = false;
-        if (! empty($data['code'])) {
-            $ok = $this->google2fa->verifyKey($user->two_factor_secret, $data['code'], 1);
+        $secret = $user->two_factor_secret;
+        if (! empty($data['code']) && $secret !== null) {
+            $ok = $this->google2fa->verifyKey($secret, $data['code'], 1);
         } elseif (! empty($data['recovery_code'])) {
             $ok = $this->useRecoveryCode($user, Str::upper(trim($data['recovery_code'])));
         }
@@ -117,14 +119,21 @@ class AuthController extends Controller
         return response()->json(['user' => $this->userPayload($user)]);
     }
 
+    /** Who is signed in, without an error when nobody is (the admin app asks this first). */
+    public function session(Request $request): JsonResponse
+    {
+        return response()->json(['user' => AdminAuthenticate::check($request) ? $this->userPayload($this->authUser($request)) : null])
+            ->header('Cache-Control', 'no-store');
+    }
+
     public function me(Request $request): JsonResponse
     {
-        return response()->json(['user' => $this->userPayload($request->user())]);
+        return response()->json(['user' => $this->userPayload($this->authUser($request))]);
     }
 
     public function logout(Request $request): JsonResponse
     {
-        Activity::log('staff.signed_out', $request->user()->name.' signed out', $request->user());
+        Activity::log('staff.signed_out', $this->authUser($request)->name.' signed out', $this->authUser($request));
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
@@ -134,8 +143,9 @@ class AuthController extends Controller
 
     private function pendingUser(Request $request): User
     {
-        $user = User::find($request->session()->get('admin.login_user'));
-        abort_unless($user && $user->isStaff() && ! $user->isBanned(), 401, 'Please sign in again.');
+        $id = $request->session()->get('admin.login_user');
+        $user = is_int($id) || is_string($id) ? User::find($id) : null;
+        abort_unless($user instanceof User && $user->isStaff() && ! $user->isBanned(), 401, 'Please sign in again.');
 
         return $user;
     }
@@ -177,6 +187,7 @@ class AuthController extends Controller
         Activity::log('staff.signed_in', $user->name.' signed in', $user);
     }
 
+    /** @return array<string, mixed> */
     private function userPayload(User $user): array
     {
         return [

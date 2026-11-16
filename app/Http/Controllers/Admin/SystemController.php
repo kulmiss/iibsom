@@ -49,7 +49,7 @@ class SystemController extends Controller
         $request->validate(['confirm' => ['required', 'in:DELETE']], ['confirm.in' => 'Type DELETE to confirm.']);
 
         try {
-            $counts = DemoData::deleteAll($request->user()->id);
+            $counts = DemoData::deleteAll($this->authUser($request)->id);
         } catch (Throwable $e) {
             report($e);
 

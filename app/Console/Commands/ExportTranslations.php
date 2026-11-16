@@ -23,7 +23,7 @@ class ExportTranslations extends Command
     {
         $locale = $this->argument('locale');
 
-        if (! array_key_exists($locale, config('iibsom.locales'))) {
+        if (! array_key_exists($locale, config()->array('iibsom.locales'))) {
             $this->error("Unknown language [{$locale}]. Add it to config/iibsom.php first.");
 
             return self::FAILURE;
@@ -55,6 +55,11 @@ class ExportTranslations extends Command
         File::ensureDirectoryExists(dirname($path));
 
         $handle = fopen($path, 'w');
+        if ($handle === false) {
+            $this->error("Could not write {$path}. Check that the folder exists and can be written.");
+
+            return self::FAILURE;
+        }
         fwrite($handle, "\xEF\xBB\xBF"); // UTF-8 BOM so Excel shows Somali letters correctly
         fputcsv($handle, ['key', 'english', 'translation', 'status'], escape: '');
         foreach ($rows as $row) {

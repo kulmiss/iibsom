@@ -11,6 +11,10 @@ use Illuminate\Session\DatabaseSessionHandler;
  */
 class PrivateDatabaseSessionHandler extends DatabaseSessionHandler
 {
+    /**
+     * @param  array<mixed>  $payload
+     * @return $this
+     */
     protected function addRequestInformation(&$payload)
     {
         if ($this->userId() !== null) {

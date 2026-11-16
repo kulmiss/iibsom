@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\City;
 use App\Search\AdSearch;
+use App\Search\SearchRequest;
 use App\Support\Catalog;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -60,24 +61,19 @@ class BrowseController extends Controller
         $categoryIds = null;
         if ($category) {
             $categoryIds = $category->parent_id === null
-                ? $category->children()->where('enabled', true)->pluck('id')->all()
+                ? SearchRequest::ids($category->children()->where('enabled', true)->pluck('id'))
                 : [$category->id];
         }
 
         // Only filters the category really has (and that are marked "filterable").
         $fields = $category && $category->parent_id ? $category->allFields()->where('filterable', true)->values() : collect();
-        $fieldFilters = collect($data['f'] ?? [])->only($fields->pluck('key'))->all();
+        $fieldFilters = $request->collect('f')->only($fields->pluck('key'))->all();
 
-        $results = $this->search->search([
-            'q' => $data['q'] ?? null,
+        $results = $this->search->search(SearchRequest::basic($request) + [
             'category_ids' => $categoryIds,
             'city_id' => $city?->id,
-            'min' => $data['min'] ?? null,
-            'max' => $data['max'] ?? null,
-            'condition' => $data['condition'] ?? null,
             'fields' => $fieldFilters,
-            'sort' => $data['sort'] ?? 'newest',
-        ], 24, (int) ($data['page'] ?? 1))->withQueryString();
+        ], 24, max(1, $request->integer('page', 1)))->withQueryString();
 
         return view('browse.index', [
             'results' => $results,

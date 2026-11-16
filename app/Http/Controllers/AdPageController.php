@@ -36,7 +36,7 @@ class AdPageController extends Controller
             'similar' => $similar,
             'sellerLiveAds' => DatabaseAdSearch::publicQuery()->where('user_id', $ad->user_id)->count(),
             'fieldRows' => $this->fieldRows($ad),
-            'reported' => $request->user() ? Report::where('ad_id', $ad->id)->where('user_id', $request->user()->id)->exists() : false,
+            'reported' => $request->user() !== null && Report::where('ad_id', $ad->id)->where('user_id', $request->user()->id)->exists(),
         ]);
     }
 
@@ -62,7 +62,7 @@ class AdPageController extends Controller
     public function report(Request $request, Ad $ad): RedirectResponse
     {
         abort_unless($ad->isLive(), 404);
-        abort_if($ad->user_id === $request->user()->id, 403);
+        abort_if($ad->user_id === $this->authUser($request)->id, 403);
 
         $data = $request->validate([
             'reason' => ['required', Rule::in(Report::REASONS)],
@@ -70,10 +70,10 @@ class AdPageController extends Controller
             'website' => ['prohibited'], // honeypot: real people never fill this hidden field
         ]);
 
-        $report = Report::firstOrNew(['ad_id' => $ad->id, 'user_id' => $request->user()->id]);
+        $report = Report::firstOrNew(['ad_id' => $ad->id, 'user_id' => $this->authUser($request)->id]);
         $report->fill(['reason' => $data['reason'], 'details' => isset($data['details']) ? strip_tags($data['details']) : null]);
         $report->ad_id = $ad->id;
-        $report->user_id = $request->user()->id;
+        $report->user_id = $this->authUser($request)->id;
         $report->status = 'waiting';
         $report->save();
 
@@ -90,7 +90,9 @@ class AdPageController extends Controller
             return $ad->category->isLive();
         }
 
-        return $request->user() && ($request->user()->id === $ad->user_id || $request->user()->isStaff());
+        $user = $request->user();
+
+        return $user !== null && ($user->id === $ad->user_id || $user->isStaff());
     }
 
     /** @return list<array{label: string, value: string}> */

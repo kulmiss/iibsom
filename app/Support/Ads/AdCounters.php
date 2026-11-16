@@ -7,6 +7,7 @@ use App\Models\Ad;
 use App\Models\Category;
 use App\Models\City;
 use App\Support\Catalog;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Keeps "number of live ads" on categories (and their parent) and cities,
@@ -51,8 +52,12 @@ final class AdCounters
         app(Catalog::class)->flush();
     }
 
-    /** Live and not expired. Demo ads count only while "Show demo data" is ON. */
-    private static function live()
+    /**
+     * Live and not expired. Demo ads count only while "Show demo data" is ON.
+     *
+     * @return Builder<Ad>
+     */
+    private static function live(): Builder
     {
         return Ad::query()->where('status', AdStatus::Live)->when(! feature('site.demo_data'), fn ($q) => $q->where('is_demo', false))
             ->where(fn ($q) => $q->whereNull('expires_at')->orWhere('expires_at', '>', now()));

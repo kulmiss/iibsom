@@ -18,7 +18,9 @@ class SpaController extends Controller
         abort_unless(is_file($file), 503, 'Admin app is not built yet. Run: cd admin && pnpm install && pnpm build');
 
         $nonce = Vite::cspNonce();
-        $html = preg_replace('/<(script|link)\b/', '<$1 nonce="'.$nonce.'"', file_get_contents($file));
+        $raw = file_get_contents($file);
+        abort_if($raw === false, 503, 'Admin app could not be read. Check file permissions of public/admin-app.');
+        $html = preg_replace('/<(script|link)\b/', '<$1 nonce="'.$nonce.'"', $raw);
 
         return response($html)->header('Cache-Control', 'no-store')->header('X-Robots-Tag', 'noindex, nofollow');
     }

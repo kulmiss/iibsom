@@ -31,7 +31,7 @@ class ActivityController extends Controller
                 'action' => $a->action,
                 'summary' => $a->summary,
                 'subject' => $a->subject_type ? "{$a->subject_type} #{$a->subject_id}" : null,
-                'by' => $a->user?->name ?? 'System',
+                'by' => $a->user->name ?? 'System',
                 'at' => $a->created_at->toIso8601String(),
             ]),
             'meta' => ['page' => $page->currentPage(), 'last_page' => $page->lastPage(), 'total' => $page->total()],

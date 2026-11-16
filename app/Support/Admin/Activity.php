@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 /** Write one line to the admin activity log (and the security log). */
 final class Activity
 {
+    /** @param  array<string, mixed>  $details */
     public static function log(string $action, string $summary, ?Model $subject = null, array $details = []): AdminActivity
     {
         $user = auth()->user();

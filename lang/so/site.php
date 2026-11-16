@@ -65,5 +65,6 @@ return [
         'not_found_title' => 'Boggan lama helin',
         'not_found_text' => 'Boggan ma jiro ama waa la saaray.',
         'back_home' => 'Ku noqo bogga hore',
+        'bad_text' => 'Xarfaha qaarkood lama akhrin karo. Fadlan mar kale qor.',
     ],
 ];

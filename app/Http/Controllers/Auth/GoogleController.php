@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Contracts\User as GoogleUser;
 use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Two\AbstractProvider;
+use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirect;
 use Throwable;
 
 /**
@@ -23,16 +25,19 @@ use Throwable;
  */
 class GoogleController extends Controller
 {
-    public function redirect(Request $request, Locales $locales): RedirectResponse
+    public function redirect(Request $request, Locales $locales): SymfonyRedirect
     {
         // Remember the visitor's language so we come back to the right one.
         $lang = (string) $request->query('lang', '');
         $request->session()->put('login_locale', $locales->isEnabled($lang) ? $lang : $locales->default());
 
-        return Socialite::driver('google')
-            ->scopes(['openid', 'profile', 'email'])
-            ->with(['prompt' => 'select_account'])
-            ->redirect();
+        // Google's default scopes are already only: openid, profile, email.
+        $provider = Socialite::driver('google');
+        if ($provider instanceof AbstractProvider) {
+            $provider->with(['prompt' => 'select_account']); // let people pick the right account
+        }
+
+        return $provider->redirect();
     }
 
     public function callback(Request $request): RedirectResponse
@@ -58,7 +63,11 @@ class GoogleController extends Controller
             return redirect($loginUrl)->with('error', __('account.login.unverified'));
         }
 
-        $user = $this->findOrCreate($google);
+        $email = $google->getEmail();
+        if ($email === null) { // emailIsVerified() already checks this; never continue without one
+            return redirect($loginUrl)->with('error', __('account.login.unverified'));
+        }
+        $user = $this->findOrCreate($google, $email);
 
         if ($user->isBanned()) {
             Log::channel('security')->notice('login.banned_user', ['user_id' => $user->id]);
@@ -87,9 +96,9 @@ class GoogleController extends Controller
         return filter_var($verified, FILTER_VALIDATE_BOOLEAN) && filled($google->getEmail());
     }
 
-    private function findOrCreate(GoogleUser $google): User
+    private function findOrCreate(GoogleUser $google, string $email): User
     {
-        $email = Str::lower($google->getEmail());
+        $email = Str::lower($email);
 
         $user = User::where('google_id', $google->getId())->first()
             ?? User::where('email', $email)->first();

@@ -18,7 +18,7 @@ final class SomaliPhone
             return null;
         }
 
-        $digits = preg_replace('/\D+/', '', $input);
+        $digits = preg_replace('/\D+/', '', $input) ?? '';
 
         if (str_starts_with($digits, '00252')) {
             $digits = substr($digits, 5);

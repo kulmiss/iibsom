@@ -4,19 +4,17 @@ namespace App\Support\Ads;
 
 use App\Models\Category;
 use App\Models\CategoryField;
-use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 /** Validation rules and clean values for a category's custom fields. */
 class FieldRules
 {
-    /** @return array<string, array> rules keyed "fields.<key>" */
+    /** @return array<string, list<mixed>> rules keyed "fields.<key>" */
     public static function rules(Category $category): array
     {
         $rules = [];
 
         foreach ($category->allFields() as $field) {
-            /** @var CategoryField $field */
             $base = [$field->required ? 'required' : 'nullable'];
 
             $rules["fields.{$field->key}"] = array_merge($base, match ($field->type) {
@@ -34,10 +32,14 @@ class FieldRules
         return $rules;
     }
 
-    /** Keep only known fields, cast to the right type, drop empty ones. */
+    /**
+     * Keep only known fields, cast to the right type, drop empty ones.
+     *
+     * @param  array<mixed>  $input
+     * @return array<string, int|bool|string>
+     */
     public static function clean(Category $category, array $input): array
     {
-        /** @var Collection<int, CategoryField> $fields */
         $fields = $category->allFields()->keyBy('key');
         $clean = [];
 
@@ -57,7 +59,11 @@ class FieldRules
         return $clean;
     }
 
-    /** Attribute names for nice error messages ("Brand is required"). */
+    /**
+     * Attribute names for nice error messages ("Brand is required").
+     *
+     * @return array<string, string>
+     */
     public static function names(Category $category): array
     {
         return $category->allFields()->mapWithKeys(fn (CategoryField $f) => ["fields.{$f->key}" => $f->label_text])->all();

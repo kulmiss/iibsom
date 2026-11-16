@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Ad;
 use App\Models\Category;
 use App\Search\DatabaseAdSearch;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -37,7 +38,12 @@ class ForYouController extends Controller
         ])->header('Cache-Control', 'private, max-age=120');
     }
 
-    /** Ads they opened, newest first, still live. */
+    /**
+     * Ads they opened, newest first, still live.
+     *
+     * @param  list<int>  $ids
+     * @return Collection<int, Ad>
+     */
     private function recent(array $ids): Collection
     {
         if (! $ids) {
@@ -52,6 +58,10 @@ class ForYouController extends Controller
      * New ads from the categories they look at most (a main category counts
      * for all its sub categories). Ads they already opened are left out.
      * Mixed in turn: 1st from each category, then 2nd from each…
+     *
+     * @param  list<int>  $cats
+     * @param  list<int>  $seen
+     * @return Collection<int, Ad>
      */
     private function recommended(array $cats, array $seen): Collection
     {
@@ -83,7 +93,8 @@ class ForYouController extends Controller
         return $out->take(self::LIMIT)->values();
     }
 
-    private function query()
+    /** @return Builder<Ad> */
+    private function query(): Builder
     {
         return DatabaseAdSearch::publicQuery()->with(['category:id,slug,icon,parent_id', 'city:id,name,slug', 'cover']);
     }

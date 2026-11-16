@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
+/**
+ * @property array<string, string> $title
+ * @property array<string, string> $body
+ */
 class Page extends Model
 {
     public const CORE = ['about', 'terms', 'privacy', 'safety'];

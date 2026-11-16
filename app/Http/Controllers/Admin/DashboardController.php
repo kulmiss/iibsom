@@ -42,17 +42,21 @@ class DashboardController extends Controller
             'top_categories' => $ads()->where('ads.status', AdStatus::Live)
                 ->join('categories', 'categories.id', '=', 'ads.category_id')
                 ->select('categories.name', DB::raw('count(*) as total'))
-                ->groupBy('categories.id', 'categories.name')->orderByDesc('total')->limit(6)->get()
+                ->groupBy('categories.id', 'categories.name')->orderByDesc('total')->limit(6)->toBase()->get()
                 ->map(fn ($row) => ['name' => translated(json_decode($row->name, true)), 'total' => (int) $row->total]),
             'top_cities' => $ads()->where('ads.status', AdStatus::Live)
                 ->join('cities', 'cities.id', '=', 'ads.city_id')
                 ->select('cities.name', DB::raw('count(*) as total'))
-                ->groupBy('cities.id', 'cities.name')->orderByDesc('total')->limit(6)->get()
+                ->groupBy('cities.id', 'cities.name')->orderByDesc('total')->limit(6)->toBase()->get()
                 ->map(fn ($row) => ['name' => translated(json_decode($row->name, true)), 'total' => (int) $row->total]),
         ]);
     }
 
-    /** @return list<array{date:string, ads:int, users:int}> */
+    /**
+     * @param  Builder<Ad>  $ads
+     * @param  Builder<User>  $users
+     * @return list<array{date:string, ads:int, users:int}>
+     */
     private function daily(Builder $ads, Builder $users, int $days): array
     {
         $from = now()->subDays($days - 1)->startOfDay();

@@ -31,7 +31,7 @@ class FeatureController extends Controller
         abort_unless($features->exists($key), 404);
         $on = $request->validate(['enabled' => ['required', 'boolean']])['enabled'];
 
-        $features->set($key, $on, $request->user()->id);
+        $features->set($key, $on, $this->authUser($request)->id);
         if ($key === 'site.demo_data') {
             AdCounters::refreshAll();
         }

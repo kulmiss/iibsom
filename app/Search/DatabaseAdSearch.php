@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 /** MySQL/MariaDB full-text search + indexed filters. */
 class DatabaseAdSearch implements AdSearch
 {
+    /** @return LengthAwarePaginator<int, Ad> */
     public function search(array $filters, int $perPage = 24, int $page = 1): LengthAwarePaginator
     {
         $query = self::publicQuery()->with(['category:id,name,slug,parent_id', 'city:id,name,slug', 'cover']);
@@ -46,16 +47,21 @@ class DatabaseAdSearch implements AdSearch
         return $query->paginate($perPage, ['ads.*'], 'page', $page);
     }
 
-    /** Live, not expired, demo only when "Show demo data" is ON. */
+    /**
+     * Live, not expired, demo only when "Show demo data" is ON.
+     *
+     * @return Builder<Ad>
+     */
     public static function publicQuery(): Builder
     {
         return Ad::query()->live()->when(! feature('site.demo_data'), fn ($q) => $q->where('ads.is_demo', false));
     }
 
+    /** @param  Builder<Ad>  $query */
     private function keyword(Builder $query, string $q): void
     {
-        $words = collect(preg_split('/\s+/u', mb_strtolower($q)))
-            ->map(fn ($w) => preg_replace('/[^\p{L}\p{N}]+/u', '', $w))
+        $words = collect(preg_split('/\s+/u', mb_strtolower($q)) ?: [])
+            ->map(fn (string $w) => preg_replace('/[^\p{L}\p{N}]+/u', '', $w) ?? '')
             ->filter(fn ($w) => mb_strlen($w) >= 2)->take(8);
 
         if ($words->isEmpty()) {
@@ -76,6 +82,7 @@ class DatabaseAdSearch implements AdSearch
     }
 
     /** Custom field filters: select = exact, number = "min-max", boolean = yes. */
+    /** @param  Builder<Ad>  $query */
     private function field(Builder $query, string $key, mixed $value): void
     {
         if (! preg_match('/^[a-z][a-z0-9_]*$/', $key) || $value === null || $value === '') {

@@ -70,7 +70,7 @@ class DemoSeeder extends Seeder
         $this->now = CarbonImmutable::now();
 
         $mogadishu = City::where('slug', 'mogadishu')->firstOrFail();
-        $areas = Area::where('city_id', $mogadishu->id)->pluck('id')->all();
+        $areas = array_map(fn (Area $a) => $a->id, array_values(Area::where('city_id', $mogadishu->id)->get(['id'])->all()));
 
         [$moderator, $support] = $this->staff();
         $users = $this->customers($mogadishu->id);
@@ -81,7 +81,7 @@ class DemoSeeder extends Seeder
         $made = [];
         Ad::withoutEvents(function () use (&$made, $content, $categories, $users, $mogadishu, $areas, $moderator, $photoPool) {
             for ($i = 0; $i < self::ADS + self::PENDING; $i++) {
-                $slug = $this->pickCategory(array_keys($content));
+                $slug = $this->pickCategory(array_map('strval', array_keys($content)));
                 $category = $categories->get($slug);
                 if (! $category) {
                     continue;
@@ -108,6 +108,7 @@ class DemoSeeder extends Seeder
     // -----------------------------------------------------------------------
 
     /** Demo staff, with 2FA already set up (add the key to an authenticator app). */
+    /** @return array{0: User, 1: User} moderator, support */
     private function staff(): array
     {
         $out = [];
@@ -165,6 +166,7 @@ class DemoSeeder extends Seeder
     }
 
     /** Popular categories get more ads, like on a real site. */
+    /** @param  list<string>  $slugs */
     private function pickCategory(array $slugs): string
     {
         $busy = ['cars' => 6, 'mobile-phones' => 6, 'houses-for-rent' => 5, 'land' => 4, 'houses-for-sale' => 3, 'goats-sheep' => 3, 'camels' => 3,
@@ -180,6 +182,7 @@ class DemoSeeder extends Seeder
         return $slugs[0];
     }
 
+    /** @param  list<int>  $areas */
     private function ad(Category $category, string $title, int $min, int $max, User $user, int $cityId, array $areas, User $moderator, bool $pending): Ad
     {
         $age = $pending ? mt_rand(5, 60 * 30) : mt_rand(60 * 3, self::HISTORY_DAYS * 1440); // minutes
@@ -220,22 +223,22 @@ class DemoSeeder extends Seeder
 
         if ($status !== AdStatus::Pending) {
             $ad->reviewed_by = $moderator->id;
-            $ad->reviewed_at = $reviewed;
+            $ad->reviewed_at = $reviewed->toMutable();
         }
         if ($status === AdStatus::Rejected) {
             $ad->rejection_reason = ['Photos are not clear or not real', 'Wrong category', 'Price is missing or not real', 'Duplicate ad'][mt_rand(0, 3)];
         }
         if (in_array($status, [AdStatus::Live, AdStatus::Sold, AdStatus::Expired], true)) {
-            $ad->published_at = $reviewed;
-            $ad->expires_at = $status === AdStatus::Live && $days > 55
+            $ad->published_at = $reviewed->toMutable();
+            $ad->expires_at = ($status === AdStatus::Live && $days > 55
                 ? $this->now->addDays(mt_rand(3, 50))        // renewed by the seller
-                : $reviewed->addDays(60);
+                : $reviewed->addDays(60))->toMutable();
             if ($status === AdStatus::Expired) {
-                $ad->expires_at = $this->now->subDays(mt_rand(1, max(1, (int) $days - 60)));
+                $ad->expires_at = $this->now->subDays(mt_rand(1, max(1, (int) $days - 60)))->toMutable();
             }
         }
         if ($status === AdStatus::Sold) {
-            $ad->sold_at = $reviewed->addDays(mt_rand(1, 20))->min($this->now);
+            $ad->sold_at = $reviewed->addDays(mt_rand(1, 20))->min($this->now)->toMutable();
         }
 
         $ad->save();
@@ -277,6 +280,7 @@ class DemoSeeder extends Seeder
     }
 
     /** Custom field values that make sense (brand from the title when it is there). */
+    /** @return array<string, int|bool|string> */
     private function fields(Category $category, string $title): array
     {
         $values = [];
@@ -293,13 +297,14 @@ class DemoSeeder extends Seeder
                     'quantity' => preg_match('/(\d+) (heads|birds|pieces)/', $title, $m) ? (int) $m[1] : mt_rand(1, 30),
                     default => mt_rand(1, 100),
                 },
-                default => $field->key === 'model' ? trim(preg_replace('/^\S+\s+(\S+(\s\S+)?).*/u', '$1', $title), ' ,') : null,
+                default => $field->key === 'model' ? trim(preg_replace('/^\S+\s+(\S+(\s\S+)?).*/u', '$1', $title) ?? '', ' ,') : null,
             };
         }
 
         return array_filter($values, fn ($v) => $v !== null && $v !== '');
     }
 
+    /** @param  array<string, string>  $options */
     private function pickOption(array $options, string $title): ?string
     {
         foreach ($options as $value => $label) {
@@ -321,7 +326,8 @@ class DemoSeeder extends Seeder
             return [];
         }
         $pool = [];
-        foreach (json_decode(file_get_contents($json), true) ?: [] as $p) {
+        $list = json_decode((string) file_get_contents($json), true);
+        foreach (is_array($list) ? $list : [] as $p) {
             if (is_file(database_path('demo/photos/'.$p['file']))) {
                 $pool[$p['category']][] = $p['file'];
             }
@@ -330,9 +336,10 @@ class DemoSeeder extends Seeder
         return $pool;
     }
 
-    /** @var array<string, array{disk:string, variants:array, width:?int, height:?int}> each photo is made into sizes only once */
+    /** @var array<string, array{disk: ?string, variants: ?array<string, array<string, string>>, width: ?int, height: ?int}|null> each photo is made into sizes only once (null = failed) */
     private array $processed = [];
 
+    /** @param  list<string>  $files */
     private function photos(Ad $ad, array $files): void
     {
         if (! $files || mt_rand(1, 12) === 1) {
@@ -340,18 +347,26 @@ class DemoSeeder extends Seeder
         }
         shuffle($files);
         foreach (array_slice($files, 0, mt_rand(1, min(3, count($files)))) as $sort => $file) {
-            $made = $this->processed[$file] ??= $this->process($ad, $file);
-            if (! $made) {
+            if (! array_key_exists($file, $this->processed)) {
+                $this->processed[$file] = $this->process($ad, $file);
+            }
+            $made = $this->processed[$file];
+            if ($made === null) {
                 continue;
             }
             AdPhoto::create(['ad_id' => $ad->id, 'user_id' => $ad->user_id, 'sort' => $sort, 'status' => 'ready'] + $made);
         }
     }
 
+    /** @return array{disk: ?string, variants: ?array<string, array<string, string>>, width: ?int, height: ?int}|null */
     private function process(Ad $ad, string $file): ?array
     {
+        $bytes = file_get_contents(database_path('demo/photos/'.$file));
+        if ($bytes === false) {
+            return null;
+        }
         $upload = 'uploads/demo/'.Str::uuid().'.jpg';
-        Storage::disk('local')->put($upload, file_get_contents(database_path('demo/photos/'.$file)));
+        Storage::disk('local')->put($upload, $bytes);
         $photo = AdPhoto::create(['user_id' => $ad->user_id, 'upload_path' => $upload, 'status' => 'processing']);
 
         rescue(fn () => ProcessAdPhoto::dispatchSync($photo->id), report: false);
@@ -363,6 +378,10 @@ class DemoSeeder extends Seeder
 
     // ---- reports + history -----------------------------------------------
 
+    /**
+     * @param  list<Ad>  $ads
+     * @param  list<User>  $users
+     */
     private function reports(array $ads, array $users, User $moderator): void
     {
         $live = array_values(array_filter($ads, fn (Ad $a) => $a->status === AdStatus::Live));
@@ -390,6 +409,10 @@ class DemoSeeder extends Seeder
     }
 
     /** Admin activity log for the last months (approvals, rejections, bans). */
+    /**
+     * @param  list<Ad>  $ads
+     * @param  list<User>  $users
+     */
     private function history(array $ads, User $moderator, User $support, array $users): void
     {
         $rows = [];

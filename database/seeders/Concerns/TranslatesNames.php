@@ -8,9 +8,13 @@ namespace Database\Seeders\Concerns;
  */
 trait TranslatesNames
 {
+    /** @var array<string, string>|null English => Somali */
     private ?array $somali = null;
 
-    /** @param  array<string,string>|null  $existing */
+    /**
+     * @param  array<string, string>|null  $existing
+     * @return array<string, string>
+     */
     protected function names(?array $existing, string $english): array
     {
         $this->somali ??= require database_path('seeders/data/somali.php');

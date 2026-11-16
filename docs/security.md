@@ -6,7 +6,7 @@ Checked 2026-11-16 (PR 18). ✅ = done and tested, ⚠️ = owner action before 
 |------|-----------|
 | Sign-in | ✅ Google only for customers: state check, verified email only, banned users blocked, session renewed. Staff: password + **required 2FA (TOTP)**, recovery codes, 5 tries then wait, 60 min idle timeout |
 | Access | ✅ Roles + permissions for staff; every customer action checks ownership (tests open other people's ads, photos, My Ads → 404) |
-| Input | ✅ All forms validated; text shown with escaping; Markdown pages escape HTML; links in banners must be safe; search words cleaned |
+| Input | ✅ Broken characters (invalid UTF-8) refused with 400 everywhere; all forms validated; text shown with escaping; Markdown pages escape HTML; links in banners must be safe; search words cleaned |
 | Spam / abuse | ✅ Rate limits on every POST and on "Show number"; 5 ads/day; duplicate check; bad words; no links; bot trap; blocked phones |
 | Uploads | ✅ Real image check, size limits, re-encoded (no EXIF/GPS), originals deleted, stored on the photos disk (R2), never run as code |
 | Browser | ✅ Strict CSP with per-request nonce (fresh even from the page cache), X-Frame-Options DENY, nosniff, Referrer-Policy, Permissions-Policy, COOP, HSTS on HTTPS |

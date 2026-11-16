@@ -16,8 +16,8 @@ class StaffController extends Controller
     public function index(): JsonResponse
     {
         return response()->json([
-            'staff' => User::whereIn('role', array_keys(config('admin.roles')))->orderBy('name')->get()->map(fn (User $u) => $this->row($u)),
-            'roles' => collect(config('admin.roles'))->map(fn ($r, $key) => ['value' => $key, 'label' => $r['label'], 'permissions' => $r['permissions'] === ['*'] ? ['Everything'] : array_map(fn ($p) => config("admin.permissions.{$p}"), $r['permissions'])])->values(),
+            'staff' => User::whereIn('role', array_keys(config()->array('admin.roles')))->orderBy('name')->get()->map(fn (User $u) => $this->row($u)),
+            'roles' => collect(config()->array('admin.roles'))->map(fn ($r, $key) => ['value' => $key, 'label' => $r['label'], 'permissions' => $r['permissions'] === ['*'] ? ['Everything'] : array_map(fn ($p) => config("admin.permissions.{$p}"), $r['permissions'])])->values(),
         ]);
     }
 
@@ -27,7 +27,7 @@ class StaffController extends Controller
         $data = $request->validate([
             'name' => ['required', 'string', 'min:2', 'max:80'],
             'email' => ['required', 'email', 'max:190'],
-            'role' => ['required', Rule::in(array_keys(config('admin.roles')))],
+            'role' => ['required', Rule::in(array_keys(config()->array('admin.roles')))],
         ]);
         $email = Str::lower($data['email']);
         $user = User::firstOrNew(['email' => $email]);
@@ -45,7 +45,7 @@ class StaffController extends Controller
     public function update(Request $request, User $user): JsonResponse
     {
         abort_unless($user->isStaff(), 404);
-        $role = $request->validate(['role' => ['required', Rule::in(array_keys(config('admin.roles')))]])['role'];
+        $role = $request->validate(['role' => ['required', Rule::in(array_keys(config()->array('admin.roles')))]])['role'];
         $this->guardSelfAndLastSuperAdmin($request, $user, $role);
 
         $old = $user->role;
@@ -59,7 +59,7 @@ class StaffController extends Controller
     public function resetTwoFactor(Request $request, User $user): JsonResponse
     {
         abort_unless($user->isStaff(), 404);
-        abort_if($user->id === $request->user()->id, 422, 'You cannot reset your own 2FA here.');
+        abort_if($user->id === $this->authUser($request)->id, 422, 'You cannot reset your own 2FA here.');
         $user->forceFill(['two_factor_secret' => null, 'two_factor_confirmed_at' => null, 'two_factor_recovery_codes' => null])->save();
         Activity::log('staff.2fa_reset', "Reset 2FA for {$user->name}", $user);
 
@@ -90,12 +90,13 @@ class StaffController extends Controller
 
     private function guardSelfAndLastSuperAdmin(Request $request, User $user, string $newRole): void
     {
-        abort_if($user->id === $request->user()->id, 422, 'You cannot change your own role.');
+        abort_if($user->id === $this->authUser($request)->id, 422, 'You cannot change your own role.');
         if ($user->isSuperAdmin() && $newRole !== 'super_admin') {
             abort_if(User::where('role', 'super_admin')->count() <= 1, 422, 'There must always be at least one Super Admin.');
         }
     }
 
+    /** @return array<string, mixed> */
     private function row(User $u): array
     {
         return [

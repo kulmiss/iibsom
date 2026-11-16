@@ -28,7 +28,7 @@ class PageAdminController extends Controller
         $page->title = array_filter(['en' => $data['title_en'], 'so' => $data['title_so'] ?? null]);
         $page->body = array_filter(['en' => $data['body_en'], 'so' => $data['body_so'] ?? null]);
         $page->enabled = (bool) ($data['enabled'] ?? true);
-        $page->forceFill(['updated_by' => $request->user()->id])->save();
+        $page->forceFill(['updated_by' => $this->authUser($request)->id])->save();
         Activity::log('page.updated', "Edited page “{$page->titleText()}”", $page);
 
         return response()->json($this->row($page));
@@ -42,6 +42,7 @@ class PageAdminController extends Controller
         return response()->json(['html' => (string) (new Page(['body' => ['en' => $body]]))->bodyHtml()]);
     }
 
+    /** @return array<string, mixed> */
     private function row(Page $p): array
     {
         return [

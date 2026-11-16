@@ -16,7 +16,12 @@
     <meta property="og:url" content="{{ $ad->url() }}">
     @if ($cover)
         <meta property="og:image" content="{{ $cover->url('large') }}">
-        <link rel="preload" as="image" href="{{ $cover->url('medium') }}" fetchpriority="high">
+        {{-- Preload exactly what the <picture> below will choose (AVIF when the browser supports it). --}}
+        @if ($cover->url('medium', 'avif') !== $cover->url('medium'))
+            <link rel="preload" as="image" type="image/avif" imagesrcset="{{ $cover->url('medium', 'avif') }} 900w, {{ $cover->url('large', 'avif') }} 1600w" imagesizes="(min-width: 1024px) 720px, 100vw" fetchpriority="high">
+        @else
+            <link rel="preload" as="image" imagesrcset="{{ $cover->url('medium') }} 900w, {{ $cover->url('large') }} 1600w" imagesizes="(min-width: 1024px) 720px, 100vw" fetchpriority="high">
+        @endif
     @endif
     <meta name="twitter:card" content="summary_large_image">
     @unless ($ad->isLive())
@@ -72,7 +77,7 @@
                     @else
                         <div class="flex snap-x snap-mandatory overflow-x-auto" data-gallery>
                             @foreach ($photos as $photo)
-                                <button type="button" class="relative aspect-[4/3] w-full shrink-0 snap-center bg-stone-900" data-zoom="{{ $photo->url('large') }}" aria-label="{{ __('ads.page.photo', ['n' => $loop->iteration, 'total' => $photos->count()]) }}">
+                                <button type="button" class="relative aspect-[4/3] w-full shrink-0 snap-center bg-stone-900" data-zoom="{{ $photo->url('large') }}">{{-- name comes from the photo's alt text --}}
                                     <picture>
                                         @if ($avif = $photo->url('medium', 'avif'))
                                             <source type="image/avif" srcset="{{ $avif }} 900w, {{ $photo->url('large', 'avif') }} 1600w" sizes="(min-width: 1024px) 720px, 100vw">
@@ -81,7 +86,7 @@
                                              alt="{{ $ad->title }} – {{ __('ads.page.photo', ['n' => $loop->iteration, 'total' => $photos->count()]) }}"
                                              class="size-full object-contain" @if ($loop->first) fetchpriority="high" @else loading="lazy" @endif decoding="async" width="{{ $photo->width ?: 900 }}" height="{{ $photo->height ?: 675 }}">
                                     </picture>
-                                    <span class="absolute bottom-2 right-2 rounded bg-black/60 px-2 py-0.5 text-xs text-white">{{ $loop->iteration }}/{{ $photos->count() }}</span>
+                                    <span class="absolute bottom-2 right-2 rounded bg-black/60 px-2 py-0.5 text-xs text-white" aria-hidden="true">{{ $loop->iteration }}/{{ $photos->count() }}</span>
                                 </button>
                             @endforeach
                         </div>
@@ -162,7 +167,7 @@
                             <li>{{ __('ads.page.safety_2') }}</li>
                             <li>{{ __('ads.page.safety_3') }}</li>
                         </ul>
-                        <a href="{{ lroute('page', ['slug' => 'safety']) }}" class="mt-2 inline-block text-sm font-medium text-brand-700 underline">{{ __('ads.page.safety_more') }}</a>
+                        <a href="{{ lroute('page', ['slug' => 'safety']) }}" class="mt-2 inline-block text-sm font-medium text-brand-800 underline">{{ __('ads.page.safety_more') }}</a>
                     </section>
                 @endfeature
 

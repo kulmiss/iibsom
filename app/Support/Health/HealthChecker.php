@@ -14,12 +14,14 @@ use Throwable;
  *
  * Each check returns: status ok|warn|fail, a short message in easy English,
  * and a "fix" hint when something is wrong.
+ *
+ * @phpstan-type Check array{key: string, label: string, status: string, message: string, fix: ?string}
  */
 class HealthChecker
 {
     public const HEARTBEAT_KEY = 'iibsom.scheduler.heartbeat';
 
-    /** @return list<array{key: string, label: string, status: string, message: string, fix: ?string}> */
+    /** @return list<Check> */
     public function run(): array
     {
         return [
@@ -46,6 +48,7 @@ class HealthChecker
         Cache::forever(self::HEARTBEAT_KEY, now()->getTimestamp());
     }
 
+    /** @return Check */
     private function php(): array
     {
         $ok = version_compare(PHP_VERSION, '8.3.0', '>=');
@@ -53,6 +56,7 @@ class HealthChecker
         return $this->result('php', 'PHP version', $ok ? 'ok' : 'fail', 'PHP '.PHP_VERSION, $ok ? null : 'Choose PHP 8.3 or newer in your hosting panel.');
     }
 
+    /** @return Check */
     private function hostingMode(): array
     {
         $mode = config('iibsom.hosting');
@@ -60,6 +64,7 @@ class HealthChecker
         return $this->result('hosting', 'Hosting mode', 'ok', $mode === 'shared' ? 'Shared hosting mode' : 'VPS mode');
     }
 
+    /** @return Check */
     private function database(): array
     {
         try {
@@ -71,6 +76,7 @@ class HealthChecker
         }
     }
 
+    /** @return Check */
     private function cache(): array
     {
         $store = config('cache.default');
@@ -92,6 +98,7 @@ class HealthChecker
         return $this->result('cache', 'Cache', $warn ? 'warn' : 'ok', "Working ({$store})", $warn ? 'On a VPS, Redis is faster: CACHE_STORE=redis.' : null);
     }
 
+    /** @return Check */
     private function scheduler(): array
     {
         $last = Cache::get(self::HEARTBEAT_KEY);
@@ -108,6 +115,7 @@ class HealthChecker
         return $this->result('scheduler', 'Scheduler (cron)', 'ok', "Last run {$age} seconds ago.");
     }
 
+    /** @return Check */
     private function queue(): array
     {
         $connection = config('queue.default');
@@ -128,6 +136,7 @@ class HealthChecker
         return $this->result('queue', 'Background jobs', $status, "Using \"{$connection}\", {$how}. Failed jobs: {$failed}.", $failed > 0 ? 'Open the failed jobs list and retry them.' : null);
     }
 
+    /** @return Check */
     private function storage(): array
     {
         $disk = config('iibsom.photos_disk');
@@ -143,6 +152,7 @@ class HealthChecker
         }
     }
 
+    /** @return Check */
     private function images(): array
     {
         if (extension_loaded('imagick')) {
@@ -158,6 +168,7 @@ class HealthChecker
         return $this->result('images', 'Photo processing', 'fail', 'No image library found.', 'Turn on the "gd" or "imagick" PHP extension.');
     }
 
+    /** @return Check */
     private function debugMode(): array
     {
         $bad = config('app.debug') && app()->environment('production');
@@ -174,6 +185,7 @@ class HealthChecker
         return 'Add this cron job (every minute): cd '.base_path().' && php artisan schedule:run >> /dev/null 2>&1';
     }
 
+    /** @return Check */
     private function result(string $key, string $label, string $status, string $message, ?string $fix = null): array
     {
         return compact('key', 'label', 'status', 'message', 'fix');

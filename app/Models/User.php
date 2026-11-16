@@ -38,6 +38,7 @@ class User extends Authenticatable
         ];
     }
 
+    /** @return BelongsTo<City, $this> */
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class);
@@ -46,7 +47,7 @@ class User extends Authenticatable
     /** Super Admin, Moderator or Support. */
     public function isStaff(): bool
     {
-        return array_key_exists($this->role, config('admin.roles'));
+        return array_key_exists($this->role, config()->array('admin.roles'));
     }
 
     public function isSuperAdmin(): bool
@@ -76,6 +77,7 @@ class User extends Authenticatable
         return $this->isSuperAdmin() || in_array($permission, $this->permissions(), true);
     }
 
+    /** @return HasMany<Ad, $this> */
     public function ads(): HasMany
     {
         return $this->hasMany(Ad::class);

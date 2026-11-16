@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Lighthouse (phone settings) on the main pages. Needs a running site with demo data.
+#   bash tools/lighthouse [base-url]     default http://localhost:8095
+# Fails when a score is under the limits in lighthouserc.json.
+# ("is-crawlable" is skipped: only the live site may be indexed by Google.)
+set -euo pipefail
+base="${1:-http://localhost:8095}"
+ad=$(curl -sf "$base/cars" | grep -o "href=\"$base/cars/[a-z0-9-]*/[a-z0-9-]*-[0-9]*\"" | head -1 | cut -d'"' -f2 || true)
+urls=("$base/" "$base/cars" "$base/search?q=toyota" "$base/safety")
+[ -n "$ad" ] && urls+=("$ad")
+args=()
+for u in "${urls[@]}"; do args+=(--collect.url="$u"); done
+npx --yes @lhci/cli@0.14 autorun --config=lighthouserc.json "${args[@]}"

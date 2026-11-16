@@ -3,6 +3,7 @@
 namespace Tests\Feature\Admin;
 
 use App\Models\Ad;
+use App\Models\Area;
 use App\Models\Category;
 use App\Models\City;
 use App\Models\User;
@@ -101,6 +102,21 @@ class AdminCatalogueTest extends AdminTestCase
         $field = $cars->fields()->first();
 
         $this->putJson("/admin/api/categories/{$land->id}/fields/{$field->id}", ['key' => 'x', 'type' => 'text', 'label_en' => 'X'])->assertNotFound();
+    }
+
+    public function test_somali_names_of_cities_and_areas_can_be_changed_and_removed(): void
+    {
+        $this->asStaff();
+        $city = City::where('slug', 'kismayo')->first();
+
+        $this->putJson("/admin/api/cities/{$city->id}", ['name_so' => 'Kismaanyo'])->assertOk()->assertJsonPath('name_so', 'Kismaanyo')->assertJsonPath('name_en', 'Kismayo');
+        $this->putJson("/admin/api/cities/{$city->id}", ['enabled' => true])->assertOk()->assertJsonPath('name_so', 'Kismaanyo'); // not sent = kept
+        $this->putJson("/admin/api/cities/{$city->id}", ['name_so' => null])->assertOk()->assertJsonPath('name_so', null);       // removed
+        $this->assertSame(['en' => 'Kismayo'], $city->fresh()->name);
+
+        $area = Area::first();
+        $this->putJson("/admin/api/areas/{$area->id}", ['name_so' => ''])->assertOk()->assertJsonPath('name_so', null);
+        $this->assertArrayNotHasKey('so', $area->fresh()->name);
     }
 
     public function test_cities_on_off_and_new_city_starts_off(): void

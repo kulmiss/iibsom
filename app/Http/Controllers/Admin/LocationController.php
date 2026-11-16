@@ -46,7 +46,7 @@ class LocationController extends Controller
         $city = new City(['region_id' => $data['region_id'], 'name' => array_filter(['en' => strip_tags($data['name_en']), 'so' => isset($data['name_so']) ? strip_tags($data['name_so']) : null])]);
         $city->slug = $slug;
         $city->enabled = false; // new cities start OFF
-        $city->sort = (int) City::max('sort') + 1;
+        $city->sort = max(0, (int) City::max('sort') + 1);
         $city->save();
         Activity::log('city.created', "Added city {$city->label} (OFF)", $city);
 
@@ -62,7 +62,7 @@ class LocationController extends Controller
             'name_so' => ['sometimes', 'nullable', 'string', 'max:60'],
         ]);
         if (isset($data['name_en']) || array_key_exists('name_so', $data)) {
-            $city->name = array_filter(['en' => strip_tags($data['name_en'] ?? $city->name['en']), 'so' => isset($data['name_so']) ? strip_tags($data['name_so']) : ($city->name['so'] ?? null)]);
+            $city->name = $this->names($data, $city->name);
         }
         foreach (['enabled', 'popular'] as $flag) {
             if (array_key_exists($flag, $data)) {
@@ -86,17 +86,17 @@ class LocationController extends Controller
         $slug = Str::slug($data['name_en']);
         abort_if($city->areas()->where('slug', $slug)->exists(), 422, 'This area already exists.');
 
-        $area = Area::create(['city_id' => $city->id, 'name' => array_filter(['en' => strip_tags($data['name_en']), 'so' => isset($data['name_so']) ? strip_tags($data['name_so']) : null]), 'slug' => $slug, 'sort' => (int) $city->areas()->max('sort') + 1]);
+        $area = Area::create(['city_id' => $city->id, 'name' => array_filter(['en' => strip_tags($data['name_en']), 'so' => isset($data['name_so']) ? strip_tags($data['name_so']) : null]), 'slug' => $slug, 'sort' => max(0, (int) $city->areas()->max('sort') + 1)]);
         Activity::log('area.created', "Added area {$area->label} to {$city->label}", $area);
 
-        return response()->json(['id' => $area->id, 'name_en' => $area->name['en'], 'name_so' => $area->name['so'] ?? null, 'enabled' => $area->enabled], 201);
+        return response()->json(['id' => $area->id, 'name_en' => $area->name['en'] ?? '', 'name_so' => $area->name['so'] ?? null, 'enabled' => $area->enabled], 201);
     }
 
     public function updateArea(Request $request, Area $area): JsonResponse
     {
         $data = $request->validate(['enabled' => ['sometimes', 'boolean'], 'name_en' => ['sometimes', 'string', 'min:2', 'max:60'], 'name_so' => ['sometimes', 'nullable', 'string', 'max:60']]);
         if (isset($data['name_en']) || array_key_exists('name_so', $data)) {
-            $area->name = array_filter(['en' => strip_tags($data['name_en'] ?? $area->name['en']), 'so' => isset($data['name_so']) ? strip_tags($data['name_so']) : ($area->name['so'] ?? null)]);
+            $area->name = $this->names($data, $area->name);
         }
         if (array_key_exists('enabled', $data)) {
             $area->enabled = $data['enabled'];
@@ -104,9 +104,28 @@ class LocationController extends Controller
         $area->save();
         Activity::log('area.updated', "Changed area {$area->label}", $area);
 
-        return response()->json(['id' => $area->id, 'name_en' => $area->name['en'], 'name_so' => $area->name['so'] ?? null, 'enabled' => $area->enabled]);
+        return response()->json(['id' => $area->id, 'name_en' => $area->name['en'] ?? '', 'name_so' => $area->name['so'] ?? null, 'enabled' => $area->enabled]);
     }
 
+    /**
+     * New names from the form. A Somali name sent as empty or null is removed;
+     * one not sent at all is kept.
+     *
+     * @param  array<string, mixed>  $data
+     * @param  array<string, string>  $current
+     * @return array<string, string>
+     */
+    private function names(array $data, array $current): array
+    {
+        $en = is_string($data['name_en'] ?? null) ? strip_tags($data['name_en']) : ($current['en'] ?? '');
+        $so = array_key_exists('name_so', $data)
+            ? (is_string($data['name_so']) ? strip_tags($data['name_so']) : '')
+            : ($current['so'] ?? '');
+
+        return array_filter(['en' => $en, 'so' => $so], fn (string $v) => $v !== '');
+    }
+
+    /** @return array<string, mixed> */
     private function cityRow(City $c): array
     {
         return [

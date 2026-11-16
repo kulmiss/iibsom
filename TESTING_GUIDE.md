@@ -7,6 +7,8 @@ Most important tests first. "Expected" is what you should see.
 |---|---------|----------|
 | 1 | `php artisan test` | All tests green (310+) |
 | 2 | `vendor/bin/pint --test` | "passed" (code style OK) |
+| 2b | `vendor/bin/phpstan analyse` | "No errors" (Larastan level 8) |
+| 2c | Site running with demo data → `bash tools/lighthouse` | "All results processed", no failed assertions |
 | 3 | `composer audit` and `npm audit --omit=dev` | No vulnerabilities |
 | 4 | GitHub: the top PR | CI green: tests (vps), tests (shared), admin app, secret-scan, docker-build |
 
@@ -198,6 +200,13 @@ First add your Google keys: see docs/google-login.md.
 | 3 | Tap **Soomaali** | Page changes to Somali without reloading; URL starts with /so |
 | 4 | Look at categories, ad page, post form, My ads, errors | All in Somali |
 | 5 | `php artisan iibsom:translations:export so` | CSV for a native speaker to check |
+
+## Manual (PR 20: quality gates)
+| # | Do this | Expected |
+|---|---------|----------|
+| 1 | Open http://localhost:8095/search?q=%FF | A short "characters could not be read" page (400), not an error page |
+| 2 | Admin → Cities → Kismayo → clear the Somali name → Save | Somali name is gone (before, it could not be removed) |
+| 3 | Open /admin signed out, F12 → Console | No red errors |
 
 ## Manual (PR 19: docs + release zip)
 | # | Do this | Expected |

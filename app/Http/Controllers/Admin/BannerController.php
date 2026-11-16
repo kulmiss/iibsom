@@ -64,7 +64,7 @@ class BannerController extends Controller
         $banner->title = array_filter(['en' => strip_tags($data['title_en']), 'so' => isset($data['title_so']) ? strip_tags($data['title_so']) : null]);
         $banner->link_url = $data['link_url'] ?? null;
         $banner->enabled = $request->boolean('enabled', true);
-        $banner->sort = (int) ($data['sort'] ?? $banner->sort ?? 0);
+        $banner->sort = max(0, (int) ($data['sort'] ?? $banner->sort ?? 0));
         $banner->starts_at = $data['starts_at'] ?? null;
         $banner->ends_at = $data['ends_at'] ?? null;
 
@@ -90,6 +90,7 @@ class BannerController extends Controller
         $banner->save();
     }
 
+    /** @return array<string, mixed> */
     private function row(Banner $b): array
     {
         return [

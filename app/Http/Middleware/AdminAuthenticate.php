@@ -15,6 +15,19 @@ class AdminAuthenticate
 {
     public function handle(Request $request, Closure $next): Response
     {
+        if (! self::check($request)) {
+            return response()->json(['message' => 'Please sign in.'], 401);
+        }
+
+        return $next($request);
+    }
+
+    /**
+     * True when a staff member is properly signed in to the admin (and marks them active).
+     * A stale admin session (idle too long, role removed, banned) is ended here.
+     */
+    public static function check(Request $request): bool
+    {
         $user = $request->user();
         $session = $request->session();
 
@@ -36,11 +49,11 @@ class AdminAuthenticate
                 $session->regenerateToken();
             }
 
-            return response()->json(['message' => 'Please sign in.'], 401);
+            return false;
         }
 
         $session->put('admin.last_seen', now()->getTimestamp());
 
-        return $next($request);
+        return true;
     }
 }

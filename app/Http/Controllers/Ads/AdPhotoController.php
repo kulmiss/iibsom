@@ -26,7 +26,7 @@ class AdPhotoController extends Controller
             'photo' => ['required', 'file', 'image', 'mimes:jpeg,jpg,png,webp', 'max:12288', 'dimensions:min_width=200,min_height=200,max_width=12000,max_height=12000'],
         ]);
 
-        $user = $request->user();
+        $user = $this->authUser($request);
         abort_if(AdPhoto::where('user_id', $user->id)->whereNull('ad_id')->count() >= self::MAX_UNATTACHED, 429, __('ads.photos.too_many'));
 
         $file = $request->file('photo');
@@ -40,13 +40,13 @@ class AdPhotoController extends Controller
 
         ProcessAdPhoto::dispatch($photo->id);
 
-        return response()->json(['id' => $photo->id, 'status' => $photo->fresh()->status], 201);
+        return response()->json(['id' => $photo->id, 'status' => $photo->refresh()->status], 201);
     }
 
     public function destroy(Request $request, AdPhoto $photo): JsonResponse
     {
         // Only your own photo, and only while it's not part of an ad yet.
-        abort_unless($photo->user_id === $request->user()->id && $photo->ad_id === null, 404);
+        abort_unless($photo->user_id === $this->authUser($request)->id && $photo->ad_id === null, 404);
 
         if ($photo->upload_path) {
             Storage::disk('local')->delete($photo->upload_path);

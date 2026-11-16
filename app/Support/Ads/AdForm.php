@@ -7,6 +7,7 @@ use App\Models\Ad;
 use App\Models\AdPhoto;
 use App\Models\BlockedPhone;
 use App\Models\Category;
+use App\Models\User;
 use App\Support\Catalog;
 use App\Support\Safety\SpamGuard;
 use Illuminate\Http\Request;
@@ -53,6 +54,7 @@ class AdForm
         ] + FieldRules::names($category));
 
         $user = $request->user();
+        abort_unless($user instanceof User, 401);
         if (BlockedPhone::isBlocked($user->phone)) {
             throw ValidationException::withMessages(['title' => __('account.validation.phone_blocked')]);
         }
@@ -64,7 +66,7 @@ class AdForm
         $data['content_hash'] = hash('sha256', $user->id.'|'.Str::lower($data['title']).'|'.Str::lower(Str::squish($data['description'])));
         $duplicate = Ad::where('user_id', $user->id)->where('content_hash', $data['content_hash'])
             ->whereIn('status', [AdStatus::Pending, AdStatus::Live])
-            ->when($editing, fn ($q) => $q->whereKeyNot($editing->id))
+            ->when($editing !== null, fn ($q) => $q->whereKeyNot($editing?->id))
             ->exists();
         if ($duplicate) {
             throw ValidationException::withMessages(['title' => __('ads.form.duplicate')]);
@@ -77,11 +79,15 @@ class AdForm
     }
 
     /** Create a new ad (pending when approval is ON). */
+    /** @param  array<string, mixed>  $data  from validate() */
     public function create(Request $request, Category $category, array $data): Ad
     {
-        return DB::transaction(function () use ($request, $category, $data) {
+        $user = $request->user();
+        abort_unless($user instanceof User, 401);
+
+        return DB::transaction(function () use ($user, $category, $data) {
             $ad = new Ad(['category_id' => $category->id]);
-            $ad->user_id = $request->user()->id;
+            $ad->user_id = $user->id;
             $this->fill($ad, $category, $data);
             $ad->status = feature('ads.approval') ? AdStatus::Pending : AdStatus::Live;
             if ($ad->status === AdStatus::Live) {
@@ -98,6 +104,7 @@ class AdForm
      * Save changes. With approval ON the ad goes back to the queue (decision #9:
      * every ad is checked, edits too), so buyers never see unchecked text.
      */
+    /** @param  array<string, mixed>  $data  from validate() */
     public function update(Ad $ad, Category $category, array $data): Ad
     {
         return DB::transaction(function () use ($ad, $category, $data) {
@@ -123,6 +130,7 @@ class AdForm
         $ad->expires_at = feature('ads.expiry') ? now()->addDays(setting('ads.expiry_days')) : null;
     }
 
+    /** @param  array<string, mixed>  $data */
     private function fill(Ad $ad, Category $category, array $data): void
     {
         $ad->fill([
@@ -147,7 +155,7 @@ class AdForm
      */
     private function syncPhotos(Ad $ad, array $ids): void
     {
-        $ids = array_values(array_map('intval', $ids));
+        $ids = array_map('intval', $ids);
 
         foreach ($ids as $sort => $photoId) {
             AdPhoto::whereKey($photoId)->where('user_id', $ad->user_id)

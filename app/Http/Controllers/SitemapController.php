@@ -27,7 +27,7 @@ class SitemapController extends Controller
                 ->latest('published_at')->limit(45000)->get(['id', 'slug', 'category_id', 'city_id', 'updated_at'])
                 ->each(function ($ad) use (&$urls) {
                     if ($ad->category->isLive()) {
-                        $urls[] = ['loc' => url("/{$ad->category->slug}/{$ad->city->slug}/{$ad->slug}-{$ad->id}"), 'lastmod' => $ad->updated_at->toAtomString()];
+                        $urls[] = ['loc' => url("/{$ad->category->slug}/{$ad->city->slug}/{$ad->slug}-{$ad->id}"), 'lastmod' => $ad->updated_at?->toAtomString()];
                     }
                 });
 

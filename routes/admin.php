@@ -33,6 +33,8 @@ Route::prefix('admin/api')->group(function () {
         Route::post('/2fa/verify', [AuthController::class, 'verify'])->name('admin.api.2fa.verify');
     });
 
+    Route::get('/session', [AuthController::class, 'session'])->middleware('throttle:60,1')->name('admin.api.session');
+
     Route::middleware('admin')->group(function () {
         Route::get('/me', [AuthController::class, 'me'])->name('admin.api.me');
         Route::post('/logout', [AuthController::class, 'logout'])->name('admin.api.logout');

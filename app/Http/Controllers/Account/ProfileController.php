@@ -23,7 +23,7 @@ class ProfileController extends Controller
 
     public function welcome(Request $request): View|RedirectResponse
     {
-        if ($request->user()->hasCompletedProfile()) {
+        if ($this->authUser($request)->hasCompletedProfile()) {
             return redirect(lroute('account'));
         }
 
@@ -37,7 +37,7 @@ class ProfileController extends Controller
 
     public function save(Request $request): RedirectResponse
     {
-        $user = $request->user();
+        $user = $this->authUser($request);
         $welcome = ! $user->hasCompletedProfile();
         $cityIds = array_column($this->catalog->cities(), 'id');
 

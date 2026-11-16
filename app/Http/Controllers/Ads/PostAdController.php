@@ -47,7 +47,7 @@ class PostAdController extends Controller
     public function store(Request $request, Category $category, AdForm $form): RedirectResponse
     {
         $this->ensurePostable($category);
-        $user = $request->user();
+        $user = $this->authUser($request);
 
         $this->checkDailyLimit($user->id);
         $ad = $form->create($request, $category, $form->validate($request, $category));
@@ -59,7 +59,7 @@ class PostAdController extends Controller
 
     public function done(Request $request, Ad $ad): View
     {
-        abort_unless($ad->user_id === $request->user()->id, 404);
+        abort_unless($ad->user_id === $this->authUser($request)->id, 404);
 
         return view('ads.post-done', ['ad' => $ad]);
     }
@@ -79,7 +79,7 @@ class PostAdController extends Controller
         }
     }
 
-    /** @return array<int, list<array{id:int, name:string}>> city id => areas */
+    /** @return array<int, array<int, array{id:int, name:string}>> city id => areas */
     public function areas(): array
     {
         return Area::query()->where('enabled', true)->whereIn('city_id', array_column($this->catalog->cities(), 'id'))

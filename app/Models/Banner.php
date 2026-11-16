@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * @property array<string, string>|null $title
+ * @property array<string, string>|null $image size => path
+ */
 class Banner extends Model
 {
     protected $fillable = ['title', 'link_url', 'enabled', 'starts_at', 'ends_at'];
@@ -27,16 +31,21 @@ class Banner extends Model
     /**
      * Active banners for the home page, cached as plain arrays (5 minutes, cleared on change).
      *
-     * @return list<array{title: array, link_url: ?string, small: ?string, wide: ?string}>
+     * @return list<array{title: array<string, string>|null, link_url: ?string, small: ?string, wide: ?string}>
      */
     public static function forHome(): array
     {
-        return Cache::remember('iibsom.home.banners', 300, fn () => static::active()->orderBy('sort')->get()
-            ->map(fn (Banner $b) => ['title' => $b->title, 'link_url' => $b->link_url, 'small' => $b->imageUrl('small'), 'wide' => $b->imageUrl('wide')])
-            ->all());
+        return Cache::remember('iibsom.home.banners', 300, fn () => array_map(
+            fn (Banner $b) => ['title' => $b->title, 'link_url' => $b->link_url, 'small' => $b->imageUrl('small'), 'wide' => $b->imageUrl('wide')],
+            array_values(static::active()->orderBy('sort')->get()->all()),
+        ));
     }
 
-    /** ON, has an image, and today is between start and end. */
+    /**
+     * ON, has an image, and today is between start and end.
+     *
+     * @param  Builder<self>  $query
+     */
     public function scopeActive(Builder $query): void
     {
         $query->where('enabled', true)->whereNotNull('image')

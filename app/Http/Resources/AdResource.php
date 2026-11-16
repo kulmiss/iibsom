@@ -12,6 +12,7 @@ class AdResource extends JsonResource
     /** true = full ad (description, all photos, seller name). */
     public bool $detail = false;
 
+    /** @return array<int|string, mixed> */
     public function toArray(Request $request): array
     {
         $detail = $this->detail;

@@ -63,5 +63,6 @@ return [
         'not_found_title' => 'Page not found',
         'not_found_text' => 'This page does not exist or was removed.',
         'back_home' => 'Back to home',
+        'bad_text' => 'Some characters in your text could not be read. Please type it again.',
     ],
 ];

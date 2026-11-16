@@ -20,7 +20,7 @@ class AppearanceController extends Controller
     {
         $color = $request->validate(['brand_color' => ['required', 'regex:/^#[0-9a-fA-F]{6}$/']])['brand_color'];
         $old = setting('admin.brand_color');
-        $settings->set('admin.brand_color', strtolower($color), $request->user()->id);
+        $settings->set('admin.brand_color', strtolower($color), $this->authUser($request)->id);
         Activity::log('settings.brand_color', "Brand colour changed from {$old} to {$color}", null, ['old' => $old, 'new' => $color]);
 
         return response()->json(['brand_color' => strtolower($color)]);

@@ -9,6 +9,7 @@ class BlockedPhone extends Model
 {
     protected $fillable = ['phone', 'reason'];
 
+    /** @return BelongsTo<User, $this> */
     public function blocker(): BelongsTo
     {
         return $this->belongsTo(User::class, 'blocked_by');

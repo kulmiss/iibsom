@@ -31,7 +31,8 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
   },
   load: async () => {
     try {
-      const { data } = await api.get<{ user: StaffUser }>('/me')
+      // /session answers 200 with user = null when nobody is signed in (no error in the console).
+      const { data } = await api.get<{ user: StaffUser | null }>('/session')
       get().setUser(data.user)
       return data.user
     } catch {
