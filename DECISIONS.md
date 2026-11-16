@@ -17,6 +17,16 @@ Every question, the owner's answer, and the date. Newest at the bottom.
 
 | 11 | 2026-11-16 | Which cities ON at launch? | **Only Mogadishu ON.** All other Somalia cities exist but are OFF; admin can switch each on. Somaliland cities not added. |
 | 12 | 2026-11-16 | Domain? | Owner **already owns iibsom.com** (currently on shared hosting). Site itself will run on VPS + Cloudflare. |
+| 13 | 2026-11-16 | VPS or shared hosting? | **Both.** Same code; a hosting mode in `.env` (`IIBSOM_HOSTING=vps` or `shared`) switches the fallbacks. Deploy guides for both, tests in both modes, admin health page. Replaces the earlier "NOT shared hosting" line. |
+
+## Open questions (must be answered before going live)
+
+| # | Asked | Question | Status |
+|---|-------|----------|--------|
+| C | 2026-11-16 | Is anything else using iibsom.com on the shared hosting now (email, old website)? | Waiting |
+| H1 | 2026-11-16 | Which control panel does the host use (cPanel, Plesk, DirectAdmin…) and who is the host? | Waiting |
+| H2 | 2026-11-16 | Which PHP versions can be chosen on the host? (8.3+ needed) | Waiting |
+| H3 | 2026-11-16 | Is there SSH access, and can cron jobs be added? | Waiting |
 
 ## Small choices (taken by Claude, can be changed)
 
@@ -25,5 +35,7 @@ Every question, the owner's answer, and the date. Newest at the bottom.
 | 2026-11-16 | Ad expiry default 60 days; post limit 5 ads/day per user. |
 | 2026-11-16 | Versions: Laravel 13 (latest stable), PHP 8.3, MySQL 8.4 LTS, Redis 7. Tests run on MySQL like production. |
 | 2026-11-16 | Local ports: site 8095, Mailpit 8096, MySQL 33095. |
+| 2026-11-16 | Shared hosting mode defaults: database for cache/sessions/queue, cron runs the queue every minute (`--stop-when-empty`), GD for images if Imagick is missing, database search only. |
+| 2026-11-16 | Feature switches: every feature has a key in `config/features.php` with a default; Super Admin changes are stored in the database. Phase 2/3 features default OFF. OFF = 404 on its routes. |
 | 2026-11-16 | Repo is public for one day (2026-11-16) for CI testing; owner makes it private on 2026-11-17. |
 | 2026-11-16 | Language switch without reload: page HTML is fetched for the new language in the background and swapped in; the chosen language is saved in a cookie. Each language keeps its own cached pages and URL prefix for SEO. |
