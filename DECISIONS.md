@@ -64,3 +64,5 @@ Every question, the owner's answer, and the date. Newest at the bottom.
 | 2026-11-16 | Rate limits for guests use HMAC(APP_KEY, IP), never the IP; database sessions keep IP/browser only for signed-in users. |
 | 2026-11-16 | `/api/v1` is read-only and ON by default (switch `api`): categories, cities, ads list/detail; no phone numbers or emails; 60 requests/minute. |
 | 2026-11-16 | Session cookies are encrypted by default and Secure on production by default. `TRUSTED_PROXIES` in .env for Cloudflare. |
+| 2026-11-16 | Shared hosting deploy = upload a zip made by `tools/make-release` on the owner's PC (no Node/Composer needed on the host). AWS SDK trimmed to S3 only (zip ~40 MB). |
+| 2026-11-16 | Final merge: the top PR (#19) is based on `main`, so one merge brings PRs 7–19. The stacked PRs #7–#18 can then be closed. |

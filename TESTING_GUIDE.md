@@ -5,8 +5,26 @@ Most important tests first. "Expected" is what you should see.
 ## Automated (run before every merge)
 | # | Command | Expected |
 |---|---------|----------|
-| 1 | `docker compose exec app php artisan test` | All tests green |
-| 2 | `docker compose exec app vendor/bin/pint --test` | "PASS" (code style OK) |
+| 1 | `php artisan test` | All tests green (310+) |
+| 2 | `vendor/bin/pint --test` | "passed" (code style OK) |
+| 3 | `composer audit` and `npm audit --omit=dev` | No vulnerabilities |
+| 4 | GitHub: the top PR | CI green: tests (vps), tests (shared), admin app, secret-scan, docker-build |
+
+## ⭐ 15-minute check after merging everything (do this first)
+Start: `php artisan migrate --seed`, `npm run build`, `cd admin && pnpm build`, `php artisan iib:demo-reset`, `php artisan serve --port=8095`.
+
+| # | Do this | Expected |
+|---|---------|----------|
+| 1 | Phone size (F12 → phone icon) → http://localhost:8095 | Blue/yellow home, category tiles, bottom bar, latest ads with photos |
+| 2 | Tap **Cars** → filter a brand → open an ad → **Show phone number** | Filters work; number shows only after the tap; WhatsApp + Call buttons |
+| 3 | Open 3 ads, go back home | "Recommended for you" + "Recently viewed" |
+| 4 | /admin → sign in as demo moderator (2FA key printed by `iib:demo-reset`) | Dashboard with 3 months of charts |
+| 5 | Admin → **Waiting for approval** → approve one | It shows on the home page at once |
+| 6 | Sign in on the site with Google (needs keys, docs/google-login.md) → **Sell** → post an ad with 2 photos | "Thank you" page; ad waits for approval |
+| 7 | **Account → My ads** → edit, mark sold, delete | Each works; edit goes back to Waiting |
+| 8 | Admin → Settings → General → tick Somali → site → **Soomaali** | Whole site in Somali, no reload |
+| 9 | Admin → Feature switches → turn **WhatsApp button** OFF | Button disappears from ad pages |
+| 10 | Admin → Settings → Demo data → Delete all demo data | Site is empty again (your own data stays) |
 
 ## Manual (PR 1: foundation)
 | # | Do this | Expected |
@@ -50,7 +68,7 @@ Most important tests first. "Expected" is what you should see.
 | 6 | Run `php artisan db:seed` again | Nothing breaks, switches you changed stay as they are |
 
 ## Manual (PR 7: Google sign-in + profile)
-First add your Google keys: see docs/google-signin.md.
+First add your Google keys: see docs/google-login.md.
 
 | # | Do this | Expected |
 |---|---------|----------|
@@ -180,6 +198,12 @@ First add your Google keys: see docs/google-signin.md.
 | 3 | Tap **Soomaali** | Page changes to Somali without reloading; URL starts with /so |
 | 4 | Look at categories, ad page, post form, My ads, errors | All in Somali |
 | 5 | `php artisan iibsom:translations:export so` | CSV for a native speaker to check |
+
+## Manual (PR 19: docs + release zip)
+| # | Do this | Expected |
+|---|---------|----------|
+| 1 | `bash tools/make-release` | A zip of about 40 MB with vendor/, public/build and public/admin-app |
+| 2 | Read docs/deploy-shared.md with your host's panel open | Every step matches what you see; tell Claude what differs |
 
 ## Manual (PR 18: speed + security)
 | # | Do this | Expected |

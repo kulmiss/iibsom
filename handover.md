@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-16 (PR 18)_
+_Last updated: 2026-11-16 (PR 19)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -8,7 +8,7 @@ _Last updated: 2026-11-16 (PR 18)_
 - **PR 3 (languages + layout):** English-only at launch, Somali-ready (`lang/so`), `/so/...` URLs, in-place language switch (no reload, cookie), hreflang/canonical, CSV export for native review, mobile-first layout (header, footer, home hero), system fonts, Windows hint in health check. Docs: docs/translations.md.
 - **PR 4 (locations + categories + home):** regions → cities → areas (Somalia; only Mogadishu ON; 18 Mogadishu districts), 15 main categories / 52 sub categories with custom fields (cars, houses, land, phones, laptops, livestock, jobs), `Catalog` cached lists, Jiji-style home in Iibsom blue/yellow, Lucide icons (`icon()` helper). Seeders are production-safe and can run again.
 - **PR 5 (phone home):** Jiji-mobile style tiles, one-row search, bottom bar following switches. Removed stray `dump.rdb`.
-- **PR 7 (Google sign-in):** Socialite Google (state check, verified email only, banned blocked, session regenerated, language kept), welcome form (name, city, +252 phone + WhatsApp, Terms), account + profile edit, `profile.complete` middleware for posting, security log. Guide: docs/google-signin.md.
+- **PR 7 (Google sign-in):** Socialite Google (state check, verified email only, banned blocked, session regenerated, language kept), welcome form (name, city, +252 phone + WhatsApp, Terms), account + profile edit, `profile.complete` middleware for posting, security log. Guide: docs/google-login.md.
 - **PR 8 (post an ad):** `ads` + `ad_photos` tables (indexes, fulltext), 2-step form (category → one form with custom fields), photos shrunk on the phone, uploaded one by one, background job (auto-rotate, re-encode = no GPS/EXIF, 3 sizes WebP + AVIF if possible) to the photos disk (R2 live), reorder, draft saved on the phone, every ad pending (decision #9), duplicate check, 5 ads/day, `iibsom:ads:expire` hourly.
 - **PR 9 (Super Admin foundation):** `admin/` = shadcn-admin template (pinned, MIT, cleaned), built to `public/admin-app`, served at `/admin` with CSP nonces. Staff login (password + **required TOTP 2FA**, recovery codes, rate limits, idle timeout 60 min), roles + permissions (`config/admin.php`), dashboard API + charts, activity log, brand colour, themes, Ctrl+K, phone cards, reusable `ServerDataTable`. `php artisan iibsom:staff`. Screens for ads/users/reports/categories/etc. are placeholders → next PRs.
 - **PR 10 (moderation):** admin ads list + approval queue (cover photos, detail panel, approve, reject with reason presets, edit, soft delete, bulk), users (search by phone, ban with take-down + block phone, unban), blocked phones (customers can't use them), reports queue (take ad down closes all its reports, dismiss). Live-ad counters on categories/cities kept up to date (demo never counted). Photo host allowed in CSP.
@@ -20,6 +20,7 @@ _Last updated: 2026-11-16 (PR 18)_
 - **PR 16 (demo data):** `php artisan iib:demo-reset` (refuses in production) → `DemoSeeder`: 324 ads, 64 users, 18 reports, 2 demo staff with 2FA, 110 days of history, real free-licence photos from `database/demo/photos` (`tools/download-demo-photos`, CREDITS.md). `DemoData::deleteAll()` used by admin. Guide: docs/demo-data.md.
 - **PR 17 (Somali):** all site texts in Somali (`lang/so`: site, account, ads, reports, validation, pagination), Somali names for categories/fields/places (`database/seeders/data/somali.php`) and the 4 pages. Seeders only add missing languages (admin edits are safe). Somali stays OFF until a native speaker checks it. Test fails if a new English text has no Somali text.
 - **PR 18 (speed + security):** `GuestPages` middleware (guest pages: no session saved, no cookies, `Cache-Control: public`), server page cache (switch `performance.page_cache`, cleared on every change, fresh CSP nonce), `PrivateDatabaseSessionHandler` (no guest IP), HMAC-IP rate limits, read-only `/api/v1` (switch `api`), switch-crawl test, query budgets, secure-cookie default, `TRUSTED_PROXIES`. Docs: performance.md, security.md.
+- **PR 19 (docs):** deploy-shared.md, deploy-vps.md, cloudflare-r2.md, scaling.md, google-login.md (renamed), README, `tools/make-release` (upload zip for shared hosting, AWS SDK trimmed to S3), 15-minute check in TESTING_GUIDE. **Phase 1 is complete.**
 - Nothing is deployed yet.
 - Owner runs locally with **Laragon** on Windows (see docs/local-setup.md → A).
 
@@ -52,8 +53,10 @@ See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example 
 15. **PR 15:** "Recommended for you"
 16. **PR 16:** Demo data with real photos
 17. **PR 17:** Somali translations
-18. **PR 18:** Speed + security check (this one)
-19. Docs: deploy guides (shared + VPS), Cloudflare R2, scaling
+18. **PR 18:** Speed + security check
+19. **PR 19:** Docs + release zip (this one) — top PR, based on `main`: one merge brings PRs 7–19.
+
+Next (owner decides): answer H1–H3/C, then go live (deploy-shared.md). Phase 2 only when the owner says.
 
 ## Known notes
 - The local PHP Docker image could not be built inside Claude's sandbox (the Alpine package site is blocked there). CI builds it on GitHub to prove it works.

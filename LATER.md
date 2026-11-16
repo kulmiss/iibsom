@@ -6,7 +6,7 @@ Tick `[x]` with the date when done.
 - [ ] Make the GitHub repo **private** again (was public for CI testing on 2026-11-16)
 - [ ] Hosting details: panel + host name (H1), PHP 8.3+ available (H2), SSH + cron every minute (H3)
 - [ ] What else uses iibsom.com today, e.g. email or an old site (C)
-- [ ] Google sign-in keys → `.env` (docs/google-signin.md)
+- [ ] Google sign-in keys → `.env` (docs/google-login.md)
 - [ ] Cloudflare account + R2 bucket + keys → `.env` (docs/cloudflare-r2.md, comes with the deploy PR)
 - [ ] Point iibsom.com DNS to Cloudflare; SSL "Full (strict)"; set `TRUSTED_PROXIES=*` in `.env`
 - [ ] Hosting panel: turn off or shorten web server access logs (they keep visitor IPs)

@@ -1,6 +1,6 @@
 # ROADMAP
 
-## Phase 1 — Minimal launch (now)
+## Phase 1 — Minimal launch ✅ built (PRs 1–19, 2026-11-16)
 Google sign-in, post an ad, browse + search, ad page, My Ads, safety (reports, approval of every ad, filters, limits, bans), Super Admin (shadcn), feature switches, English with instant language switch (Somali-ready), SEO + speed, scale-ready base (R2, queues, search interface, /api/v1), demo data, docs. Runs on **both VPS and shared hosting** (decision #13).
 
 ### Phase 1 additions (owner request 2026-11-16)
@@ -17,7 +17,7 @@ Google sign-in, post an ad, browse + search, ad page, My Ads, safety (reports, a
 
 ## Phase 3 — Growth (build only when owner says)
 - Flutter app + push notifications
-- Somali language (texts reviewed by a native speaker)
+- Somali language: texts written (PR 17); turn ON after a native speaker review
 - Arabic
 - Diaspora features
 - Smart price suggestions
@@ -27,6 +27,9 @@ Google sign-in, post an ad, browse + search, ad page, My Ads, safety (reports, a
 - More regions (other countries) via region switches
 
 ## Ideas
-- Admin Health page: show `iibsom:health` checks with fix hints (planned with the admin PR).
-- One-click "Move to VPS" checklist in docs when traffic grows.
+- ✅ Admin Health page (PR 12). ✅ "Move to VPS" checklist (docs/scaling.md, PR 19).
+- Admin "Edited" badge in the approval queue showing what changed since the last approval.
+- Match demo photos to the brand in the title (e.g. Toyota photo for Toyota ads).
+- Weekly email to the owner: new ads, users, reports (needs mail on the host).
+- Saved "Recommended for you" across devices for signed-in users (opt-in).
 - Auto-trust for good sellers (skip approval after N approved ads) — switch built, OFF per decision #9.

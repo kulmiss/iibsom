@@ -1,5 +1,7 @@
 # Hosting modes: VPS and shared hosting
 
+Guides: [deploy-shared.md](deploy-shared.md) · [deploy-vps.md](deploy-vps.md) · [cloudflare-r2.md](cloudflare-r2.md) · [scaling.md](scaling.md)
+
 The same code runs on both. You choose the mode in `.env`:
 
 ```dotenv
@@ -14,7 +16,7 @@ HOSTING_MODE=vps      # or: shared
 | `CACHE_STORE` | `redis` | `database` |
 | `SESSION_DRIVER` | `redis` | `database` |
 | `QUEUE_CONNECTION` | `redis` | `database` |
-| `FILESYSTEM_DISK` (photos) | `r2` | `r2` |
+| `PHOTOS_DISK` (photos) | `r2` | `r2` |
 | Search | database, Meilisearch later | database |
 
 ## What runs in the background
