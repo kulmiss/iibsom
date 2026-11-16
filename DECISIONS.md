@@ -55,3 +55,4 @@ Every question, the owner's answer, and the date. Newest at the bottom.
 | 2026-11-16 | Renew: allowed for expired ads and live ads ending within 7 days; renew does NOT need approval again (text unchanged). |
 | 2026-11-16 | Delete from My Ads = soft delete (staff can still see it for reports/fraud). |
 | 2026-11-16 | Spam: bad-word list (admin editable, whole words, look-alike letters), no web links in ads, hidden bot-trap field, plus the existing limits (5 ads/day, duplicates, rate limits, blocked phones). Each has its own switch. Starter list is short English; owner adds Somali words. |
+| 2026-11-16 | "Recommended for you": history is kept in the browser only, for guests AND signed-in users (no server history at all: simpler, private, pages stay cacheable). Last 30 ads + top 20 categories; ad views count double. "Clear my history" button. |

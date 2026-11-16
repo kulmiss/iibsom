@@ -27,7 +27,7 @@ class HomePageTest extends TestCase
             ->assertSee('Vehicles')
             ->assertSee('Livestock &amp; Animals', false)
             ->assertSee('Popular categories')
-            ->assertSee('Trending ads')
+            ->assertSee('Latest ads')
             ->assertSee('No ads yet');
     }
 

@@ -119,7 +119,25 @@
                 </div>
             @endif
 
-            {{-- Trending ads (filled in the ads PRs) --}}
+            {{-- Recommended for you + recently viewed: filled by for-you.js from this browser's own history --}}
+            @feature('recommendations')
+                <div data-for-you data-url="{{ lroute('for-you') }}" hidden class="mt-8">
+                    <section data-slot="recommended" hidden>
+                        <div class="flex items-center justify-between gap-2">
+                            <h2 class="text-lg font-semibold">{{ __('site.home.for_you') }}</h2>
+                            <button type="button" data-clear-history class="text-xs font-medium text-stone-500 underline">{{ __('site.home.clear_history') }}</button>
+                        </div>
+                        <div data-cards class="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4"></div>
+                    </section>
+                    <section data-slot="recent" hidden class="mt-6">
+                        <h2 class="text-lg font-semibold">{{ __('site.home.recently_viewed') }}</h2>
+                        <div data-cards class="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4"></div>
+                    </section>
+                    <p class="mt-2 text-xs text-stone-500">{{ __('site.home.history_note') }}</p>
+                </div>
+            @endfeature
+
+            {{-- Latest ads --}}
             <h2 id="trending" class="mt-8 scroll-mt-20 text-lg font-semibold">{{ __('site.home.trending_ads') }}</h2>
             @if ($latest->isNotEmpty())
                 <div class="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">

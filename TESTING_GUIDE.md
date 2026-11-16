@@ -153,3 +153,11 @@ First add your Google keys: see docs/google-signin.md.
 | 6 | **Delete** | Asks first; ad gone (staff can still see it) |
 | 7 | Post an ad with "send money first" or a web link | Refused with a clear message |
 | 8 | Admin → Settings → General → add a word to Bad words | Ads with that word are refused |
+
+## Manual (PR 15: Recommended for you)
+| # | Do this | Expected |
+|---|---------|----------|
+| 1 | Open 2–3 car ads, then go to the home page | "Recommended for you" shows other cars; "Recently viewed" shows the ads you opened |
+| 2 | Tap **Clear my history** | Both lists disappear |
+| 3 | Admin → Feature switches → Recommended for you OFF | Home shows no lists |
+| 4 | Browser dev tools → Application → Local storage | `iibsom-history` is there; nothing is saved on the server |

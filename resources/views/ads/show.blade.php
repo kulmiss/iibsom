@@ -47,7 +47,7 @@
 @endpush
 
 @section('content')
-    <div class="mx-auto max-w-6xl px-4 py-4">
+    <div class="mx-auto max-w-6xl px-4 py-4" @if (feature('recommendations') && $ad->isLive()) data-track-cat="{{ $ad->category_id }}" data-track-ad="{{ $ad->id }}" @endif>
         <nav class="text-sm text-stone-500" aria-label="Breadcrumb">
             <a href="{{ lroute('home') }}" class="hover:underline">{{ __('site.nav.home') }}</a>
             @if ($ad->category->parent)

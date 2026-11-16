@@ -8,6 +8,7 @@ use App\Http\Controllers\Ads\PostAdController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BrowseController;
+use App\Http\Controllers\ForYouController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\SitemapController;
 use App\Models\Page;
@@ -69,6 +70,9 @@ $publicRoutes = function () {
     Route::get('/ads/{ad}/contact', [AdPageController::class, 'contact'])->whereNumber('ad')->middleware('throttle:30,1')->name('ad.contact');
 
     Route::get('/search', [BrowseController::class, 'search'])->name('search');
+
+    // "Recommended for you" cards (the browser sends its own history; nothing stored).
+    Route::get('/for-you', [ForYouController::class, 'show'])->middleware(['feature:recommendations', 'throttle:60,1'])->name('for-you');
 
     // About, Terms, Privacy, Safety tips (text edited in the admin).
     Route::get('/{slug}', [PageController::class, 'show'])->whereIn('slug', Page::CORE)->name('page');

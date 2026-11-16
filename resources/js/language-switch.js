@@ -47,6 +47,7 @@ async function swapTo(url, code, push = true) {
 
     if (push) history.pushState({ lang: code }, '', url);
     rememberLang(code);
+    document.dispatchEvent(new Event('page:swapped')); // page scripts fill their parts again
 }
 
 export function initLanguageSwitch() {
