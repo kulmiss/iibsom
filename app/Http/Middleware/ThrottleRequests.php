@@ -6,18 +6,26 @@ use App\Support\Privacy\Ip;
 use Illuminate\Routing\Middleware\ThrottleRequests as BaseThrottle;
 use RuntimeException;
 
-/** Same as Laravel's `throttle`, but guests are counted by a hashed IP (never the IP itself). */
+/**
+ * Laravel's `throttle`, with two changes:
+ *  - each limited page has its OWN counter (Laravel shares one counter per user
+ *    across all pages, so 12 photo uploads used up the 10-per-minute posting limit);
+ *  - guests are counted by a keyed hash of the IP, never the IP itself.
+ */
 class ThrottleRequests extends BaseThrottle
 {
     protected function resolveRequestSignature($request)
     {
-        if ($user = $request->user()) {
-            return sha1((string) $user->getAuthIdentifier());
+        $route = $request->route();
+        if (! $route) {
+            throw new RuntimeException('Unable to generate the request signature. Route unavailable.');
         }
-        if ($route = $request->route()) {
-            return sha1($route->getDomain().'|'.Ip::key($request));
-        }
+        // Same page in another language (/so/...) shares the counter: no doubling the limit by switching language.
+        $uri = preg_replace('#^\{locale\}/#', '', $route->uri()) ?? $route->uri();
+        $page = $route->getDomain().'|'.implode(',', $route->methods()).'|'.$uri;
 
-        throw new RuntimeException('Unable to generate the request signature. Route unavailable.');
+        $who = ($user = $request->user()) ? 'user:'.$user->getAuthIdentifier() : 'guest:'.Ip::key($request);
+
+        return sha1($page.'|'.$who);
     }
 }

@@ -201,6 +201,14 @@ First add your Google keys: see docs/google-login.md.
 | 4 | Look at categories, ad page, post form, My ads, errors | All in Somali |
 | 5 | `php artisan iibsom:translations:export so` | CSV for a native speaker to check |
 
+## Manual (PR 23: weekly email)
+| # | Do this | Expected |
+|---|---------|----------|
+| 1 | Admin → Settings → General → Weekly summary: your email → Save → **Send me a test now** | "Sent to …"; the email has last week's numbers (open Mailpit at http://localhost:8096 locally) |
+| 2 | Stop Mailpit, press the test button again | "Could not send the email…" message; `storage/logs/laravel.log` has `weekly_summary.failed` |
+| 3 | `php artisan iibsom:weekly-summary` twice | 2nd time: "Already sent for 2026-W…" |
+| 4 | `php artisan schedule:list` | `iibsom:weekly-summary` Monday 07:00 (Africa/Mogadishu) |
+
 ## Manual (PR 22: matching demo photos)
 | # | Do this | Expected |
 |---|---------|----------|

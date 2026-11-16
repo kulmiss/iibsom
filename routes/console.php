@@ -27,6 +27,10 @@ if (config('iibsom.hosting') === 'shared') {
 // Live ads past their end date become "expired" (sellers can renew them).
 Schedule::command('iibsom:ads:expire')->name('expire-ads')->hourly()->withoutOverlapping();
 
+// Weekly numbers to the owner: Monday 07:00 Mogadishu time (the command never sends a week twice).
+Schedule::command('iibsom:weekly-summary')->name('weekly-summary')
+    ->weeklyOn(1, '07:00')->timezone('Africa/Mogadishu')->withoutOverlapping();
+
 Artisan::command('iibsom:ads:expire', function () {
     if (! feature('ads.expiry')) {
         $this->info('Ad expiry is switched off.');

@@ -98,6 +98,8 @@ Route::prefix('admin/api')->group(function () {
         // Settings → General
         Route::get('/settings/general', [SettingsController::class, 'show'])->middleware('admin.can:settings.manage');
         Route::put('/settings/general', [SettingsController::class, 'update'])->middleware('admin.can:settings.manage');
+        Route::post('/settings/weekly-summary/test', [SettingsController::class, 'testWeeklySummary'])
+            ->middleware(['admin.can:settings.manage', 'throttle:5,10'])->name('admin.api.settings.weekly-test');
 
         // Pages + banners
         Route::middleware('admin.can:pages.manage')->group(function () {

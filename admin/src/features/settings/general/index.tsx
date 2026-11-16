@@ -18,6 +18,8 @@ type General = {
   available_languages: { code: string; name: string; default: boolean }[]
   currency: string
   bad_words: string
+  weekly_emails: string[]
+  weekly_last_sent: string | null
 }
 
 export function SettingsGeneral() {
@@ -29,13 +31,27 @@ export function SettingsGeneral() {
 function GeneralForm({ initial }: { initial: General }) {
   const qc = useQueryClient()
   const [form, setForm] = useState<General>(initial)
+  const [emails, setEmails] = useState(initial.weekly_emails.join('\n'))
 
   const save = useMutation({
-    mutationFn: () => api.put('/settings/general', form),
+    mutationFn: () =>
+      api.put('/settings/general', {
+        ...form,
+        weekly_emails: emails
+          .split(/[\s,;]+/)
+          .map((e) => e.trim())
+          .filter(Boolean),
+      }),
     onSuccess: () => {
       toast.success('Settings saved.')
       qc.invalidateQueries({ queryKey: ['settings-general'] })
     },
+    onError: (e) => toast.error(apiErrorMessage(e)),
+  })
+
+  const sendTest = useMutation({
+    mutationFn: async () => (await api.post<{ message: string }>('/settings/weekly-summary/test')).data,
+    onSuccess: (d) => toast.success(d.message),
     onError: (e) => toast.error(apiErrorMessage(e)),
   })
 
@@ -77,6 +93,19 @@ function GeneralForm({ initial }: { initial: General }) {
           <Label htmlFor='bad_words'>Bad words (one per line)</Label>
           <Textarea id='bad_words' rows={6} className='max-w-md font-mono text-xs' value={form.bad_words} onChange={(e) => setForm({ ...form, bad_words: e.target.value })} />
           <p className='text-xs text-muted-foreground'>Ads with these words are refused (whole words, any case). Add Somali words too. Switch: Safety → Bad word filter.</p>
+        </div>
+        <div className='grid gap-2'>
+          <Label htmlFor='weekly_emails'>Weekly summary email to (up to 5 addresses, one per line)</Label>
+          <Textarea id='weekly_emails' rows={3} className='max-w-md text-sm' value={emails} onChange={(e) => setEmails(e.target.value)} placeholder='owner@iibsom.com' />
+          <p className='text-xs text-muted-foreground'>
+            Every Monday at 07:00 (Mogadishu): last week&apos;s new ads, users, reports and top categories. Empty = no email.
+            {form.weekly_last_sent && ` Last sent: week ${form.weekly_last_sent}.`}
+          </p>
+          <div>
+            <Button type='button' variant='outline' size='sm' disabled={sendTest.isPending} onClick={() => sendTest.mutate()}>
+              Send me a test now
+            </Button>
+          </div>
         </div>
         <p className='text-sm text-muted-foreground'>Currency: {form.currency} (decision #3).</p>
         <Button type='submit' disabled={save.isPending}>

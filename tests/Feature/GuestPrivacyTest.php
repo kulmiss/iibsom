@@ -9,6 +9,7 @@ use App\Models\City;
 use App\Models\User;
 use App\Support\Cache\PageCache;
 use App\Support\Features\FeatureManager;
+use App\Support\Settings\SettingsManager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -125,5 +126,16 @@ class GuestPrivacyTest extends TestCase
 
         $this->assertStringNotContainsString('197.157.1.2', $signature);
         $this->assertNotSame(sha1('|197.157.1.2'), $signature); // not a plain hash that could be guessed back
+    }
+
+    public function test_each_page_has_its_own_limit_but_languages_share_it(): void
+    {
+        app(SettingsManager::class)->set('languages.enabled', ['en', 'so']);
+        for ($i = 0; $i < 15; $i++) {
+            $this->getJson('/ads/999999/contact')->assertNotFound();
+            $this->getJson('/so/ads/999999/contact')->assertNotFound();
+        }
+        $this->getJson('/ads/999999/contact')->assertStatus(429);   // 30 per minute, both languages together
+        $this->getJson('/api/v1/cities')->assertOk();                // another page: its own counter
     }
 }

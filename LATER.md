@@ -16,6 +16,7 @@ Tick `[x]` with the date when done.
 - [ ] Add Somali bad words to admin → Settings → General → Bad words
 - [ ] Delete all demo data before launch (admin → Settings → Delete all demo data)
 
+- [ ] Admin → Settings → General → **Weekly summary email to**: add your email, press "Send me a test now" (needs working MAIL_ settings in `.env`)
 - [ ] Create your Super Admin account on the live site: `php artisan iibsom:staff you@iibsom.com` and set up 2FA
 
 ## Can wait

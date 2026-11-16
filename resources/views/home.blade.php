@@ -10,7 +10,7 @@
 @php($banners = feature('site.banners') ? \App\Models\Banner::forHome() : [])
 
 @section('content')
-    {{-- Big search (inspired by jiji.com, in Iibsom colours) --}}
+    {{-- Big search (inspired by jiji.com, in iibsom colours) --}}
     <section class="rounded-b-3xl bg-brand-700 text-white">
         <div class="mx-auto max-w-3xl px-4 pb-7 pt-6 text-center sm:pb-16 sm:pt-14">
             <h1 class="text-xl font-bold sm:text-3xl">{{ __('site.home.heading') }}</h1>

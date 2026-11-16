@@ -249,4 +249,15 @@ class PostAdTest extends TestCase
     {
         $this->get('/')->assertSee('href="'.url('/post').'"', false);
     }
+
+    public function test_limits_of_other_pages_do_not_block_posting(): void
+    {
+        // Each limited page has its own counter: 12 photo uploads must not use up the 10-per-minute posting limit.
+        $this->actingAs($this->seller);
+        for ($i = 0; $i < 12; $i++) {
+            $this->getJson('/ads/999999/contact')->assertNotFound(); // "Show number": its own limit of 30/min
+        }
+
+        $this->post('/post/cars', $this->carAd())->assertRedirect()->assertSessionHasNoErrors();
+    }
 }

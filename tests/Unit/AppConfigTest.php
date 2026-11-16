@@ -10,7 +10,7 @@ class AppConfigTest extends TestCase
     {
         $env = file_get_contents(__DIR__.'/../../.env.example');
 
-        $this->assertStringContainsString('APP_NAME=Iibsom', $env);
+        $this->assertStringContainsString('APP_NAME=iibsom', $env);
         $this->assertStringContainsString('APP_URL=http://localhost:8095', $env);
         $this->assertStringContainsString('DB_CONNECTION=mysql', $env);
     }
