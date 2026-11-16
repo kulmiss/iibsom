@@ -2,6 +2,10 @@
 
 This guide explains every page of the admin in easy words. Tap **?** next to a page title to open the part about that page.
 
+## First sign-in
+
+A 5-step setup asks the main questions: languages, ad rules, cities, emails and demo data. Press **Later** to do it another time. You can run it again from Settings → General.
+
 ## Every day (10 minutes)
 
 1. **Waiting for approval:** approve good ads, reject bad ones with a reason.

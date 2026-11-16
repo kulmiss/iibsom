@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { Link } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { api, apiErrorMessage } from '@/lib/api'
 import { Button } from '@/components/ui/button'
@@ -113,6 +114,12 @@ function GeneralForm({ initial }: { initial: General }) {
           <Input id='support_email' type='email' className='max-w-md' value={form.support_email} onChange={(e) => setForm({ ...form, support_email: e.target.value })} placeholder='help@iibsom.com' />
           <p className='text-xs text-muted-foreground'>Shown at the bottom of the Help page (&quot;Still need help?&quot;). Empty = not shown.</p>
         </div>
+        <p className='text-sm text-muted-foreground'>
+          Want the short step-by-step version?{' '}
+          <Link to='/setup' className='text-primary underline'>
+            Run the first-time setup again
+          </Link>
+        </p>
         <p className='text-sm text-muted-foreground'>Currency: {form.currency} (decision #3).</p>
         <Button type='submit' disabled={save.isPending}>
           Save settings

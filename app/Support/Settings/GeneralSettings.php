@@ -1,0 +1,88 @@
+<?php
+
+namespace App\Support\Settings;
+
+use App\Console\Commands\SendWeeklySummary;
+use Illuminate\Validation\Rule;
+
+/**
+ * Settings → General, shared by the settings page and the first-time setup
+ * wizard, so both check and save the values the same way.
+ */
+class GeneralSettings
+{
+    public function __construct(private readonly SettingsManager $settings) {}
+
+    /** @return array<string, list<mixed>> */
+    public static function rules(): array
+    {
+        return [
+            'ads_expiry_days' => ['required', 'integer', 'min:7', 'max:365'],
+            'ads_max_per_day' => ['required', 'integer', 'min:1', 'max:100'],
+            'ads_max_photos' => ['required', 'integer', 'min:1', 'max:20'],
+            'languages' => ['required', 'array', 'min:1'],
+            'languages.*' => [Rule::in(array_keys(config()->array('iibsom.locales')))],
+            'bad_words' => ['nullable', 'string', 'max:20000'],
+            'weekly_emails' => ['nullable', 'array', 'max:5'],
+            'weekly_emails.*' => ['email:rfc', 'max:120'],
+            'support_email' => ['nullable', 'email:rfc', 'max:120'],
+        ];
+    }
+
+    /** @return array<string, string> */
+    public static function messages(): array
+    {
+        return [
+            'weekly_emails.*.email' => 'Each weekly summary address must be a valid email.',
+            'support_email.email' => 'The help email must be a valid email address.',
+        ];
+    }
+
+    /**
+     * Save validated values. Optional ones (bad words, emails) change only
+     * when they were sent, so a form without them keeps them as they are.
+     *
+     * @param  array<string, mixed>  $data
+     */
+    public function save(array $data, int $userId): void
+    {
+        $languages = array_values(array_unique([config('iibsom.default_locale'), ...(array) $data['languages']]));
+
+        $this->settings->set('ads.expiry_days', (int) $data['ads_expiry_days'], $userId);
+        $this->settings->set('ads.max_per_day', (int) $data['ads_max_per_day'], $userId);
+        $this->settings->set('ads.max_photos', (int) $data['ads_max_photos'], $userId);
+        $this->settings->set('languages.enabled', $languages, $userId);
+
+        if (array_key_exists('bad_words', $data)) {
+            $words = collect(preg_split('/\r?\n/', (string) ($data['bad_words'] ?? '')) ?: [])
+                ->map(fn ($w) => mb_strtolower(trim($w)))->filter()->unique()->take(1000)->values()->all();
+            $this->settings->set('safety.bad_words', $words, $userId);
+        }
+
+        if (array_key_exists('weekly_emails', $data)) {
+            $emails = array_values(array_unique(array_map('mb_strtolower', array_filter((array) ($data['weekly_emails'] ?? []), 'is_string'))));
+            $this->settings->set('reports.weekly_emails', $emails, $userId);
+        }
+
+        if (array_key_exists('support_email', $data)) {
+            $this->settings->set('site.support_email', mb_strtolower(trim((string) ($data['support_email'] ?? ''))), $userId);
+        }
+    }
+
+    /** @return array<string, mixed> */
+    public function values(): array
+    {
+        return [
+            'ads_expiry_days' => setting('ads.expiry_days'),
+            'ads_max_per_day' => setting('ads.max_per_day'),
+            'ads_max_photos' => setting('ads.max_photos'),
+            'languages' => setting('languages.enabled'),
+            'available_languages' => collect(config()->array('iibsom.locales'))->map(fn ($l, $code) => ['code' => $code, 'name' => $l['name'], 'default' => $code === config('iibsom.default_locale')])->values(),
+            'currency' => setting('currency'),
+            'bad_words' => implode("\n", setting('safety.bad_words') ?? []),
+            'weekly_emails' => SendWeeklySummary::recipients(),
+            'weekly_last_sent' => setting('reports.weekly_last_sent') ?: null,
+            'support_email' => setting('site.support_email'),
+        ];
+    }
+}

@@ -12,6 +12,8 @@ export type StaffUser = {
   demo_data: boolean
   /** "Admin guide" switch: "?" buttons and the Guide page. */
   guide: boolean
+  /** Super Admin who has not done the first-time setup yet. */
+  setup_needed: boolean
 }
 
 interface AuthState {

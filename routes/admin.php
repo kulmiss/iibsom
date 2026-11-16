@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\PageAdminController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\SetupController;
 use App\Http\Controllers\Admin\SpaController;
 use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\SystemController;
@@ -38,6 +39,13 @@ Route::prefix('admin/api')->group(function () {
 
     Route::middleware('admin')->group(function () {
         Route::get('/me', [AuthController::class, 'me'])->name('admin.api.me');
+
+        // First-time setup wizard (Super Admin).
+        Route::middleware(['feature:admin.setup_wizard', 'admin.can:settings.manage'])->group(function () {
+            Route::get('/setup', [SetupController::class, 'show'])->name('admin.api.setup');
+            Route::post('/setup', [SetupController::class, 'store'])->middleware('throttle:10,1')->name('admin.api.setup.store');
+            Route::post('/setup/skip', [SetupController::class, 'skip'])->name('admin.api.setup.skip');
+        });
 
         // Super Admin guide ("?" buttons, Guide page, print and PDF): every staff member.
         Route::middleware('feature:help.admin_guide')->group(function () {

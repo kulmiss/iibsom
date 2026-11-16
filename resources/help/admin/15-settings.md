@@ -7,6 +7,7 @@
 - **Bad words:** ads with these words are refused. Add Somali words too.
 - **Weekly summary email:** last week's numbers every Monday morning. **Send me a test now** checks that email works.
 - **Help email for customers:** shown on the Help page.
+- **Run the first-time setup again:** the same questions in 5 short steps.
 
 ## Appearance
 

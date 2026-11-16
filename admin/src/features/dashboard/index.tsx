@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { Link } from '@tanstack/react-router'
+import { Link, Navigate } from '@tanstack/react-router'
 import { Flag, ListChecks, Megaphone, Users } from 'lucide-react'
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { api } from '@/lib/api'
@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Page } from '@/components/layout/page'
+import { useAuthStore } from '@/stores/auth-store'
 
 type Dashboard = {
   includes_demo: boolean
@@ -29,6 +30,8 @@ export function Dashboard() {
   })
 
   const chart = useMemo(() => (data?.chart ?? []).slice(-Number(range)).map((d) => ({ ...d, label: d.date.slice(5) })), [data, range])
+  const setupNeeded = useAuthStore((s) => !!s.user?.setup_needed)
+  if (setupNeeded) return <Navigate to='/setup' />
 
   return (
     <Page title='Dashboard' help='dashboard' description='What is happening on iibsom.' actions={data?.includes_demo && <Badge variant='secondary'>Includes demo data</Badge>}>

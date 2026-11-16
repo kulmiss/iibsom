@@ -29,6 +29,7 @@ import { Route as AuthenticatedLocationsRouteImport } from './routes/_authentica
 import { Route as AuthenticatedPagesRouteImport } from './routes/_authenticated/pages'
 import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
 import { Route as AuthenticatedSettingsRouteRouteImport } from './routes/_authenticated/settings/route'
+import { Route as AuthenticatedSetupRouteImport } from './routes/_authenticated/setup'
 import { Route as AuthenticatedStaffRouteImport } from './routes/_authenticated/staff'
 import { Route as AuthenticatedUsersRouteImport } from './routes/_authenticated/users'
 import { Route as AuthenticatedAdsIndexRouteImport } from './routes/_authenticated/ads/index'
@@ -139,6 +140,11 @@ const AuthenticatedSettingsRouteRoute =
     path: '/settings',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedSetupRoute = AuthenticatedSetupRouteImport.update({
+  id: '/setup',
+  path: '/setup',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedStaffRoute = AuthenticatedStaffRouteImport.update({
   id: '/staff',
   path: '/staff',
@@ -210,6 +216,7 @@ export interface FileRoutesByFullPath {
   '/locations': typeof AuthenticatedLocationsRoute
   '/pages': typeof AuthenticatedPagesRoute
   '/reports': typeof AuthenticatedReportsRoute
+  '/setup': typeof AuthenticatedSetupRoute
   '/staff': typeof AuthenticatedStaffRoute
   '/users': typeof AuthenticatedUsersRoute
   '/ads/pending': typeof AuthenticatedAdsPendingRoute
@@ -238,6 +245,7 @@ export interface FileRoutesByTo {
   '/locations': typeof AuthenticatedLocationsRoute
   '/pages': typeof AuthenticatedPagesRoute
   '/reports': typeof AuthenticatedReportsRoute
+  '/setup': typeof AuthenticatedSetupRoute
   '/staff': typeof AuthenticatedStaffRoute
   '/users': typeof AuthenticatedUsersRoute
   '/': typeof AuthenticatedIndexRoute
@@ -270,6 +278,7 @@ export interface FileRoutesById {
   '/_authenticated/locations': typeof AuthenticatedLocationsRoute
   '/_authenticated/pages': typeof AuthenticatedPagesRoute
   '/_authenticated/reports': typeof AuthenticatedReportsRoute
+  '/_authenticated/setup': typeof AuthenticatedSetupRoute
   '/_authenticated/staff': typeof AuthenticatedStaffRoute
   '/_authenticated/users': typeof AuthenticatedUsersRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
@@ -303,6 +312,7 @@ export interface FileRouteTypes {
     | '/locations'
     | '/pages'
     | '/reports'
+    | '/setup'
     | '/staff'
     | '/users'
     | '/ads/pending'
@@ -331,6 +341,7 @@ export interface FileRouteTypes {
     | '/locations'
     | '/pages'
     | '/reports'
+    | '/setup'
     | '/staff'
     | '/users'
     | '/'
@@ -362,6 +373,7 @@ export interface FileRouteTypes {
     | '/_authenticated/locations'
     | '/_authenticated/pages'
     | '/_authenticated/reports'
+    | '/_authenticated/setup'
     | '/_authenticated/staff'
     | '/_authenticated/users'
     | '/_authenticated/'
@@ -528,6 +540,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/setup': {
+      id: '/_authenticated/setup'
+      path: '/setup'
+      fullPath: '/setup'
+      preLoaderRoute: typeof AuthenticatedSetupRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/staff': {
       id: '/_authenticated/staff'
       path: '/staff'
@@ -625,6 +644,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedLocationsRoute: typeof AuthenticatedLocationsRoute
   AuthenticatedPagesRoute: typeof AuthenticatedPagesRoute
   AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
+  AuthenticatedSetupRoute: typeof AuthenticatedSetupRoute
   AuthenticatedStaffRoute: typeof AuthenticatedStaffRoute
   AuthenticatedUsersRoute: typeof AuthenticatedUsersRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
@@ -644,6 +664,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedLocationsRoute: AuthenticatedLocationsRoute,
   AuthenticatedPagesRoute: AuthenticatedPagesRoute,
   AuthenticatedReportsRoute: AuthenticatedReportsRoute,
+  AuthenticatedSetupRoute: AuthenticatedSetupRoute,
   AuthenticatedStaffRoute: AuthenticatedStaffRoute,
   AuthenticatedUsersRoute: AuthenticatedUsersRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,

@@ -200,6 +200,7 @@ class AuthController extends Controller
             'brand_color' => setting('admin.brand_color'),
             'demo_data' => feature('site.demo_data'),
             'guide' => feature('help.admin_guide'),
+            'setup_needed' => feature('admin.setup_wizard') && $user->hasPermission('settings.manage') && ! SetupController::completed(),
         ];
     }
 }
