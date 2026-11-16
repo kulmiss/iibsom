@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Cache;
 
@@ -12,7 +13,12 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
 
         // Redis/database caches live outside the test transaction, so start every test clean.
-        Cache::flush();
+        // (Database cache: the table may not exist yet on a brand-new test database.)
+        try {
+            Cache::flush();
+        } catch (QueryException) {
+            // Nothing cached yet.
+        }
 
         // Pages render without a built front-end (npm run build) in tests.
         $this->withoutVite();
