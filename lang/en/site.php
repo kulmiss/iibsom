@@ -42,6 +42,8 @@ return [
         'no_ads_text' => 'Be the first to post an ad. It is free and takes less than a minute.',
     ],
 
+    'page_updated' => 'Last updated: :date',
+
     'ads_count' => '{0} No ads yet|{1} :count ad|[2,*] :count ads',
 
     'footer' => [

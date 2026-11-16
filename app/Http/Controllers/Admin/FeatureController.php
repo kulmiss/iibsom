@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Support\Admin\Activity;
+use App\Support\Ads\AdCounters;
 use App\Support\Features\FeatureManager;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -31,6 +32,9 @@ class FeatureController extends Controller
         $on = $request->validate(['enabled' => ['required', 'boolean']])['enabled'];
 
         $features->set($key, $on, $request->user()->id);
+        if ($key === 'site.demo_data') {
+            AdCounters::refreshAll();
+        }
         Activity::log('feature.'.($on ? 'on' : 'off'), 'Switched “'.config("features.{$key}.label").'” '.($on ? 'ON' : 'OFF'), null, ['key' => $key]);
 
         return response()->json(['key' => $key, 'enabled' => $features->enabled($key)]);

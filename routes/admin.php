@@ -4,14 +4,18 @@ use App\Http\Controllers\Admin\ActivityController;
 use App\Http\Controllers\Admin\AdController;
 use App\Http\Controllers\Admin\AppearanceController;
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BlockedPhoneController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FeatureController;
 use App\Http\Controllers\Admin\LocationController;
+use App\Http\Controllers\Admin\PageAdminController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\SpaController;
+use App\Http\Controllers\Admin\StaffController;
+use App\Http\Controllers\Admin\SystemController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -92,6 +96,34 @@ Route::prefix('admin/api')->group(function () {
         // Settings → General
         Route::get('/settings/general', [SettingsController::class, 'show'])->middleware('admin.can:settings.manage');
         Route::put('/settings/general', [SettingsController::class, 'update'])->middleware('admin.can:settings.manage');
+
+        // Pages + banners
+        Route::middleware('admin.can:pages.manage')->group(function () {
+            Route::get('/pages', [PageAdminController::class, 'index'])->name('admin.api.pages');
+            Route::put('/pages/{page}', [PageAdminController::class, 'update'])->name('admin.api.pages.update');
+            Route::post('/pages/preview', [PageAdminController::class, 'preview'])->name('admin.api.pages.preview');
+        });
+        Route::middleware('admin.can:banners.manage')->group(function () {
+            Route::get('/banners', [BannerController::class, 'index'])->name('admin.api.banners');
+            Route::post('/banners', [BannerController::class, 'store'])->name('admin.api.banners.store');
+            Route::post('/banners/{banner}', [BannerController::class, 'update'])->name('admin.api.banners.update');
+            Route::delete('/banners/{banner}', [BannerController::class, 'destroy'])->name('admin.api.banners.destroy');
+        });
+
+        // Staff
+        Route::middleware('admin.can:staff.manage')->group(function () {
+            Route::get('/staff', [StaffController::class, 'index'])->name('admin.api.staff');
+            Route::post('/staff', [StaffController::class, 'store'])->name('admin.api.staff.store');
+            Route::put('/staff/{user}', [StaffController::class, 'update'])->name('admin.api.staff.update');
+            Route::post('/staff/{user}/reset-2fa', [StaffController::class, 'resetTwoFactor'])->name('admin.api.staff.reset2fa');
+            Route::post('/staff/{user}/reset-password', [StaffController::class, 'resetPassword'])->name('admin.api.staff.resetPassword');
+            Route::delete('/staff/{user}', [StaffController::class, 'destroy'])->name('admin.api.staff.destroy');
+        });
+
+        // System health + demo data
+        Route::get('/health', [SystemController::class, 'health'])->middleware('admin.can:health.view')->name('admin.api.health');
+        Route::get('/demo', [SystemController::class, 'demo'])->middleware('admin.can:demo.manage')->name('admin.api.demo');
+        Route::post('/demo/delete', [SystemController::class, 'deleteDemo'])->middleware(['admin.can:demo.manage', 'throttle:3,1'])->name('admin.api.demo.delete');
 
         Route::get('/settings/appearance', [AppearanceController::class, 'show'])->name('admin.api.appearance');
         Route::put('/settings/appearance', [AppearanceController::class, 'update'])->middleware('admin.can:settings.manage')->name('admin.api.appearance.update');

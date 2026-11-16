@@ -54,8 +54,8 @@
                     <label class="flex items-start gap-2 text-sm">
                         <input type="checkbox" name="terms" value="1" required class="mt-0.5 size-4 rounded border-stone-300 text-brand-700" @checked(old('terms'))>
                         <span>{!! __('account.form.terms', [
-                            'terms' => '<a href="#" class="font-medium text-brand-700 underline">'.e(__('account.form.terms_link')).'</a>',
-                            'privacy' => '<a href="#" class="font-medium text-brand-700 underline">'.e(__('account.form.privacy_link')).'</a>',
+                            'terms' => '<a href="'.e(lroute('page', ['slug' => 'terms'])).'" target="_blank" class="font-medium text-brand-700 underline">'.e(__('account.form.terms_link')).'</a>',
+                            'privacy' => '<a href="'.e(lroute('page', ['slug' => 'privacy'])).'" target="_blank" class="font-medium text-brand-700 underline">'.e(__('account.form.privacy_link')).'</a>',
                         ]) !!}</span>
                     </label>
                     @error('terms') <p class="form-error">{{ $message }}</p> @enderror

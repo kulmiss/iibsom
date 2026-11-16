@@ -5,6 +5,8 @@ use App\Http\Controllers\Ads\AdPhotoController;
 use App\Http\Controllers\Ads\PostAdController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\PageController;
+use App\Models\Page;
 use App\Support\Localization\Locales;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +18,10 @@ use Illuminate\Support\Facades\Route;
 */
 $publicRoutes = function () {
     Route::view('/', 'home')->name('home');
+
+    // About, Terms, Privacy, Safety tips (text edited in the admin).
+    Route::get('/{slug}', [PageController::class, 'show'])
+        ->whereIn('slug', Page::CORE)->name('page');
 
     // Sign in (Google only for customers).
     Route::middleware(['guest', 'feature:login.google'])->group(function () {

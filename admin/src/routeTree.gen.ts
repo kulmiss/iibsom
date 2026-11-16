@@ -35,6 +35,7 @@ import { Route as AuthenticatedAdsPendingRouteImport } from './routes/_authentic
 import { Route as AuthenticatedErrorsErrorRouteImport } from './routes/_authenticated/errors/$error'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
 import { Route as AuthenticatedSettingsAppearanceRouteImport } from './routes/_authenticated/settings/appearance'
+import { Route as AuthenticatedSettingsDemoRouteImport } from './routes/_authenticated/settings/demo'
 import { Route as AuthenticatedSettingsSecurityRouteImport } from './routes/_authenticated/settings/security'
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
@@ -170,6 +171,12 @@ const AuthenticatedSettingsAppearanceRoute =
     path: '/appearance',
     getParentRoute: () => AuthenticatedSettingsRouteRoute,
   } as any)
+const AuthenticatedSettingsDemoRoute =
+  AuthenticatedSettingsDemoRouteImport.update({
+    id: '/demo',
+    path: '/demo',
+    getParentRoute: () => AuthenticatedSettingsRouteRoute,
+  } as any)
 const AuthenticatedSettingsSecurityRoute =
   AuthenticatedSettingsSecurityRouteImport.update({
     id: '/security',
@@ -201,6 +208,7 @@ export interface FileRoutesByFullPath {
   '/ads/pending': typeof AuthenticatedAdsPendingRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
+  '/settings/demo': typeof AuthenticatedSettingsDemoRoute
   '/settings/security': typeof AuthenticatedSettingsSecurityRoute
   '/ads/': typeof AuthenticatedAdsIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
@@ -228,6 +236,7 @@ export interface FileRoutesByTo {
   '/ads/pending': typeof AuthenticatedAdsPendingRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
+  '/settings/demo': typeof AuthenticatedSettingsDemoRoute
   '/settings/security': typeof AuthenticatedSettingsSecurityRoute
   '/ads': typeof AuthenticatedAdsIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
@@ -258,6 +267,7 @@ export interface FileRoutesById {
   '/_authenticated/ads/pending': typeof AuthenticatedAdsPendingRoute
   '/_authenticated/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/_authenticated/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
+  '/_authenticated/settings/demo': typeof AuthenticatedSettingsDemoRoute
   '/_authenticated/settings/security': typeof AuthenticatedSettingsSecurityRoute
   '/_authenticated/ads/': typeof AuthenticatedAdsIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
@@ -288,6 +298,7 @@ export interface FileRouteTypes {
     | '/ads/pending'
     | '/errors/$error'
     | '/settings/appearance'
+    | '/settings/demo'
     | '/settings/security'
     | '/ads/'
     | '/settings/'
@@ -315,6 +326,7 @@ export interface FileRouteTypes {
     | '/ads/pending'
     | '/errors/$error'
     | '/settings/appearance'
+    | '/settings/demo'
     | '/settings/security'
     | '/ads'
     | '/settings'
@@ -344,6 +356,7 @@ export interface FileRouteTypes {
     | '/_authenticated/ads/pending'
     | '/_authenticated/errors/$error'
     | '/_authenticated/settings/appearance'
+    | '/_authenticated/settings/demo'
     | '/_authenticated/settings/security'
     | '/_authenticated/ads/'
     | '/_authenticated/settings/'
@@ -545,6 +558,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsAppearanceRouteImport
       parentRoute: typeof AuthenticatedSettingsRouteRoute
     }
+    '/_authenticated/settings/demo': {
+      id: '/_authenticated/settings/demo'
+      path: '/demo'
+      fullPath: '/settings/demo'
+      preLoaderRoute: typeof AuthenticatedSettingsDemoRouteImport
+      parentRoute: typeof AuthenticatedSettingsRouteRoute
+    }
     '/_authenticated/settings/security': {
       id: '/_authenticated/settings/security'
       path: '/security'
@@ -557,6 +577,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedSettingsRouteRouteChildren {
   AuthenticatedSettingsAppearanceRoute: typeof AuthenticatedSettingsAppearanceRoute
+  AuthenticatedSettingsDemoRoute: typeof AuthenticatedSettingsDemoRoute
   AuthenticatedSettingsSecurityRoute: typeof AuthenticatedSettingsSecurityRoute
   AuthenticatedSettingsIndexRoute: typeof AuthenticatedSettingsIndexRoute
 }
@@ -564,6 +585,7 @@ interface AuthenticatedSettingsRouteRouteChildren {
 const AuthenticatedSettingsRouteRouteChildren: AuthenticatedSettingsRouteRouteChildren =
   {
     AuthenticatedSettingsAppearanceRoute: AuthenticatedSettingsAppearanceRoute,
+    AuthenticatedSettingsDemoRoute: AuthenticatedSettingsDemoRoute,
     AuthenticatedSettingsSecurityRoute: AuthenticatedSettingsSecurityRoute,
     AuthenticatedSettingsIndexRoute: AuthenticatedSettingsIndexRoute,
   }

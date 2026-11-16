@@ -6,6 +6,7 @@
 @php($categories = $catalog->categories())
 @php($cities = $catalog->cities())
 @php($popular = $catalog->popularCategories(8))
+@php($banners = feature('site.banners') ? \App\Models\Banner::forHome() : [])
 
 @section('content')
     {{-- Big search (inspired by jiji.com, in Iibsom colours) --}}
@@ -63,9 +64,25 @@
             <div class="flex flex-wrap gap-2">
                 <a href="#" class="chip bg-accent-400/30 ring-accent-400">{{ icon('tag', 'size-4') }} {{ __('site.home.how_to_sell') }}</a>
                 @feature('site.safety_box')
-                    <a href="#" class="chip bg-brand-50 ring-brand-200">{{ icon('shield-check', 'size-4') }} {{ __('site.home.safety_tips') }}</a>
+                    <a href="{{ lroute('page', ['slug' => 'safety']) }}" class="chip bg-brand-50 ring-brand-200">{{ icon('shield-check', 'size-4') }} {{ __('site.home.safety_tips') }}</a>
                 @endfeature
             </div>
+
+            {{-- Home banners (admin → Home banners) --}}
+            @if ($banners)
+                <div class="mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-1" aria-label="Banners">
+                    @foreach ($banners as $banner)
+                        @php($img = '<img src="'.e($banner['small']).'" srcset="'.e($banner['small']).' 800w, '.e($banner['wide']).' 1600w" sizes="(min-width: 1024px) 860px, 100vw" alt="'.e(translated($banner['title'])).'" class="h-36 w-full rounded-xl object-cover sm:h-44" '.($loop->first ? 'fetchpriority="high"' : 'loading="lazy"').'>')
+                        <div class="w-full shrink-0 snap-start">
+                            @if ($banner['link_url'])
+                                <a href="{{ $banner['link_url'] }}" @if (str_starts_with($banner['link_url'], 'https://')) rel="noopener" @endif>{!! $img !!}</a>
+                            @else
+                                {!! $img !!}
+                            @endif
+                        </div>
+                    @endforeach
+                </div>
+            @endif
 
             {{-- Category tiles (phones), like a mobile app --}}
             <nav class="mt-4 grid grid-cols-4 gap-x-2 gap-y-4 sm:grid-cols-6 lg:hidden" aria-label="{{ __('site.home.categories') }}">

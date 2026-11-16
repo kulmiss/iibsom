@@ -1,5 +1,5 @@
 import { Outlet } from '@tanstack/react-router'
-import { Palette, Settings2, ShieldCheck } from 'lucide-react'
+import { FlaskConical, Palette, Settings2, ShieldCheck } from 'lucide-react'
 import { useAuthStore } from '@/stores/auth-store'
 import { Separator } from '@/components/ui/separator'
 import { ConfigDrawer } from '@/components/config-drawer'
@@ -14,6 +14,7 @@ const allItems = [
   { title: 'General', href: '/settings', icon: <Settings2 size={18} />, permission: 'settings.manage' },
   { title: 'Appearance', href: '/settings/appearance', icon: <Palette size={18} /> },
   { title: 'Security (2FA)', href: '/settings/security', icon: <ShieldCheck size={18} /> },
+  { title: 'Demo data', href: '/settings/demo', icon: <FlaskConical size={18} />, permission: 'demo.manage' },
 ]
 
 export function Settings() {

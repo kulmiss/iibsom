@@ -130,16 +130,16 @@ class HealthChecker
 
     private function storage(): array
     {
-        $disk = config('filesystems.default');
+        $disk = config('iibsom.photos_disk');
 
         try {
             $path = 'health/'.Str::random(8).'.txt';
             Storage::disk($disk)->put($path, 'ok');
             Storage::disk($disk)->delete($path);
 
-            return $this->result('storage', 'File storage', 'ok', "Writable ({$disk})");
+            return $this->result('storage', 'Photo storage', 'ok', "Writable ({$disk})");
         } catch (Throwable) {
-            return $this->result('storage', 'File storage', 'fail', "Cannot write files to \"{$disk}\".", 'Check folder permissions for storage/ or the R2 keys in .env.');
+            return $this->result('storage', 'Photo storage', 'fail', "Cannot write files to \"{$disk}\".", 'Check folder permissions for storage/ or the R2 keys in .env.');
         }
     }
 

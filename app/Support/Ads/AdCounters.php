@@ -39,10 +39,22 @@ final class AdCounters
         $category->newQuery()->whereKey($category->id)->update(['ads_count' => self::live()->whereIn('category_id', $ids)->count()]);
     }
 
-    /** Live, not expired, not demo (demo never counts in real totals). */
+    /** Recount everything (e.g. after "Show demo data" is switched). */
+    public static function refreshAll(): void
+    {
+        foreach (Category::all() as $category) {
+            self::refreshCategory($category);
+        }
+        foreach (City::pluck('id') as $cityId) {
+            City::whereKey($cityId)->update(['ads_count' => self::live()->where('city_id', $cityId)->count()]);
+        }
+        app(Catalog::class)->flush();
+    }
+
+    /** Live and not expired. Demo ads count only while "Show demo data" is ON. */
     private static function live()
     {
-        return Ad::query()->where('status', AdStatus::Live)->where('is_demo', false)
+        return Ad::query()->where('status', AdStatus::Live)->when(! feature('site.demo_data'), fn ($q) => $q->where('is_demo', false))
             ->where(fn ($q) => $q->whereNull('expires_at')->orWhere('expires_at', '>', now()));
     }
 }

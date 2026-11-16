@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-16 (PR 11)_
+_Last updated: 2026-11-16 (PR 12)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -13,6 +13,7 @@ _Last updated: 2026-11-16 (PR 11)_
 - **PR 9 (Super Admin foundation):** `admin/` = shadcn-admin template (pinned, MIT, cleaned), built to `public/admin-app`, served at `/admin` with CSP nonces. Staff login (password + **required TOTP 2FA**, recovery codes, rate limits, idle timeout 60 min), roles + permissions (`config/admin.php`), dashboard API + charts, activity log, brand colour, themes, Ctrl+K, phone cards, reusable `ServerDataTable`. `php artisan iibsom:staff`. Screens for ads/users/reports/categories/etc. are placeholders → next PRs.
 - **PR 10 (moderation):** admin ads list + approval queue (cover photos, detail panel, approve, reject with reason presets, edit, soft delete, bulk), users (search by phone, ban with take-down + block phone, unban), blocked phones (customers can't use them), reports queue (take ad down closes all its reports, dismiss). Live-ad counters on categories/cities kept up to date (demo never counted). Photo host allowed in CSP.
 - **PR 11 (catalogue + switches + settings):** categories editor (tree, add/edit/on-off, icon picker, popular, new/used, delete only without ads), custom fields editor (text/number/list/yes-no, units, required, filter), regions/cities/areas with switches (new cities start OFF), feature switches page (grouped, search, ON/OFF counts, "what changes" confirm, reset to default), Settings → General (expiry days, ads/day, photos/ad, languages). Route names unique (route:cache works).
+- **PR 12 (site content + staff + health):** pages table + public `/about /safety /terms /privacy` (Markdown, HTML escaped, EN/SO, starter text, never overwritten by seeder), admin page editor with preview, home banners (upload → 2 WebP sizes on photos disk, safe links only, dates, on/off, cached), staff management (add with one-time password, role, reset 2FA/password, remove; self + last Super Admin protected), System health page, Demo data settings (show switch recounts totals; delete all with typed DELETE).
 - Nothing is deployed yet.
 - Owner runs locally with **Laragon** on Windows (see docs/local-setup.md → A).
 
@@ -38,8 +39,8 @@ See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example 
 8. **PR 8:** Post an ad (photos → R2 via queue, drafts offline)
 9. **PR 9:** Super Admin foundation: staff login + 2FA + roles, dashboard, activity log, themes, brand colour 
 10. **PR 10:** Admin: ads approval queue + all ads, users (ban, block phone), reports
-11. **PR 11:** Admin: categories + fields editor, cities/areas, feature switches, settings (this one)
-12. **PR 12:** Admin: pages, banners, staff, system health, demo data controls
+11. **PR 11:** Admin: categories + fields editor, cities/areas, feature switches, settings
+12. **PR 12:** Admin: pages, banners, staff, system health, demo data controls (this one)
 13. Browse, search (DB full-text behind an interface), ad page, SEO
 14. My Ads (edit, sold, renew, delete), reports, safety (bad words, honeypot, block phone)
 15. "Recommended for you" (browsing history in the browser, similar ads)

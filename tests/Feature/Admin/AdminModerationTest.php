@@ -198,7 +198,7 @@ class AdminModerationTest extends AdminTestCase
         $this->getJson('/admin/api/ads')->assertJsonCount(0, 'data');
     }
 
-    public function test_live_counter_ignores_demo_and_follows_expiry_command(): void
+    public function test_live_counter_ignores_demo_unless_shown_and_follows_expiry(): void
     {
         $cars = Category::where('slug', 'cars')->first();
         $ad = Ad::factory()->live()->create(['category_id' => $cars->id]);

@@ -10,7 +10,7 @@ Tick `[x]` with the date when done.
 - [ ] Cloudflare account + R2 bucket + keys → `.env` (docs/cloudflare-r2.md, comes with the deploy PR)
 - [ ] Point iibsom.com DNS to Cloudflare
 - [ ] Native Somali speaker reviews the translation CSV (`php artisan iibsom:translations:export so`)
-- [ ] Write/approve Terms, Privacy, About and Safety pages (admin → Pages)
+- [ ] Check and approve the **draft** Terms and Privacy text (admin → Pages); add Somali versions
 - [ ] Delete all demo data before launch (admin → Settings → Delete all demo data)
 
 - [ ] Create your Super Admin account on the live site: `php artisan iibsom:staff you@iibsom.com` and set up 2FA

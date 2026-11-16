@@ -117,3 +117,15 @@ First add your Google keys: see docs/google-signin.md.
 | 5 | Mogadishu → **areas** → add "KM4" | KM4 is in the area list when posting |
 | 6 | **Feature switches** → WhatsApp button | A box explains what changes before you confirm. After OFF it shows "changed" with a reset button |
 | 7 | **Settings → General** → Ads end after 30 days, tick Somali → Save | New approved ads end in 30 days. A language switch appears on the site |
+
+## Manual (PR 12: pages, banners, staff, health, demo data)
+| # | Do this | Expected |
+|---|---------|----------|
+| 1 | `php artisan db:seed`, open http://localhost:8095/safety | "Stay safe" page. Footer links About / Safety tips / Terms / Privacy work |
+| 2 | Admin → **Pages** → Safety → change text → **Preview** → **Save page** | The site shows the new text. Typing `<script>` shows as text, not code |
+| 3 | **Home banners** → **Add banner** → picture 1600×500, link `/post` | "Showing". The banner appears on the home page under the quick links |
+| 4 | Banner link `javascript:alert(1)` | Refused |
+| 5 | **Staff** → **Add staff** (Moderator) | A one-time password appears once. Signing in with it asks for 2FA setup |
+| 6 | Try to change your own role | Not possible ("You") |
+| 7 | **System health** | List of checks with fixes, plus "This server" facts (Google keys MISSING until you add them) |
+| 8 | **Settings → Demo data** → type DELETE → delete | Only demo records are removed |

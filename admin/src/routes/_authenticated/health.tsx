@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { ComingSoon } from '@/components/coming-soon'
+import { HealthPage } from '@/features/health'
 
 export const Route = createFileRoute('/_authenticated/health')({
-  component: () => <ComingSoon title='System health' what='Cron, queue, storage, cache, mail and image checks for this server.' />,
+  component: HealthPage,
 })

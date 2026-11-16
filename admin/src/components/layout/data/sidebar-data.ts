@@ -1,6 +1,7 @@
 import {
   Activity,
   FileText,
+  FlaskConical,
   Flag,
   FolderTree,
   HeartPulse,
@@ -62,6 +63,7 @@ export const sidebarData: SidebarData = {
             { title: 'General', url: '/settings', icon: Settings, permission: 'settings.manage' },
             { title: 'Appearance', url: '/settings/appearance', icon: Palette },
             { title: 'Security (2FA)', url: '/settings/security', icon: ShieldCheck },
+            { title: 'Demo data', url: '/settings/demo', icon: FlaskConical, permission: 'demo.manage' },
           ],
         },
       ],
