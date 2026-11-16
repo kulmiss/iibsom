@@ -1,4 +1,53 @@
-# Local setup (Windows + WSL 2 + Docker)
+# Local setup
+
+Two ways to run Iibsom on your PC:
+- **A. Laragon (Windows)**: easiest if you already use Laragon.
+- **B. Docker (WSL 2)**: same setup as the VPS.
+
+---
+
+# A. Laragon (Windows)
+
+Needs PHP 8.3+ (Laragon → Menu → PHP → Version) and MySQL running (**Start All**).
+
+```bat
+cd C:\laragon\www
+git clone https://github.com/kulmiss/iibsom.git
+cd iibsom
+set COMPOSER_MAX_PARALLEL_HTTP=1
+composer install
+copy .env.example .env
+php artisan key:generate
+```
+
+> **"Permission denied" during `composer install`?** Windows Defender is scanning files while Composer writes them. Add `C:\laragon\www` to Windows Security → Virus & threat protection → Manage settings → Exclusions, then run `composer install` again.
+
+Edit `.env` (`notepad .env`) to use shared-hosting style settings (no Redis needed):
+```dotenv
+IIBSOM_HOSTING=shared
+DB_HOST=127.0.0.1
+DB_USERNAME=root
+DB_PASSWORD=
+SESSION_DRIVER=database
+CACHE_STORE=database
+QUEUE_CONNECTION=database
+MAIL_MAILER=log
+```
+
+Create the databases, then run:
+```bat
+mysql -u root -e "CREATE DATABASE iibsom; CREATE DATABASE iibsom_testing;"
+php artisan migrate
+php artisan test
+php artisan serve --port=8095
+```
+Open http://localhost:8095. To check everything: `php artisan iibsom:health`. On your PC the scheduler shows FAIL until you run `php artisan schedule:work` in another window, which is normal.
+
+To get new changes later: `git pull`, then `composer install` and `php artisan migrate`.
+
+---
+
+# B. Docker (Windows + WSL 2)
 
 The site runs at **http://localhost:8095**. 8080 and 8090 are used by your other projects.
 

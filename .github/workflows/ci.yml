@@ -17,8 +17,18 @@ permissions:
 jobs:
   tests:
     if: github.event_name == 'workflow_dispatch' || github.event.pull_request.draft == false
+    name: tests (${{ matrix.hosting }})
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        # Same tests on both hosting modes: VPS (Redis) and shared hosting (database).
+        include:
+          - hosting: vps
+            cache: redis
+          - hosting: shared
+            cache: database
     services:
       mysql:
         image: mysql:8.4
@@ -40,6 +50,8 @@ jobs:
       DB_USERNAME: iibsom
       DB_PASSWORD: secret
       REDIS_HOST: 127.0.0.1
+      IIBSOM_HOSTING: ${{ matrix.hosting }}
+      CACHE_STORE: ${{ matrix.cache }}
     steps:
       - uses: actions/checkout@v4
 
