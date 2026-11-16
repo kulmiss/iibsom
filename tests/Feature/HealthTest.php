@@ -19,7 +19,7 @@ class HealthTest extends TestCase
         $this->get('/')
             ->assertOk()
             ->assertSee('Iibsom')
-            ->assertSee('Buy and sell anything in Somalia');
+            ->assertSee('What are you looking for?');
     }
 
     public function test_tests_run_on_mysql_like_production(): void

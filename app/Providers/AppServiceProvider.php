@@ -2,6 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\Area;
+use App\Models\Category;
+use App\Models\CategoryField;
+use App\Models\City;
+use App\Models\Region;
+use App\Support\Catalog;
 use App\Support\Features\FeatureManager;
 use App\Support\Health\HealthChecker;
 use App\Support\Settings\SettingsManager;
@@ -17,11 +23,18 @@ class AppServiceProvider extends ServiceProvider
         $this->app->scoped(FeatureManager::class);
         $this->app->scoped(SettingsManager::class);
         $this->app->singleton(HealthChecker::class);
+        $this->app->singleton(Catalog::class);
     }
 
     public function boot(): void
     {
         // @feature('contact.whatsapp') ... @endfeature
         Blade::if('feature', fn (string $key) => app(FeatureManager::class)->enabled($key));
+
+        // Any change to categories or locations clears the cached lists.
+        foreach ([Category::class, CategoryField::class, City::class, Region::class, Area::class] as $model) {
+            $model::saved(fn () => app(Catalog::class)->flush());
+            $model::deleted(fn () => app(Catalog::class)->flush());
+        }
     }
 }

@@ -37,13 +37,13 @@ MAIL_MAILER=log
 Create the databases, then run:
 ```bat
 mysql -u root -e "CREATE DATABASE iibsom; CREATE DATABASE iibsom_testing;"
-php artisan migrate
+php artisan migrate --seed
 php artisan test
 php artisan serve --port=8095
 ```
 Open http://localhost:8095. To check everything: `php artisan iibsom:health`. On your PC the scheduler shows FAIL until you run `php artisan schedule:work` in another window, which is normal.
 
-To get new changes later: `git pull`, then `composer install` and `php artisan migrate`.
+To get new changes later: `git pull`, `composer install`, `php artisan migrate --seed`, `npm install`, `npm run build`.
 
 ---
 

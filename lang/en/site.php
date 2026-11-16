@@ -10,6 +10,11 @@ return [
     'nav' => [
         'home' => 'Home',
         'post_ad' => 'Post an ad',
+        'sell' => 'Sell',
+        'saved' => 'Saved ads',
+        'messages' => 'Messages',
+        'alerts' => 'Alerts',
+        'my_account' => 'My account',
         'sign_in' => 'Sign in',
         'menu' => 'Menu',
         'close_menu' => 'Close menu',
@@ -19,11 +24,22 @@ return [
 
     'home' => [
         'title' => 'Buy and sell in Somalia',
+        'heading' => 'What are you looking for?',
         'intro' => 'Cars, houses, land, phones, livestock, services and jobs. All in one place.',
-        'search_placeholder' => 'What are you looking for?',
+        'search_placeholder' => 'I am looking for...',
         'search_button' => 'Search',
-        'coming_soon' => 'We are getting ready. Ads will appear here very soon.',
+        'location_label' => 'Location',
+        'all_somalia' => 'All Somalia',
+        'categories' => 'Categories',
+        'popular_categories' => 'Popular categories',
+        'trending_ads' => 'Trending ads',
+        'how_to_sell' => 'How to sell',
+        'safety_tips' => 'Stay safe',
+        'no_ads_title' => 'No ads yet',
+        'no_ads_text' => 'Be the first to post an ad. It is free and takes less than a minute.',
     ],
+
+    'ads_count' => '{0} No ads yet|{1} :count ad|[2,*] :count ads',
 
     'footer' => [
         'about' => 'About us',
