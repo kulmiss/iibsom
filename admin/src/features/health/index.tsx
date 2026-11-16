@@ -20,6 +20,7 @@ export function HealthPage() {
   return (
     <Page
       title='System health'
+      help='health'
       description={data ? (fails ? `${fails} thing(s) need attention.` : 'Everything important works.') : 'Checking…'}
       actions={
         <Button variant='outline' onClick={() => refetch()} disabled={isFetching}>

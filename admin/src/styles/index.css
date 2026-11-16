@@ -85,3 +85,17 @@
     height: 0;
   }
 }
+
+/* Admin guide text (HTML made from Markdown on the server). */
+@utility guide-content {
+  @apply text-sm leading-relaxed;
+  & h2 { @apply mt-5 mb-1.5 text-base font-semibold; }
+  & p { @apply my-2; }
+  & ul, & ol { @apply my-2 ps-5; }
+  & ul { @apply list-disc; }
+  & ol { @apply list-decimal; }
+  & li { @apply my-1; }
+  & strong { @apply font-semibold; }
+  & code { @apply rounded bg-muted px-1 py-0.5 text-xs; }
+  & a { @apply text-primary underline; }
+}

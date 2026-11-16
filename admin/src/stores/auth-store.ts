@@ -10,6 +10,8 @@ export type StaffUser = {
   permissions: string[]
   brand_color: string
   demo_data: boolean
+  /** "Admin guide" switch: "?" buttons and the Guide page. */
+  guide: boolean
 }
 
 interface AuthState {

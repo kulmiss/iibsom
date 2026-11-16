@@ -9,6 +9,7 @@ import { ProfileDropdown } from '@/components/profile-dropdown'
 import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
 import { SidebarNav } from './components/sidebar-nav'
+import { HelpButton } from '@/features/guide/help-button'
 
 const allItems = [
   { title: 'General', href: '/settings', icon: <Settings2 size={18} />, permission: 'settings.manage' },
@@ -32,9 +33,10 @@ export function Settings() {
 
       <Main fixed>
         <div className='space-y-0.5'>
-          <h1 className='text-2xl font-bold tracking-tight md:text-3xl'>
-            Settings
-          </h1>
+          <div className='flex items-center gap-1'>
+            <h1 className='text-2xl font-bold tracking-tight md:text-3xl'>Settings</h1>
+            <HelpButton section='settings' />
+          </div>
           <p className='text-muted-foreground'>
             Site settings, the admin look and your sign-in security.
           </p>

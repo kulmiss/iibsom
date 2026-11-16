@@ -93,7 +93,7 @@ export function Reports() {
   ]
 
   return (
-    <Page title='Reports' description='Ads people reported. Waiting ones come first.'>
+    <Page title='Reports' help='reports' description='Ads people reported. Waiting ones come first.'>
       <ServerDataTable<ReportRow>
         url='/reports'
         queryKey='reports'

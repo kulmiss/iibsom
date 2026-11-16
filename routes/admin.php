@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\BlockedPhoneController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FeatureController;
+use App\Http\Controllers\Admin\GuideController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\PageAdminController;
 use App\Http\Controllers\Admin\ReportController;
@@ -37,6 +38,13 @@ Route::prefix('admin/api')->group(function () {
 
     Route::middleware('admin')->group(function () {
         Route::get('/me', [AuthController::class, 'me'])->name('admin.api.me');
+
+        // Super Admin guide ("?" buttons, Guide page, print and PDF): every staff member.
+        Route::middleware('feature:help.admin_guide')->group(function () {
+            Route::get('/guide', [GuideController::class, 'index'])->name('admin.api.guide');
+            Route::get('/guide/print', [GuideController::class, 'print'])->name('admin.api.guide.print');
+            Route::get('/guide/pdf', [GuideController::class, 'pdf'])->name('admin.api.guide.pdf');
+        });
         Route::post('/logout', [AuthController::class, 'logout'])->name('admin.api.logout');
 
         Route::get('/dashboard', DashboardController::class)->middleware('admin.can:dashboard.view')->name('admin.api.dashboard');

@@ -67,6 +67,7 @@ export function Categories() {
   return (
     <Page
       title='Categories'
+      help='categories'
       description='Add, edit and switch categories on or off. No code needed.'
       actions={
         <Button onClick={() => setDialog({ category: null })}>

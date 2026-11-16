@@ -9,7 +9,7 @@ import { NavUser } from './nav-user'
 export function AppSidebar() {
   const { collapsible, variant } = useLayout()
   const can = useAuthStore((s) => s.can)
-  useAuthStore((s) => s.user) // re-render when the user loads
+  const user = useAuthStore((s) => s.user) // re-render when the user loads
 
   return (
     <Sidebar collapsible={collapsible} variant={variant}>
@@ -17,7 +17,7 @@ export function AppSidebar() {
         <AppTitle />
       </SidebarHeader>
       <SidebarContent>
-        {visibleNavGroups(can).map((props) => (
+        {visibleNavGroups(can, user).map((props) => (
           <NavGroup key={props.title} {...props} />
         ))}
       </SidebarContent>

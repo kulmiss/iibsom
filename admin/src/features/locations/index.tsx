@@ -45,7 +45,7 @@ export function Locations() {
   const on = data?.flatMap((r) => r.cities).filter((c) => c.enabled).length ?? 0
 
   return (
-    <Page title='Cities and areas' description={`Only cities that are ON appear on the site. ${on} ON now.`}>
+    <Page title='Cities and areas' help='locations' description={`Only cities that are ON appear on the site. ${on} ON now.`}>
       {isLoading && <Skeleton className='h-96' />}
       <div className='grid gap-4 lg:grid-cols-2'>
         {data?.map((r) => (

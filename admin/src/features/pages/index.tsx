@@ -22,7 +22,7 @@ export function Pages() {
   const current = data?.find((p) => p.id === (selected ?? data[0]?.id))
 
   return (
-    <Page title='Pages' description='About, Safety tips, Terms and Privacy. Write in Markdown: **bold**, ## heading, - list.'>
+    <Page title='Pages' help='pages' description='About, Safety tips, Terms and Privacy. Write in Markdown: **bold**, ## heading, - list.'>
       {isLoading && <Skeleton className='h-96' />}
       <div className='grid gap-4 lg:grid-cols-[14rem_1fr]'>
         <div className='flex gap-2 overflow-x-auto lg:flex-col'>

@@ -32,6 +32,7 @@ export function Banners() {
   return (
     <Page
       title='Home banners'
+      help='banners'
       description='Pictures at the top of the home page. Best size: 1600 × 500 pixels.'
       actions={
         <Button onClick={() => setEditing('new')}>

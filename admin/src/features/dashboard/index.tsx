@@ -31,7 +31,7 @@ export function Dashboard() {
   const chart = useMemo(() => (data?.chart ?? []).slice(-Number(range)).map((d) => ({ ...d, label: d.date.slice(5) })), [data, range])
 
   return (
-    <Page title='Dashboard' description='What is happening on iibsom.' actions={data?.includes_demo && <Badge variant='secondary'>Includes demo data</Badge>}>
+    <Page title='Dashboard' help='dashboard' description='What is happening on iibsom.' actions={data?.includes_demo && <Badge variant='secondary'>Includes demo data</Badge>}>
       <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-4'>
         <StatCard title='New ads' icon={Megaphone} loading={isLoading} value={data?.cards.ads_today} hint={data && `${nf.format(data.cards.ads_week)} this week · ${nf.format(data.cards.ads_month)} in 30 days`} />
         <StatCard title='Waiting for approval' icon={ListChecks} loading={isLoading} value={data?.cards.ads_pending} hint={data && `${nf.format(data.cards.ads_live)} ads live now`} to='/ads/pending' highlight={!!data?.cards.ads_pending} />

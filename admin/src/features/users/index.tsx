@@ -40,7 +40,7 @@ export function Users() {
   const [openId, setOpenId] = useState<number | null>(search.open ?? null)
 
   return (
-    <Page title='Users' description='Customers who signed in with Google. Tap a user to see their ads or ban them.'>
+    <Page title='Users' help='users' description='Customers who signed in with Google. Tap a user to see their ads or ban them.'>
       <Tabs defaultValue='users' className='flex flex-1 flex-col'>
         <TabsList>
           <TabsTrigger value='users'>Users</TabsTrigger>

@@ -6,6 +6,8 @@ type BaseNavItem = {
   icon?: React.ElementType
   /** Hidden unless the staff member has this permission. */
   permission?: string
+  /** Hidden while this feature switch is OFF. */
+  feature?: 'guide'
 }
 
 type NavLink = BaseNavItem & {

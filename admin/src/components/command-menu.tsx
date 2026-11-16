@@ -21,6 +21,7 @@ export function CommandMenu() {
   const { setTheme } = useTheme()
   const { open, setOpen } = useSearch()
   const can = useAuthStore((s) => s.can)
+  const user = useAuthStore((s) => s.user)
 
   const runCommand = React.useCallback(
     (command: () => unknown) => {
@@ -36,7 +37,7 @@ export function CommandMenu() {
       <CommandList>
         <ScrollArea type='hover' className='h-72 pe-1'>
           <CommandEmpty>Nothing found.</CommandEmpty>
-          {visibleNavGroups(can).map((group) => (
+          {visibleNavGroups(can, user).map((group) => (
             <CommandGroup key={group.title} heading={group.title}>
               {group.items.map((navItem, i) => {
                 if (navItem.url)

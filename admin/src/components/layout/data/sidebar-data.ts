@@ -1,5 +1,6 @@
 import {
   Activity,
+  BookOpen,
   FileText,
   FlaskConical,
   Flag,
@@ -17,6 +18,7 @@ import {
   UserCog,
   Users,
 } from 'lucide-react'
+import { type StaffUser } from '@/stores/auth-store'
 import { type SidebarData } from '../types'
 
 /** Admin menu. Items are hidden for staff without the permission. */
@@ -56,6 +58,7 @@ export const sidebarData: SidebarData = {
         { title: 'Staff', url: '/staff', icon: UserCog, permission: 'staff.manage' },
         { title: 'Activity log', url: '/activity', icon: Activity, permission: 'activity.view' },
         { title: 'System health', url: '/health', icon: HeartPulse, permission: 'health.view' },
+        { title: 'Admin guide', url: '/guide', icon: BookOpen, feature: 'guide' },
         {
           title: 'Settings',
           icon: Settings,
@@ -71,14 +74,15 @@ export const sidebarData: SidebarData = {
   ],
 }
 
-/** The menu for this staff member (items they may not use are removed). */
-export function visibleNavGroups(can: (permission: string) => boolean): SidebarData['navGroups'] {
+/** The menu for this staff member (items they may not use, or switched OFF, are removed). */
+export function visibleNavGroups(can: (permission: string) => boolean, user: StaffUser | null): SidebarData['navGroups'] {
+  const allowed = (item: { permission?: string; feature?: 'guide' }) => (!item.permission || can(item.permission)) && (!item.feature || !!user?.[item.feature])
   return sidebarData.navGroups
     .map((group) => ({
       ...group,
       items: group.items
-        .map((item) => (item.items ? { ...item, items: item.items.filter((sub) => !sub.permission || can(sub.permission)) } : item))
-        .filter((item) => (!item.permission || can(item.permission)) && (!item.items || item.items.length > 0)),
+        .map((item) => (item.items ? { ...item, items: item.items.filter(allowed) } : item))
+        .filter((item) => allowed(item) && (!item.items || item.items.length > 0)),
     }))
     .filter((group) => group.items.length > 0)
 }

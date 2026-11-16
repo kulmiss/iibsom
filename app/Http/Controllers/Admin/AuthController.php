@@ -199,6 +199,7 @@ class AuthController extends Controller
             'permissions' => $user->permissions(),
             'brand_color' => setting('admin.brand_color'),
             'demo_data' => feature('site.demo_data'),
+            'guide' => feature('help.admin_guide'),
         ];
     }
 }

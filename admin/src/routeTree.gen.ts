@@ -23,6 +23,7 @@ import { Route as AuthenticatedActivityRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedBannersRouteImport } from './routes/_authenticated/banners'
 import { Route as AuthenticatedCategoriesRouteImport } from './routes/_authenticated/categories'
 import { Route as AuthenticatedFeaturesRouteImport } from './routes/_authenticated/features'
+import { Route as AuthenticatedGuideRouteImport } from './routes/_authenticated/guide'
 import { Route as AuthenticatedHealthRouteImport } from './routes/_authenticated/health'
 import { Route as AuthenticatedLocationsRouteImport } from './routes/_authenticated/locations'
 import { Route as AuthenticatedPagesRouteImport } from './routes/_authenticated/pages'
@@ -105,6 +106,11 @@ const AuthenticatedCategoriesRoute = AuthenticatedCategoriesRouteImport.update({
 const AuthenticatedFeaturesRoute = AuthenticatedFeaturesRouteImport.update({
   id: '/features',
   path: '/features',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedGuideRoute = AuthenticatedGuideRouteImport.update({
+  id: '/guide',
+  path: '/guide',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedHealthRoute = AuthenticatedHealthRouteImport.update({
@@ -199,6 +205,7 @@ export interface FileRoutesByFullPath {
   '/banners': typeof AuthenticatedBannersRoute
   '/categories': typeof AuthenticatedCategoriesRoute
   '/features': typeof AuthenticatedFeaturesRoute
+  '/guide': typeof AuthenticatedGuideRoute
   '/health': typeof AuthenticatedHealthRoute
   '/locations': typeof AuthenticatedLocationsRoute
   '/pages': typeof AuthenticatedPagesRoute
@@ -226,6 +233,7 @@ export interface FileRoutesByTo {
   '/banners': typeof AuthenticatedBannersRoute
   '/categories': typeof AuthenticatedCategoriesRoute
   '/features': typeof AuthenticatedFeaturesRoute
+  '/guide': typeof AuthenticatedGuideRoute
   '/health': typeof AuthenticatedHealthRoute
   '/locations': typeof AuthenticatedLocationsRoute
   '/pages': typeof AuthenticatedPagesRoute
@@ -257,6 +265,7 @@ export interface FileRoutesById {
   '/_authenticated/banners': typeof AuthenticatedBannersRoute
   '/_authenticated/categories': typeof AuthenticatedCategoriesRoute
   '/_authenticated/features': typeof AuthenticatedFeaturesRoute
+  '/_authenticated/guide': typeof AuthenticatedGuideRoute
   '/_authenticated/health': typeof AuthenticatedHealthRoute
   '/_authenticated/locations': typeof AuthenticatedLocationsRoute
   '/_authenticated/pages': typeof AuthenticatedPagesRoute
@@ -289,6 +298,7 @@ export interface FileRouteTypes {
     | '/banners'
     | '/categories'
     | '/features'
+    | '/guide'
     | '/health'
     | '/locations'
     | '/pages'
@@ -316,6 +326,7 @@ export interface FileRouteTypes {
     | '/banners'
     | '/categories'
     | '/features'
+    | '/guide'
     | '/health'
     | '/locations'
     | '/pages'
@@ -346,6 +357,7 @@ export interface FileRouteTypes {
     | '/_authenticated/banners'
     | '/_authenticated/categories'
     | '/_authenticated/features'
+    | '/_authenticated/guide'
     | '/_authenticated/health'
     | '/_authenticated/locations'
     | '/_authenticated/pages'
@@ -472,6 +484,13 @@ declare module '@tanstack/react-router' {
       path: '/features'
       fullPath: '/features'
       preLoaderRoute: typeof AuthenticatedFeaturesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/guide': {
+      id: '/_authenticated/guide'
+      path: '/guide'
+      fullPath: '/guide'
+      preLoaderRoute: typeof AuthenticatedGuideRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/health': {
@@ -601,6 +620,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedBannersRoute: typeof AuthenticatedBannersRoute
   AuthenticatedCategoriesRoute: typeof AuthenticatedCategoriesRoute
   AuthenticatedFeaturesRoute: typeof AuthenticatedFeaturesRoute
+  AuthenticatedGuideRoute: typeof AuthenticatedGuideRoute
   AuthenticatedHealthRoute: typeof AuthenticatedHealthRoute
   AuthenticatedLocationsRoute: typeof AuthenticatedLocationsRoute
   AuthenticatedPagesRoute: typeof AuthenticatedPagesRoute
@@ -619,6 +639,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedBannersRoute: AuthenticatedBannersRoute,
   AuthenticatedCategoriesRoute: AuthenticatedCategoriesRoute,
   AuthenticatedFeaturesRoute: AuthenticatedFeaturesRoute,
+  AuthenticatedGuideRoute: AuthenticatedGuideRoute,
   AuthenticatedHealthRoute: AuthenticatedHealthRoute,
   AuthenticatedLocationsRoute: AuthenticatedLocationsRoute,
   AuthenticatedPagesRoute: AuthenticatedPagesRoute,

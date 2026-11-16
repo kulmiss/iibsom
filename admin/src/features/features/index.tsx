@@ -39,7 +39,7 @@ export function FeatureSwitches() {
     .filter((g) => g.items.length)
 
   return (
-    <Page title='Feature switches' description='One switch for every feature. OFF = hidden everywhere, as if it never existed. Data is kept.'>
+    <Page title='Feature switches' help='switches' description='One switch for every feature. OFF = hidden everywhere, as if it never existed. Data is kept.'>
       <div className='flex flex-wrap items-center gap-3'>
         <Input placeholder='Find a switch…' value={search} onChange={(e) => setSearch(e.target.value)} className='h-9 max-w-xs' />
         {data && (

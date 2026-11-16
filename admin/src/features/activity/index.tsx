@@ -23,7 +23,7 @@ const columns: ColumnDef<Activity>[] = [
 
 export function ActivityLog() {
   return (
-    <Page title='Activity log' description='Everything staff did in the admin: sign-ins, approvals, bans, changed switches and settings.'>
+    <Page title='Activity log' help='activity' description='Everything staff did in the admin: sign-ins, approvals, bans, changed switches and settings.'>
       <ServerDataTable<Activity>
         url='/activity'
         queryKey='activity'

@@ -35,7 +35,8 @@ Tests: `php artisan test` (MySQL database `iibsom_testing`).
 | [google-login.md](docs/google-login.md) | Google sign-in keys |
 | [hosting-modes.md](docs/hosting-modes.md) · [scaling.md](docs/scaling.md) | Shared vs VPS, growing |
 | [demo-data.md](docs/demo-data.md) | Demo data and photos |
-| [translations.md](docs/translations.md) | Somali and other languages |
+| [translations.md](docs/translations.md) · [somali-review](docs/somali-review/README.md) | Somali texts and the review sheet |
+| [Admin guide (PDF)](resources/help/admin-guide.pdf) | How every admin page works (also inside the admin: **?** buttons). Remake: `tools/make-guide-pdf` |
 | [security.md](docs/security.md) · [performance.md](docs/performance.md) | Security check, speed numbers |
 
 ## Project memory

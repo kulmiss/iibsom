@@ -53,6 +53,7 @@ export function StaffPage() {
   return (
     <Page
       title='Staff'
+      help='staff'
       description='People who can use this admin. Everyone must use 2FA.'
       actions={
         <Button onClick={() => setAdding(true)}>
