@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
- * CI runs the whole test suite twice: IIBSOM_HOSTING=vps and =shared.
+ * CI runs the whole test suite twice: HOSTING_MODE=vps and =shared.
  */
 class HostingModeTest extends TestCase
 {
@@ -25,25 +25,25 @@ class HostingModeTest extends TestCase
 
     public function test_unknown_mode_falls_back_to_vps(): void
     {
-        $old = [$_SERVER['IIBSOM_HOSTING'] ?? null, $_ENV['IIBSOM_HOSTING'] ?? null, getenv('IIBSOM_HOSTING')];
-        $_SERVER['IIBSOM_HOSTING'] = $_ENV['IIBSOM_HOSTING'] = 'banana';
-        putenv('IIBSOM_HOSTING=banana');
+        $old = [$_SERVER['HOSTING_MODE'] ?? null, $_ENV['HOSTING_MODE'] ?? null, getenv('HOSTING_MODE')];
+        $_SERVER['HOSTING_MODE'] = $_ENV['HOSTING_MODE'] = 'banana';
+        putenv('HOSTING_MODE=banana');
 
         try {
             $config = require base_path('config/iibsom.php');
         } finally {
             [$server, $env, $put] = $old;
             if ($server === null) {
-                unset($_SERVER['IIBSOM_HOSTING']);
+                unset($_SERVER['HOSTING_MODE']);
             } else {
-                $_SERVER['IIBSOM_HOSTING'] = $server;
+                $_SERVER['HOSTING_MODE'] = $server;
             }
             if ($env === null) {
-                unset($_ENV['IIBSOM_HOSTING']);
+                unset($_ENV['HOSTING_MODE']);
             } else {
-                $_ENV['IIBSOM_HOSTING'] = $env;
+                $_ENV['HOSTING_MODE'] = $env;
             }
-            putenv($put === false ? 'IIBSOM_HOSTING' : "IIBSOM_HOSTING={$put}");
+            putenv($put === false ? 'HOSTING_MODE' : "HOSTING_MODE={$put}");
         }
 
         $this->assertSame('vps', $config['hosting']);

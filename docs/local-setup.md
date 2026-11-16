@@ -24,7 +24,7 @@ php artisan key:generate
 
 Edit `.env` (`notepad .env`) to use shared-hosting style settings (no Redis needed):
 ```dotenv
-IIBSOM_HOSTING=shared
+HOSTING_MODE=shared
 DB_HOST=127.0.0.1
 DB_USERNAME=root
 DB_PASSWORD=

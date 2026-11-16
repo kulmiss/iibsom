@@ -47,6 +47,21 @@ return [
             'report' => false,
         ],
 
+        // Cloudflare R2 (S3-compatible) for ad photos in production. Never the app server's disk.
+        'r2' => [
+            'driver' => 's3',
+            'key' => env('R2_ACCESS_KEY_ID'),
+            'secret' => env('R2_SECRET_ACCESS_KEY'),
+            'region' => 'auto',
+            'bucket' => env('R2_BUCKET'),
+            'endpoint' => env('R2_ENDPOINT'), // https://<account-id>.r2.cloudflarestorage.com
+            'url' => env('R2_PUBLIC_URL'),    // https://photos.iibsom.com (served via Cloudflare CDN)
+            'use_path_style_endpoint' => true,
+            'visibility' => 'public',
+            'throw' => true,
+            'report' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

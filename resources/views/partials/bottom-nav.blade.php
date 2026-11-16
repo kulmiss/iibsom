@@ -10,7 +10,7 @@
             <li><a href="#" class="bottom-nav-item">{{ icon('bookmark', 'size-6') }}<span>{{ __('site.nav.saved') }}</span></a></li>
         @endfeature
         @if (feature('ads.posting') && (auth()->check() || feature('login.google')))
-            <li><a href="{{ auth()->check() ? '#' : lroute('login') }}" class="bottom-nav-item">{{ icon('square-plus', 'size-6') }}<span>{{ __('site.nav.sell') }}</span></a></li>
+            <li><a href="{{ lroute('post') }}" class="bottom-nav-item">{{ icon('square-plus', 'size-6') }}<span>{{ __('site.nav.sell') }}</span></a></li>
         @endif
         @feature('chat')
             <li><a href="#" class="bottom-nav-item">{{ icon('message-circle', 'size-6') }}<span>{{ __('site.nav.messages') }}</span></a></li>

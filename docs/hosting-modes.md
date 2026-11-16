@@ -3,14 +3,14 @@
 The same code runs on both. You choose the mode in `.env`:
 
 ```dotenv
-IIBSOM_HOSTING=vps      # or: shared
+HOSTING_MODE=vps      # or: shared
 ```
 
 ## Settings for each mode
 
 | `.env` setting | VPS (recommended for growth) | Shared hosting (cPanel etc.) |
 |----------------|------------------------------|------------------------------|
-| `IIBSOM_HOSTING` | `vps` | `shared` |
+| `HOSTING_MODE` | `vps` | `shared` |
 | `CACHE_STORE` | `redis` | `database` |
 | `SESSION_DRIVER` | `redis` | `database` |
 | `QUEUE_CONNECTION` | `redis` | `database` |

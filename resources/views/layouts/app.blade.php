@@ -15,6 +15,7 @@
         <link rel="alternate" hreflang="x-default" href="{{ $locales->urlFor($locales->default()) }}">
     @endif
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @stack('scripts')
 </head>
 <body class="flex min-h-screen flex-col bg-stone-50 pb-16 text-stone-900 antialiased lg:pb-0">
     <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:m-2 focus:rounded focus:bg-white focus:px-3 focus:py-2">{{ __('site.nav.skip_to_content') }}</a>

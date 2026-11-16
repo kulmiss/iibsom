@@ -7,7 +7,13 @@ return [
     | Shared hosting mode: no Redis, no always-running worker. Cron runs the
     | scheduler every minute, and the scheduler also works the queue.
     */
-    'hosting' => env('IIBSOM_HOSTING', 'vps') === 'shared' ? 'shared' : 'vps',
+    'hosting' => env('HOSTING_MODE', env('IIBSOM_HOSTING', 'vps')) === 'shared' ? 'shared' : 'vps',
+
+    // Where finished ad photos go: "public" (your PC) or "r2" (live site).
+    'photos_disk' => env('PHOTOS_DISK', 'public'),
+
+    // Photo sizes made in the background (longest side, px).
+    'photo_sizes' => ['thumb' => 400, 'medium' => 900, 'large' => 1600],
 
     // How long feature switches and settings are cached (seconds).
     'cache_ttl' => (int) env('IIBSOM_CACHE_TTL', 3600),

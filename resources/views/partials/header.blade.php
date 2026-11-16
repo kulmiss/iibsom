@@ -30,7 +30,7 @@
             @endauth
 
             @if (feature('ads.posting') && (auth()->check() || feature('login.google')))
-                <a href="{{ auth()->check() ? '#' : lroute('login') }}" class="btn-sell hidden lg:inline-flex">{{ __('site.nav.sell') }}</a>
+                <a href="{{ lroute('post') }}" class="btn-sell hidden lg:inline-flex">{{ __('site.nav.sell') }}</a>
             @endif
         </nav>
     </div>

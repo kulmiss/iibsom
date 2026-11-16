@@ -50,7 +50,7 @@ jobs:
       DB_USERNAME: iibsom
       DB_PASSWORD: secret
       REDIS_HOST: 127.0.0.1
-      IIBSOM_HOSTING: ${{ matrix.hosting }}
+      HOSTING_MODE: ${{ matrix.hosting }}
       CACHE_STORE: ${{ matrix.cache }}
     steps:
       - uses: actions/checkout@v4

@@ -23,7 +23,7 @@ Most important tests first. "Expected" is what you should see.
 | 1 | `php artisan migrate` | Creates `features` and `settings` tables |
 | 2 | `php artisan iibsom:health` | List of OK / WARN / FAIL lines. Scheduler = FAIL until cron runs |
 | 3 | Run `php artisan schedule:work` in a 2nd window, wait 1 minute, run `php artisan iibsom:health` again | Scheduler = OK |
-| 4 | Set `IIBSOM_HOSTING=shared`, run `php artisan schedule:list` | You see `shared-queue-worker` |
+| 4 | Set `HOSTING_MODE=shared`, run `php artisan schedule:list` | You see `shared-queue-worker` |
 | 5 | Open http://localhost:8095, press F12 → Network → click the page → Headers | You see `Content-Security-Policy`, `X-Frame-Options: DENY` |
 | 6 | `php artisan tinker` → `feature('chat')` | `false` (Phase 2 features are OFF) |
 | 7 | GitHub PR checks | `tests (vps)` and `tests (shared)` are both green |
@@ -63,3 +63,17 @@ First add your Google keys: see docs/google-signin.md.
 | 7 | Edit profile, change phone, Save | "Your profile is saved." |
 | 8 | Log out | Back to home, header shows the person icon again |
 | 9 | Look in `storage/logs/security-*.log` | `login.success` line with your user id |
+
+## Manual (PR 8: post an ad)
+| # | Do this | Expected |
+|---|---------|----------|
+| 1 | Signed out, tap **Sell** | Sign-in page |
+| 2 | Signed in (profile done), tap **Sell** | "What are you selling?" with categories |
+| 3 | Vehicles → Cars | Form with photos, title, Brand/Model/Year/Kilometres/Fuel/Gear, New/Used, description, price, city, area |
+| 4 | Add 3 photos from your phone | Each shows "Uploading…" then the picture; first one says "Cover" |
+| 5 | Use ‹ › on a photo | Order changes, "Cover" moves |
+| 6 | Type a title, close the tab, open the form again | "We brought back what you typed last time." Your text is back |
+| 7 | Press **Post my ad** with an empty description | Red message under Description |
+| 8 | Fill everything, press **Post my ad** | "Thank you! Your ad was sent … checks every ad" |
+| 9 | Post the same ad again | "You already posted this ad." |
+| 10 | `php artisan queue:work --stop-when-empty` then look in `storage/app/public/ads/` | 3 sizes per photo (`thumb`, `medium`, `large` `.webp`) |

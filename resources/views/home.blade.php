@@ -70,7 +70,7 @@
             {{-- Category tiles (phones), like a mobile app --}}
             <nav class="mt-4 grid grid-cols-4 gap-x-2 gap-y-4 sm:grid-cols-6 lg:hidden" aria-label="{{ __('site.home.categories') }}">
                 @feature('ads.posting')
-                    <a href="#" class="tile">
+                    <a href="{{ lroute('post') }}" class="tile">
                         <span class="tile-icon bg-accent-400 text-white">
                             <span class="flex size-9 items-center justify-center rounded-full bg-white/90 text-accent-500">{{ icon('plus', 'size-6') }}</span>
                         </span>
@@ -109,7 +109,7 @@
                 <p class="mt-3 font-semibold">{{ __('site.home.no_ads_title') }}</p>
                 <p class="mt-1 text-sm text-stone-600">{{ __('site.home.no_ads_text') }}</p>
                 @feature('ads.posting')
-                    <a href="#" class="btn-sell mt-4">{{ __('site.nav.post_ad') }}</a>
+                    <a href="{{ lroute('post') }}" class="btn-sell mt-4">{{ __('site.nav.post_ad') }}</a>
                 @endfeature
             </div>
         </div>

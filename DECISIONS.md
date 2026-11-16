@@ -17,12 +17,13 @@ Every question, the owner's answer, and the date. Newest at the bottom.
 
 | 11 | 2026-11-16 | Which cities ON at launch? | **Only Mogadishu ON.** All other Somalia cities exist but are OFF; admin can switch each on. Somaliland cities not added. |
 | 12 | 2026-11-16 | Domain? | Owner **already owns iibsom.com** (currently on shared hosting). Site itself will run on VPS + Cloudflare. |
-| 13 | 2026-11-16 | VPS or shared hosting? | **Both.** Same code; a hosting mode in `.env` (`IIBSOM_HOSTING=vps` or `shared`) switches the fallbacks. Deploy guides for both, tests in both modes, admin health page. Replaces the earlier "NOT shared hosting" line. |
+| 13 | 2026-11-16 | VPS or shared hosting? | **Both.** Same code; a hosting mode in `.env` (`HOSTING_MODE=vps` or `shared`) switches the fallbacks. Deploy guides for both, tests in both modes, admin health page. Replaces the earlier "NOT shared hosting" line. |
 | 14 | 2026-11-16 | Payments? | **No payments through the system** (site like jiji.com). Paid extras (boosts, shop plans, banner ads) are paid to the owner outside the site (EVC/Zaad etc.); an **admin activates** them in the admin panel. No payment code. |
 | 15 | 2026-11-16 | Homepage style? | **Inspired by jiji.com layout** (big search with location picker, category list with icons + ad counts, popular categories, trending ads) but in **Iibsom's own blue + yellow**. Built in PR 4 with categories. |
 | 16 | 2026-11-16 | Phone home page? | **Like Jiji mobile:** location + search on one row, 4-column category tiles starting with "Post ad" and "Trending", bottom bar (Home, Saved*, Sell, Messages*, Profile; *only when switched on). Icons instead of photos. |
 | 17 | 2026-11-16 | Remember what people browse? | **Yes**: "Recommended for you" with similar ads (like Jiji). Guests: history stays in their browser only (privacy, cacheable pages). Planned as PR 10. |
 | 18 | 2026-11-16 | City picker with one city? | **Hide it** when only one city is ON; it appears automatically when a 2nd city is switched on. |
+| 19 | 2026-11-16 | Updated brief arrived (regions all three, USD+SLSH, Somali first, approve only first 2 ads, payments in Phase 2). Which wins? | **Stay with the earlier answers:** Somalia only (Mogadishu ON), USD only, English first (Somali-ready), every ad approved, no payments in the system. Everything else in the updated brief applies (LATER.md, HOSTING_MODE, admin template + themes, demo data with real photos, deploy guides, iib:demo-reset). |
 
 ## Open questions (must be answered before going live)
 

@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\AdStatus;
+use App\Models\Ad;
 use App\Support\Health\HealthChecker;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
@@ -21,6 +23,25 @@ if (config('iibsom.hosting') === 'shared') {
         ->everyMinute()
         ->withoutOverlapping(5);
 }
+
+// Live ads past their end date become "expired" (sellers can renew them).
+Schedule::command('iibsom:ads:expire')->name('expire-ads')->hourly()->withoutOverlapping();
+
+Artisan::command('iibsom:ads:expire', function () {
+    if (! feature('ads.expiry')) {
+        $this->info('Ad expiry is switched off.');
+
+        return 0;
+    }
+
+    $count = Ad::where('status', AdStatus::Live)
+        ->whereNotNull('expires_at')->where('expires_at', '<=', now())
+        ->update(['status' => AdStatus::Expired->value, 'updated_at' => now()]);
+
+    $this->info("Expired {$count} ads.");
+
+    return 0;
+})->purpose('Mark live ads past their end date as expired');
 
 Artisan::command('iibsom:health', function (HealthChecker $health) {
     $icons = ['ok' => '<info>OK  </info>', 'warn' => '<comment>WARN</comment>', 'fail' => '<error>FAIL</error>'];
