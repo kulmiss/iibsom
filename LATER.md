@@ -13,6 +13,8 @@ Tick `[x]` with the date when done.
 - [ ] Write/approve Terms, Privacy, About and Safety pages (admin → Pages)
 - [ ] Delete all demo data before launch (admin → Settings → Delete all demo data)
 
+- [ ] Create your Super Admin account on the live site: `php artisan iibsom:staff you@iibsom.com` and set up 2FA
+
 ## Can wait
 - [ ] SMS provider for phone login (S1), only if phone login is wanted
 - [ ] Choose staff accounts (Moderator / Support) and give them 2FA apps

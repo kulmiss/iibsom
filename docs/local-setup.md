@@ -107,3 +107,22 @@ Tests use a separate database (`iibsom_testing`), so your local data is safe.
 - **Port 8095 is busy:** set `APP_PORT=8097` in `.env`, then run `docker compose up -d`.
 - **Permission errors in storage/:** run `docker compose exec app chmod -R ug+rw storage bootstrap/cache`.
 - **Slow pages:** check the code is inside WSL, not under `/mnt/c`.
+
+---
+
+# Super Admin (both setups)
+
+Needs Node 22 + pnpm: `corepack enable` once.
+
+```bash
+cd admin
+pnpm install
+pnpm build            # builds into public/admin-app
+cd ..
+php artisan iibsom:staff you@example.com --role=super_admin --name="Your Name"
+```
+Open http://localhost:8095/admin, sign in with that email + password, then set up 2FA (Google Authenticator, Microsoft Authenticator or Authy). **Save the recovery codes.**
+
+Working on the admin screens? Run `pnpm dev` in `admin/` and open http://localhost:5174/admin/. API calls go to Laravel on port 8095.
+
+Roles: `super_admin` (everything), `moderator` (ads, reports, ban users), `support` (look only). See `config/admin.php`.

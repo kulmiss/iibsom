@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\AdminAuthenticate;
+use App\Http\Middleware\AdminCan;
 use App\Http\Middleware\EnsureFeatureEnabled;
 use App\Http\Middleware\EnsureProfileComplete;
 use App\Http\Middleware\LogoutBannedUsers;
@@ -12,7 +14,7 @@ use Illuminate\Http\Request;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__.'/../routes/web.php',
+        web: [__DIR__.'/../routes/admin.php', __DIR__.'/../routes/web.php'],
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
@@ -30,6 +32,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'feature' => EnsureFeatureEnabled::class,
             'locale' => SetLocale::class,
             'profile.complete' => EnsureProfileComplete::class,
+            'admin' => AdminAuthenticate::class,
+            'admin.can' => AdminCan::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

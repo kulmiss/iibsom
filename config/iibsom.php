@@ -35,6 +35,7 @@ return [
     // Default values for settings the Super Admin can change.
     'settings' => [
         'languages.enabled' => ['en'],
+        'admin.brand_color' => '#1f6fd1',
         'ads.expiry_days' => 60,
         'ads.max_per_day' => 5,
         'ads.max_photos' => 8,

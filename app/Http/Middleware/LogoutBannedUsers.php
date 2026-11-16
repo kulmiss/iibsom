@@ -17,6 +17,10 @@ class LogoutBannedUsers
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 
+            if ($request->expectsJson()) {
+                return response()->json(['message' => __('account.login.banned')], 401);
+            }
+
             return redirect(lroute('home'))->with('error', __('account.login.banned'));
         }
 

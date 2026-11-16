@@ -96,6 +96,29 @@ jobs:
       - name: npm security audit
         run: npm audit --omit=dev --audit-level=high
 
+  admin:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.draft == false
+    name: admin app (lint + build)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: admin
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: corepack enable
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - name: Lint
+        run: pnpm lint
+      - name: Type-check + build
+        run: pnpm build
+      - name: Security audit
+        run: pnpm audit --prod --audit-level high
+
   secret-scan:
     if: github.event_name == 'workflow_dispatch' || github.event.pull_request.draft == false
     runs-on: ubuntu-latest

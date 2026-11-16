@@ -77,3 +77,20 @@ First add your Google keys: see docs/google-signin.md.
 | 8 | Fill everything, press **Post my ad** | "Thank you! Your ad was sent … checks every ad" |
 | 9 | Post the same ad again | "You already posted this ad." |
 | 10 | `php artisan queue:work --stop-when-empty` then look in `storage/app/public/ads/` | 3 sizes per photo (`thumb`, `medium`, `large` `.webp`) |
+
+## Manual (PR 9: Super Admin foundation)
+| # | Do this | Expected |
+|---|---------|----------|
+| 1 | `cd admin && pnpm install && pnpm build`, then `php artisan iibsom:staff you@example.com` | "Staff account ready" |
+| 2 | Open http://localhost:8095/admin | "Staff sign in" |
+| 3 | Wrong password 6 times | "Too many tries. Wait … seconds." |
+| 4 | Right password | "Set up two-factor sign-in (required)" with a QR code |
+| 5 | Scan with your authenticator app, type the code | "2FA is on. Save your recovery codes" (8 codes) |
+| 6 | Continue | Dashboard: 4 cards, chart, top categories + cities |
+| 7 | Sun/moon icon (top right) | Light / dark theme |
+| 8 | Gear icon | Layout options (sidebar style, compact) |
+| 9 | Ctrl+K (⌘K on Mac) | Search box to jump to any page |
+| 10 | Avatar → Appearance → pick a colour → Save brand colour | Buttons and charts change colour for all staff |
+| 11 | Activity log | Your sign-in and the colour change are listed |
+| 12 | Sign out, sign in again with a recovery code | Works once; the same code fails the second time |
+| 13 | As a customer (Google) open /admin | Staff sign-in page, no access |
