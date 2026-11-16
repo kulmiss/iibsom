@@ -31,6 +31,15 @@ class HomePageTest extends TestCase
             ->assertSee('No ads yet');
     }
 
+    public function test_phone_tiles_start_with_post_ad_and_trending(): void
+    {
+        $html = $this->get('/')->getContent();
+
+        $this->assertLessThan(strpos($html, '>Trending<'), strpos($html, '>Post ad<'));
+        $this->assertStringContainsString('href="#trending"', $html);
+        $this->assertStringContainsString('id="trending"', $html);
+    }
+
     public function test_location_picker_has_only_live_cities(): void
     {
         $this->get('/')
