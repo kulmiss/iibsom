@@ -201,6 +201,14 @@ First add your Google keys: see docs/google-login.md.
 | 4 | Look at categories, ad page, post form, My ads, errors | All in Somali |
 | 5 | `php artisan iibsom:translations:export so` | CSV for a native speaker to check |
 
+## Manual (PR 25: installable website)
+| # | Do this | Expected |
+|---|---------|----------|
+| 1 | Phone Chrome → open the site → menu → **Add to home screen** / **Install app** | Blue "ii" icon on the home screen; opens without the browser bar |
+| 2 | Turn on airplane mode, open a page | "You are offline / Internet ma jiro" page with a "Try again" button |
+| 3 | Signed in, F12 → Application → Cache storage | Only the offline page, icons and photos; never /account or /admin pages |
+| 4 | Admin → Feature switches → Installable website OFF, reload twice | Application → Service workers: none |
+
 ## Manual (PR 24: SEO landing pages)
 | # | Do this | Expected |
 |---|---------|----------|

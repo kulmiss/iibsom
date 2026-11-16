@@ -1,12 +1,18 @@
 @php($locales = app(\App\Support\Localization\Locales::class))
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}" dir="{{ $locales->supported()[app()->getLocale()]['dir'] ?? 'ltr' }}">
+<html lang="{{ app()->getLocale() }}" dir="{{ $locales->supported()[app()->getLocale()]['dir'] ?? 'ltr' }}" data-pwa="{{ feature('pwa') ? 'on' : 'off' }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', __('site.home.title')) · {{ config('app.name') }}</title>
     <meta name="description" content="@yield('description', __('site.meta_description'))">
     <meta name="theme-color" content="#1f6fd1">
+    <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
+    <link rel="icon" href="/icons/favicon-32.png" sizes="32x32" type="image/png">
+    @feature('pwa')
+        <link rel="manifest" href="/manifest.webmanifest">
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    @endfeature
     <link rel="canonical" href="{{ $locales->urlFor(app()->getLocale()) }}">
     @foreach ($locales->enabled() as $code)
         <link rel="alternate" hreflang="{{ $code }}" href="{{ $locales->urlFor($code) }}">

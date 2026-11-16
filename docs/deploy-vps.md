@@ -66,6 +66,8 @@ server {
         include snippets/fastcgi-php.conf;
         fastcgi_pass unix:/run/php/php8.3-fpm.sock;
     }
+    location = /sw.js { add_header Cache-Control "no-cache"; access_log off; }   # installable website: never cache long
+    location = /manifest.webmanifest { default_type application/manifest+json; add_header Cache-Control "no-cache"; }
     location ~* \.(css|js|svg|woff2|webp|avif|png|jpg)$ { expires 1y; access_log off; }
     location ~ /\. { deny all; }
 }
