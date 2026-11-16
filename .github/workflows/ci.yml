@@ -1,0 +1,123 @@
+name: CI
+
+# Repo is private, so CI minutes are limited:
+# CI runs only on pull requests that are NOT drafts (mark lower stacked PRs as draft).
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.draft == false
+    name: tests (${{ matrix.hosting }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        # Same tests on both hosting modes: VPS (Redis) and shared hosting (database).
+        include:
+          - hosting: vps
+            cache: redis
+          - hosting: shared
+            cache: database
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: iibsom_testing
+          MYSQL_USER: iibsom
+          MYSQL_PASSWORD: secret
+          MYSQL_ROOT_PASSWORD: rootsecret
+        ports: ["3306:3306"]
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -uroot -prootsecret"
+          --health-interval=5s --health-timeout=5s --health-retries=20
+      redis:
+        image: redis:7-alpine
+        ports: ["6379:6379"]
+    env:
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_USERNAME: iibsom
+      DB_PASSWORD: secret
+      REDIS_HOST: 127.0.0.1
+      IIBSOM_HOSTING: ${{ matrix.hosting }}
+      CACHE_STORE: ${{ matrix.cache }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: pdo_mysql, intl, zip, gd, exif, bcmath, redis, imagick
+          coverage: none
+          tools: composer:v2
+
+      - name: Cache Composer packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache/files
+          key: composer-${{ hashFiles('composer.lock') }}
+
+      - name: Install PHP packages
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install and build front-end
+        run: npm ci && npm run build
+
+      - name: Prepare app
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Code style (Pint)
+        run: vendor/bin/pint --test
+
+      - name: Tests
+        run: php artisan test
+
+      - name: Composer security audit
+        run: composer audit --no-dev --locked
+
+      - name: npm security audit
+        run: npm audit --omit=dev --audit-level=high
+
+  secret-scan:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Gitleaks (find secrets in code and history)
+        run: |
+          curl -sSfL https://github.com/gitleaks/gitleaks/releases/download/v8.21.2/gitleaks_8.21.2_linux_x64.tar.gz | tar -xz gitleaks
+          ./gitleaks detect --source . --redact --verbose --config .gitleaks.toml
+
+  docker-build:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build local PHP image (checks the Dockerfile still works)
+        run: docker build -f docker/php/Dockerfile -t iibsom-php .
+      - name: Check PHP extensions in the image
+        run: docker run --rm iibsom-php php -m | grep -E -i "pdo_mysql|redis|imagick|gd|intl|exif" | sort
+      - name: Check compose file is valid
+        run: cp .env.example .env && docker compose config -q

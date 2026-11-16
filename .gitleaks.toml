@@ -1,0 +1,12 @@
+title = "Iibsom gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Known safe example values"
+paths = [
+  '''\.env\.example$''',
+  '''compose\.yaml$''',
+  '''\.github/workflows/ci\.yml$''',
+]
