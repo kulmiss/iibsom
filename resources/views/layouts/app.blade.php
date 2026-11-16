@@ -36,5 +36,10 @@
 
     @include('partials.footer')
     @include('partials.bottom-nav')
+    @auth
+        @if (feature('site.welcome_tour') && (session('show_tour') || request()->boolean('tour')))
+            @include('partials.welcome-tour')
+        @endif
+    @endauth
 </body>
 </html>

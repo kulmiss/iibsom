@@ -42,6 +42,7 @@ class ExportTranslations extends Command
         'pages/show' => 'pages-safety.png',
         'help/show' => 'help-post-an-ad.png',
         'help/_contact' => 'help-index.png',
+        'partials/welcome-tour' => 'tour.png',
     ];
 
     private const NOT_FOUND = '(not found: the key may be built from parts in the code)';

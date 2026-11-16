@@ -22,6 +22,7 @@ class TranslationExportTest extends TestCase
         File::put($this->screens.'/ads-show.png', 'x');
         File::put($this->screens.'/browse-index.png', 'x');
         File::put($this->screens.'/pages-safety.png', 'x');
+        File::put($this->screens.'/tour.png', 'x');
     }
 
     protected function tearDown(): void
@@ -75,6 +76,8 @@ class TranslationExportTest extends TestCase
         // Header texts show on every page, so they point to the home picture.
         $this->assertStringContainsString('resources/views/partials/header.blade.php', $rows['site.nav.sign_in'][4]);
         $this->assertSame('home.png', $rows['site.nav.sign_in'][5]);
+        // The tour is a pop-up with its own picture (not the home page).
+        $this->assertSame('tour.png', $rows['site.tour.sell_title'][5]);
         // The ad card sits inside the list pages.
         $this->assertContains('browse-index.png', explode(' | ', $rows['ads.page.negotiable'][5]));
     }

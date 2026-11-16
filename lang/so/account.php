@@ -33,6 +33,7 @@ return [
         'title' => 'Akoonkayga',
         'edit_profile' => 'Wax ka beddel akoonka',
         'help' => 'Caawimaad',
+        'tour' => 'Socod gaaban',
         'my_ads' => 'Xayeysiisyadayda',
         'member_since' => 'Xubin tan iyo :date',
         'logout' => 'Ka bax',

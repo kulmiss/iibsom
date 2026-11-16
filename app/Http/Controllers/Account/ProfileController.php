@@ -72,7 +72,8 @@ class ProfileController extends Controller
         $user->save();
 
         if ($welcome) {
-            return redirect()->intended(lroute('home'))->with('status', __('account.welcome.done'));
+            return redirect()->intended(lroute('home'))->with('status', __('account.welcome.done'))
+                ->with('show_tour', feature('site.welcome_tour'));
         }
 
         return redirect(lroute('account'))->with('status', __('account.profile.saved'));

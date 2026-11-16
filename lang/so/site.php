@@ -73,4 +73,19 @@ return [
         'still_need' => 'Weli caawimaad ma u baahan tahay?',
         'write_to' => 'Noogu soo qor:',
     ],
+
+    'tour' => [
+        'label' => 'Socod gaaban',
+        'step' => 'Tallaabada :n ee :total',
+        'next' => 'Xiga',
+        'back' => 'Dib',
+        'done' => 'Bilow',
+        'skip' => 'Ka gudub',
+        'find_title' => 'Ka hel meel kuu dhow',
+        'find_text' => 'Raadi baabuur, taleefanno, guryo iyo wax kale. Dooro magaaladaada si aad u aragto xayeysiisyada kuu dhow.',
+        'sell_title' => 'Ku iibi bilaash',
+        'sell_text' => 'Riix iibi, ku dar sawirro, qiime iyo magaaladaada. Kooxdayadu waxay hubisaa xayeysiis kasta, kadibna iibsadayaashu way ku soo wacaan ama kugula xiriiraan WhatsApp.',
+        'safe_title' => 'Ammaan ahaw',
+        'safe_text' => 'Ku kulma meel mashquul ah oo arag alaabta ka hor intaadan lacag bixin. Weligaa lacag hore ha dirin.',
+    ],
 ];

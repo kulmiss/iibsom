@@ -71,4 +71,19 @@ return [
         'still_need' => 'Still need help?',
         'write_to' => 'Write to us:',
     ],
+
+    'tour' => [
+        'label' => 'Quick tour',
+        'step' => 'Step :n of :total',
+        'next' => 'Next',
+        'back' => 'Back',
+        'done' => 'Start',
+        'skip' => 'Skip',
+        'find_title' => 'Find it near you',
+        'find_text' => 'Search cars, phones, houses and more. Pick your city to see ads near you.',
+        'sell_title' => 'Sell for free',
+        'sell_text' => 'Tap Sell, add photos, a price and your city. Our team checks every ad, then buyers call or WhatsApp you.',
+        'safe_title' => 'Stay safe',
+        'safe_text' => 'Meet in a busy place and see the item before you pay. Never send money first.',
+    ],
 ];

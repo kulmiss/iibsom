@@ -19,6 +19,7 @@ account.profile.saved,"Your profile is saved.","Akoonkaaga waa la keydiyey.","ne
 account.account.title,"My account",Akoonkayga,"needs native review",resources/views/account/index.blade.php,account-index.png
 account.account.edit_profile,"Edit profile","Wax ka beddel akoonka","needs native review",resources/views/account/index.blade.php,account-index.png
 account.account.help,Help,Caawimaad,"needs native review",resources/views/account/index.blade.php,account-index.png
+account.account.tour,"Quick tour","Socod gaaban","needs native review",resources/views/account/index.blade.php,account-index.png
 account.account.my_ads,"My ads",Xayeysiisyadayda,"needs native review",resources/views/account/index.blade.php,account-index.png
 account.account.member_since,"Member since :date","Xubin tan iyo :date","needs native review",resources/views/account/index.blade.php,account-index.png
 account.account.logout,"Log out","Ka bax","needs native review",resources/views/account/index.blade.php,account-index.png
@@ -228,6 +229,18 @@ site.help.more,"More help","Caawimaad kale","needs native review",resources/view
 site.help.all,"All help","Dhammaan caawimaadda","needs native review",resources/views/help/show.blade.php,help-post-an-ad.png
 site.help.still_need,"Still need help?","Weli caawimaad ma u baahan tahay?","needs native review",resources/views/help/_contact.blade.php,help-index.png
 site.help.write_to,"Write to us:","Noogu soo qor:","needs native review",resources/views/help/_contact.blade.php,help-index.png
+site.tour.label,"Quick tour","Socod gaaban","needs native review",resources/views/partials/welcome-tour.blade.php,tour.png
+site.tour.step,"Step :n of :total","Tallaabada :n ee :total","needs native review",resources/views/partials/welcome-tour.blade.php,tour.png
+site.tour.next,Next,Xiga,"needs native review",resources/views/partials/welcome-tour.blade.php,tour.png
+site.tour.back,Back,Dib,"needs native review",resources/views/partials/welcome-tour.blade.php,tour.png
+site.tour.done,Start,Bilow,"needs native review",resources/views/partials/welcome-tour.blade.php,tour.png
+site.tour.skip,Skip,"Ka gudub","needs native review",resources/views/partials/welcome-tour.blade.php,tour.png
+site.tour.find_title,"Find it near you","Ka hel meel kuu dhow","needs native review",resources/views/partials/welcome-tour.blade.php,tour.png
+site.tour.find_text,"Search cars, phones, houses and more. Pick your city to see ads near you.","Raadi baabuur, taleefanno, guryo iyo wax kale. Dooro magaaladaada si aad u aragto xayeysiisyada kuu dhow.","needs native review",resources/views/partials/welcome-tour.blade.php,tour.png
+site.tour.sell_title,"Sell for free","Ku iibi bilaash","needs native review",resources/views/partials/welcome-tour.blade.php,tour.png
+site.tour.sell_text,"Tap Sell, add photos, a price and your city. Our team checks every ad, then buyers call or WhatsApp you.","Riix iibi, ku dar sawirro, qiime iyo magaaladaada. Kooxdayadu waxay hubisaa xayeysiis kasta, kadibna iibsadayaashu way ku soo wacaan ama kugula xiriiraan WhatsApp.","needs native review",resources/views/partials/welcome-tour.blade.php,tour.png
+site.tour.safe_title,"Stay safe","Ammaan ahaw","needs native review",resources/views/partials/welcome-tour.blade.php,tour.png
+site.tour.safe_text,"Meet in a busy place and see the item before you pay. Never send money first.","Ku kulma meel mashquul ah oo arag alaabta ka hor intaadan lacag bixin. Weligaa lacag hore ha dirin.","needs native review",resources/views/partials/welcome-tour.blade.php,tour.png
 validation.accepted,"The :attribute field must be accepted.","Fadlan aqbal :attribute.","needs native review","Error messages under form fields",
 validation.array,"The :attribute field must be an array.",":attribute waa inuu noqdaa liis.","needs native review","Error messages under form fields",
 validation.boolean,"The :attribute field must be true or false.",":attribute waa inuu noqdaa haa ama maya.","needs native review","Error messages under form fields",

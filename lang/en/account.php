@@ -31,6 +31,7 @@ return [
         'title' => 'My account',
         'edit_profile' => 'Edit profile',
         'help' => 'Help',
+        'tour' => 'Quick tour',
         'my_ads' => 'My ads',
         'member_since' => 'Member since :date',
         'logout' => 'Log out',

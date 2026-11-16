@@ -28,6 +28,13 @@
                     </a>
                 </li>
             @endfeature
+            @feature('site.welcome_tour')
+                <li>
+                    <a href="{{ lroute('account', ['tour' => 1]) }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50">
+                        {{ icon('map-pin', 'size-5 text-brand-700') }}<span class="flex-1">{{ __('account.account.tour') }}</span>{{ icon('chevron-right', 'size-4 text-stone-400') }}
+                    </a>
+                </li>
+            @endfeature
             @feature('help.centre')
                 <li>
                     <a href="{{ lroute('help') }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50">

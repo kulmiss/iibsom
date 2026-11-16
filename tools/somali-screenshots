@@ -39,6 +39,7 @@ SIGNED_IN_PAGES = {
     'account-profile-form': '/so/account/profile',
     'ads-post-choose': '/so/post',
     'ads-post-form': '/so/post/{post_category}',
+    'tour': '/so/account?tour=1',  # the welcome tour (a pop-up: screen-sized picture)
 }
 
 
@@ -50,7 +51,7 @@ def shoot(page, name, path):
         const s = getComputedStyle(el);
         if ((s.position === 'fixed' || s.position === 'sticky') && s.bottom !== 'auto') el.style.position = 'static';
     })""")
-    page.screenshot(path=os.path.join(OUT, name + '.png'), full_page=True)
+    page.screenshot(path=os.path.join(OUT, name + '.png'), full_page=name != 'tour')
     print(f'  {name}.png  <- {path}')
 
 

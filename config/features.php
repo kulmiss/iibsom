@@ -51,6 +51,7 @@ return [
     'recommendations' => ['group' => 'Site', 'default' => true, 'label' => 'Recommended for you', 'description' => 'Home page shows ads like the ones a visitor looked at, and recently viewed ads. History stays in the visitor\'s browser only.'],
     'help.centre' => ['group' => 'Site', 'default' => true, 'label' => 'Help page', 'description' => 'Short how-to articles for customers at /help (post an ad, photos, safety, account), in English and Somali. Linked in the footer and the account page.'],
     'help.admin_guide' => ['group' => 'Site', 'default' => true, 'label' => 'Admin guide', 'description' => 'The "?" button next to each admin page title, the Guide page and its PDF. OFF hides them (for staff who know the admin well).'],
+    'site.welcome_tour' => ['group' => 'Site', 'default' => true, 'label' => 'Welcome tour', 'description' => '3 short slides (find, sell, stay safe) shown once after a customer\'s first sign-in, and from Account → Quick tour.'],
     'site.demo_data' => ['group' => 'Site', 'default' => false, 'label' => 'Show demo data', 'description' => 'Show the demo ads. Never ON in production.'],
 
     // Speed and API
