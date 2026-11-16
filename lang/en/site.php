@@ -50,6 +50,7 @@ return [
         'about' => 'About us',
         'terms' => 'Terms',
         'privacy' => 'Privacy',
+        'help' => 'Help',
         'safety' => 'Safety tips',
         'rights' => 'All rights reserved.',
     ],
@@ -59,5 +60,15 @@ return [
         'not_found_text' => 'This page does not exist or was removed.',
         'back_home' => 'Back to home',
         'bad_text' => 'Some characters in your text could not be read. Please type it again.',
+    ],
+
+    'help' => [
+        'title' => 'Help',
+        'heading' => 'How can we help?',
+        'intro' => 'Short answers to common questions.',
+        'more' => 'More help',
+        'all' => 'All help',
+        'still_need' => 'Still need help?',
+        'write_to' => 'Write to us:',
     ],
 ];

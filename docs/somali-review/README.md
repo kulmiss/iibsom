@@ -1,8 +1,8 @@
 # Somali review sheet
 
 For a native Somali speaker. Every Somali text on the site is in **somali-texts.csv**:
-screen texts, error messages, the 4 pages (About, Safety, Terms, Privacy) and the
-names of categories, fields and places.
+screen texts, error messages, the help articles, the 4 pages (About, Safety, Terms,
+Privacy) and the names of categories, fields and places.
 
 ## How to review
 
@@ -14,10 +14,10 @@ names of categories, fields and places.
    - **status**: `needs native review`, `reviewed` or `missing`.
    - **where**: the file that shows the text (or a short note, like "Error messages under form fields").
    - **screenshot**: a phone picture of that page, in the `screens` folder.
-3. Words like `:name`, `:count` or `:when` are filled in by the site (a name, a number, a time).
+3. Words like `:name`, `:count`, `:when` or `:max_photos` are filled in by the site (a name, a number, a time, a link).
    Keep them as they are, in the right place in the sentence.
 4. Send the sheet back. The developer copies the changes into `lang/so/*.php`,
-   `database/seeders/data/pages.php` and `database/seeders/data/somali.php`, and lists
+   `resources/help/so/`, `database/seeders/data/pages.php` and `database/seeders/data/somali.php`, and lists
    checked keys in `lang/so/_reviewed.php` (their status becomes `reviewed`).
 
 Category, place and page texts on a live site can also be changed in the admin

@@ -81,6 +81,15 @@ class LandingPagesTest extends TestCase
         $this->get('/cars/mogadishu/toyota?page=2')->assertSee('noindex', false);
     }
 
+    public function test_brand_pages_are_cookie_free_and_cached_for_guests(): void
+    {
+        $this->car('toyota');
+
+        $first = $this->get('/cars/mogadishu/toyota')->assertOk()->assertHeader('X-Page-Cache', 'MISS');
+        $this->assertSame([], $first->headers->getCookies());
+        $this->get('/cars/mogadishu/toyota')->assertOk()->assertHeader('X-Page-Cache', 'HIT');
+    }
+
     public function test_somali_title(): void
     {
         app(SettingsManager::class)->set('languages.enabled', ['en', 'so']);

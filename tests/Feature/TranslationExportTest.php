@@ -117,6 +117,8 @@ class TranslationExportTest extends TestCase
         $this->assertSame('', $rows['pages.terms.title'][5]);
         $this->assertSame(['catalogue.Cars', 'Cars', 'Baabuur', 'needs native review'], array_slice($rows['catalogue.Cars'], 0, 4));
         $this->assertSame('Muqdisho', $rows['catalogue.Mogadishu'][2]);
+        $this->assertSame(['help.post-an-ad.title', 'How to post an ad', 'Sida loo dhigo xayeysiis', 'needs native review'], array_slice($rows['help.post-an-ad.title'], 0, 4));
+        $this->assertStringContainsString(':max_photos', $rows['help.post-an-ad.body'][2]);
     }
 
     public function test_review_sheet_in_docs_is_up_to_date(): void

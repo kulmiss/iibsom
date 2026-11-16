@@ -30,6 +30,7 @@ Google sign-in, post an ad, browse + search, ad page, My Ads, safety (reports, a
 - ✅ Admin Health page (PR 12). ✅ "Move to VPS" checklist (docs/scaling.md, PR 19).
 - ✅ (PR 21) Admin "Edited" badge in the approval queue showing what changed since the last approval.
 - ✅ (PR 22) Match demo photos to the brand/type in the title.
+- Help search box and "Was this helpful? yes/no" counts (no personal data) once there are more articles.
 - Somali review inside the admin: a page where a reviewer edits Somali texts next to the English and ticks "checked" (no CSV round trip).
 - ✅ (PR 23) Weekly email to the owner: new ads, users, reports, top categories.
 - Saved "Recommended for you" across devices for signed-in users (opt-in).

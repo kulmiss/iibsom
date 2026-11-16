@@ -5,6 +5,9 @@
             <li><a href="{{ lroute('page', ['slug' => 'safety']) }}" class="hover:text-brand-700 hover:underline">{{ __('site.footer.safety') }}</a></li>
             <li><a href="{{ lroute('page', ['slug' => 'terms']) }}" class="hover:text-brand-700 hover:underline">{{ __('site.footer.terms') }}</a></li>
             <li><a href="{{ lroute('page', ['slug' => 'privacy']) }}" class="hover:text-brand-700 hover:underline">{{ __('site.footer.privacy') }}</a></li>
+            @feature('help.centre')
+                <li><a href="{{ lroute('help') }}" class="hover:text-brand-700 hover:underline">{{ __('site.footer.help') }}</a></li>
+            @endfeature
         </ul>
         <p class="mt-4">© {{ now()->year }} {{ \Illuminate\Support\Str::lower(config('app.name')) }}. {{ __('site.footer.rights') }}</p>
     </div>

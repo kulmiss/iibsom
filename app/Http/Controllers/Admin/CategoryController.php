@@ -8,8 +8,10 @@ use App\Models\Category;
 use App\Models\CategoryField;
 use App\Support\Admin\Activity;
 use App\Support\Catalog;
+use App\Support\Routing\ReservedSlugs;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -124,7 +126,7 @@ class CategoryController extends Controller
     /** @return array<string, mixed> */
     private function validated(Request $request, ?Category $category = null): array
     {
-        return $request->validate([
+        $data = $request->validate([
             'name_en' => ['required', 'string', 'min:2', 'max:60'],
             'name_so' => ['nullable', 'string', 'max:60'],
             'slug' => ['nullable', 'string', 'max:80', 'regex:/^[a-z0-9-]+$/', Rule::unique('categories', 'slug')->ignore($category?->id)],
@@ -134,13 +136,35 @@ class CategoryController extends Controller
             'popular' => ['boolean'],
             'has_condition' => ['boolean'],
         ]);
+
+        // The web address: typed, kept from before, or made from the English name.
+        // Checked here so a clash is a clear message, not a crash or a page nobody can open.
+        $typed = filled($data['slug'] ?? null);
+        $data['slug'] = $typed ? $data['slug'] : ($category->slug ?? Str::slug($data['name_en']));
+        $fix = $typed ? 'Type another web address.' : 'Change the English name a little (for example add a word).';
+        Validator::make($data, [
+            'slug' => [
+                'required',
+                Rule::unique('categories', 'slug')->ignore($category?->id),
+                function (string $attribute, mixed $value, \Closure $fail) use ($fix): void {
+                    if (ReservedSlugs::has((string) $value)) {
+                        $fail("The site already uses the web address /{$value}. {$fix}");
+                    }
+                },
+            ],
+        ], [
+            'slug.required' => 'The English name needs at least one letter or number (a-z, 0-9).',
+            'slug.unique' => "Another category already uses the web address /{$data['slug']}. {$fix}",
+        ])->validate();
+
+        return $data;
     }
 
     /** @param  array<string, mixed>  $data */
     private function fill(Category $category, array $data): void
     {
         $category->name = array_filter(['en' => strip_tags($data['name_en']), 'so' => isset($data['name_so']) ? strip_tags($data['name_so']) : null]);
-        $category->slug = ($data['slug'] ?? null) ?: ($category->slug ?? Str::slug($data['name_en']));
+        $category->slug = $data['slug'];
         // A main category with sub categories can't become a sub category (only 2 levels).
         if (! ($category->exists && $category->children()->exists())) {
             $category->parent_id = $data['parent_id'] ?? null;

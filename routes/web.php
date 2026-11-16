@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BrowseController;
 use App\Http\Controllers\ForYouController;
+use App\Http\Controllers\HelpController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\SitemapController;
 use App\Models\Page;
@@ -73,6 +74,12 @@ $publicRoutes = function () {
 
     // "Recommended for you" cards (the browser sends its own history; nothing stored).
     Route::get('/for-you', [ForYouController::class, 'show'])->middleware(['feature:recommendations', 'throttle:60,1'])->name('for-you');
+
+    // Help centre for customers (articles in resources/help).
+    Route::middleware('feature:help.centre')->group(function () {
+        Route::get('/help', [HelpController::class, 'index'])->name('help');
+        Route::get('/help/{article}', [HelpController::class, 'show'])->where('article', '[a-z0-9-]+')->name('help.show');
+    });
 
     // About, Terms, Privacy, Safety tips (text edited in the admin).
     Route::get('/{slug}', [PageController::class, 'show'])->whereIn('slug', Page::CORE)->name('page');

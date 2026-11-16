@@ -30,7 +30,11 @@ class SettingsController extends Controller
             'bad_words' => ['nullable', 'string', 'max:20000'],
             'weekly_emails' => ['nullable', 'array', 'max:5'],
             'weekly_emails.*' => ['email:rfc', 'max:120'],
-        ], ['weekly_emails.*.email' => 'Each weekly summary address must be a valid email.']);
+            'support_email' => ['nullable', 'email:rfc', 'max:120'],
+        ], [
+            'weekly_emails.*.email' => 'Each weekly summary address must be a valid email.',
+            'support_email.email' => 'The help email must be a valid email address.',
+        ]);
 
         $before = $this->values();
         $languages = array_values(array_unique([config('iibsom.default_locale'), ...$data['languages']]));
@@ -48,6 +52,10 @@ class SettingsController extends Controller
         if ($request->has('weekly_emails')) {
             $emails = array_values(array_unique(array_map('mb_strtolower', array_filter($request->input('weekly_emails', []), 'is_string'))));
             $settings->set('reports.weekly_emails', $emails, $this->authUser($request)->id);
+        }
+
+        if ($request->has('support_email')) {
+            $settings->set('site.support_email', mb_strtolower(trim((string) ($data['support_email'] ?? ''))), $this->authUser($request)->id);
         }
 
         Activity::log('settings.general', 'Changed general settings', null, ['before' => $before]);
@@ -82,6 +90,7 @@ class SettingsController extends Controller
             'bad_words' => implode("\n", setting('safety.bad_words') ?? []),
             'weekly_emails' => SendWeeklySummary::recipients(),
             'weekly_last_sent' => setting('reports.weekly_last_sent') ?: null,
+            'support_email' => setting('site.support_email'),
         ];
     }
 }

@@ -28,6 +28,8 @@ GUEST_PAGES = {
     'pages-safety': '/so/safety',
     'pages-terms': '/so/terms',
     'pages-privacy': '/so/privacy',
+    'help-index': '/so/help',
+    'help-post-an-ad': '/so/help/post-an-ad',
     'auth-login': '/so/login',
     'errors-404': '/so/this-page-does-not-exist',
 }

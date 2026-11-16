@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Support\Help\HelpCentre;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
@@ -15,7 +16,7 @@ use Illuminate\Support\Str;
  * status     = missing | needs native review | reviewed
  * where      = the files that show this text
  * screenshot = the picture (in --screens) of the page that shows it, when there is one
- * Also lists the 4 pages and the catalogue names (database/seeders/data).
+ * Also lists the 4 pages, the help articles and the catalogue names.
  */
 class ExportTranslations extends Command
 {
@@ -39,6 +40,8 @@ class ExportTranslations extends Command
     private const PART_OF_PAGE = [
         'ads/_card' => 'browse-index.png',
         'pages/show' => 'pages-safety.png',
+        'help/show' => 'help-post-an-ad.png',
+        'help/_contact' => 'help-index.png',
     ];
 
     private const NOT_FOUND = '(not found: the key may be built from parts in the code)';
@@ -170,8 +173,8 @@ class ExportTranslations extends Command
     }
 
     /**
-     * Texts kept outside lang/: the 4 pages and the catalogue names
-     * (categories, fields, places). Only Somali has them for now.
+     * Texts kept outside lang/: the 4 pages, the help articles and the
+     * catalogue names (categories, fields, places). Only Somali has them for now.
      *
      * @return list<array{0: string, 1: string, 2: string, 3: string, 4: string}>
      */
@@ -187,6 +190,13 @@ class ExportTranslations extends Command
             $where = "Page /{$slug} (starter text; admin > Pages can change it)";
             $rows[] = ["pages.{$slug}.title", $title, $pages['so'][$slug][0] ?? '', $where, "pages-{$slug}.png"];
             $rows[] = ["pages.{$slug}.body", $body, $pages['so'][$slug][1] ?? '', $where, "pages-{$slug}.png"];
+        }
+
+        $english = HelpCentre::raw('en');
+        foreach (HelpCentre::raw($locale) as $slug => $article) {
+            $where = "Help page /help/{$slug}";
+            $rows[] = ["help.{$slug}.title", $english[$slug]['title'] ?? '', $article['title'], $where, 'help-index.png'];
+            $rows[] = ["help.{$slug}.body", $english[$slug]['body'] ?? '', $article['body'], $where, "help-{$slug}.png"];
         }
 
         $names = require database_path('seeders/data/somali.php');

@@ -67,7 +67,8 @@ See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example 
 23. **PR 23:** Weekly summary email.
 24. **PR 24:** SEO landing pages.
 25. **PR 25:** Installable website / PWA.
-26. **PR 26:** Somali review sheet with "where" + phone pictures (this one). Next: Part A polish, Part B (Phase 2, OFF), Part C (Phase 3), Part D review — owner's big job list of 2026-11-16.
+26. **PR 26:** Somali review sheet with "where" + phone pictures.
+27. **PR 27:** Help centre for customers + help email setting; fixes: category address clashes, tests vs real DB, page cache after updates, brand page cookies (this one). Next: Part A polish, Part B (Phase 2, OFF), Part C (Phase 3), Part D review — owner's big job list of 2026-11-16.
 
 ## Known notes
 - The local PHP Docker image could not be built inside Claude's sandbox (the Alpine package site is blocked there). CI builds it on GitHub to prove it works.

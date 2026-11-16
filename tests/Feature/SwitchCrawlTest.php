@@ -44,7 +44,7 @@ class SwitchCrawlTest extends TestCase
         $path = parse_url($this->ad->url(), PHP_URL_PATH);
 
         return ['/', '/so', '/cars', '/vehicles', '/cars/mogadishu', '/search?q=toyota', $path, '/so'.$path, '/safety', '/terms',
-            '/login', '/sitemap.xml', '/robots.txt', '/for-you?c[]=1', "/ads/{$this->ad->id}/contact", '/api/v1/ads', '/api/v1/categories'];
+            '/login', '/help', '/so/help/post-an-ad', '/sitemap.xml', '/robots.txt', '/for-you?c[]=1', "/ads/{$this->ad->id}/contact", '/api/v1/ads', '/api/v1/categories'];
     }
 
     /** @return list<string> */

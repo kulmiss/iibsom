@@ -11,6 +11,7 @@ use App\Support\Cache\PageCache;
 use App\Support\Features\FeatureManager;
 use App\Support\Settings\SettingsManager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Vite;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
@@ -91,6 +92,27 @@ class GuestPrivacyTest extends TestCase
         $this->get('/')->assertHeader('X-Page-Cache', 'MISS')->assertSee('Brand new approved ad');
 
         app(FeatureManager::class)->set('site.banners', false);
+        $this->get('/')->assertHeader('X-Page-Cache', 'MISS');
+    }
+
+    public function test_new_css_and_js_build_starts_a_fresh_page_cache(): void
+    {
+        $vite = new class extends Vite
+        {
+            public ?string $hash = 'build-1';
+
+            public function manifestHash($buildDirectory = null)
+            {
+                return $this->hash;
+            }
+        };
+        $this->swap(Vite::class, $vite);
+
+        $this->get('/')->assertHeader('X-Page-Cache', 'MISS');
+        $this->get('/')->assertHeader('X-Page-Cache', 'HIT');
+
+        // After an update the old page would point to CSS/JS files that no longer exist.
+        $vite->hash = 'build-2';
         $this->get('/')->assertHeader('X-Page-Cache', 'MISS');
     }
 

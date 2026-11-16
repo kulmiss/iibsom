@@ -28,8 +28,11 @@ class PageCache
     public static function key(Request $request): string
     {
         $version = Cache::get(self::VERSION_KEY, '0');
+        // New CSS/JS files after an update get new names: a page kept from before
+        // would load files that are gone (a page with no styles). So a new build = new keys.
+        $build = Vite::manifestHash() ?? 'no-build';
 
-        return 'page:'.$version.':'.hash('sha256', $request->getSchemeAndHttpHost().$request->getRequestUri());
+        return 'page:'.$version.':'.$build.':'.hash('sha256', $request->getSchemeAndHttpHost().$request->getRequestUri());
     }
 
     public static function get(Request $request): ?Response

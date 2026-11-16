@@ -18,6 +18,7 @@ account.profile.submit,"Save changes","Keydi isbeddelka","needs native review",r
 account.profile.saved,"Your profile is saved.","Akoonkaaga waa la keydiyey.","needs native review",app/Http/Controllers/Account/ProfileController.php,
 account.account.title,"My account",Akoonkayga,"needs native review",resources/views/account/index.blade.php,account-index.png
 account.account.edit_profile,"Edit profile","Wax ka beddel akoonka","needs native review",resources/views/account/index.blade.php,account-index.png
+account.account.help,Help,Caawimaad,"needs native review",resources/views/account/index.blade.php,account-index.png
 account.account.my_ads,"My ads",Xayeysiisyadayda,"needs native review",resources/views/account/index.blade.php,account-index.png
 account.account.member_since,"Member since :date","Xubin tan iyo :date","needs native review",resources/views/account/index.blade.php,account-index.png
 account.account.logout,"Log out","Ka bax","needs native review",resources/views/account/index.blade.php,account-index.png
@@ -213,12 +214,20 @@ site.ads_count,"{0} No ads yet|{1} :count ad|[2,*] :count ads","{0} Weli xayeysi
 site.footer.about,"About us","Nagu saabsan","needs native review",resources/views/partials/footer.blade.php,home.png
 site.footer.terms,Terms,Shuruudaha,"needs native review",resources/views/partials/footer.blade.php,home.png
 site.footer.privacy,Privacy,Qarsoodiga,"needs native review",resources/views/partials/footer.blade.php,home.png
+site.footer.help,Help,Caawimaad,"needs native review",resources/views/partials/footer.blade.php,home.png
 site.footer.safety,"Safety tips","Talooyin ammaan","needs native review",resources/views/partials/footer.blade.php,home.png
 site.footer.rights,"All rights reserved.","Xuquuqda oo dhan way dhowran tahay.","needs native review",resources/views/partials/footer.blade.php,home.png
 site.errors.not_found_title,"Page not found","Boggan lama helin","needs native review",resources/views/errors/404.blade.php,errors-404.png
 site.errors.not_found_text,"This page does not exist or was removed.","Boggan ma jiro ama waa la saaray.","needs native review",resources/views/errors/404.blade.php,errors-404.png
 site.errors.back_home,"Back to home","Ku noqo bogga hore","needs native review","resources/views/errors/400.blade.php | resources/views/errors/404.blade.php",errors-404.png
 site.errors.bad_text,"Some characters in your text could not be read. Please type it again.","Xarfaha qaarkood lama akhrin karo. Fadlan mar kale qor.","needs native review","app/Http/Middleware/RejectInvalidUtf8.php | resources/views/errors/400.blade.php",
+site.help.title,Help,Caawimaad,"needs native review",resources/views/help/index.blade.php,help-index.png
+site.help.heading,"How can we help?","Sideen kuu caawin karnaa?","needs native review",resources/views/help/index.blade.php,help-index.png
+site.help.intro,"Short answers to common questions.","Jawaabo gaagaaban oo su'aalaha caadiga ah.","needs native review",resources/views/help/index.blade.php,help-index.png
+site.help.more,"More help","Caawimaad kale","needs native review",resources/views/help/show.blade.php,help-post-an-ad.png
+site.help.all,"All help","Dhammaan caawimaadda","needs native review",resources/views/help/show.blade.php,help-post-an-ad.png
+site.help.still_need,"Still need help?","Weli caawimaad ma u baahan tahay?","needs native review",resources/views/help/_contact.blade.php,help-index.png
+site.help.write_to,"Write to us:","Noogu soo qor:","needs native review",resources/views/help/_contact.blade.php,help-index.png
 validation.accepted,"The :attribute field must be accepted.","Fadlan aqbal :attribute.","needs native review","Error messages under form fields",
 validation.array,"The :attribute field must be an array.",":attribute waa inuu noqdaa liis.","needs native review","Error messages under form fields",
 validation.boolean,"The :attribute field must be true or false.",":attribute waa inuu noqdaa haa ama maya.","needs native review","Error messages under form fields",
@@ -309,6 +318,106 @@ pages.privacy.body,"**Draft: to be checked by the owner before launch.**
 - **Booqdayaasha aan galin:** ma keydinno cinwaankooda IP.
 - **Sawirrada:** sawir kasta waxaan ka saarnaa xogta qarsoon sida goobta GPS.
 - **Tirtir xogtaada:** nala soo xiriir, akoonkaaga ayaan tirtiri doonnaa.","needs native review","Page /privacy (starter text; admin > Pages can change it)",pages-privacy.png
+help.post-an-ad.title,"How to post an ad","Sida loo dhigo xayeysiis","needs native review","Help page /help/post-an-ad",help-index.png
+help.post-an-ad.body,"Posting is free.
+
+1. Tap **Sell** at the bottom of the screen (or **Post an ad** at the top).
+2. Sign in with Google. The first time, add your name, city and phone number.
+3. Choose the category, for example **Cars**.
+4. Add up to :max_photos photos. The first photo is the main one.
+5. Write a short, clear title, for example ""Toyota Vitz 2012, automatic"".
+6. Fill in the details, the price and your city.
+7. Tap **Post my ad**.
+
+Our team checks every ad before it goes live. You can post up to :max_per_day ads a day.","Xayeysiis dhigiddu waa bilaash.
+
+1. Riix **iibi** xagga hoose ee shaashadda (ama **Dhig xayeysiis** xagga sare).
+2. Ku gal Google. Markii ugu horreysay, ku dar magacaaga, magaaladaada iyo lambarkaaga taleefanka.
+3. Dooro qaybta, tusaale **Baabuur**.
+4. Ku dar ilaa :max_photos sawir. Sawirka koowaad waa kan ugu muhiimsan.
+5. Qor cinwaan gaaban oo cad, tusaale ""Toyota Vitz 2012, otomaatig"".
+6. Buuxi faahfaahinta, qiimaha iyo magaaladaada.
+7. Riix **Dhig xayeysiiskayga**.
+
+Kooxdayadu waxay hubisaa xayeysiis kasta ka hor inta uusan muuqan. Maalintii waxaad dhigi kartaa ilaa :max_per_day xayeysiis.","needs native review","Help page /help/post-an-ad",help-post-an-ad.png
+help.good-photos.title,"Good photos sell faster","Sawirro wanaagsan ayaa si dhakhso ah wax u iibiya","needs native review","Help page /help/good-photos",help-index.png
+help.good-photos.body,"- Take photos in daylight, near a window or outside.
+- Show the whole item first, then the details and any damage.
+- Use your own photos. Photos copied from the internet may be refused.
+- No phone numbers or writing on the photos. Buyers see your number on the ad page.
+- Drag a photo to change the order. The first photo shows in the lists.
+
+We remove hidden data (like the place where the photo was taken) from every photo.","- Sawirrada ku qaad iftiinka maalinta, daaqad agteed ama bannaanka.
+- Marka hore muuji alaabta oo dhan, kadibna faahfaahinta iyo cilad kasta.
+- Isticmaal sawirradaada. Sawirro internetka laga soo guuriyey waa la diidi karaa.
+- Ha ku qorin lambar taleefan ama qoraal sawirrada. Iibsadayaashu lambarkaaga waxay ka arkaan bogga xayeysiiska.
+- Jiid sawir si aad u beddesho kala horreynta. Sawirka koowaad ayaa ka muuqda liisaska.
+
+Sawir kasta waxaan ka saarnaa xogta qarsoon (sida meesha sawirka laga qaaday).","needs native review","Help page /help/good-photos",
+help.ad-checking.title,"Why is my ad waiting?","Maxay xayeysiiskaygu u sugayaa?","needs native review","Help page /help/ad-checking",help-index.png
+help.ad-checking.body,"Every new ad is checked by our team, so buyers see real ads.
+
+- **Waiting for approval:** we have not checked it yet. You do not need to do anything.
+- **Live:** everyone can see your ad.
+- **Rejected:** open **My ads** to see why. Fix the ad and save it. We will check it again.
+
+When you change a live ad, it is checked again before the new version shows.","Xayeysiis kasta oo cusub kooxdayada ayaa hubisa, si iibsadayaashu u arkaan xayeysiisyo dhab ah.
+
+- **Wuxuu sugayaa oggolaansho:** weli ma aanan hubin. Waxba ha samayn.
+- **Wuu shaqaynayaa:** qof walba wuu arki karaa xayeysiiskaaga.
+- **Waa la diiday:** fur **Xayeysiisyadayda** si aad u aragto sababta. Sax xayeysiiska oo kaydi. Mar kale ayaan hubin doonnaa.
+
+Markaad beddesho xayeysiis shaqaynaya, mar kale ayaa la hubiyaa ka hor inta nuqulka cusub uusan muuqan.","needs native review","Help page /help/ad-checking",
+help.my-ads.title,"Edit, sold, renew or delete","Wax ka beddel, la iibiyey, cusbooneysii ama tirtir","needs native review","Help page /help/my-ads",help-index.png
+help.my-ads.body,"Open **Account** → **My ads**.
+
+- **Edit:** change the photos, text or price.
+- **Mark as sold:** the ad leaves the site and buyers stop calling you.
+- **Renew:** ads end after :expiry_days days. **Renew** shows :renew_days days before the end and gives your ad :expiry_days more days.
+- **Delete:** the ad is removed for good.","Fur **Akoon** → **Xayeysiisyadayda**.
+
+- **Wax ka beddel:** beddel sawirrada, qoraalka ama qiimaha.
+- **Calaamadee waa la iibiyey:** xayeysiisku wuu ka baxaa bogga, iibsadayaashuna way joojiyaan inay ku soo wacaan.
+- **Cusbooneysii:** xayeysiisyadu waxay dhacaan :expiry_days maalmood kadib. **Cusbooneysii** wuxuu muuqdaa :renew_days maalmood ka hor dhammaadka, xayeysiiskaagana wuxuu siiyaa :expiry_days maalmood oo kale.
+- **Tirtir:** xayeysiiska gebi ahaanba waa la saaraa.","needs native review","Help page /help/my-ads",
+help.buy-safely.title,"Buy safely","Si ammaan ah wax u iibso","needs native review","Help page /help/buy-safely",help-index.png
+help.buy-safely.body,"- Meet in a busy, public place in daylight.
+- See the item before you pay. Check that it works.
+- Never send money first (EVC Plus, Zaad, Sahal, eDahab) for something you have not seen.
+- For cars, houses and land, check the papers and who really owns it.
+- A price that is much lower than normal is a warning sign.
+
+Read all our [safety tips](:safety_url).","- Ku kulma meel dadweyne oo mashquul ah, maalinnimo.
+- Arag alaabta ka hor intaadan lacag bixin. Hubi inay shaqeyso.
+- Weligaa lacag hore ha dirin (EVC Plus, Zaad, Sahal, eDahab) wax aadan arag.
+- Baabuurta, guryaha iyo dhulka, hubi waraaqaha iyo cidda dhab ahaan leh.
+- Qiime aad uga hooseeya sida caadiga ah waa calaamad digniin ah.
+
+Akhri dhammaan [talooyinkayaga ammaanka](:safety_url).","needs native review","Help page /help/buy-safely",
+help.report-an-ad.title,"Report a bad ad","Ka warbixi xayeysiis xun","needs native review","Help page /help/report-an-ad",help-index.png
+help.report-an-ad.body,"See a scam, a wrong category or something that is not allowed?
+
+1. Open the ad.
+2. Tap **Report this ad** (you need to be signed in).
+3. Choose what is wrong and send.
+
+Our team checks every report. The seller does not see who reported the ad.","Ma aragtay khiyaano, qayb khaldan ama wax aan la oggolayn?
+
+1. Fur xayeysiiska.
+2. Riix **Ka warbixi xayeysiiskan** (waa inaad gashaa akoonkaaga).
+3. Dooro waxa khaldan oo dir.
+
+Kooxdayadu way hubisaa warbixin kasta. Iibiyuhu ma arko cidda ka warbixisay.","needs native review","Help page /help/report-an-ad",
+help.your-account.title,"Your account",Akoonkaaga,"needs native review","Help page /help/your-account",help-index.png
+help.your-account.body,"- **Sign in:** tap **Sign in** and choose your Google account. We never see your Google password.
+- **Change your name, city or phone:** **Account** → **Edit profile**.
+- **Your phone number:** buyers see it on your ads after they tap **Show phone number**.
+- **Language:** tap **English** or **Soomaali** at the top of any page.
+- **Delete your account:** write to us and we will remove your account and your ads. Our email is at the bottom of the [Help page](:help_url).","- **Gal:** riix **Gal** oo dooro akoonkaaga Google. Weligeen ma aragno furaha sirta ah ee Google-kaaga.
+- **Beddel magacaaga, magaaladaada ama taleefankaaga:** **Akoon** → **Wax ka beddel akoonka**.
+- **Lambarkaaga taleefanka:** iibsadayaashu waxay ku arkaan xayeysiisyadaada markay riixaan **Muuji lambarka**.
+- **Luqadda:** riix **English** ama **Soomaali** xagga sare ee bog kasta.
+- **Tirtir akoonkaaga:** noo soo qor, akoonkaaga iyo xayeysiisyadaada ayaan tirtiri doonnaa. Iimaylkayagu wuxuu ku qoran yahay xagga hoose ee [bogga Caawimaadda](:help_url).","needs native review","Help page /help/your-account",
 catalogue.Vehicles,Vehicles,Gaadiid,"needs native review","Category, field and place names (starter list; admin can change them)",
 catalogue.Cars,Cars,Baabuur,"needs native review","Category, field and place names (starter list; admin can change them)",
 "catalogue.Motorcycles & Bajaj","Motorcycles & Bajaj","Mooto & Bajaaj","needs native review","Category, field and place names (starter list; admin can change them)",

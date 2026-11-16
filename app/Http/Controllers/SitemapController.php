@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Search\DatabaseAdSearch;
 use App\Support\Catalog;
+use App\Support\Help\HelpCentre;
 use App\Support\Seo\Landing;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
@@ -17,6 +18,12 @@ class SitemapController extends Controller
             $urls = [['loc' => url('/'), 'changefreq' => 'hourly']];
             foreach (['about', 'safety', 'terms', 'privacy'] as $page) {
                 $urls[] = ['loc' => url('/'.$page), 'changefreq' => 'monthly'];
+            }
+            if (feature('help.centre')) {
+                $urls[] = ['loc' => route('help'), 'changefreq' => 'monthly'];
+                foreach (HelpCentre::articles((string) config('iibsom.default_locale')) as $article) {
+                    $urls[] = ['loc' => route('help.show', ['article' => $article['slug']]), 'changefreq' => 'monthly'];
+                }
             }
             foreach ($catalog->categories() as $main) {
                 $urls[] = ['loc' => url('/'.$main['slug']), 'changefreq' => 'hourly'];

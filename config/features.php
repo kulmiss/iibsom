@@ -49,6 +49,7 @@ return [
     'seo.landing_pages' => ['group' => 'Site', 'default' => true, 'label' => 'Brand pages and links for Google', 'description' => 'Pages like "Toyota Cars in Mogadishu", plus links to popular brands and other cities on category pages.'],
     'reports.weekly_email' => ['group' => 'Site', 'default' => true, 'label' => 'Weekly summary email', 'description' => 'Every Monday morning the owner gets last week\'s numbers by email (addresses in Settings → General).'],
     'recommendations' => ['group' => 'Site', 'default' => true, 'label' => 'Recommended for you', 'description' => 'Home page shows ads like the ones a visitor looked at, and recently viewed ads. History stays in the visitor\'s browser only.'],
+    'help.centre' => ['group' => 'Site', 'default' => true, 'label' => 'Help page', 'description' => 'Short how-to articles for customers at /help (post an ad, photos, safety, account), in English and Somali. Linked in the footer and the account page.'],
     'site.demo_data' => ['group' => 'Site', 'default' => false, 'label' => 'Show demo data', 'description' => 'Show the demo ads. Never ON in production.'],
 
     // Speed and API

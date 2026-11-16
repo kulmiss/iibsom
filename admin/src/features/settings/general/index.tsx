@@ -20,6 +20,7 @@ type General = {
   bad_words: string
   weekly_emails: string[]
   weekly_last_sent: string | null
+  support_email: string
 }
 
 export function SettingsGeneral() {
@@ -106,6 +107,11 @@ function GeneralForm({ initial }: { initial: General }) {
               Send me a test now
             </Button>
           </div>
+        </div>
+        <div className='grid gap-2'>
+          <Label htmlFor='support_email'>Help email for customers</Label>
+          <Input id='support_email' type='email' className='max-w-md' value={form.support_email} onChange={(e) => setForm({ ...form, support_email: e.target.value })} placeholder='help@iibsom.com' />
+          <p className='text-xs text-muted-foreground'>Shown at the bottom of the Help page (&quot;Still need help?&quot;). Empty = not shown.</p>
         </div>
         <p className='text-sm text-muted-foreground'>Currency: {form.currency} (decision #3).</p>
         <Button type='submit' disabled={save.isPending}>

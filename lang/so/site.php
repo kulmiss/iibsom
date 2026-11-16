@@ -52,6 +52,7 @@ return [
         'about' => 'Nagu saabsan',
         'terms' => 'Shuruudaha',
         'privacy' => 'Qarsoodiga',
+        'help' => 'Caawimaad',
         'safety' => 'Talooyin ammaan',
         'rights' => 'Xuquuqda oo dhan way dhowran tahay.',
     ],
@@ -61,5 +62,15 @@ return [
         'not_found_text' => 'Boggan ma jiro ama waa la saaray.',
         'back_home' => 'Ku noqo bogga hore',
         'bad_text' => 'Xarfaha qaarkood lama akhrin karo. Fadlan mar kale qor.',
+    ],
+
+    'help' => [
+        'title' => 'Caawimaad',
+        'heading' => 'Sideen kuu caawin karnaa?',
+        'intro' => 'Jawaabo gaagaaban oo su\'aalaha caadiga ah.',
+        'more' => 'Caawimaad kale',
+        'all' => 'Dhammaan caawimaadda',
+        'still_need' => 'Weli caawimaad ma u baahan tahay?',
+        'write_to' => 'Noogu soo qor:',
     ],
 ];

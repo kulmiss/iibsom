@@ -9,6 +9,7 @@ use App\Models\City;
 use App\Models\User;
 use App\Support\Catalog;
 use App\Support\Features\FeatureManager;
+use App\Support\Routing\ReservedSlugs;
 
 class AdminCatalogueTest extends AdminTestCase
 {
@@ -50,6 +51,48 @@ class AdminCatalogueTest extends AdminTestCase
 
         $this->postJson('/admin/api/categories', ['name_en' => 'X1', 'icon' => 'not-an-icon'])->assertUnprocessable();
         $this->postJson('/admin/api/categories', ['name_en' => 'Sedans', 'icon' => 'car', 'parent_id' => $cars->id])->assertUnprocessable();
+    }
+
+    public function test_category_web_address_cannot_clash_with_site_pages(): void
+    {
+        $this->asStaff();
+
+        // Typed addresses the site already uses: a fixed page, a language, a core page, a public folder.
+        foreach (['search', 'login', 'so', 'safety', 'build', 'admin'] as $slug) {
+            $this->postJson('/admin/api/categories', ['name_en' => 'Thing '.$slug, 'slug' => $slug, 'icon' => 'car'])
+                ->assertUnprocessable()->assertJsonValidationErrors('slug');
+        }
+        // An address made from the name is checked too.
+        $this->postJson('/admin/api/categories', ['name_en' => 'Search', 'icon' => 'car'])
+            ->assertUnprocessable()
+            ->assertJsonPath('errors.slug.0', 'The site already uses the web address /search. Change the English name a little (for example add a word).');
+        $this->assertSame(0, Category::whereIn('slug', ['search', 'login', 'so', 'safety', 'build', 'admin'])->count());
+    }
+
+    public function test_no_starting_category_uses_a_site_address(): void
+    {
+        $this->assertSame([], array_values(array_intersect(Category::pluck('slug')->all(), ReservedSlugs::all())));
+        $this->assertContains('help', ReservedSlugs::all());
+        $this->assertContains('for-you', ReservedSlugs::all());
+    }
+
+    public function test_category_name_that_makes_a_used_web_address_is_refused_not_a_crash(): void
+    {
+        $this->asStaff();
+
+        // "Cars" already exists: the address made from the name ("cars") is taken.
+        $this->postJson('/admin/api/categories', ['name_en' => 'Cars', 'icon' => 'car'])
+            ->assertUnprocessable()
+            ->assertJsonPath('errors.slug.0', 'Another category already uses the web address /cars. Change the English name a little (for example add a word).');
+        // A name with no letters or numbers cannot make an address.
+        $this->postJson('/admin/api/categories', ['name_en' => '!!', 'icon' => 'car'])
+            ->assertUnprocessable()->assertJsonValidationErrors('slug');
+        // A different address is fine.
+        $this->postJson('/admin/api/categories', ['name_en' => 'Cars', 'slug' => 'cars-2', 'icon' => 'car'])->assertCreated();
+        // Renaming keeps the old address, so no clash.
+        $cars = Category::where('slug', 'cars')->firstOrFail();
+        $this->putJson("/admin/api/categories/{$cars->id}", ['name_en' => 'Cars and SUVs', 'parent_id' => $cars->parent_id, 'icon' => 'car'])->assertOk();
+        $this->assertSame('cars', $cars->fresh()?->slug);
     }
 
     public function test_turn_category_off_hides_it(): void
@@ -168,5 +211,21 @@ class AdminCatalogueTest extends AdminTestCase
 
         $this->assertSame(3, setting('ads.max_per_day'));
         $this->putJson('/admin/api/settings/general', ['ads_expiry_days' => 1, 'ads_max_per_day' => 3, 'ads_max_photos' => 6, 'languages' => ['en']])->assertUnprocessable();
+    }
+
+    public function test_help_email_setting(): void
+    {
+        $this->asStaff();
+        $base = ['ads_expiry_days' => 60, 'ads_max_per_day' => 5, 'ads_max_photos' => 8, 'languages' => ['en']];
+
+        $this->getJson('/admin/api/settings/general')->assertOk()->assertJsonPath('support_email', '');
+        $this->putJson('/admin/api/settings/general', $base + ['support_email' => ' Help@IIBSOM.test '])
+            ->assertOk()->assertJsonPath('support_email', 'help@iibsom.test');
+        $this->putJson('/admin/api/settings/general', $base + ['support_email' => 'not an email'])
+            ->assertUnprocessable()->assertJsonPath('errors.support_email.0', 'The help email must be a valid email address.');
+        $this->assertSame('help@iibsom.test', setting('site.support_email'));
+        // Saving without the field keeps it; an empty value clears it.
+        $this->putJson('/admin/api/settings/general', $base)->assertOk()->assertJsonPath('support_email', 'help@iibsom.test');
+        $this->putJson('/admin/api/settings/general', $base + ['support_email' => ''])->assertOk()->assertJsonPath('support_email', '');
     }
 }

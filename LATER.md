@@ -14,6 +14,8 @@ Tick `[x]` with the date when done.
 - [ ] Native Somali speaker reviews `docs/somali-review/somali-texts.csv` (pictures in `docs/somali-review/screens`; how-to in its README)
 - [ ] Check and approve the **draft** Terms and Privacy text (admin → Pages); add Somali versions
 - [ ] Add Somali bad words to admin → Settings → General → Bad words
+- [ ] Set **Help email for customers** (admin → Settings → General). Help articles tell people to write to it (e.g. to delete their account).
+- [ ] About page says "use the contact details below" but has none: add them (admin → Pages → About)
 - [ ] Delete all demo data before launch (admin → Settings → Delete all demo data)
 
 - [ ] Admin → Settings → General → **Weekly summary email to**: add your email, press "Send me a test now" (needs working MAIL_ settings in `.env`)
