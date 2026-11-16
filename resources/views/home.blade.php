@@ -6,6 +6,7 @@
 @php($categories = $catalog->categories())
 @php($cities = $catalog->cities())
 @php($popular = $catalog->popularCategories(8))
+@php($latest = \App\Search\DatabaseAdSearch::publicQuery()->with(['category:id,slug,icon,parent_id', 'city:id,name,slug', 'cover'])->latest('published_at')->limit(12)->get())
 @php($banners = feature('site.banners') ? \App\Models\Banner::forHome() : [])
 
 @section('content')
@@ -14,8 +15,7 @@
         <div class="mx-auto max-w-3xl px-4 pb-7 pt-6 text-center sm:pb-16 sm:pt-14">
             <h1 class="text-xl font-bold sm:text-3xl">{{ __('site.home.heading') }}</h1>
 
-            {{-- Search results page comes in the search PR. --}}
-            <form class="mt-5 flex gap-2" role="search" action="#" method="get">
+            <form class="mt-5 flex gap-2" role="search" action="{{ lroute('search') }}" method="get">
                 {{-- Picker only when there is a choice (2+ live cities). --}}
                 @if (count($cities) > 1)
                     <label for="city" class="sr-only">{{ __('site.home.location_label') }}</label>
@@ -46,7 +46,7 @@
             <ul class="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-stone-200">
                 @foreach ($categories as $category)
                     <li class="border-b border-stone-100 last:border-0">
-                        <a href="#" class="flex items-center gap-3 px-3 py-2.5 hover:bg-brand-50">
+                        <a href="{{ lroute('browse.category', ['category' => $category['slug']]) }}" class="flex items-center gap-3 px-3 py-2.5 hover:bg-brand-50">
                             <span class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700">{{ icon($category['icon']) }}</span>
                             <span class="min-w-0 flex-1">
                                 <span class="block font-medium leading-tight">{{ translated($category['name']) }}</span>
@@ -62,7 +62,7 @@
         <div class="min-w-0">
             {{-- Quick links --}}
             <div class="flex flex-wrap gap-2">
-                <a href="#" class="chip bg-accent-400/30 ring-accent-400">{{ icon('tag', 'size-4') }} {{ __('site.home.how_to_sell') }}</a>
+                <a href="{{ lroute('post') }}" class="chip bg-accent-400/30 ring-accent-400">{{ icon('tag', 'size-4') }} {{ __('site.home.how_to_sell') }}</a>
                 @feature('site.safety_box')
                     <a href="{{ lroute('page', ['slug' => 'safety']) }}" class="chip bg-brand-50 ring-brand-200">{{ icon('shield-check', 'size-4') }} {{ __('site.home.safety_tips') }}</a>
                 @endfeature
@@ -99,7 +99,7 @@
                     <span>{{ __('site.home.trending') }}</span>
                 </a>
                 @foreach ($categories as $category)
-                    <a href="#" class="tile">
+                    <a href="{{ lroute('browse.category', ['category' => $category['slug']]) }}" class="tile">
                         <span class="tile-icon bg-brand-50 text-brand-700">{{ icon($category['icon'], 'size-8') }}</span>
                         <span>{{ translated($category['name']) }}</span>
                     </a>
@@ -111,7 +111,7 @@
                 <h2 class="mt-6 text-lg font-semibold">{{ __('site.home.popular_categories') }}</h2>
                 <div class="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
                     @foreach ($popular as $category)
-                        <a href="#" class="group flex items-center gap-3 rounded-xl bg-white p-3 shadow-sm ring-1 ring-stone-200 hover:ring-brand-200">
+                        <a href="{{ lroute('browse.category', ['category' => $category['slug']]) }}" class="group flex items-center gap-3 rounded-xl bg-white p-3 shadow-sm ring-1 ring-stone-200 hover:ring-brand-200">
                             <span class="flex size-12 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700 group-hover:bg-brand-700 group-hover:text-white">{{ icon($category['icon'], 'size-6') }}</span>
                             <span class="text-sm font-medium leading-tight">{{ translated($category['name']) }}</span>
                         </a>
@@ -121,14 +121,23 @@
 
             {{-- Trending ads (filled in the ads PRs) --}}
             <h2 id="trending" class="mt-8 scroll-mt-20 text-lg font-semibold">{{ __('site.home.trending_ads') }}</h2>
-            <div class="mt-3 rounded-xl border border-dashed border-stone-300 bg-white p-8 text-center">
-                <span class="mx-auto flex size-12 items-center justify-center rounded-full bg-brand-50 text-brand-700">{{ icon('trending-up', 'size-6') }}</span>
-                <p class="mt-3 font-semibold">{{ __('site.home.no_ads_title') }}</p>
-                <p class="mt-1 text-sm text-stone-600">{{ __('site.home.no_ads_text') }}</p>
-                @feature('ads.posting')
-                    <a href="{{ lroute('post') }}" class="btn-sell mt-4">{{ __('site.nav.post_ad') }}</a>
-                @endfeature
-            </div>
+            @if ($latest->isNotEmpty())
+                <div class="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
+                    @foreach ($latest as $ad)
+                        @include('ads._card', ['ad' => $ad])
+                    @endforeach
+                </div>
+                <a href="{{ lroute('search') }}" class="mt-4 inline-block font-medium text-brand-700 underline">{{ __('ads.browse.all_ads') }} →</a>
+            @else
+                <div class="mt-3 rounded-xl border border-dashed border-stone-300 bg-white p-8 text-center">
+                    <span class="mx-auto flex size-12 items-center justify-center rounded-full bg-brand-50 text-brand-700">{{ icon('trending-up', 'size-6') }}</span>
+                    <p class="mt-3 font-semibold">{{ __('site.home.no_ads_title') }}</p>
+                    <p class="mt-1 text-sm text-stone-600">{{ __('site.home.no_ads_text') }}</p>
+                    @feature('ads.posting')
+                        <a href="{{ lroute('post') }}" class="btn-sell mt-4">{{ __('site.nav.post_ad') }}</a>
+                    @endfeature
+                </div>
+            @endif
         </div>
     </div>
 @endsection

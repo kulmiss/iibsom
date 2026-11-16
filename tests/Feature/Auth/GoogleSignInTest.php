@@ -163,7 +163,8 @@ class GoogleSignInTest extends TestCase
     {
         $this->actingAs(User::factory()->completed()->create());
 
-        $this->get('/logout')->assertStatus(405);
+        $this->get('/logout')->assertNotFound(); // only POST logs out
+        $this->assertAuthenticated();
         $this->post('/logout')->assertRedirect(url('/'));
         $this->assertGuest();
     }

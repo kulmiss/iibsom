@@ -82,9 +82,10 @@ class HomePageTest extends TestCase
         DB::enableQueryLog();
         $this->get('/')->assertOk();
 
-        // Budget: switches, settings and lists all come from the cache.
+        // Budget: switches, settings, categories, cities and banners come from the cache;
+        // only "latest ads" (+ their photos/category/city) hit the database.
         // (The `cache` table is ignored: on shared hosting the cache lives in the database.)
         $queries = collect(DB::getQueryLog())->reject(fn ($q) => str_contains($q['query'], '`cache`'));
-        $this->assertLessThanOrEqual(2, $queries->count(), $queries->toJson());
+        $this->assertLessThanOrEqual(5, $queries->count(), $queries->toJson());
     }
 }

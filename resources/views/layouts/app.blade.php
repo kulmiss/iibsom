@@ -14,6 +14,7 @@
     @if (count($locales->enabled()) > 1)
         <link rel="alternate" hreflang="x-default" href="{{ $locales->urlFor($locales->default()) }}">
     @endif
+    @stack('head')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('scripts')
 </head>

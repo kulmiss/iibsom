@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Ad extends Model
@@ -72,6 +73,18 @@ class Ad extends Model
     public function photos(): HasMany
     {
         return $this->hasMany(AdPhoto::class)->orderBy('sort');
+    }
+
+    /** First ready photo (for cards). */
+    public function cover(): HasOne
+    {
+        return $this->hasOne(AdPhoto::class)->where('status', 'ready')->orderBy('sort');
+    }
+
+    /** /cars/mogadishu/toyota-hilux-2016-123 */
+    public function url(): string
+    {
+        return lroute('ad.show', ['category' => $this->category->slug, 'city' => $this->city->slug, 'slugId' => $this->slug.'-'.$this->id]);
     }
 
     public function reviewer(): BelongsTo

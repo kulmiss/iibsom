@@ -129,3 +129,15 @@ First add your Google keys: see docs/google-signin.md.
 | 6 | Try to change your own role | Not possible ("You") |
 | 7 | **System health** | List of checks with fixes, plus "This server" facts (Google keys MISSING until you add them) |
 | 8 | **Settings → Demo data** → type DELETE → delete | Only demo records are removed |
+
+## Manual (PR 13: browse, search, ad page)
+| # | Do this | Expected |
+|---|---------|----------|
+| 1 | Approve an ad in Admin, open the home page | It shows in "Latest ads" |
+| 2 | Search "toyota" on the home page | Results page with filters (price, condition, sort) |
+| 3 | Open **Cars** → filter brand + min year | Only matching cars |
+| 4 | Open an ad → **Show number** | The number appears only after the tap |
+| 5 | Tap a photo | It opens big; Esc closes it |
+| 6 | Signed in → **Report this ad** | "Thanks" message; reporting twice is not possible |
+| 7 | Open a pending ad link while signed out | Not found (404) |
+| 8 | http://localhost:8095/sitemap.xml and /robots.txt | Live ads listed; robots blocks all when not production |

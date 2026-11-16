@@ -9,6 +9,10 @@ return [
     */
     'hosting' => env('HOSTING_MODE', env('IIBSOM_HOSTING', 'vps')) === 'shared' ? 'shared' : 'vps',
 
+    // Search: MySQL FULLTEXT for words of 3+ letters (off = LIKE only; tests use LIKE
+    // because FULLTEXT can't see rows inside a test transaction).
+    'search_fulltext' => (bool) env('SEARCH_FULLTEXT', true),
+
     // Where finished ad photos go: "public" (your PC) or "r2" (live site).
     'photos_disk' => env('PHOTOS_DISK', 'public'),
 

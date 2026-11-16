@@ -7,6 +7,8 @@ use App\Models\Category;
 use App\Models\CategoryField;
 use App\Models\City;
 use App\Models\Region;
+use App\Search\AdSearch;
+use App\Search\DatabaseAdSearch;
 use App\Support\Catalog;
 use App\Support\Features\FeatureManager;
 use App\Support\Health\HealthChecker;
@@ -24,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->scoped(SettingsManager::class);
         $this->app->singleton(HealthChecker::class);
         $this->app->singleton(Catalog::class);
+        $this->app->bind(AdSearch::class, DatabaseAdSearch::class);
     }
 
     public function boot(): void
