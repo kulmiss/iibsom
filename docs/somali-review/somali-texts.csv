@@ -171,8 +171,8 @@ ads.browse.posted_any,"Any time","Wakhti kasta","needs native review",resources/
 ads.browse.posted_24h,"Last 24 hours","24kii saac ee u dambeeyay","needs native review",resources/views/browse/_filters.blade.php,
 ads.browse.posted_7d,"Last 7 days","7dii maalmood ee u dambeeyay","needs native review",resources/views/browse/_filters.blade.php,
 ads.browse.posted_30d,"Last 30 days","30kii maalmood ee u dambeeyay","needs native review",resources/views/browse/_filters.blade.php,
-ads.browse.with_photos,"Only with photos","Kaliya kuwa sawirro leh","needs native review","app/Http/Controllers/BrowseController.php | resources/views/browse/_filters.blade.php",
-ads.browse.verified_only,"Only verified sellers","Kaliya iibiyeyaal la xaqiijiyay","needs native review","app/Http/Controllers/BrowseController.php | resources/views/browse/_filters.blade.php",
+ads.browse.with_photos,"Only with photos","Kaliya kuwa sawirro leh","needs native review","app/Http/Controllers/Account/SavedSearchController.php | app/Http/Controllers/BrowseController.php | resources/views/browse/_filters.blade.php",
+ads.browse.verified_only,"Only verified sellers","Kaliya iibiyeyaal la xaqiijiyay","needs native review","app/Http/Controllers/Account/SavedSearchController.php | app/Http/Controllers/BrowseController.php | resources/views/browse/_filters.blade.php",
 ads.browse.popular,"Most viewed","Kuwa ugu badan ee la daawaday","needs native review",resources/views/browse/_filters.blade.php,
 ads.browse.location,Location,Goobta,"needs native review",resources/views/browse/_filters.blade.php,
 ads.browse.all_areas,"All areas","Dhammaan xaafadaha","needs native review",resources/views/browse/_filters.blade.php,
@@ -242,7 +242,7 @@ ads.page.report_send,"Send report","Dir warbixinta","needs native review",resour
 ads.page.report_contact,"Your phone or email (optional)","Taleefankaaga ama iimaylkaaga (ikhtiyaari)","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.report_contact_help,"Only if you want our team to answer you. Only staff see it.","Kaliya haddii aad rabto in kooxdayadu kuu jawaabaan. Shaqaalaha kaliya ayaa arka.","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.report_guest_error,"Please choose a reason. A phone number or email must look right.","Fadlan dooro sabab. Lambarka taleefanka ama iimaylku waa inuu sax yahay.","needs native review",resources/views/ads/show.blade.php,ads-show.png
-ads.page.report_sum,"To stop robots: what is :a + :b?","Si loo joojiyo robots: imisa waa :a + :b?","needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.page.report_sum,"To stop robots: what is :a + :b?","Si loo joojiyo robots: imisa waa :a + :b?","needs native review","app/Http/Controllers/GuestReportController.php | resources/views/ads/show.blade.php",ads-show.png
 ads.page.report_guest_privacy,"We don't keep your IP address or put a cookie on your phone for this.","Uma haynno cinwaankaaga IP mana dhigno cookie taleefankaaga tan awgeed.","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.report_thanks,"Thank you. Our team will check this ad.","Mahadsanid. Kooxdayadu way hubin doontaa xayeysiiskan.","needs native review","app/Http/Controllers/AdPageController.php | resources/views/ads/show.blade.php",ads-show.png
 ads.page.report_sign_in,"Sign in to report","Gal si aad u warbixiso","needs native review",resources/views/ads/show.blade.php,ads-show.png
@@ -455,10 +455,20 @@ site.footer.contact,"Contact us","Nala soo xiriir","needs native review",resourc
 site.footer.faq,"Help centre & FAQ","Xarunta caawimaadda & su'aalaha","needs native review",resources/views/partials/footer.blade.php,home.png
 site.footer.language,Language,Luqadda,"needs native review",resources/views/partials/footer.blade.php,home.png
 site.footer.tagline,"Buy and sell in Somalia.","Ka iibso kana iibi Soomaaliya.","needs native review",resources/views/partials/footer.blade.php,home.png
-site.errors.not_found_title,"Page not found","Boggan lama helin","needs native review",resources/views/errors/404.blade.php,errors-404.png
-site.errors.not_found_text,"This page does not exist or was removed.","Boggan ma jiro ama waa la saaray.","needs native review",resources/views/errors/404.blade.php,errors-404.png
-site.errors.back_home,"Back to home","Ku noqo bogga hore","needs native review","resources/views/errors/400.blade.php | resources/views/errors/404.blade.php",errors-404.png
-site.errors.bad_text,"Some characters in your text could not be read. Please type it again.","Xarfaha qaarkood lama akhrin karo. Fadlan mar kale qor.","needs native review","app/Http/Middleware/RejectInvalidUtf8.php | resources/views/errors/400.blade.php",
+site.errors.not_found_title,"Page not found","Boggan lama helin","needs native review","resources/views/errors/404.blade.php | resources/views/errors/_plain.blade.php",errors-404.png
+site.errors.not_found_text,"This page does not exist or was removed.","Boggan ma jiro ama waa la saaray.","needs native review","resources/views/errors/404.blade.php | resources/views/errors/_plain.blade.php",errors-404.png
+site.errors.back_home,"Back to home","Ku noqo bogga hore","needs native review","resources/views/errors/400.blade.php | resources/views/errors/404.blade.php | resources/views/errors/_plain.blade.php",errors-404.png
+site.errors.bad_text,"Some characters in your text could not be read. Please type it again.","Xarfaha qaarkood lama akhrin karo. Fadlan mar kale qor.","needs native review","app/Http/Middleware/RejectInvalidUtf8.php | resources/views/errors/400.blade.php | resources/views/errors/_plain.blade.php",
+site.errors.forbidden_title,"You cannot open this page","Ma furi kartid boggan","needs native review",resources/views/errors/_plain.blade.php,
+site.errors.forbidden_text,"This page is not open to your account.","Boggan uma furna akoonkaaga.","needs native review",resources/views/errors/_plain.blade.php,
+site.errors.expired_title,"This page was open too long","Boggan wuu furnaa muddo dheer","needs native review",resources/views/errors/_plain.blade.php,
+site.errors.expired_text,"For your safety, forms stop working after a while. Go back, reload the page and try again.","Ammaankaaga darteed, foomamku way joogsadaan muddo kadib. Dib u noqo, bogga cusboonaysii oo mar kale isku day.","needs native review",resources/views/errors/_plain.blade.php,
+site.errors.too_many_title,"Too many tries","Isku day aad u badan","needs native review",resources/views/errors/_plain.blade.php,
+site.errors.too_many_text,"Please wait a few minutes, then try again.","Fadlan sug dhowr daqiiqo, kadibna mar kale isku day.","needs native review",resources/views/errors/_plain.blade.php,
+site.errors.server_title,"Something went wrong","Wax baa khaldamay","needs native review",resources/views/errors/_plain.blade.php,
+site.errors.server_text,"It is our fault, not yours. Please try again in a minute.","Ciladdu waa dhankayaga, ma aha dhankaaga. Fadlan mar kale isku day daqiiqad kadib.","needs native review",resources/views/errors/_plain.blade.php,
+site.errors.down_title,"iibsom is being updated","iibsom waa la cusboonaysiinayaa","needs native review",resources/views/errors/_plain.blade.php,
+site.errors.down_text,"We will be back in a few minutes.","Waxaan soo laaban doonnaa dhowr daqiiqo kadib.","needs native review",resources/views/errors/_plain.blade.php,
 site.banner_ad,Ad,Xayeysiis,"needs native review",resources/views/partials/banner-ad.blade.php,home.png
 site.help.title,Help,Caawimaad,"needs native review",resources/views/help/index.blade.php,help-index.png
 site.help.heading,"How can we help?","Sideen kuu caawin karnaa?","needs native review",resources/views/help/index.blade.php,help-index.png
