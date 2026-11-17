@@ -17,6 +17,7 @@ import {
   Receipt,
   Settings,
   ShieldCheck,
+  Star,
   ToggleRight,
   UserCog,
   Users,
@@ -39,6 +40,7 @@ export const sidebarData: SidebarData = {
         { title: 'Reports', url: '/reports', icon: Flag, permission: 'reports.view' },
         { title: 'Users', url: '/users', icon: Users, permission: 'users.view' },
         { title: 'ID checks', url: '/verifications', icon: BadgeCheck, permission: 'users.verify', feature: 'verified_badge' },
+        { title: 'Ratings', url: '/reviews', icon: Star, permission: 'reviews.manage', feature: 'seller_ratings' },
         { title: 'Shops', url: '/shops', icon: Store, permission: 'shops.manage', feature: 'shops' },
         { title: 'Payments', url: '/payments', icon: Receipt, permission: 'payments.manage', feature: 'boosts' },
       ],
@@ -82,7 +84,7 @@ export const sidebarData: SidebarData = {
 
 /** The menu for this staff member (items they may not use, or switched OFF, are removed). */
 export function visibleNavGroups(can: (permission: string) => boolean, user: StaffUser | null): SidebarData['navGroups'] {
-  const allowed = (item: { permission?: string; feature?: 'guide' | 'verified_badge' | 'shops' | 'boosts' }) => (!item.permission || can(item.permission)) && (!item.feature || !!user?.[item.feature])
+  const allowed = (item: { permission?: string; feature?: 'guide' | 'verified_badge' | 'seller_ratings' | 'shops' | 'boosts' }) => (!item.permission || can(item.permission)) && (!item.feature || !!user?.[item.feature])
   return sidebarData.navGroups
     .map((group) => ({
       ...group,

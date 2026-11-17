@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-17 (PR 40)_
+_Last updated: 2026-11-17 (PR 41)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -81,7 +81,8 @@ See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example 
 37. **PR 37:** Banner ads in paid slots with targeting + click counts (Phase 2, OFF).
 38. **PR 38:** In-website chat (Phase 2, OFF). Part B done.
 39. **PR 39:** Write API with app access keys + `/categories/{slug}/fields` + docs/api.md (switch `api.write`, OFF).
-40. **PR 40:** Price guide on the post/edit form (`PriceHint`, switch `price_suggestions`, OFF). Next: Part C (seller ratings, auto-post, diaspora note), then Part D review — owner's big job list of 2026-11-16.
+40. **PR 40:** Price guide on the post/edit form (`PriceHint`, switch `price_suggestions`, OFF).
+41. **PR 41:** Seller ratings from the chat + public ratings page + admin Ratings (switch `seller_ratings`, OFF). Next: Part C (auto-post, diaspora note), then Part D review — owner's big job list of 2026-11-16.
 
 ## Known notes
 - The local PHP Docker image could not be built inside Claude's sandbox (the Alpine package site is blocked there). CI builds it on GitHub to prove it works.

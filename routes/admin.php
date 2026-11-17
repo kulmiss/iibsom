@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\PageAdminController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\SetupController;
 use App\Http\Controllers\Admin\ShopController;
@@ -88,6 +89,13 @@ Route::prefix('admin/api')->group(function () {
         Route::middleware(['feature:shops', 'admin.can:shops.manage'])->group(function () {
             Route::get('/shops', [ShopController::class, 'index']);
             Route::post('/shops/{shop}/activate', [ShopController::class, 'activate']);
+        });
+
+        // Seller ratings (Phase 3): hide ratings that break the rules.
+        Route::middleware(['feature:seller_ratings', 'admin.can:reviews.manage'])->group(function () {
+            Route::get('/reviews', [ReviewController::class, 'index']);
+            Route::post('/reviews/{review}/hide', [ReviewController::class, 'hide']);
+            Route::post('/reviews/{review}/unhide', [ReviewController::class, 'unhide']);
         });
 
         // Verified badge (Phase 2): check ID photos.

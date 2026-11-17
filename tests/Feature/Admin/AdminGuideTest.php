@@ -13,7 +13,7 @@ class AdminGuideTest extends AdminTestCase
         foreach (['super_admin', 'moderator', 'support'] as $role) {
             $this->asStaff($role);
             $res = $this->getJson('/admin/api/guide')->assertOk()->assertJsonPath('sections.0.slug', 'start');
-            $this->assertCount(18, $res->json('sections'));
+            $this->assertCount(19, $res->json('sections'));
             $this->assertStringContainsString('<li>', $res->json('sections.0.html'));
         }
         $this->getJson('/admin/api/me')->assertOk()->assertJsonPath('user.guide', true);

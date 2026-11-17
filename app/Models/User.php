@@ -108,6 +108,18 @@ class User extends Authenticatable
         return $this->hasMany(VerificationRequest::class);
     }
 
+    /** Average stars (one decimal), or null with no ratings yet. */
+    public function rating(): ?float
+    {
+        return $this->rating_count > 0 ? round($this->rating_sum / $this->rating_count, 1) : null;
+    }
+
+    /** @return HasMany<SellerReview, $this> */
+    public function reviewsReceived(): HasMany
+    {
+        return $this->hasMany(SellerReview::class, 'seller_id');
+    }
+
     /** @return HasMany<ApiToken, $this> */
     public function apiTokens(): HasMany
     {

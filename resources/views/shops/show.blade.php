@@ -27,6 +27,7 @@
                 <p class="mt-1 text-sm text-stone-600">
                     @if ($shop->city){{ $shop->city->label }} · @endif{{ __('account.shop.member_since', ['date' => $shop->user->created_at->translatedFormat('M Y')]) }}
                 </p>
+                @include('partials.seller-rating', ['seller' => $shop->user])
                 @if ($shop->hours)
                     <p class="mt-1 text-sm text-stone-600">{{ icon('clock', 'inline size-4') }} {{ $shop->hours }}</p>
                 @endif

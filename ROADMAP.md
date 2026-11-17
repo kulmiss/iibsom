@@ -30,6 +30,7 @@ Google sign-in, post an ad, browse + search, ad page, My Ads, safety (reports, a
 - ✅ Admin Health page (PR 12). ✅ "Move to VPS" checklist (docs/scaling.md, PR 19).
 - ✅ (PR 21) Admin "Edited" badge in the approval queue showing what changed since the last approval.
 - ✅ (PR 22) Match demo photos to the brand/type in the title.
+- Seller ratings: the seller can reply once under a rating; "Report this rating" button for sellers.
 - Price guide for buyers on the ad page ("lower than most similar ads"), once there is enough real data.
 - API: OpenAPI (Swagger) file made from the routes, and "Sign in with Google" inside the app (no copy-paste key).
 - Chat: email or push when a message waits for more than an hour; "Report this chat" for staff; photos in chat.

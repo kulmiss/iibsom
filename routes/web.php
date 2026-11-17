@@ -6,6 +6,7 @@ use App\Http\Controllers\Account\ChatController;
 use App\Http\Controllers\Account\FavouriteController;
 use App\Http\Controllers\Account\MyAdsController;
 use App\Http\Controllers\Account\ProfileController;
+use App\Http\Controllers\Account\ReviewController;
 use App\Http\Controllers\Account\SavedSearchController;
 use App\Http\Controllers\Account\ShopController;
 use App\Http\Controllers\Account\VerificationController;
@@ -21,6 +22,7 @@ use App\Http\Controllers\BrowseController;
 use App\Http\Controllers\ForYouController;
 use App\Http\Controllers\HelpController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\SellerReviewsController;
 use App\Http\Controllers\ShopPageController;
 use App\Http\Controllers\SitemapController;
 use App\Models\Page;
@@ -92,6 +94,7 @@ $publicRoutes = function () use ($stateless) {
                 Route::post('/messages/{conversation}', [ChatController::class, 'send'])->whereNumber('conversation')->middleware('throttle:20,1')->name('chat.send');
                 Route::get('/messages/{conversation}/since', [ChatController::class, 'since'])->whereNumber('conversation')->middleware('throttle:30,1')->name('chat.since');
                 Route::post('/messages/{conversation}/block', [ChatController::class, 'block'])->whereNumber('conversation')->middleware('throttle:10,1')->name('chat.block');
+                Route::post('/messages/{conversation}/review', [ReviewController::class, 'store'])->whereNumber('conversation')->middleware(['feature:seller_ratings', 'throttle:10,1'])->name('chat.review');
             });
 
             // Paid boosts (Phase 2): pay by mobile money + receipt; staff approve.
@@ -150,6 +153,9 @@ $publicRoutes = function () use ($stateless) {
 
     // Business shop pages (Phase 2): public only while an admin has the shop active.
     Route::get('/shop/{shop}', [ShopPageController::class, 'show'])->where('shop', '[a-z0-9]+(-[a-z0-9]+)*')->middleware('feature:shops')->name('shop.show');
+
+    // Seller ratings (Phase 3): public list of a seller's stars.
+    Route::get('/seller/{user}/reviews', [SellerReviewsController::class, 'show'])->whereNumber('user')->middleware('feature:seller_ratings')->name('seller.reviews');
 
     // Help centre for customers (articles in resources/help).
     Route::middleware('feature:help.centre')->group(function () {

@@ -14,7 +14,7 @@ return [
             'dashboard.view',
             'ads.view', 'ads.moderate', 'ads.edit', 'ads.delete',
             'reports.view', 'reports.handle',
-            'users.view', 'users.ban', 'users.verify',
+            'users.view', 'users.ban', 'users.verify', 'reviews.manage',
             'activity.view',
         ]],
 
@@ -38,6 +38,7 @@ return [
         'users.view' => 'See users',
         'users.ban' => 'Ban users and block phone numbers',
         'users.verify' => 'Check ID photos and give or remove the Verified badge',
+        'reviews.manage' => 'Hide seller ratings that break the rules',
         'staff.manage' => 'Add and change staff accounts',
         'categories.manage' => 'Edit categories and their fields',
         'locations.manage' => 'Edit cities and areas',

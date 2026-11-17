@@ -14,6 +14,8 @@ export type StaffUser = {
   guide: boolean
   /** "Verified badge" switch (Phase 2). */
   verified_badge: boolean
+  /** "Seller ratings" switch (Phase 3). */
+  seller_ratings: boolean
   /** "Business shop pages" switch (Phase 2). */
   shops: boolean
   /** "Paid boosts" switch (Phase 2). */

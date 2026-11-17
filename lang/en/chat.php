@@ -23,4 +23,18 @@ return [
     'safety' => 'Stay safe: never send money before you see the item. Meet in a busy place.',
     'first' => 'Say hello and ask about the ad. Your phone number is not shown here.',
     'all' => 'All messages',
+    'review' => [
+        'title' => 'Rate this seller',
+        'yours' => 'Your rating',
+        'help' => 'Only buyers who talked with the seller can rate. Be fair: rate the seller, not the price.',
+        'stars' => 'Stars',
+        'star_label' => ':count of 5 stars',
+        'comment' => 'Comment (optional)',
+        'comment_placeholder' => 'e.g. Honest, the phone was as in the photos.',
+        'send' => 'Send rating',
+        'change' => 'Change rating',
+        'thanks' => 'Thank you! Your rating is saved.',
+        'hidden' => 'Our team hid this rating because it broke the rules.',
+        'wait' => 'You can rate the seller after they answer you.',
+    ],
 ];

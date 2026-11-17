@@ -34,6 +34,15 @@ return [
         'range' => 'Most :what ads are $:low – $:high',
         'detail' => 'Middle price $:middle, from :count ads in the last 6 months. You choose your own price.',
     ],
+    'ratings' => [
+        'count' => '{1} :count rating|[2,*] :count ratings',
+        'average' => ':rating out of 5',
+        'title' => 'Ratings for :name',
+        'from_buyers' => 'From buyers who talked with this seller on iibsom.',
+        'about' => 'About: :title',
+        'none' => 'No ratings to show.',
+        'mine' => 'My ratings',
+    ],
     'form' => [
         'photos' => 'Photos',
         'photos_help' => 'Up to :max photos. The first photo is the cover. Drag to change the order.',

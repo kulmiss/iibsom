@@ -122,6 +122,13 @@ ads.done.home,"Back to home","Ku noqo bogga hore","needs native review",resource
 ads.price_hint.title,"Price guide","Hagaha qiimaha","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
 ads.price_hint.range,"Most :what ads are $:low – $:high","Inta badan xayeysiisyada :what waa $:low – $:high","needs native review",app/Http/Controllers/Ads/PriceHintController.php,
 ads.price_hint.detail,"Middle price $:middle, from :count ads in the last 6 months. You choose your own price.","Qiimaha dhexe $:middle, laga soo qaaday :count xayeysiis 6dii bilood ee la soo dhaafay. Qiimahaaga adigaa go'aansanaya.","needs native review",app/Http/Controllers/Ads/PriceHintController.php,
+ads.ratings.count,"{1} :count rating|[2,*] :count ratings","{1} :count qiimayn|[2,*] :count qiimaynood","needs native review","resources/views/partials/seller-rating.blade.php | resources/views/sellers/reviews.blade.php",home.png
+ads.ratings.average,":rating out of 5",":rating ka mid ah 5","needs native review","resources/views/partials/seller-rating.blade.php | resources/views/sellers/reviews.blade.php",home.png
+ads.ratings.title,"Ratings for :name","Qiimaynta :name","needs native review",resources/views/sellers/reviews.blade.php,
+ads.ratings.from_buyers,"From buyers who talked with this seller on iibsom.","Waxaa qoray iibsadayaal la hadlay iibiyahan iibsom dushiisa.","needs native review",resources/views/sellers/reviews.blade.php,
+ads.ratings.about,"About: :title","Ku saabsan: :title","needs native review",resources/views/sellers/reviews.blade.php,
+ads.ratings.none,"No ratings to show.","Qiimayn la tuso ma jirto.","needs native review",resources/views/sellers/reviews.blade.php,
+ads.ratings.mine,"My ratings",Qiimayntayda,"needs native review",resources/views/account/index.blade.php,account-index.png
 ads.form.photos,Photos,Sawirro,"needs native review","resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
 ads.form.photos_help,"Up to :max photos. The first photo is the cover. Drag to change the order.","Ilaa :max sawir. Sawirka koowaad waa kan hore. Jiid si aad u beddesho kala horreynta.","needs native review","resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
 ads.form.add_photos,"Add photos","Ku dar sawirro","needs native review","resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
@@ -182,7 +189,7 @@ ads.page.details,Details,Faahfaahin,"needs native review",resources/views/ads/sh
 ads.page.description,Description,Sharaxaad,"needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.seller,Seller,Iibiyaha,"needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.member_since,"Member since :date","Xubin tan iyo :date","needs native review",resources/views/ads/show.blade.php,ads-show.png
-ads.page.seller_ads,"{1} 1 ad live|[2,*] :count ads live","{1} 1 xayeysiis oo muuqda|[2,*] :count xayeysiis oo muuqda","needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.page.seller_ads,"{1} 1 ad live|[2,*] :count ads live","{1} 1 xayeysiis oo muuqda|[2,*] :count xayeysiis oo muuqda","needs native review","resources/views/ads/show.blade.php | resources/views/sellers/reviews.blade.php",ads-show.png
 ads.page.show_number,"Show phone number","Muuji lambarka","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.call,Call,Wac,"needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.whatsapp,WhatsApp,WhatsApp,"needs native review",resources/views/ads/show.blade.php,ads-show.png
@@ -326,6 +333,18 @@ chat.new,New,Cusub,"needs native review","resources/views/chat/index.blade.php |
 chat.safety,"Stay safe: never send money before you see the item. Meet in a busy place.","Ammaan ahaw: weligaa lacag ha dirin intaadan arag alaabta. Ku kulma meel mashquul ah.","needs native review",resources/views/chat/show.blade.php,
 chat.first,"Say hello and ask about the ad. Your phone number is not shown here.","Salaan oo wax ka weydii xayeysiiska. Lambarkaaga taleefanka halkan laguma muujiyo.","needs native review",resources/views/chat/show.blade.php,
 chat.all,"All messages","Dhammaan fariimaha","needs native review",resources/views/chat/show.blade.php,
+chat.review.title,"Rate this seller","Qiimee iibiyahan","needs native review",resources/views/chat/show.blade.php,
+chat.review.yours,"Your rating",Qiimayntaada,"needs native review",resources/views/chat/show.blade.php,
+chat.review.help,"Only buyers who talked with the seller can rate. Be fair: rate the seller, not the price.","Kaliya iibsadayaasha la hadlay iibiyaha ayaa qiimeyn kara. Caddaalad ahow: qiimee iibiyaha, ma aha qiimaha.","needs native review",resources/views/chat/show.blade.php,
+chat.review.stars,Stars,Xiddigo,"needs native review","app/Http/Controllers/Account/ReviewController.php | resources/views/chat/show.blade.php",
+chat.review.star_label,":count of 5 stars",":count ka mid ah 5 xiddigood","needs native review","resources/views/chat/show.blade.php | resources/views/partials/stars.blade.php",home.png
+chat.review.comment,"Comment (optional)","Faallo (ikhtiyaari)","needs native review","app/Http/Controllers/Account/ReviewController.php | resources/views/chat/show.blade.php",
+chat.review.comment_placeholder,"e.g. Honest, the phone was as in the photos.","tusaale: Waa daacad, taleefanku wuxuu ahaa sidii sawirrada.","needs native review",resources/views/chat/show.blade.php,
+chat.review.send,"Send rating","Dir qiimaynta","needs native review",resources/views/chat/show.blade.php,
+chat.review.change,"Change rating","Beddel qiimaynta","needs native review",resources/views/chat/show.blade.php,
+chat.review.thanks,"Thank you! Your rating is saved.","Mahadsanid! Qiimayntaada waa la keydiyay.","needs native review",app/Http/Controllers/Account/ReviewController.php,
+chat.review.hidden,"Our team hid this rating because it broke the rules.","Kooxdayadu way qariyeen qiimayntan sababtoo ah waxay jebisay xeerarka.","needs native review",resources/views/chat/show.blade.php,
+chat.review.wait,"You can rate the seller after they answer you.","Waxaad qiimeyn kartaa iibiyaha marka uu kuu jawaabo.","needs native review",resources/views/chat/show.blade.php,
 pagination.previous,"&laquo; Previous","&laquo; Hore","needs native review","Next / Previous page buttons under lists",
 pagination.next,"Next &raquo;","Xiga &raquo;","needs native review","Next / Previous page buttons under lists",
 reports.reason.scam,"Scam or fraud","Khiyaano ama musuqmaasuq","needs native review","app/Http/Controllers/Admin/ReportController.php | resources/views/ads/show.blade.php",ads-show.png

@@ -23,4 +23,18 @@ return [
     'safety' => 'Ammaan ahaw: weligaa lacag ha dirin intaadan arag alaabta. Ku kulma meel mashquul ah.',
     'first' => 'Salaan oo wax ka weydii xayeysiiska. Lambarkaaga taleefanka halkan laguma muujiyo.',
     'all' => 'Dhammaan fariimaha',
+    'review' => [
+        'title' => 'Qiimee iibiyahan',
+        'yours' => 'Qiimayntaada',
+        'help' => 'Kaliya iibsadayaasha la hadlay iibiyaha ayaa qiimeyn kara. Caddaalad ahow: qiimee iibiyaha, ma aha qiimaha.',
+        'stars' => 'Xiddigo',
+        'star_label' => ':count ka mid ah 5 xiddigood',
+        'comment' => 'Faallo (ikhtiyaari)',
+        'comment_placeholder' => 'tusaale: Waa daacad, taleefanku wuxuu ahaa sidii sawirrada.',
+        'send' => 'Dir qiimaynta',
+        'change' => 'Beddel qiimaynta',
+        'thanks' => 'Mahadsanid! Qiimayntaada waa la keydiyay.',
+        'hidden' => 'Kooxdayadu way qariyeen qiimayntan sababtoo ah waxay jebisay xeerarka.',
+        'wait' => 'Waxaad qiimeyn kartaa iibiyaha marka uu kuu jawaabo.',
+    ],
 ];

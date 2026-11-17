@@ -42,6 +42,13 @@
                     </a>
                 </li>
             @endfeature
+            @if (feature('seller_ratings') && auth()->user()?->rating_count > 0)
+                <li>
+                    <a href="{{ lroute('seller.reviews', ['user' => auth()->id()]) }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50">
+                        {{ icon('star', 'size-5 text-brand-700') }}<span class="flex-1">{{ __('ads.ratings.mine') }}</span>{{ icon('chevron-right', 'size-4 text-stone-400') }}
+                    </a>
+                </li>
+            @endif
             @feature('api.write')
                 <li>
                     <a href="{{ lroute('account.api') }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50">

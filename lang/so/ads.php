@@ -36,6 +36,15 @@ return [
         'range' => 'Inta badan xayeysiisyada :what waa $:low – $:high',
         'detail' => 'Qiimaha dhexe $:middle, laga soo qaaday :count xayeysiis 6dii bilood ee la soo dhaafay. Qiimahaaga adigaa go\'aansanaya.',
     ],
+    'ratings' => [
+        'count' => '{1} :count qiimayn|[2,*] :count qiimaynood',
+        'average' => ':rating ka mid ah 5',
+        'title' => 'Qiimaynta :name',
+        'from_buyers' => 'Waxaa qoray iibsadayaal la hadlay iibiyahan iibsom dushiisa.',
+        'about' => 'Ku saabsan: :title',
+        'none' => 'Qiimayn la tuso ma jirto.',
+        'mine' => 'Qiimayntayda',
+    ],
     'form' => [
         'photos' => 'Sawirro',
         'photos_help' => 'Ilaa :max sawir. Sawirka koowaad waa kan hore. Jiid si aad u beddesho kala horreynta.',

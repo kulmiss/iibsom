@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Ad;
 use App\Models\Conversation;
 use App\Models\Message;
+use App\Models\SellerReview;
 use App\Models\User;
 use App\Support\Safety\SpamGuard;
 use Illuminate\Http\JsonResponse;
@@ -59,6 +60,10 @@ class ChatController extends Controller
             'other' => $conversation->other($user),
             'messages' => $conversation->messages()->latest('id')->limit(100)->get()->reverse()->values(),
             'user' => $user,
+            // Seller ratings (Phase 3): only the buyer, only after the seller answered.
+            'canRate' => feature('seller_ratings') && SellerReview::canRate($conversation, $user),
+            'myReview' => feature('seller_ratings') && $conversation->buyer_id === $user->id
+                ? SellerReview::where('conversation_id', $conversation->id)->first() : null,
         ]);
     }
 
