@@ -12,6 +12,7 @@ use App\Http\Controllers\Account\VerificationController;
 use App\Http\Controllers\AdPageController;
 use App\Http\Controllers\Ads\AdPhotoController;
 use App\Http\Controllers\Ads\PostAdController;
+use App\Http\Controllers\Ads\PriceHintController;
 use App\Http\Controllers\AdStatsController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\LoginController;
@@ -63,6 +64,7 @@ $publicRoutes = function () use ($stateless) {
                 Route::get('/post/{category:slug}', [PostAdController::class, 'create'])->name('post.form');
                 Route::post('/post/{category:slug}', [PostAdController::class, 'store'])->middleware('throttle:10,1')->name('post.store');
 
+                Route::get('/post/{category:slug}/price-hint', [PriceHintController::class, 'show'])->middleware(['feature:price_suggestions', 'throttle:60,1'])->name('post.price_hint');
                 Route::post('/post-photos', [AdPhotoController::class, 'store'])->middleware('throttle:60,1')->name('post.photos.store');
                 Route::delete('/post-photos/{photo}', [AdPhotoController::class, 'destroy'])->whereNumber('photo')->name('post.photos.destroy');
             });

@@ -31,6 +31,11 @@ return [
         'home' => 'Ku noqo bogga hore',
     ],
 
+    'price_hint' => [
+        'title' => 'Hagaha qiimaha',
+        'range' => 'Inta badan xayeysiisyada :what waa $:low – $:high',
+        'detail' => 'Qiimaha dhexe $:middle, laga soo qaaday :count xayeysiis 6dii bilood ee la soo dhaafay. Qiimahaaga adigaa go\'aansanaya.',
+    ],
     'form' => [
         'photos' => 'Sawirro',
         'photos_help' => 'Ilaa :max sawir. Sawirka koowaad waa kan hore. Jiid si aad u beddesho kala horreynta.',

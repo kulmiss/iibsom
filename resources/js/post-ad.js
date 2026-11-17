@@ -248,6 +248,52 @@ function initDraft(form, photos) {
     });
 }
 
+// Price guide under the price: asks the server for similar ads' prices when brand, model or condition change.
+function initPriceHint(form) {
+    const box = form.querySelector('[data-price-hint]');
+    if (!box) return;
+    let timer;
+    let last = null; // null, not '': the first question has no parameters at all
+    const update = async () => {
+        const params = new URLSearchParams();
+        const pick = (name) => form.querySelector(`[name="${name}"]:checked, select[name="${name}"], input[type=text][name="${name}"]`)?.value || '';
+        const condition = pick('condition');
+        if (condition) params.set('condition', condition);
+        for (const key of ['brand', 'model']) {
+            const v = pick(`fields[${key}]`).trim();
+            if (v) params.set(`fields[${key}]`, v);
+        }
+        if (box.dataset.except) params.set('except', box.dataset.except);
+        const query = params.toString();
+        if (query === last) return;
+        last = query;
+        try {
+            const res = await fetch(`${box.dataset.url}?${query}`, { headers: { Accept: 'application/json' } });
+            if (!res.ok) throw new Error(String(res.status));
+            const { hint } = await res.json();
+            if (query !== last) return; // a newer question was asked meanwhile
+            box.classList.toggle('hidden', !hint);
+            if (hint) {
+                box.querySelector('[data-price-hint-range]').textContent = hint.range;
+                box.querySelector('[data-price-hint-detail]').textContent = hint.detail;
+            }
+        } catch {
+            box.classList.add('hidden'); // the guide is only a help: never block posting
+            last = null;
+        }
+    };
+    const later = (e) => {
+        const name = e.target?.name || '';
+        if (name === 'condition' || name === 'fields[brand]' || name === 'fields[model]') {
+            clearTimeout(timer);
+            timer = setTimeout(update, 400);
+        }
+    };
+    form.addEventListener('change', later);
+    form.addEventListener('input', later);
+    update();
+}
+
 const form = document.querySelector('[data-post-form]');
 if (form) {
     const tpl = document.querySelector('template[data-i18n]');
@@ -257,4 +303,5 @@ if (form) {
     const existing = JSON.parse(form.dataset.photos || '[]');
     if (existing.length) photos.load(existing);
     if (form.dataset.draftKey) initDraft(form, photos); // new ads only; edits start from the saved ad
+    initPriceHint(form); // after the draft is back, so the guide fits the restored brand
 }

@@ -29,6 +29,11 @@ return [
         'home' => 'Back to home',
     ],
 
+    'price_hint' => [
+        'title' => 'Price guide',
+        'range' => 'Most :what ads are $:low – $:high',
+        'detail' => 'Middle price $:middle, from :count ads in the last 6 months. You choose your own price.',
+    ],
     'form' => [
         'photos' => 'Photos',
         'photos_help' => 'Up to :max photos. The first photo is the cover. Drag to change the order.',

@@ -71,6 +71,7 @@ return [
     'ad_stats' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Ad stats', 'description' => 'Sellers see how many people viewed each ad and tapped Show number, WhatsApp or Call (last 30 days). Only numbers are kept: nothing about the visitor.'],
 
     // Phase 3: growth
+    'price_suggestions' => ['group' => 'Phase 3', 'default' => false, 'label' => 'Price guide', 'description' => 'While posting, sellers see "Most Toyota Vitz ads are $4,500 – $7,000" from similar live and sold ads of the last 6 months (only when there are at least 5, so no single price shows).'],
     'app' => ['group' => 'Phase 3', 'default' => false, 'label' => 'Mobile app', 'description' => 'Flutter app + push notifications.'],
 
 ];

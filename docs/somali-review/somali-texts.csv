@@ -119,6 +119,9 @@ ads.done.pending,"Our team checks every ad to keep iibsom safe. Your ad will be 
 ads.done.live,"Your ad is live now.","Xayeysiiskaagu hadda waa muuqdaa.","needs native review",resources/views/ads/post-done.blade.php,
 ads.done.post_another,"Post another ad","Dhig xayeysiis kale","needs native review",resources/views/ads/post-done.blade.php,
 ads.done.home,"Back to home","Ku noqo bogga hore","needs native review",resources/views/ads/post-done.blade.php,
+ads.price_hint.title,"Price guide","Hagaha qiimaha","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
+ads.price_hint.range,"Most :what ads are $:low – $:high","Inta badan xayeysiisyada :what waa $:low – $:high","needs native review",app/Http/Controllers/Ads/PriceHintController.php,
+ads.price_hint.detail,"Middle price $:middle, from :count ads in the last 6 months. You choose your own price.","Qiimaha dhexe $:middle, laga soo qaaday :count xayeysiis 6dii bilood ee la soo dhaafay. Qiimahaaga adigaa go'aansanaya.","needs native review",app/Http/Controllers/Ads/PriceHintController.php,
 ads.form.photos,Photos,Sawirro,"needs native review","resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
 ads.form.photos_help,"Up to :max photos. The first photo is the cover. Drag to change the order.","Ilaa :max sawir. Sawirka koowaad waa kan hore. Jiid si aad u beddesho kala horreynta.","needs native review","resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
 ads.form.add_photos,"Add photos","Ku dar sawirro","needs native review","resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"

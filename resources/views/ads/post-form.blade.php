@@ -145,6 +145,14 @@
                         </label>
                     </div>
                     @error('price') <p class="form-error">{{ $message }}</p> @enderror
+                    @feature('price_suggestions')
+                        <div data-price-hint data-url="{{ lroute('post.price_hint', ['category' => $category->slug]) }}" @if ($ad) data-except="{{ $ad->id }}" @endif
+                             class="mt-3 hidden rounded-xl bg-brand-50 px-4 py-3 text-sm text-brand-900 ring-1 ring-brand-200" aria-live="polite">
+                            <p class="flex items-center gap-2 font-semibold">{{ icon('chart-column', 'size-4 shrink-0') }} {{ __('ads.price_hint.title') }}</p>
+                            <p data-price-hint-range class="mt-1"></p>
+                            <p data-price-hint-detail class="mt-0.5 text-xs text-brand-800"></p>
+                        </div>
+                    @endfeature
                 </div>
             </fieldset>
 
