@@ -31,6 +31,11 @@ class GoogleController extends Controller
         $lang = (string) $request->query('lang', '');
         $request->session()->put('login_locale', $locales->isEnabled($lang) ? $lang : $locales->default());
 
+        // No Google keys yet (for example on your own computer): explain, instead of an error page at Google.
+        if (blank(config('services.google.client_id')) || blank(config('services.google.client_secret'))) {
+            return redirect(lroute('login'))->with('error', __('account.login.not_set_up'));
+        }
+
         // Google's default scopes are already only: openid, profile, email.
         $provider = Socialite::driver('google');
         if ($provider instanceof AbstractProvider) {

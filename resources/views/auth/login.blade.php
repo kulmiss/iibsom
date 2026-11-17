@@ -18,5 +18,18 @@
             <p class="mt-4 text-xs text-stone-500">{{ __('account.login.no_password') }}</p>
             <p class="mt-1 text-xs text-stone-500">{{ __('account.login.terms_note') }}</p>
         </div>
+
+        @if (\App\Http\Controllers\Auth\TestSignInController::available())
+            {{-- Owner's own computer only (APP_ENV=local): sign in without Google keys. --}}
+            <form method="post" action="{{ lroute('login.test') }}" class="mt-4 rounded-2xl border-2 border-dashed border-amber-300 bg-amber-50 p-5">
+                @csrf
+                <p class="font-semibold text-amber-900">{{ icon('flask-conical', 'size-4 me-1 inline-block align-[-2px]') }}{{ __('account.login.test_title') }}</p>
+                <p class="mt-1 text-sm text-amber-900">{{ __('account.login.test_note') }}</p>
+                <label for="test-email" class="form-label mt-3">{{ __('account.login.test_email') }}</label>
+                <input id="test-email" name="email" type="email" required maxlength="120" autocomplete="email" value="{{ old('email') }}" class="form-input" @error('email') aria-invalid="true" aria-describedby="test-email-error" @enderror>
+                @error('email')<p id="test-email-error" class="form-error mt-1">{{ $message }}</p>@enderror
+                <button class="btn-primary mt-3 w-full justify-center">{{ __('account.login.test_button') }}</button>
+            </form>
+        @endif
     </section>
 @endsection

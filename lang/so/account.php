@@ -4,6 +4,12 @@
 
 return [
     'login' => [
+        'not_set_up' => 'Ku gelidda Google weli laguma diyaarin boggan.',
+        'test_title' => 'Gelid tijaabo ah',
+        'test_note' => 'Kaliya kombiyuutarkaaga, si aad u tijaabiso. Sanduuqan weligiis kama muuqdo bogga rasmiga ah.',
+        'test_email' => 'Iimayl kasta',
+        'test_button' => 'Gal ama is diiwaangeli',
+        'test_staff' => 'Akoonnada shaqaaluhu waxay ka galaan /admin.',
         'title' => 'Gal',
         'heading' => 'Ku soo dhowow iibsom',
         'intro' => 'Gal si aad xayeysiis u dhigto ama aad u sheegto kuwa xun. Daawashadu waa bilaash, akoon looma baahna.',

@@ -18,6 +18,7 @@ return [
 
     // Sign-in
     'login.google' => ['group' => 'Sign-in', 'default' => true, 'label' => 'Continue with Google', 'description' => 'Customers sign in with their Google account.'],
+    'login.test_accounts' => ['group' => 'Sign-in', 'default' => true, 'label' => 'Test sign-in (your own computer only)', 'description' => 'On your own computer (APP_ENV=local) the sign-in page also lets you sign in or sign up with just an email, so you can test without Google keys. It NEVER works on the live site, whatever this switch says.'],
     'login.phone' => ['group' => 'Sign-in', 'default' => false, 'label' => 'Phone + SMS code login', 'description' => 'Customers sign in with a code sent by SMS. Built for later.'],
 
     // Ads

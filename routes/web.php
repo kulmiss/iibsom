@@ -17,6 +17,7 @@ use App\Http\Controllers\Ads\PriceHintController;
 use App\Http\Controllers\AdStatsController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\TestSignInController;
 use App\Http\Controllers\BannerClickController;
 use App\Http\Controllers\BrowseController;
 use App\Http\Controllers\ForYouController;
@@ -51,6 +52,8 @@ $publicRoutes = function () use ($stateless) {
     // Sign in (Google only for customers).
     Route::middleware(['guest', 'feature:login.google'])->group(function () {
         Route::get('/login', [LoginController::class, 'show'])->name('login');
+        // Test sign-in: the owner's own computer only (APP_ENV=local); 404 everywhere else.
+        Route::post('/login/test', [TestSignInController::class, 'store'])->middleware('throttle:10,1')->name('login.test');
     });
 
     Route::middleware('auth')->group(function () {

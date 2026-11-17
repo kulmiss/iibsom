@@ -20,7 +20,7 @@ php artisan iibsom:staff you@example.com          # your Super Admin (one-time p
 php artisan serve --port=8095
 ```
 
-Open <http://localhost:8095> and <http://localhost:8095/admin>. Docker and Windows (Laragon) steps: [docs/local-setup.md](docs/local-setup.md).
+Open <http://localhost:8095> and <http://localhost:8095/admin>. Run `php artisan schedule:work` in a second window (it processes new photos). To sign in as a customer without Google keys, use the yellow **Test sign-in** box on the sign-in page (only shows when `APP_ENV=local`). Docker and Windows (Laragon) steps: [docs/local-setup.md](docs/local-setup.md).
 
 Tests: `php artisan test` (MySQL database `iibsom_testing`).
 

@@ -1,286 +1,56 @@
 # Testing guide
 
-Most important tests first. "Expected" is what you should see.
+How to test iibsom by hand, row by row. Do each row in **English and Somali**, on a phone width (360, 390 or 414) and on a computer.
+Before you start: `php artisan serve --port=8095` and `php artisan schedule:work` both running; demo data on (`php artisan iib:demo-reset`).
 
-## Automated (run before every merge)
-| # | Command | Expected |
-|---|---------|----------|
-| 1 | `php artisan test` | All tests green (520+) |
-| 2 | `vendor/bin/pint --test` | "passed" (code style OK) |
-| 2b | `vendor/bin/phpstan analyse` | "No errors" (Larastan level 8) |
-| 2c | Site running with demo data → `bash tools/lighthouse` | "All results processed", no failed assertions |
-| 3 | `composer audit` and `npm audit --omit=dev` | No vulnerabilities |
-| 4 | GitHub: the top PR | CI green: tests (vps), tests (shared), admin app, secret-scan, docker-build |
+The same rows run automatically in a real browser (see "Automatic run" below).
 
-## ⭐ 15-minute check after merging everything (do this first)
-Start: `php artisan migrate --seed`, `npm run build`, `cd admin && pnpm build`, `php artisan iib:demo-reset`, `php artisan serve --port=8095`.
+| # | Area | What to do | What you should see | Switch needed |
+|---|---|---|---|---|
+| 1 | Setup | Sign in at /admin with your Super Admin (email + password), then set up 2FA with an authenticator app. The first time, the 5-step setup wizard opens: tick Somali, set the help email, press Next to the end, Finish | Dashboard opens; Somali is ON (the site shows the EN/SO globe) | – |
+| 2 | Setup | Admin → Switches: turn ON "In-website chat", "Ad stats" and "Saved search alerts" (needed for rows 16, 27, 29, 31, 35) | Switches save; the site still works | – |
+| 3 | Language | Click the globe (EN) in the header, choose Soomaali; then switch back | Same page switches at once; header, page, footer and phone bottom bar all change; address gets /so/ | `site.language_switch` |
+| 4 | Language | Computer, keyboard only: Tab to the globe, Enter, Escape | Menu opens and closes; current language has a tick; focus goes back to the globe | `site.language_switch` |
+| 5 | Categories | Computer home: move the mouse over a category in the left list | A side panel shows its sub categories; it closes when the mouse leaves | – |
+| 6 | Categories | Phone home: tap a category (e.g. Vehicles) | Its page opens with sub category tiles | – |
+| 7 | Categories | Open Vehicles, then the Cars tile | Tiles with icons, breadcrumb iibsom / Vehicles / Cars, "N results for Cars in Somalia" | – |
+| 8 | Categories | Admin → Categories: move one with the arrows or by dragging, change an icon, turn one OFF | Site home shows the new order and icon; the OFF one is gone | – |
+| 9 | Categories | Turn ON "Hide empty sub categories" | Sub categories with no ads disappear from home, tiles and filters | `catalog.hide_empty` |
+| 10 | Filters | Computer, Property: choose "Last 7 days" and a max price, press "Show N results"; then click a quick price range | The button number changes while you choose; the page shows exactly that number; prices are within the range | `search.more_filters` |
+| 11 | Filters | Phone: tap Filters, choose "Last 30 days", tap "Show N results"; open again and press × | Full-screen sheet; the button stays on screen; closes after the tap; results filtered; × closes it | `search.more_filters` |
+| 12 | Filters | With several filters on, press × on one chip, then "Clear all" | × removes only that filter; Clear all removes all (clean address) | `search.more_filters` |
+| 13 | Filters | Try "Only with photos", an area of Mogadishu, and sort Cheapest / Most expensive / Most viewed | Only ads with photos; area works; prices in the right order (Most viewed needs Ad stats ON) | `search.more_filters` |
+| 14 | Filters | Switch Grid ↔ List (phone and computer), reload | The choice is remembered | `search.more_filters` |
+| 15 | Filters | Copy the address with filters, open it in a new tab | Same filters and results | – |
+| 16 | Filters | Signed in: on Property in Mogadishu with an area, "Only with photos" and a max price, press "Save this search" | It appears in My saved searches with all those filters in its name | `saved_searches` |
+| 17 | Guest report | Signed OUT, open an ad → Report → choose a reason, add a note → Send | Thank-you message; no cookie is set | `ads.guest_reports` |
+| 18 | Guest report | Send a report within 1 second of opening the form; then send 6 reports in a row | The quick one shows the normal thanks but is NOT saved (robots learn nothing); the 6th shows "Too many tries" in your language | `ads.guest_reports` |
+| 19 | Guest report | Admin → Reports | Reporter shows "Guest" with the contact; the ad with most reports is on top | `ads.guest_reports` |
+| 20 | Footer | Scroll to the bottom on a computer | Coast drawing, columns About / Support / Popular, languages, © 2026 | `site.new_footer` |
+| 21 | Footer | Phone: tap each footer title | Sections are closed first and open on tap | `site.new_footer` |
+| 22 | Footer | Open every footer link (About, Terms, Privacy, Cookie info, Copyright, Safety tips, Help, popular links) | Each page opens in English and Somali | `site.new_footer` |
+| 23 | Footer | Admin → Settings → General → Footer: add a Facebook link, untick Terms, Save | Facebook icon appears in the footer, Terms link is gone | `site.new_footer` |
+| 24 | Footer | Try a bad link like http://facebook.com/x or https://facebook.com.evil.com/x | Error message; not saved | `site.new_footer` |
+| 25 | Footer | Empty "Help email for customers" in Settings, save; then fill it again | "Contact us" shows only while the email is filled in | `site.new_footer` |
+| 26 | Seller badges | Open an ad of a seller who joined more than 1 month ago | "N months/years on iibsom" under the seller name (nothing for newer sellers) | `sellers.badges` |
+| 27 | Seller badges | With chat ON, the seller answers 3 different buyers within an hour each | "Replies fast" under the seller name (can take up to 6 hours to show) | `sellers.badges + chat` |
+| 28 | Ad cards | Look at ads with 2 or more photos in a list | Camera icon with the photo count | `ads.card_badges` |
+| 29 | Ad cards | An ad with 100+ views (Ad stats ON) | "Popular" label on its card | `ads.card_badges + ad_stats` |
+| 30 | Header | Signed in on a computer | "My ads" button in the header (on phones: in Account) | `site.header_icons` |
+| 31 | Header | Another user sends you a chat message | Messages icon shows a red number (phone: on the bottom bar) | `site.header_icons + chat` |
+| 32 | How to sell | Home: tap "How to sell" | Article with 6 steps; links inside work; Somali version too | `help.how_to_sell` |
+| 33 | How to sell | Signed in, open Post an ad | Link "New to selling? 6 tips to sell fast" | `help.how_to_sell` |
+| 34 | Safety tip | Ad page: tap "Show number" | Number appears with a yellow safety tip | `contact.safety_tip` |
+| 35 | Quick chat | Signed in as a buyer, ad page: tap "Is it still available?", then Send | Chat opens with the text in the box; nothing is sent until you tap Send | `chat.quick_replies + chat` |
+| 36 | Watermark | Turn ON "Mark on photos", post an ad with a new photo, wait 1 minute (schedule:work must run), then turn it OFF | Big photo has a small "iibsom" in the corner; list picture is clean | `photos.watermark` |
+| 37 | Main flow | Signed out: on the sign-in page use the yellow "Test sign-in" box (your own computer only) with a new email, fill "Almost done", then post an ad with 2 photos | Ad waits for checking; photos are ready within a minute (schedule:work running) | `login.test_accounts` |
+| 38 | Main flow | Admin → Ads → Waiting: Approve it | Ad is live on the site and in search | – |
+| 39 | Main flow | In My ads: Renew (shows near the end date), then Mark as sold | End date moves; status becomes Sold | – |
+| 40 | Roles | Sign in to /admin as the demo moderator and the demo support account (password + 2FA) | Only their own menus; Settings opens their own part (Appearance / 2FA), not the site settings | – |
+| 41 | All screens | Open the main pages (home, categories, search, ad, help, pages, sign-in, account, post) on phone widths 360, 390, 414 (F12 → phone icon) and on a computer | No sideways scrolling, nothing cut off, no errors | – |
+| 42 | All screens | Set your phone/computer to dark mode and repeat row 41 | Pages still readable (the site stays light) | – |
+| 43 | Offline | Turn off the internet (or stop php artisan serve), open a new page; then turn it on and press Try again | "You are offline" page in your language; Try again brings the page back | – |
 
-| # | Do this | Expected |
-|---|---------|----------|
-| 1 | Phone size (F12 → phone icon) → http://localhost:8095 | Blue/yellow home, category tiles, bottom bar, latest ads with photos |
-| 2 | Tap **Cars** → filter a brand → open an ad → **Show phone number** | Filters work; number shows only after the tap; WhatsApp + Call buttons |
-| 3 | Open 3 ads, go back home | "Recommended for you" + "Recently viewed" |
-| 4 | /admin → sign in as demo moderator (2FA key printed by `iib:demo-reset`) | Dashboard with 3 months of charts |
-| 5 | Admin → **Waiting for approval** → approve one | It shows on the home page at once |
-| 6 | Sign in on the site with Google (needs keys, docs/google-login.md) → **Sell** → post an ad with 2 photos | "Thank you" page; ad waits for approval |
-| 7 | **Account → My ads** → edit, mark sold, delete | Each works; edit goes back to Waiting |
-| 8 | Admin → Settings → General → tick Somali → site → **Soomaali** | Whole site in Somali, no reload |
-| 9 | Admin → Feature switches → turn **WhatsApp button** OFF | Button disappears from ad pages |
-| 10 | Admin → Settings → Demo data → Delete all demo data | Site is empty again (your own data stays) |
+## Automatic run
 
-## Manual (PRs 31–46: Phase 2/3 switches and Part D)
-Turn the switch ON in Admin → Feature switches first. Turn it OFF again afterwards.
-
-| # | Switch / PR | Do this | Expected |
-|---|---|---|---|
-| 1 | `favourites` (31) | Ad page → **Save** → Account → Saved ads | The ad is listed |
-| 2 | `saved_searches` (32) | Search "toyota" → **Save this search** | Listed in Account → Saved searches |
-| 3 | `ad_stats` (33) | Open your own live ad in another browser, tap Show number → My ads | Views and taps counted |
-| 4 | `verified_badge` (34) | Account → Get the Verified badge → send a photo → Admin → ID checks → approve | Badge next to your name on your ads; photo gone |
-| 5 | `shops` (35) | Account → My shop → save → Admin → Shops → +1 month | /shop/your-name opens |
-| 6 | `boosts` (36) | My ads → Boost → test receipt → Admin → Payments → approve | Ad first in lists with a label |
-| 7 | `banner_ads` (37) | Admin → Home banners → add one with place "Lists of ads" | Shows on category pages with "Ad" |
-| 8 | `chat` (38) | Another account → ad page → Chat with seller → reply | Messages arrive within 10 s |
-| 9 | `api.write` (39) | Account → App access → make a key → `curl -H "Authorization: Bearer <key>" localhost:8095/api/v1/me` | Your name in JSON |
-| 10 | `price_suggestions` (40) | Sell → Cars → pick Toyota | "Most Toyota ads are $… – $…" |
-| 11 | `seller_ratings` (41, chat ON) | As the buyer in a chat the seller answered → Rate this seller | Stars on the ad page; Admin → Ratings can hide |
-| 12 | `social.autopost` (42) | Without keys: Admin → System health | "Auto-post: no network has keys" |
-| 13 | `diaspora` (43) | Settings → rates → F12 → Sensors → location London (or change the PC time zone) → ad page | Safety note + "≈ £…" |
-| 14 | PR 44 | My ads late in the evening (after 21:00 Somalia time) | Dates are the Somalia day |
-| 15 | PR 46 | Admin → Waiting → select 20 → Approve | Done in about a second |
-
-## Manual (PR 1: foundation)
-| # | Do this | Expected |
-|---|---------|----------|
-| 1 | Open http://localhost:8095 | "Iibsom": "Buy and sell anything in Somalia. Coming soon." |
-| 2 | Open http://localhost:8095/up | Green "Application up" page |
-| 3 | Open http://localhost:8096 | Mailpit inbox opens (empty) |
-| 4 | Open a pull request on GitHub (not draft) | CI runs 3 jobs: tests, secret-scan, docker-build. All green |
-| 5 | Mark the PR as draft and push again | CI does **not** run |
-
-## Manual (PR 2: switches, settings, hosting modes, health, security)
-| # | Do this | Expected |
-|---|---------|----------|
-| 1 | `php artisan migrate` | Creates `features` and `settings` tables |
-| 2 | `php artisan iibsom:health` | List of OK / WARN / FAIL lines. Scheduler = FAIL until cron runs |
-| 3 | Run `php artisan schedule:work` in a 2nd window, wait 1 minute, run `php artisan iibsom:health` again | Scheduler = OK |
-| 4 | Set `HOSTING_MODE=shared`, run `php artisan schedule:list` | You see `shared-queue-worker` |
-| 5 | Open http://localhost:8095, press F12 → Network → click the page → Headers | You see `Content-Security-Policy`, `X-Frame-Options: DENY` |
-| 6 | `php artisan tinker` → `feature('chat')` | `false` (Phase 2 features are OFF) |
-| 7 | GitHub PR checks | `tests (vps)` and `tests (shared)` are both green |
-
-## Manual (PR 3: languages + layout)
-| # | Do this | Expected |
-|---|---------|----------|
-| 1 | `npm install && npm run build`, open http://localhost:8095 on your phone size (F12 → phone icon) | Blue header box, search box, "Post an ad" button, footer links |
-| 2 | Open http://localhost:8095/so | "Page not found" (Somali is OFF) |
-| 3 | `php artisan tinker --execute="app(App\\Support\\Settings\\SettingsManager::class)->set('languages.enabled',['en','so']);"` then reload / | "English · Soomaali" switch appears in the header |
-| 4 | Click "Soomaali" | Address changes to /so **without the page reloading** (texts stay English until Somali is written) |
-| 5 | Open http://localhost:8095/ again | It switches to /so by itself (choice remembered) |
-| 6 | `php artisan iibsom:translations:export so` | Creates `storage/app/translations-so.csv`, open in Excel |
-| 7 | Turn Somali OFF again: same as step 3 with `['en']` | Switch disappears |
-
-## Manual (PR 4: locations, categories, Jiji-style home)
-| # | Do this | Expected |
-|---|---------|----------|
-| 1 | `php artisan migrate` then `php artisan db:seed` | 15 main categories, Somalia cities, Mogadishu districts |
-| 2 | `npm run build`, open http://localhost:8095 (desktop) | Blue search box with "Mogadishu" picker, category list on the left with icons + "No ads yet", popular category tiles, "Trending ads" box |
-| 3 | Phone size (F12 → phone icon) | Categories as a 3-column icon grid |
-| 4 | `php artisan tinker --execute="App\\Models\\City::where('slug','kismayo')->first()->update(['enabled'=>true]);"` and reload | Picker shows "All Somalia", Mogadishu, Kismayo. Turn it back off with `false` |
-| 5 | Same for a category: `App\\Models\\Category::where('slug','jobs')->first()->update(['enabled'=>false]);` | "Jobs" disappears from home |
-| 6 | Run `php artisan db:seed` again | Nothing breaks, switches you changed stay as they are |
-
-## Manual (PR 7: Google sign-in + profile)
-First add your Google keys: see docs/google-login.md.
-
-| # | Do this | Expected |
-|---|---------|----------|
-| 1 | Open http://localhost:8095/login | "Continue with Google" button |
-| 2 | Click it, choose your Google account | You come back to "Almost done" (welcome form) |
-| 3 | Leave Terms unticked, press Save | Red message under Terms |
-| 4 | Type phone `0612345` (too short) | "Please enter a Somali mobile number…" |
-| 5 | Fill name, phone `61 5123456`, tick Terms, Save | Home page with "Welcome! Your account is ready." Header shows your first letter |
-| 6 | Open http://localhost:8095/account | Your name, Mogadishu, +252 61 512 3456, Log out button |
-| 7 | Edit profile, change phone, Save | "Your profile is saved." |
-| 8 | Log out | Back to home, header shows the person icon again |
-| 9 | Look in `storage/logs/security-*.log` | `login.success` line with your user id |
-
-## Manual (PR 8: post an ad)
-| # | Do this | Expected |
-|---|---------|----------|
-| 1 | Signed out, tap **Sell** | Sign-in page |
-| 2 | Signed in (profile done), tap **Sell** | "What are you selling?" with categories |
-| 3 | Vehicles → Cars | Form with photos, title, Brand/Model/Year/Kilometres/Fuel/Gear, New/Used, description, price, city, area |
-| 4 | Add 3 photos from your phone | Each shows "Uploading…" then the picture; first one says "Cover" |
-| 5 | Use ‹ › on a photo | Order changes, "Cover" moves |
-| 6 | Type a title, close the tab, open the form again | "We brought back what you typed last time." Your text is back |
-| 7 | Press **Post my ad** with an empty description | Red message under Description |
-| 8 | Fill everything, press **Post my ad** | "Thank you! Your ad was sent … checks every ad" |
-| 9 | Post the same ad again | "You already posted this ad." |
-| 10 | `php artisan queue:work --stop-when-empty` then look in `storage/app/public/ads/` | 3 sizes per photo (`thumb`, `medium`, `large` `.webp`) |
-
-## Manual (PR 9: Super Admin foundation)
-| # | Do this | Expected |
-|---|---------|----------|
-| 1 | `cd admin && pnpm install && pnpm build`, then `php artisan iibsom:staff you@example.com` | "Staff account ready" |
-| 2 | Open http://localhost:8095/admin | "Staff sign in" |
-| 3 | Wrong password 6 times | "Too many tries. Wait … seconds." |
-| 4 | Right password | "Set up two-factor sign-in (required)" with a QR code |
-| 5 | Scan with your authenticator app, type the code | "2FA is on. Save your recovery codes" (8 codes) |
-| 6 | Continue | Dashboard: 4 cards, chart, top categories + cities |
-| 7 | Sun/moon icon (top right) | Light / dark theme |
-| 8 | Gear icon | Layout options (sidebar style, compact) |
-| 9 | Ctrl+K (⌘K on Mac) | Search box to jump to any page |
-| 10 | Avatar → Appearance → pick a colour → Save brand colour | Buttons and charts change colour for all staff |
-| 11 | Activity log | Your sign-in and the colour change are listed |
-| 12 | Sign out, sign in again with a recovery code | Works once; the same code fails the second time |
-| 13 | As a customer (Google) open /admin | Staff sign-in page, no access |
-
-## Manual (PR 10: moderation)
-| # | Do this | Expected |
-|---|---------|----------|
-| 1 | Post an ad on the site, then admin → **Waiting for approval** | The ad is listed with its cover photo |
-| 2 | Click the ad | Side panel: photos, price, fields (Brand, Year…), description, seller, history |
-| 3 | **Approve** | "Ad approved, it is live now." The ad leaves the queue. Home page count for that category goes up by 1 |
-| 4 | Tick 2 ads → **Reject** → pick "Wrong category" → Reject | "2 done." Both show "Rejected" with the reason on **Ads** |
-| 5 | **Users** → click a user → **Ban user** (keep both boxes ticked) | User shows "Banned", their ads are taken down, their phone appears under **Blocked phone numbers** |
-| 6 | As that customer, try to save the same phone on the profile page | "This phone number cannot be used on iibsom." |
-| 7 | **Reports** → **Take ad down** | The ad is rejected and every waiting report on it is closed |
-| 8 | Sign in as a **Support** staff member | You can look but there are no Approve / Ban / Take down buttons |
-
-## Manual (PR 11: categories, cities, switches, settings)
-| # | Do this | Expected |
-|---|---------|----------|
-| 1 | Admin → **Categories** → open Vehicles → **Add sub category in Vehicles** → "Boats", pick an icon → Save | "Boats" appears under Vehicles. On the site, **Sell** → Vehicles shows Boats |
-| 2 | Boats → **Fields** → **Add a field** → "Engine" → Number, unit "hp" → Save | Posting a Boats ad now asks "Engine (hp)" |
-| 3 | Switch **Jobs** OFF | Jobs disappears from the home page |
-| 4 | **Cities and areas** → switch **Kismayo** ON | Home page search shows "All Somalia / Mogadishu / Kismayo" |
-| 5 | Mogadishu → **areas** → add "KM4" | KM4 is in the area list when posting |
-| 6 | **Feature switches** → WhatsApp button | A box explains what changes before you confirm. After OFF it shows "changed" with a reset button |
-| 7 | **Settings → General** → Ads end after 30 days, tick Somali → Save | New approved ads end in 30 days. A language switch appears on the site |
-
-## Manual (PR 12: pages, banners, staff, health, demo data)
-| # | Do this | Expected |
-|---|---------|----------|
-| 1 | `php artisan db:seed`, open http://localhost:8095/safety | "Stay safe" page. Footer links About / Safety tips / Terms / Privacy work |
-| 2 | Admin → **Pages** → Safety → change text → **Preview** → **Save page** | The site shows the new text. Typing `<script>` shows as text, not code |
-| 3 | **Home banners** → **Add banner** → picture 1600×500, link `/post` | "Showing". The banner appears on the home page under the quick links |
-| 4 | Banner link `javascript:alert(1)` | Refused |
-| 5 | **Staff** → **Add staff** (Moderator) | A one-time password appears once. Signing in with it asks for 2FA setup |
-| 6 | Try to change your own role | Not possible ("You") |
-| 7 | **System health** | List of checks with fixes, plus "This server" facts (Google keys MISSING until you add them) |
-| 8 | **Settings → Demo data** → type DELETE → delete | Only demo records are removed |
-
-## Manual (PR 13: browse, search, ad page)
-| # | Do this | Expected |
-|---|---------|----------|
-| 1 | Approve an ad in Admin, open the home page | It shows in "Latest ads" |
-| 2 | Search "toyota" on the home page | Results page with filters (price, condition, sort) |
-| 3 | Open **Cars** → filter brand + min year | Only matching cars |
-| 4 | Open an ad → **Show number** | The number appears only after the tap |
-| 5 | Tap a photo | It opens big; Esc closes it |
-| 6 | Signed in → **Report this ad** | "Thanks" message; reporting twice is not possible |
-| 7 | Open a pending ad link while signed out | Not found (404) |
-| 8 | http://localhost:8095/sitemap.xml and /robots.txt | Live ads listed; robots blocks all when not production |
-
-## Manual (PR 14: My Ads + safety)
-| # | Do this | Expected |
-|---|---------|----------|
-| 1 | Account → **My ads** | Tabs: Live / Waiting / Rejected / Sold-ended with numbers |
-| 2 | **Edit** a live ad, change the price, save | "Saved. Our team checks…"; ad moves to Waiting |
-| 3 | On edit, remove one photo and add a new one | After save the ad has the new set, in your order |
-| 4 | **Mark as sold** | Asks first; ad moves to Sold / ended and is gone from the site |
-| 5 | Admin sets an ad to end in 2 days (or wait) → **Renew** | Ends 60 days from today, still live |
-| 6 | **Delete** | Asks first; ad gone (staff can still see it) |
-| 7 | Post an ad with "send money first" or a web link | Refused with a clear message |
-| 8 | Admin → Settings → General → add a word to Bad words | Ads with that word are refused |
-
-## Manual (PR 15: Recommended for you)
-| # | Do this | Expected |
-|---|---------|----------|
-| 1 | Open 2–3 car ads, then go to the home page | "Recommended for you" shows other cars; "Recently viewed" shows the ads you opened |
-| 2 | Tap **Clear my history** | Both lists disappear |
-| 3 | Admin → Feature switches → Recommended for you OFF | Home shows no lists |
-| 4 | Browser dev tools → Application → Local storage | `iibsom-history` is there; nothing is saved on the server |
-
-## Manual (PR 16: demo data)
-| # | Do this | Expected |
-|---|---------|----------|
-| 1 | `php artisan iib:demo-reset` | About 1 minute. Prints 2 demo staff logins with 2FA keys |
-| 2 | Open the site | 300+ ads with real photos in every category |
-| 3 | Sign in to /admin as demo moderator (add the 2FA key to your phone app) | Dashboard shows charts for the last 3 months, 24 waiting ads, 12 reports |
-| 4 | Admin → Settings → Demo data → Show demo data OFF | Demo ads disappear from the site and the counts |
-| 5 | Delete all demo data (type DELETE) | All demo ads, users, staff and reports are gone; your own data stays |
-| 6 | Set `APP_ENV=production` in .env and run `php artisan iib:demo-reset` | Refused |
-
-## Manual (PR 17: Somali)
-| # | Do this | Expected |
-|---|---------|----------|
-| 1 | `php artisan db:seed` (adds Somali names to existing data) | Nothing you edited changes |
-| 2 | Admin → Settings → General → tick Somali → Save | "English / Soomaali" switch appears on the site |
-| 3 | Tap **Soomaali** | Page changes to Somali without reloading; URL starts with /so |
-| 4 | Look at categories, ad page, post form, My ads, errors | All in Somali |
-| 5 | `php artisan iibsom:translations:export so` | CSV for a native speaker to check |
-
-## Manual (PR 25: installable website)
-| # | Do this | Expected |
-|---|---------|----------|
-| 1 | Phone Chrome → open the site → menu → **Add to home screen** / **Install app** | Blue "ii" icon on the home screen; opens without the browser bar |
-| 2 | Turn on airplane mode, open a page | "You are offline / Internet ma jiro" page with a "Try again" button |
-| 3 | Signed in, F12 → Application → Cache storage | Only the offline page, icons and photos; never /account or /admin pages |
-| 4 | Admin → Feature switches → Installable website OFF, reload twice | Application → Service workers: none |
-
-## Manual (PR 24: SEO landing pages)
-| # | Do this | Expected |
-|---|---------|----------|
-| 1 | Open /cars/mogadishu | Title "Cars in Mogadishu", breadcrumb Home › Vehicles › Cars › Mogadishu, brand chips with numbers |
-| 2 | Tap "Toyota" | /cars/mogadishu/toyota: only Toyotas, title "Toyota Cars in Mogadishu" |
-| 3 | /cars/mogadishu/ferrari | Not found |
-| 4 | /sitemap.xml | Has /cars/mogadishu and /cars/mogadishu/toyota |
-| 5 | View page source of a page with 0 ads | `noindex` |
-
-## Manual (PR 23: weekly email)
-| # | Do this | Expected |
-|---|---------|----------|
-| 1 | Admin → Settings → General → Weekly summary: your email → Save → **Send me a test now** | "Sent to …"; the email has last week's numbers (open Mailpit at http://localhost:8096 locally) |
-| 2 | Stop Mailpit, press the test button again | "Could not send the email…" message; `storage/logs/laravel.log` has `weekly_summary.failed` |
-| 3 | `php artisan iibsom:weekly-summary` twice | 2nd time: "Already sent for 2026-W…" |
-| 4 | `php artisan schedule:list` | `iibsom:weekly-summary` Monday 07:00 (Africa/Mogadishu) |
-
-## Manual (PR 22: matching demo photos)
-| # | Do this | Expected |
-|---|---------|----------|
-| 1 | `php artisan iib:demo-reset` → open Cars | Toyota ads show Toyotas, a Land Cruiser shows a Land Cruiser |
-| 2 | Open an iPhone ad | Brand = Apple |
-| 3 | An ad with no photo | Shows its category icon (car, phone…), not a tag |
-
-## Manual (PR 21: "Edited" badge)
-| # | Do this | Expected |
-|---|---------|----------|
-| 1 | `php artisan iib:demo-reset` → Admin → **Waiting for approval** | Some ads show a purple **Edited** badge |
-| 2 | Click one | Top of the panel: "What the seller changed since approval", old (red, crossed out) and new (green) |
-| 3 | Approve it, then as the seller edit the price in My Ads | It comes back with **Edited** and only "Price" listed |
-| 4 | A brand-new ad | No badge |
-| 5 | Feature switches → "Show what sellers changed" OFF | No badges, no panel |
-
-## Manual (PR 20: quality gates)
-| # | Do this | Expected |
-|---|---------|----------|
-| 1 | Open http://localhost:8095/search?q=%FF | A short "characters could not be read" page (400), not an error page |
-| 2 | Admin → Cities → Kismayo → clear the Somali name → Save | Somali name is gone (before, it could not be removed) |
-| 3 | Open /admin signed out, F12 → Console | No red errors |
-
-## Manual (PR 19: docs + release zip)
-| # | Do this | Expected |
-|---|---------|----------|
-| 1 | `bash tools/make-release` | A zip of about 40 MB with vendor/, public/build and public/admin-app |
-| 2 | Read docs/deploy-shared.md with your host's panel open | Every step matches what you see; tell Claude what differs |
-
-## Manual (PR 18: speed + security)
-| # | Do this | Expected |
-|---|---------|----------|
-| 1 | Private window → open the home page twice → dev tools → Network → the page | 2nd time: header `X-Page-Cache: HIT`; no cookies |
-| 2 | Approve an ad in the admin, reload the home page | The new ad shows at once (cache cleared) |
-| 3 | Sign in, open the home page | No `X-Page-Cache` header (signed-in pages are never shared) |
-| 4 | http://localhost:8095/api/v1/ads and /api/v1/ads/1 | JSON, no phone numbers |
-| 5 | Admin → Feature switches → Public API OFF | /api/v1/... answers 404 |
+A Playwright script ran all 43 rows on 2026-11-18 (EN + SO, 360/390/414 + desktop, light + dark), and checked every page for console errors, failed requests, PHP warnings, slow pages (> 1.5 s), sideways scrolling, cut-off text and untranslated texts. Results and bugs found: DECISIONS.md (2026-11-18, PR 56–60).
