@@ -6,7 +6,7 @@ Admin → **Feature switches**. Every switch takes effect at once; OFF = the fea
 
 Sign-in with Google, posting, admin approval of every ad, ad end dates, reports (also by guests: `ads.guest_reports`), similar ads, "what the seller changed", My Ads, bad words / no links / bot trap, WhatsApp / call / share, safety box, home banners, language switch, installable website, SEO brand pages, weekly email, Recommended for you, Help page, setup wizard, admin guide, welcome tour, page cache, public read API.
 
-OFF on purpose: **Phone + SMS login** (needs an SMS provider), **Trusted sellers skip approval** (decision #9), **Show demo data** (never on the live site).
+OFF on purpose: **Hide empty sub categories** (`catalog.hide_empty`, turn ON when the site has many ads), **Phone + SMS login** (needs an SMS provider), **Trusted sellers skip approval** (decision #9), **Show demo data** (never on the live site).
 
 ## Phase 2 and 3 (all built, all OFF)
 

@@ -6,7 +6,7 @@
     $action = $brand ? lroute('browse.brand', ['category' => $category->slug, 'city' => $city->slug, 'brand' => $brand['value']])
         : ($category ? lroute('browse.category', array_filter(['category' => $category->slug, 'city' => $city?->slug])) : lroute('search'));
     // Breadcrumbs: Home › Vehicles › Cars › Mogadishu › Toyota (also given to Google as BreadcrumbList).
-    $crumbs = [[__('site.nav.home'), lroute('home')]];
+    $crumbs = [[\Illuminate\Support\Str::lower(config('app.name')), lroute('home')]]; // "iibsom / Vehicles / Parts"
     if ($category?->parent) { $crumbs[] = [$category->parent->label, lroute('browse.category', ['category' => $category->parent->slug])]; }
     if ($category) { $crumbs[] = [$category->label, lroute('browse.category', ['category' => $category->slug])]; }
     if ($category && $city) { $crumbs[] = [$city->label, lroute('browse.category', ['category' => $category->slug, 'city' => $city->slug])]; }
@@ -50,12 +50,57 @@
         <div class="flex flex-wrap items-end justify-between gap-2">
             <div>
                 <h1 class="mt-1 text-2xl font-bold">{{ $title }}</h1>
-                <p class="text-sm text-stone-600">{{ trans_choice('ads.browse.results', $results->total(), ['count' => number_format($results->total())]) }}</p>
+                <p class="text-sm text-stone-600" data-results-count>
+                    @if ($category || !empty($filters['q']))
+                        {{ trans_choice('ads.browse.results_for', $results->total(), ['count' => number_format($results->total()), 'what' => $what ?? '“'.$filters['q'].'”', 'where' => $city?->label ?? __('ads.browse.somalia')]) }}
+                    @else
+                        {{ trans_choice('ads.browse.results', $results->total(), ['count' => number_format($results->total())]) }}
+                    @endif
+                </p>
             </div>
             @feature('saved_searches')
                 @include('browse._save-search')
             @endfeature
         </div>
+
+        {{-- Sub categories: tiles on a main category (on phones this is the "sub category screen"), chips on a sub category. --}}
+        @if ($category && ! $brand)
+            @php($catalogRows = app(\App\Support\Catalog::class))
+            @php($mainRow = collect($catalogRows->categories())->firstWhere('id', $category->parent_id ?? $category->id))
+            @if ($mainRow)
+                @php($subRows = $catalogRows->visibleChildren($mainRow))
+                @if ($category->parent_id === null && $subRows)
+                    <nav class="mt-4" aria-label="{{ __('ads.browse.sub_categories', ['category' => $category->label]) }}">
+                        <ul class="grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-6">
+                            @foreach ($subRows as $sub)
+                                <li>
+                                    <a href="{{ lroute('browse.category', array_filter(['category' => $sub['slug'], 'city' => $city?->slug])) }}" class="flex h-full flex-col items-center gap-1.5 rounded-xl bg-white p-3 text-center shadow-sm ring-1 ring-stone-200 hover:ring-brand-300">
+                                        <span class="flex size-11 items-center justify-center rounded-xl bg-brand-50 text-brand-700">{{ icon($sub['icon'], 'size-6') }}</span>
+                                        <span class="text-xs font-medium leading-tight sm:text-sm">{{ translated($sub['name']) }}</span>
+                                        <span class="text-[11px] text-stone-500">{{ number_format($sub['ads_count']) }}</span>
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </nav>
+                @elseif ($category->parent_id !== null && count($subRows) > 1)
+                    <nav class="-mx-4 mt-3 overflow-x-auto px-4 pb-1" aria-label="{{ __('ads.browse.more_in', ['category' => translated($mainRow['name'])]) }}">
+                        <ul class="flex gap-2">
+                            <li class="shrink-0"><a href="{{ lroute('browse.category', array_filter(['category' => $mainRow['slug'], 'city' => $city?->slug])) }}" class="btn-chip">{{ __('ads.browse.all_in', ['category' => translated($mainRow['name'])]) }}</a></li>
+                            @foreach ($subRows as $sub)
+                                <li class="shrink-0">
+                                    <a href="{{ lroute('browse.category', array_filter(['category' => $sub['slug'], 'city' => $city?->slug])) }}"
+                                       @class(['btn-chip', '!bg-brand-700 !text-white !ring-brand-700' => $sub['id'] === $category->id])
+                                       @if ($sub['id'] === $category->id) aria-current="page" @endif>
+                                        {{ icon($sub['icon'], 'size-4') }} {{ translated($sub['name']) }} <span @class(['text-stone-500' => $sub['id'] !== $category->id])>{{ number_format($sub['ads_count']) }}</span>
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </nav>
+                @endif
+            @endif
+        @endif
 
         @include('partials.banner-ad', ['bannerAd' => \App\Models\Banner::pick('list', $category, $city?->id), 'class' => 'mt-3'])
 
@@ -168,12 +213,6 @@
                     <div class="mb-3 flex gap-2 overflow-x-auto pb-1">
                         @foreach ($categories as $main)
                             <a href="{{ lroute('browse.category', ['category' => $main['slug']]) }}" class="chip shrink-0 bg-white ring-stone-200">{{ icon($main['icon'], 'size-4') }} {{ translated($main['name']) }}</a>
-                        @endforeach
-                    </div>
-                @elseif ($category->parent_id === null)
-                    <div class="mb-3 flex gap-2 overflow-x-auto pb-1">
-                        @foreach ($category->children()->where('enabled', true)->orderBy('sort')->get() as $sub)
-                            <a href="{{ lroute('browse.category', array_filter(['category' => $sub->slug, 'city' => $city?->slug])) }}" class="chip shrink-0 bg-white ring-stone-200">{{ icon($sub->icon, 'size-4') }} {{ $sub->label }}</a>
                         @endforeach
                     </div>
                 @endif

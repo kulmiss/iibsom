@@ -1,4 +1,5 @@
 import { initLanguageSwitch } from './language-switch';
+import { initCategoryMenu } from './category-menu';
 import { initChat } from './chat';
 import { initCopyText } from './copy-text';
 import { initDiaspora } from './diaspora';
@@ -8,6 +9,7 @@ import { initPwa } from './pwa';
 import { initTour } from './tour';
 
 initLanguageSwitch();
+initCategoryMenu();
 initChat();
 initCopyText();
 initDiaspora();

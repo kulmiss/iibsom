@@ -89,6 +89,11 @@ return [
 
     'browse' => [
         'all_ads' => 'Dhammaan xayeysiisyada',
+        'results_for' => '{0} Wax natiijo ah looma helin :what gudaha :where|{1} 1 natiijo oo :what ah gudaha :where|[2,*] :count natiijo oo :what ah gudaha :where',
+        'somalia' => 'Soomaaliya',
+        'all_in' => 'Dhammaan :category',
+        'sub_categories' => 'Qaybaha hoose ee :category',
+        'more_in' => 'Wax kale oo :category ah',
         'results' => '{0} Xayeysiis lama helin|{1} 1 xayeysiis|[2,*] :count xayeysiis',
         'in_city' => 'gudaha :city',
         'search_for' => 'Natiijooyinka “:q”',

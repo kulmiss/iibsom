@@ -164,6 +164,11 @@ ads.photos.move_right,"Move right","U dhaqaaji midig","needs native review",reso
 ads.photos.cover,Cover,"Kan hore","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
 ads.photos.limit,"You can add up to :max photos.","Waxaad ku dari kartaa ilaa :max sawir.","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
 ads.browse.all_ads,"All ads","Dhammaan xayeysiisyada","needs native review","resources/views/browse/index.blade.php | resources/views/home.blade.php","browse-index.png | home.png"
+ads.browse.results_for,"{0} No results for :what in :where|{1} 1 result for :what in :where|[2,*] :count results for :what in :where","{0} Wax natiijo ah looma helin :what gudaha :where|{1} 1 natiijo oo :what ah gudaha :where|[2,*] :count natiijo oo :what ah gudaha :where","needs native review",resources/views/browse/index.blade.php,browse-index.png
+ads.browse.somalia,Somalia,Soomaaliya,"needs native review",resources/views/browse/index.blade.php,browse-index.png
+ads.browse.all_in,"All in :category","Dhammaan :category","needs native review","resources/views/browse/index.blade.php | resources/views/home.blade.php","browse-index.png | home.png"
+ads.browse.sub_categories,"Sub categories of :category","Qaybaha hoose ee :category","needs native review","resources/views/browse/index.blade.php | resources/views/home.blade.php","browse-index.png | home.png"
+ads.browse.more_in,"More in :category","Wax kale oo :category ah","needs native review",resources/views/browse/index.blade.php,browse-index.png
 ads.browse.results,"{0} No ads found|{1} 1 ad|[2,*] :count ads","{0} Xayeysiis lama helin|{1} 1 xayeysiis|[2,*] :count xayeysiis","needs native review",resources/views/browse/index.blade.php,browse-index.png
 ads.browse.in_city,"in :city","gudaha :city","needs native review",resources/views/browse/index.blade.php,browse-index.png
 ads.browse.search_for,"Results for “:q”","Natiijooyinka “:q”","needs native review",resources/views/browse/index.blade.php,browse-index.png
@@ -364,7 +369,7 @@ reports.reason.sold,"Already sold","Horay ayaa loo iibiyey","needs native review
 reports.reason.offensive,"Offensive or not allowed","Aflagaado ama aan la oggolayn","needs native review","app/Http/Controllers/Admin/ReportController.php | resources/views/ads/show.blade.php",ads-show.png
 reports.reason.other,"Something else","Wax kale","needs native review","app/Http/Controllers/Admin/ReportController.php | resources/views/ads/show.blade.php",ads-show.png
 site.meta_description,"Buy and sell cars, houses, land, phones, livestock, services and jobs in Somalia. Free and easy.","Ka iibso oo iibi baabuur, guryo, dhul, taleefanno, xoolo, adeegyo iyo shaqooyin Soomaaliya. Bilaash oo fudud.","needs native review",resources/views/layouts/app.blade.php,home.png
-site.nav.home,Home,"Bogga hore","needs native review","resources/views/ads/show.blade.php | resources/views/browse/index.blade.php | resources/views/partials/bottom-nav.blade.php | resources/views/partials/header.blade.php","ads-show.png | browse-index.png | home.png"
+site.nav.home,Home,"Bogga hore","needs native review","resources/views/ads/show.blade.php | resources/views/partials/bottom-nav.blade.php | resources/views/partials/header.blade.php","ads-show.png | home.png"
 site.nav.post_ad,"Post an ad","Dhig xayeysiis","needs native review",resources/views/home.blade.php,home.png
 site.nav.sell,Sell,iibi,"needs native review","resources/views/partials/bottom-nav.blade.php | resources/views/partials/header.blade.php",home.png
 site.nav.saved,"Saved ads","Xayeysiisyada la keydiyey","needs native review","resources/views/partials/bottom-nav.blade.php | resources/views/partials/header.blade.php",home.png

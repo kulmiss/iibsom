@@ -87,6 +87,11 @@ return [
 
     'browse' => [
         'all_ads' => 'All ads',
+        'results_for' => '{0} No results for :what in :where|{1} 1 result for :what in :where|[2,*] :count results for :what in :where',
+        'somalia' => 'Somalia',
+        'all_in' => 'All in :category',
+        'sub_categories' => 'Sub categories of :category',
+        'more_in' => 'More in :category',
         'results' => '{0} No ads found|{1} 1 ad|[2,*] :count ads',
         'in_city' => 'in :city',
         'search_for' => 'Results for “:q”',

@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-17 (PR 50)_
+_Last updated: 2026-11-17 (PR 51)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -96,7 +96,8 @@ See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example 
 47. **PR 47:** All docs updated (README, docs/features.md, deploy cron list, TESTING_GUIDE, ROADMAP). Owner's big job list of 2026-11-16 is done.
 48. **PR 48:** Round 2 starts (owner's list of 2026-11-17): Jiji study (docs/jiji-study.md) + globe language menu; fix: bottom bar language after instant switch. 
 49. **PR 49:** Report an ad without signing in (`GuestReports`, stateless, no IP; switch `ads.guest_reports` ON); admin queue: Guest label, contact, most-reported first. 
-50. **PR 50:** Fuller category tree (+ data migration for old sites, Part type field), admin drag-and-drop order, new demo ads/photos; fix: delete demo data with test payments. Next: home category panel + category page, filters, footer, Jiji-style extras.
+50. **PR 50:** Fuller category tree (+ data migration for old sites, Part type field), admin drag-and-drop order, new demo ads/photos; fix: delete demo data with test payments. 
+51. **PR 51:** Home category side panel (desktop) + sub category tiles/chips on category pages, results line, `catalog.hide_empty` (OFF). Next: filters sidebar, footer, Jiji-style extras.
 
 ## Known notes
 - The local PHP Docker image could not be built inside Claude's sandbox (the Alpine package site is blocked there). CI builds it on GitHub to prove it works.

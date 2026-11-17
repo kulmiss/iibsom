@@ -53,6 +53,20 @@ class Catalog
             ->all());
     }
 
+    /**
+     * Sub categories to show in lists (home panel, category page). With the switch
+     * "catalog.hide_empty" ON, those with no live ads are left out (posting still offers all).
+     *
+     * @param  MainCategoryRow  $main
+     * @return list<CategoryRow>
+     */
+    public function visibleChildren(array $main): array
+    {
+        $children = $main['children'];
+
+        return feature('catalog.hide_empty') ? array_values(array_filter($children, fn (array $c) => $c['ads_count'] > 0)) : $children;
+    }
+
     /** @return list<CityRow> */
     public function cities(): array
     {
