@@ -20,7 +20,7 @@ class FavouriteController extends Controller
     public function index(Request $request): View
     {
         $ads = $this->authUser($request)->favourites()
-            ->with(['category:id,name,slug,icon,parent_id', 'city:id,name,slug', 'cover'])
+            ->with(['category:id,name,slug,icon,parent_id', 'city:id,name,slug', 'cover'])->withPhotoCount()
             ->orderByPivot('created_at', 'desc')
             ->paginate(24);
 

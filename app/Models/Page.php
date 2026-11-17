@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
  */
 class Page extends Model
 {
-    public const CORE = ['about', 'terms', 'privacy', 'safety'];
+    public const CORE = ['about', 'terms', 'privacy', 'safety', 'cookies', 'copyright'];
 
     protected $fillable = ['slug', 'title', 'body', 'enabled'];
 

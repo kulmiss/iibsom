@@ -5,6 +5,7 @@ use App\Models\Ad;
 use App\Support\Ads\AdStats;
 use App\Support\Health\HealthChecker;
 use App\Support\Money\Boosts;
+use App\Support\Safety\GuestReports;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
 
@@ -68,6 +69,9 @@ Schedule::command('iibsom:saved-search-alerts')->name('saved-search-alerts')
 
 // Ad stats: delete daily counts older than 13 months.
 Schedule::call(fn () => AdStats::prune())->name('ad-stats-prune')->dailyAt('03:30')->timezone('Africa/Mogadishu');
+
+// Guest reports: the phone/email a guest left is removed 30 days after the report was handled.
+Schedule::call(fn () => GuestReports::pruneContacts())->name('guest-report-contacts')->dailyAt('03:40')->timezone('Africa/Mogadishu');
 
 // Paid boosts: a boost that ended goes back to a normal ad.
 Schedule::call(fn () => Boosts::endExpired())->name('end-boosts')->everyMinute()->withoutOverlapping();

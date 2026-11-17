@@ -21,7 +21,10 @@ def get(path, headers=None):
     return code, (time.perf_counter()-t)*1000
 pages=[('home','/'),('category (cars)','/cars'),('category (phones)','/mobile-phones'),('main category','/vehicles'),
        ('search "toyota"','/search?q=toyota'),('search cheapest','/search?q=iphone&sort=cheapest'),('price filter','/cars?min=5000&max=8000'),
-       ('brand page','/cars/mogadishu/toyota'),('ad page','AD'),('page 50 of a list','/mobile-phones?page=50'),
+       ('brand page','/cars/mogadishu/toyota'),
+       ('filters: 7 days+photos','/cars?posted=7d&photos=1'),('filters: popular','/vehicles?sort=popular'),
+       ('filters: many','/cars?min=1000&max=20000&condition=used&posted=30d&photos=1&sort=cheapest'),
+       ('filter count (JSON)','/browse-count?category=cars&min=1000&max=20000&posted=30d&photos=1'),('ad page','AD'),('page 50 of a list','/mobile-phones?page=50'),
        ('API list','/api/v1/ads'),('API search','/api/v1/ads?q=samsung&category=mobile-phones'),('API ad','APIAD'),('sitemap','/sitemap.xml')]
 def path_for(p):
     if p=='AD': return random.choice(ids)

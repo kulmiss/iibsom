@@ -11,6 +11,8 @@ use Illuminate\Support\Str;
 use Intervention\Image\Drivers\Gd\Driver as GdDriver;
 use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
 use Intervention\Image\ImageManager;
+use Intervention\Image\Interfaces\ImageInterface;
+use Intervention\Image\Typography\FontFactory;
 use Throwable;
 
 /**
@@ -46,6 +48,7 @@ class ProcessAdPhoto implements ShouldQueue
 
         $variants = [];
         $width = $height = null;
+        $mark = feature('photos.watermark'); // decided once, so all sizes of one photo match
 
         foreach (config('iibsom.photo_sizes') as $size => $max) {
             $image = $manager->read($source)->orient()->scaleDown($max, $max);
@@ -53,6 +56,9 @@ class ProcessAdPhoto implements ShouldQueue
             $height ??= $image->height();
             if ($size === 'large') {
                 [$width, $height] = [$image->width(), $image->height()];
+            }
+            if ($mark && $size !== 'thumb') {
+                self::watermark($image);
             }
 
             $path = "{$folder}/{$size}.webp";
@@ -76,6 +82,28 @@ class ProcessAdPhoto implements ShouldQueue
             'upload_path' => null,
             'status' => 'ready',
         ])->save();
+    }
+
+    /**
+     * A small, see-through "iibsom" in the bottom corner (switch "photos.watermark").
+     * Only the copies we show are marked; there is no other copy, because the uploaded file (with its
+     * hidden data like GPS) is deleted after processing.
+     */
+    public static function watermark(ImageInterface $image): void
+    {
+        $size = max(14, (int) round(min($image->width(), $image->height()) * 0.05));
+        $margin = (int) round($size * 0.6);
+        $draw = function (string $colour, int $offset) use ($image, $size, $margin) {
+            $image->text('iibsom', $image->width() - $margin + $offset, $image->height() - $margin + $offset, function (FontFactory $font) use ($size, $colour) {
+                $font->filename(resource_path('fonts/Inter-Bold.ttf'));
+                $font->size($size);
+                $font->color($colour);
+                $font->align('right');
+                $font->valign('bottom');
+            });
+        };
+        $draw('rgba(0, 0, 0, 0.35)', max(1, (int) round($size / 14))); // soft shadow: readable on light photos
+        $draw('rgba(255, 255, 255, 0.75)', 0);
     }
 
     public function failed(Throwable $e): void

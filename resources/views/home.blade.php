@@ -6,7 +6,7 @@
 @php($categories = $catalog->categories())
 @php($cities = $catalog->cities())
 @php($popular = $catalog->popularCategories(8))
-@php($latest = \App\Search\DatabaseAdSearch::publicQuery()->with(['category:id,slug,icon,parent_id', 'city:id,name,slug', 'cover'])->latest('published_at')->limit(12)->get())
+@php($latest = \App\Search\DatabaseAdSearch::publicQuery()->with(['category:id,slug,icon,parent_id', 'city:id,name,slug', 'cover'])->withPhotoCount()->latest('published_at')->limit(12)->get())
 @php($banners = feature('site.banners') ? \App\Models\Banner::forHome() : [])
 
 @section('content')
@@ -41,19 +41,48 @@
     </section>
 
     <div class="mx-auto mt-5 grid max-w-6xl gap-5 px-4 lg:grid-cols-[18rem_1fr]">
-        {{-- Category list (desktop) --}}
-        <aside class="hidden lg:block" aria-label="{{ __('site.home.categories') }}">
-            <ul class="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-stone-200">
+        {{-- Category list (desktop). Hover, keyboard focus or the arrow button opens a side panel with the sub categories.
+             Phones use the tiles below: a tap opens the category page, which starts with its sub categories. --}}
+        <aside class="relative hidden lg:block" aria-label="{{ __('site.home.categories') }}" data-cat-menu>
+            <ul class="rounded-xl bg-white shadow-sm ring-1 ring-stone-200">
                 @foreach ($categories as $category)
-                    <li class="border-b border-stone-100 last:border-0">
-                        <a href="{{ lroute('browse.category', ['category' => $category['slug']]) }}" class="flex items-center gap-3 px-3 py-2.5 hover:bg-brand-50">
-                            <span class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700">{{ icon($category['icon']) }}</span>
-                            <span class="min-w-0 flex-1">
-                                <span class="block font-medium leading-tight">{{ translated($category['name']) }}</span>
-                                <span class="block text-xs text-stone-500">{{ trans_choice('site.ads_count', $category['ads_count'], ['count' => number_format($category['ads_count'])]) }}</span>
-                            </span>
-                            {{ icon('chevron-right', 'size-4 text-stone-400') }}
-                        </a>
+                    @php($subs = $catalog->visibleChildren($category))
+                    <li class="group/cat border-b border-stone-100 last:border-0" data-cat-item>
+                        <div class="flex items-center hover:bg-brand-50">
+                            <a href="{{ lroute('browse.category', ['category' => $category['slug']]) }}" class="flex min-w-0 flex-1 items-center gap-3 py-2.5 ps-3">
+                                <span class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700">{{ icon($category['icon']) }}</span>
+                                <span class="min-w-0 flex-1">
+                                    <span class="block font-medium leading-tight">{{ translated($category['name']) }}</span>
+                                    <span class="block text-xs text-stone-500">{{ trans_choice('site.ads_count', $category['ads_count'], ['count' => number_format($category['ads_count'])]) }}</span>
+                                </span>
+                            </a>
+                            @if ($subs)
+                                <button type="button" class="flex size-10 items-center justify-center text-stone-400 hover:text-brand-700" aria-expanded="false" aria-controls="cat-panel-{{ $category['id'] }}" data-cat-toggle
+                                        aria-label="{{ __('ads.browse.sub_categories', ['category' => translated($category['name'])]) }}">{{ icon('chevron-right', 'size-4') }}</button>
+                            @endif
+                        </div>
+                        @if ($subs)
+                            <div id="cat-panel-{{ $category['id'] }}" data-cat-panel
+                                 class="invisible absolute start-full top-0 z-20 min-h-full w-[34rem] rounded-xl bg-white p-4 opacity-0 shadow-lg ring-1 ring-stone-200 transition group-hover/cat:visible group-hover/cat:opacity-100 data-[open]:visible data-[open]:opacity-100">
+                                <p class="flex items-center justify-between gap-3 font-semibold">
+                                    <span>{{ translated($category['name']) }}</span>
+                                    <a href="{{ lroute('browse.category', ['category' => $category['slug']]) }}" class="text-sm font-medium text-brand-700 hover:underline">{{ __('ads.browse.all_in', ['category' => translated($category['name'])]) }} ({{ number_format($category['ads_count']) }})</a>
+                                </p>
+                                <ul class="mt-3 grid grid-cols-2 gap-1">
+                                    @foreach ($subs as $sub)
+                                        <li>
+                                            <a href="{{ lroute('browse.category', ['category' => $sub['slug']]) }}" class="flex items-center gap-3 rounded-lg px-2 py-2 hover:bg-brand-50 focus-visible:bg-brand-50">
+                                                <span class="flex size-9 shrink-0 items-center justify-center rounded-lg bg-stone-50 text-brand-700">{{ icon($sub['icon'], 'size-5') }}</span>
+                                                <span class="min-w-0">
+                                                    <span class="block text-sm font-medium leading-tight">{{ translated($sub['name']) }}</span>
+                                                    <span class="block text-xs text-stone-500">{{ trans_choice('site.ads_count', $sub['ads_count'], ['count' => number_format($sub['ads_count'])]) }}</span>
+                                                </span>
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                     </li>
                 @endforeach
             </ul>
@@ -62,7 +91,7 @@
         <div class="min-w-0">
             {{-- Quick links --}}
             <div class="flex flex-wrap gap-2">
-                <a href="{{ lroute('post') }}" class="chip bg-accent-400/30 ring-accent-400">{{ icon('tag', 'size-4') }} {{ __('site.home.how_to_sell') }}</a>
+                <a href="{{ feature('help.how_to_sell') && feature('help.centre') ? lroute('help.show', ['article' => 'how-to-sell']) : lroute('post') }}" class="chip bg-accent-400/30 ring-accent-400">{{ icon('tag', 'size-4') }} {{ __('site.home.how_to_sell') }}</a>
                 @feature('site.safety_box')
                     <a href="{{ lroute('page', ['slug' => 'safety']) }}" class="chip bg-brand-50 ring-brand-200">{{ icon('shield-check', 'size-4') }} {{ __('site.home.safety_tips') }}</a>
                 @endfeature

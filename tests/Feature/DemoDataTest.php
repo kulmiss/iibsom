@@ -5,12 +5,16 @@ namespace Tests\Feature;
 use App\Enums\AdStatus;
 use App\Models\Ad;
 use App\Models\AdminActivity;
+use App\Models\Payment;
 use App\Models\Report;
 use App\Models\User;
 use App\Support\Demo\DemoData;
 use App\Support\Features\FeatureManager;
+use App\Support\Money\Boosts;
+use App\Support\Money\Ledger;
 use Database\Seeders\DemoSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use RuntimeException;
 use Tests\TestCase;
 
@@ -114,5 +118,32 @@ class DemoDataTest extends TestCase
         $this->assertSame(0, AdminActivity::where('is_demo', true)->count());
         $this->assertNotNull($real->fresh());
         $this->assertNotNull($realUser->fresh());
+    }
+
+    /** Bug found in PR 50: "Delete all demo data" crashed when a demo user had made a (test) boost payment. */
+    public function test_delete_all_works_when_demo_users_made_test_payments(): void
+    {
+        $this->seed();
+        $demoUser = User::factory()->completed()->create(['is_demo' => true]);
+        $realUser = User::factory()->completed()->create();
+        $staff = User::factory()->create(['role' => 'super_admin']);
+        $ad = Ad::factory()->live()->create(['user_id' => $demoUser->id, 'is_demo' => true]);
+        $realAd = Ad::factory()->live()->create(['user_id' => $realUser->id]);
+
+        $pay = function (User $user, Ad $ad, string $ref): Payment {
+            $p = new Payment(['ad_id' => $ad->id, 'purpose' => 'boost', 'package' => 'top', 'method' => 'evc_plus', 'amount_cents' => 300, 'currency' => 'USD', 'reference' => $ref, 'is_test' => true]);
+            $p->forceFill(['user_id' => $user->id, 'status' => 'pending'])->save();
+
+            return $p;
+        };
+        Boosts::approve($pay($demoUser, $ad, 'DEMO1'), $staff->id);
+        Boosts::approve($pay($realUser, $realAd, 'REAL1'), $staff->id);
+
+        DemoData::deleteAll();
+
+        $this->assertFalse(User::whereKey($demoUser->id)->exists());
+        $this->assertSame(['REAL1'], Payment::pluck('reference')->all(), 'Only the demo test payment goes.');
+        $this->assertSame([], Ledger::unbalanced(), 'The money books still balance.');
+        $this->assertSame(2, DB::table('ledger_entries')->count(), 'The real payment keeps its 2 ledger lines.');
     }
 }

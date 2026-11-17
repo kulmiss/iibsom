@@ -104,6 +104,18 @@ class Ad extends Model
     }
 
     /**
+     * Adds ready_photos_count (the photo count on ad cards, switch "ads.card_badges"). One small count per ad.
+     *
+     * @param  Builder<Ad>  $query
+     */
+    public function scopeWithPhotoCount(Builder $query): void
+    {
+        if (feature('ads.card_badges')) {
+            $query->withCount(['photos as ready_photos_count' => fn ($q) => $q->where('status', 'ready')]);
+        }
+    }
+
+    /**
      * First ready photo (for cards).
      *
      * @return HasOne<AdPhoto, $this>

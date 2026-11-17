@@ -20,6 +20,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BannerClickController;
 use App\Http\Controllers\BrowseController;
 use App\Http\Controllers\ForYouController;
+use App\Http\Controllers\GuestReportController;
 use App\Http\Controllers\HelpController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\SellerReviewsController;
@@ -142,11 +143,19 @@ $publicRoutes = function () use ($stateless) {
         });
     });
 
+    // Report an ad without signing in (no session, no cookie, no IP stored; see GuestReports).
+    Route::post('/ads/{ad}/report-guest', [GuestReportController::class, 'store'])->whereNumber('ad')
+        ->middleware(['feature:ads.reports', 'feature:ads.guest_reports', 'throttle:5,10'])
+        ->withoutMiddleware($stateless)->name('ad.report_guest');
+
     // Seller's number after a tap (JSON, rate-limited).
     Route::get('/ads/{ad}/contact', [AdPageController::class, 'contact'])->whereNumber('ad')->middleware('throttle:30,1')
         ->withoutMiddleware($stateless)->name('ad.contact');
 
     Route::get('/search', [BrowseController::class, 'search'])->name('search');
+    // "Show 120 results" on the phone filter sheet (JSON; no session or cookie for guests).
+    Route::get('/browse-count', [BrowseController::class, 'count'])->middleware(['feature:search.more_filters', 'throttle:120,1'])
+        ->withoutMiddleware($stateless)->name('browse.count');
 
     // "Recommended for you" cards (the browser sends its own history; nothing stored).
     Route::get('/for-you', [ForYouController::class, 'show'])->middleware(['feature:recommendations', 'throttle:60,1'])->name('for-you');

@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-17 (PR 47)_
+_Last updated: 2026-11-17 (PR 55)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -93,7 +93,15 @@ See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example 
 44. **PR 44:** Final bug hunt: dates in Somalia time everywhere (`mdate()`), 150-page crawl with every switch ON (clean), query budgets for Phase 2/3 pages.
 45. **PR 45:** Security audit (ASVS L2) + SECURITY_REPORT.md; fixed HEAD sessions, private-disk routes, 2 missing rate limits; `SecurityAuditTest`.
 46. **PR 46:** Load test 100k ads / 10k users (docs/load-test.md, `iibsom:load-data`, `tools/load-test`); 3 indexes, cached list totals, dashboard from counters, deferred counters for bulk actions. 
-47. **PR 47:** All docs updated (README, docs/features.md, deploy cron list, TESTING_GUIDE, ROADMAP). Owner's big job list of 2026-11-16 is done; the top PR points at main.
+47. **PR 47:** All docs updated (README, docs/features.md, deploy cron list, TESTING_GUIDE, ROADMAP). Owner's big job list of 2026-11-16 is done.
+48. **PR 48:** Round 2 starts (owner's list of 2026-11-17): Jiji study (docs/jiji-study.md) + globe language menu; fix: bottom bar language after instant switch. 
+49. **PR 49:** Report an ad without signing in (`GuestReports`, stateless, no IP; switch `ads.guest_reports` ON); admin queue: Guest label, contact, most-reported first. 
+50. **PR 50:** Fuller category tree (+ data migration for old sites, Part type field), admin drag-and-drop order, new demo ads/photos; fix: delete demo data with test payments. 
+51. **PR 51:** Home category side panel (desktop) + sub category tiles/chips on category pages, results line, `catalog.hide_empty` (OFF).
+52. **PR 52:** Filters: left column (computer) / full-screen sheet with "Show N results" (phone), area, posted within, photos, verified, most viewed, price ranges, chips, grid/list; switch `search.more_filters` (ON). Fix: language switch reacted to `#` jumps.
+53. **PR 53:** Big footer with the coast drawing, link columns, social pages and languages, set in Settings → General → Footer; new pages Cookie info + Copyright; switch `site.new_footer` (ON).
+54. **PR 54:** Seller badges (years on iibsom, Replies fast), photo count + Popular on cards, My ads + unread number in the header; switches `sellers.badges`, `ads.card_badges`, `site.header_icons` (all ON). Fix: old view totals kept.
+55. **PR 55:** How to sell article + buttons, safety tip at the phone number, quick chat questions (prefilled), photo mark; switches `help.how_to_sell`, `contact.safety_tip`, `chat.quick_replies` (ON), `photos.watermark` (OFF). Round 2 done; the top PR points at main.
 
 ## Known notes
 - The local PHP Docker image could not be built inside Claude's sandbox (the Alpine package site is blocked there). CI builds it on GitHub to prove it works.

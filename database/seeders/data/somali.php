@@ -8,6 +8,19 @@
 
 return [
     // Categories
+    // Round 2 (PR 52): car colours
+    'Colour' => 'Midabka', 'White' => 'Caddaan', 'Black' => 'Madow', 'Silver' => 'Silfar', 'Grey' => 'Cawl', 'Blue' => 'Buluug', 'Red' => 'Casaan', 'Green' => 'Cagaar', 'Brown' => 'Bunni',
+    // Round 2 (PR 50): fuller category tree
+    'Trucks' => 'Gaari xamuul', 'Buses & Minibuses' => 'Bas & Mini-bas', 'Seats' => 'Kuraasta',
+    'Vehicle Parts & Accessories' => 'Qalabka & Agabka gaadiidka', 'Part type' => 'Nooca qalabka', 'Boats' => 'Doonyo',
+    'Engine & Gearbox' => 'Matoor & Giirboks', 'Wheels & Tyres' => 'Shaagag & Taayiro', 'Car Care' => 'Daryeelka gaariga',
+    'Oils & Fluids' => 'Saliid & Dareere', 'Lights & Electrics' => 'Nalal & Koronto', 'Body Parts' => 'Qaybaha jirka gaariga',
+    'Batteries' => 'Baytariyo', 'Car Audio & Screens' => 'Codka & Shaashadda gaariga', 'Other Parts' => 'Qalab kale',
+    'Rooms for Rent' => 'Qolal kiro ah', 'Computer Accessories' => 'Agabka kombiyuutarka', 'Home Decor & Carpets' => 'Qurxinta guriga & Roogag',
+    'Traditional Wear' => 'Dharka dhaqanka', 'Cows' => "Lo'", 'Goats' => 'Riyo', 'Sheep' => 'Ido',
+    'Animal Feed & Supplies' => 'Calafka & Agabka xoolaha', 'Car Repair' => 'Dayactirka gaariga',
+    'Phone & Electronics Repair' => 'Dayactirka taleefanka & elektaroonigga', 'Beauty & Salon' => 'Qurxin & Saloon',
+    'Perfume, Oud & Incense' => 'Cadar, Cuud & Uunsi', 'Plumbing & Electrical' => 'Tuubbooyin & Koronto',
     'Vehicles' => 'Gaadiid', 'Cars' => 'Baabuur', 'Motorcycles & Bajaj' => 'Mooto & Bajaaj', 'Trucks & Buses' => 'Gaari xamuul & Bas',
     'Vehicle Parts' => 'Qalabka gaadiidka', 'Property' => 'Guryo & Dhul', 'Houses & Apartments for Rent' => 'Guryo & Abaartamenti kiro ah',
     'Houses & Apartments for Sale' => 'Guryo & Abaartamenti iib ah', 'Land & Plots' => 'Dhul & Boos', 'Shops & Offices' => 'Dukaamo & Xafiisyo',

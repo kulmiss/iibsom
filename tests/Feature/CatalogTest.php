@@ -82,7 +82,7 @@ class CatalogTest extends TestCase
     {
         $fields = Category::where('slug', 'cars')->first()->allFields()->pluck('key')->all();
 
-        $this->assertSame(['brand', 'model', 'year', 'mileage', 'fuel', 'transmission'], $fields);
+        $this->assertSame(['brand', 'model', 'year', 'mileage', 'fuel', 'transmission', 'colour'], $fields); // colour: PR 52
     }
 
     public function test_houses_land_and_phones_have_their_fields(): void

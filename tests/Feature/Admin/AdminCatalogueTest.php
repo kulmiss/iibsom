@@ -38,10 +38,10 @@ class AdminCatalogueTest extends AdminTestCase
         $this->asStaff();
         $vehicles = Category::where('slug', 'vehicles')->first();
 
-        $this->postJson('/admin/api/categories', ['name_en' => 'Boats', 'name_so' => 'Doonyo', 'parent_id' => $vehicles->id, 'icon' => 'truck', 'enabled' => true])
-            ->assertCreated()->assertJsonPath('slug', 'boats');
+        $this->postJson('/admin/api/categories', ['name_en' => 'Drones', 'name_so' => 'Diyaarado yaryar', 'parent_id' => $vehicles->id, 'icon' => 'truck', 'enabled' => true])
+            ->assertCreated()->assertJsonPath('slug', 'drones');
 
-        $this->assertContains('boats', collect(app(Catalog::class)->categories())->firstWhere('slug', 'vehicles')['children'] ? collect(collect(app(Catalog::class)->categories())->firstWhere('slug', 'vehicles')['children'])->pluck('slug') : []);
+        $this->assertContains('drones', collect(app(Catalog::class)->categories())->firstWhere('slug', 'vehicles')['children'] ? collect(collect(app(Catalog::class)->categories())->firstWhere('slug', 'vehicles')['children'])->pluck('slug') : []);
     }
 
     public function test_bad_icon_or_third_level_is_refused(): void
@@ -227,5 +227,27 @@ class AdminCatalogueTest extends AdminTestCase
         // Saving without the field keeps it; an empty value clears it.
         $this->putJson('/admin/api/settings/general', $base)->assertOk()->assertJsonPath('support_email', 'help@iibsom.test');
         $this->putJson('/admin/api/settings/general', $base + ['support_email' => ''])->assertOk()->assertJsonPath('support_email', '');
+    }
+
+    /** Drag-and-drop order: one list at a time (main categories, or the sub categories of one main). */
+    public function test_reorder_only_brothers_and_sisters_and_all_of_them(): void
+    {
+        $this->asStaff();
+        $vehicles = Category::where('slug', 'vehicles')->firstOrFail();
+        $subs = $vehicles->children()->orderBy('sort')->pluck('id')->all();
+        $reversed = array_reverse($subs);
+
+        $this->postJson('/admin/api/categories/reorder', ['ids' => $reversed])->assertOk();
+        $this->assertSame($reversed, $vehicles->children()->orderBy('sort')->pluck('id')->all());
+
+        // Mixing lists (a sub category of Vehicles with a main category) is refused, nothing changes.
+        $phones = Category::where('slug', 'phones-tablets')->value('id');
+        $this->postJson('/admin/api/categories/reorder', ['ids' => [$subs[0], $phones]])->assertUnprocessable();
+        // Leaving some out is refused too (it would leave two with the same place).
+        $this->postJson('/admin/api/categories/reorder', ['ids' => array_slice($subs, 0, 2)])->assertUnprocessable();
+        $this->postJson('/admin/api/categories/reorder', ['ids' => [$subs[0], $subs[0]]])->assertUnprocessable();
+        $this->assertSame($reversed, $vehicles->children()->orderBy('sort')->pluck('id')->all());
+
+        $this->get('/vehicles')->assertOk()->assertSeeInOrder(Category::whereIn('id', array_slice($reversed, 0, 2))->get()->sortBy(fn ($c) => array_search($c->id, $reversed))->map->label->all());
     }
 }

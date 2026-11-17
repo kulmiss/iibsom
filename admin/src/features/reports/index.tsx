@@ -23,6 +23,10 @@ type ReportRow = {
   ad_status: string | null
   seller: string | null
   reporter: string | null
+  is_guest: boolean
+  contact: string | null
+  times: number
+  ad_reports: number
   handled_by: string | null
   staff_note: string | null
   created_at: string
@@ -58,6 +62,7 @@ export function Reports() {
           <p className='text-xs text-muted-foreground'>
             #{row.original.ad_id} · seller {row.original.seller} · ad {row.original.ad_status}
           </p>
+          {row.original.ad_reports > 1 && <Badge variant='destructive' className='mt-1'>{row.original.ad_reports} reports on this ad</Badge>}
         </button>
       ),
     },
@@ -71,7 +76,7 @@ export function Reports() {
         </div>
       ),
     },
-    { accessorKey: 'reporter', header: 'Reported by' },
+    { accessorKey: 'reporter', header: 'Reported by', cell: ({ row }) => <Reporter r={row.original} /> },
     { accessorKey: 'status', header: 'Status', cell: ({ row }) => <Badge variant={row.original.status === 'waiting' ? 'default' : 'secondary'}>{STATUS[row.original.status]}</Badge> },
     { accessorKey: 'created_at', header: 'When', cell: ({ row }) => formatDistanceToNow(new Date(row.original.created_at), { addSuffix: true }) },
     {
@@ -93,7 +98,7 @@ export function Reports() {
   ]
 
   return (
-    <Page title='Reports' help='reports' description='Ads people reported. Waiting ones come first.'>
+    <Page title='Reports' help='reports' description='Ads people reported. Waiting ones come first, and ads with many reports go to the top.'>
       <ServerDataTable<ReportRow>
         url='/reports'
         queryKey='reports'
@@ -125,6 +130,8 @@ export function Reports() {
               {r.ad_title}
             </button>
             {r.details && <p className='text-muted-foreground'>{r.details}</p>}
+            <Reporter r={r} />
+            {r.ad_reports > 1 && <Badge variant='destructive'>{r.ad_reports} reports on this ad</Badge>}
             {can('reports.handle') && r.status === 'waiting' && (
               <div className='flex gap-2'>
                 <Button size='sm' variant='destructive' onClick={() => setActing({ report: r, action: 'remove_ad' })}>
@@ -152,5 +159,18 @@ export function Reports() {
         onConfirm={(note) => acting && handle.mutate({ id: acting.report.id, action: acting.action, note })}
       />
     </Page>
+  )
+}
+
+/** Who reported: a signed-in user's name, or "Guest" (+ how many times the same report came, and a contact if left). */
+function Reporter({ r }: { r: ReportRow }) {
+  return (
+    <div className='space-y-0.5 text-sm'>
+      <div className='flex flex-wrap items-center gap-1'>
+        {r.is_guest ? <Badge variant='outline'>Guest</Badge> : <span>{r.reporter}</span>}
+        {r.times > 1 && <span className='text-xs text-muted-foreground'>sent {r.times}×</span>}
+      </div>
+      {r.contact && <p className='break-all text-xs text-muted-foreground'>Contact: {r.contact}</p>}
+    </div>
   )
 }

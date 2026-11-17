@@ -36,6 +36,9 @@ return [
         'so' => ['name' => 'Somali', 'native' => 'Soomaali', 'dir' => 'ltr'],
     ],
 
+    // "Popular" label on ad cards (switches "ads.card_badges" + "ad_stats"): at least this many views.
+    'popular_views' => 100,
+
     // Default values for settings the Super Admin can change.
     'settings' => [
         'languages.enabled' => ['en'],
@@ -53,7 +56,10 @@ return [
         'payments.test_mode' => true, // TEST MODE: nobody should send real money; test payments stay out of the real books
         'payments.numbers' => ['evc_plus' => '', 'zaad' => '', 'sahal' => '', 'edahab' => ''], // merchant numbers buyers pay to
         'setup.completed_at' => '', // first-time setup wizard: '' = not done yet
-        'site.support_email' => '', // shown on the Help page ("Still need help?"); empty = hidden
+        'site.support_email' => '', // shown on the Help page ("Still need help?") and as "Contact us" in the footer; empty = hidden
+        // Footer (switch "site.new_footer"): social pages (empty = hidden) and which links are ON.
+        'footer.social' => ['facebook' => '', 'instagram' => '', 'tiktok' => '', 'youtube' => '', 'telegram' => '', 'whatsapp' => ''],
+        'footer.links' => ['about', 'terms', 'privacy', 'cookies', 'copyright', 'contact', 'safety', 'help', 'popular'],
         // Diaspora prices (switch "diaspora"): how much 1 US dollar is in each money. 0 = not shown.
         'diaspora.rates' => ['EUR' => 0, 'GBP' => 0, 'SEK' => 0, 'NOK' => 0, 'CAD' => 0, 'AUD' => 0, 'AED' => 0, 'KES' => 0],
         'diaspora.rates_date' => '', // the day the rates were last changed (shown as "rate of ...")

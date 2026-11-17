@@ -14,13 +14,13 @@ use Illuminate\Contracts\Cache\Repository as Cache;
  *
  * @phpstan-type CategoryRow array{id: int, slug: string, icon: string, name: array<string, string>, ads_count: int, popular: bool}
  * @phpstan-type MainCategoryRow array{id: int, slug: string, icon: string, name: array<string, string>, ads_count: int, popular: bool, children: list<CategoryRow>}
- * @phpstan-type CityRow array{id: int, slug: string, name: array<string, string>, popular: bool, ads_count: int}
+ * @phpstan-type CityRow array{id: int, slug: string, name: array<string, string>, popular: bool, ads_count: int, region_id: int, region: array<string, string>}
  */
 class Catalog
 {
     public const CATEGORIES_KEY = 'iibsom.catalog.categories.v1';
 
-    public const CITIES_KEY = 'iibsom.catalog.cities.v1';
+    public const CITIES_KEY = 'iibsom.catalog.cities.v2';
 
     public function __construct(private readonly Cache $cache) {}
 
@@ -53,6 +53,20 @@ class Catalog
             ->all());
     }
 
+    /**
+     * Sub categories to show in lists (home panel, category page). With the switch
+     * "catalog.hide_empty" ON, those with no live ads are left out (posting still offers all).
+     *
+     * @param  MainCategoryRow  $main
+     * @return list<CategoryRow>
+     */
+    public function visibleChildren(array $main): array
+    {
+        $children = $main['children'];
+
+        return feature('catalog.hide_empty') ? array_values(array_filter($children, fn (array $c) => $c['ads_count'] > 0)) : $children;
+    }
+
     /** @return list<CityRow> */
     public function cities(): array
     {
@@ -63,7 +77,9 @@ class Catalog
                 'name' => $c->name,
                 'popular' => $c->popular,
                 'ads_count' => $c->ads_count,
-            ], array_values(City::query()->enabled()->orderBy('sort')->get(['id', 'slug', 'name', 'popular', 'ads_count'])->all()));
+                'region_id' => $c->region_id,
+                'region' => $c->region->name,
+            ], array_values(City::query()->enabled()->with('region:id,name')->orderBy('sort')->get(['id', 'slug', 'name', 'popular', 'ads_count', 'region_id'])->all()));
         });
     }
 

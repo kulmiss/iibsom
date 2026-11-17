@@ -16,7 +16,7 @@ use Illuminate\Support\Str;
  * status     = missing | needs native review | reviewed
  * where      = the files that show this text
  * screenshot = the picture (in --screens) of the page that shows it, when there is one
- * Also lists the 4 pages, the help articles and the catalogue names.
+ * Also lists the core pages, the help articles and the catalogue names.
  */
 class ExportTranslations extends Command
 {
@@ -174,7 +174,7 @@ class ExportTranslations extends Command
     }
 
     /**
-     * Texts kept outside lang/: the 4 pages, the help articles and the
+     * Texts kept outside lang/: the core pages, the help articles and the
      * catalogue names (categories, fields, places). Only Somali has them for now.
      *
      * @return list<array{0: string, 1: string, 2: string, 3: string, 4: string}>

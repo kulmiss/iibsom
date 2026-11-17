@@ -7,6 +7,7 @@ use App\Models\Ad;
 use App\Models\Category;
 use App\Models\Report;
 use App\Models\User;
+use App\Support\Cache\PageCache;
 use App\Support\Features\FeatureManager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -44,7 +45,7 @@ class AdPageTest extends TestCase
             ->assertSee('Toyota Hilux 2016')->assertSee('$18,500')
             ->assertSee('Toyota')->assertSee('120,000 km')->assertSee('2016')
             ->assertSee('Cabdi Seller')->assertSee('Show phone number')
-            ->assertSee('Stay safe')->assertSee('Sign in to report')
+            ->assertSee('Stay safe')->assertSee('report-guest', false) // guests can report (PR 49)
             ->assertSee('&lt;b&gt;bold?&lt;/b&gt;', false);
     }
 
@@ -146,7 +147,11 @@ class AdPageTest extends TestCase
         app(FeatureManager::class)->set('share.buttons', false);
         app(FeatureManager::class)->set('site.safety_box', false);
 
-        $this->get($this->url())->assertDontSee('Copy link')->assertDontSee('Meet in a busy public place');
+        // The tip at the phone number has its own switch; without the safety box it has no "Safety tips" link.
+        $this->get($this->url())->assertDontSee('Copy link')->assertSee('data-safety-tip', false)->assertDontSee('class="font-medium underline">Safety tips</a>', false);
+        app(FeatureManager::class)->set('contact.safety_tip', false);
+        PageCache::bump();
+        $this->get($this->url())->assertDontSee('Meet in a busy public place');
     }
 
     public function test_sitemap_and_robots(): void

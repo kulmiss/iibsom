@@ -12,6 +12,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 /**
  * First-time setup wizard for the Super Admin (5 short steps). Everything is
@@ -40,6 +41,9 @@ class SetupController extends Controller
             'cities.required' => 'Choose at least one city.',
             'cities.min' => 'Choose at least one city.',
         ]);
+        if ($problems = GeneralSettings::socialProblems($data)) {
+            throw ValidationException::withMessages($problems);
+        }
         $userId = $this->authUser($request)->id;
 
         DB::transaction(function () use ($data, $general, $settings, $features, $userId) {

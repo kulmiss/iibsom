@@ -32,7 +32,7 @@ async function swapTo(url, code, push = true) {
     document.documentElement.lang = doc.documentElement.lang;
     document.documentElement.dir = doc.documentElement.dir;
 
-    for (const selector of ['header', '[data-page]', 'footer']) {
+    for (const selector of ['header', '[data-page]', '[data-site-footer]', '[data-bottom-nav]']) {
         const next = doc.querySelector(selector);
         const current = document.querySelector(selector);
         if (next && current) current.replaceWith(next);
@@ -56,11 +56,32 @@ export function initLanguageSwitch() {
         if (!link || event.metaKey || event.ctrlKey || event.shiftKey) return;
 
         event.preventDefault();
+        link.closest('details')?.removeAttribute('open');
         swapTo(link.href, link.dataset.langSwitch);
     });
 
-    window.addEventListener('popstate', () => {
-        swapTo(location.href, document.documentElement.lang, false);
+    // The globe menu: close it with Escape (focus back on the globe) or a tap outside.
+    document.addEventListener('keydown', (event) => {
+        const menu = document.querySelector('details[data-lang-menu][open]');
+        if (event.key !== 'Escape' || !menu) return;
+        menu.removeAttribute('open');
+        menu.querySelector('summary')?.focus();
+    });
+    document.addEventListener('click', (event) => {
+        const menu = document.querySelector('details[data-lang-menu][open]');
+        if (menu && !menu.contains(event.target)) menu.removeAttribute('open');
+    });
+
+    // Back/forward between languages. Only our own history entries carry a language: a jump to
+    // "#filters" or "#report" also fires popstate (with no state), and must NOT reload the page parts
+    // (that would drop the target, so the phone filter sheet would not open).
+    if (!history.state || !history.state.lang) {
+        history.replaceState({ ...(history.state || {}), lang: document.documentElement.lang }, '');
+    }
+    window.addEventListener('popstate', (event) => {
+        const lang = event.state?.lang;
+        if (!lang || lang === document.documentElement.lang) return;
+        swapTo(location.href, lang, false);
     });
 
     // Returning visitor: show their remembered language.

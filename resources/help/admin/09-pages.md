@@ -1,6 +1,6 @@
 # Pages
 
-The 4 pages in the footer: **About**, **Safety tips**, **Terms** and **Privacy**, in English and Somali.
+The 6 pages in the footer: **About**, **Safety tips**, **Terms**, **Privacy**, **Cookie info** and **Copyright and reporting a problem**, in English and Somali.
 
 Write in Markdown:
 

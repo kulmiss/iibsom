@@ -24,6 +24,9 @@ class SettingsController extends Controller
         if ($problem = GeneralSettings::paymentProblem($data)) {
             throw ValidationException::withMessages(['payments_test_mode' => $problem]);
         }
+        if ($problems = GeneralSettings::socialProblems($data)) {
+            throw ValidationException::withMessages($problems);
+        }
 
         $before = $general->values();
         $general->save($data, $this->authUser($request)->id);

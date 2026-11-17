@@ -29,7 +29,7 @@ class AdPageController extends Controller
         }
 
         $similar = feature('ads.similar') && $ad->isLive()
-            ? DatabaseAdSearch::publicQuery()->with(['category', 'city', 'cover'])->where('category_id', $ad->category_id)->whereKeyNot($ad->id)->latest('published_at')->limit(6)->get()
+            ? DatabaseAdSearch::publicQuery()->with(['category', 'city', 'cover'])->withPhotoCount()->where('category_id', $ad->category_id)->whereKeyNot($ad->id)->latest('published_at')->limit(6)->get()
             : collect();
 
         return view('ads.show', [

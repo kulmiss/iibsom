@@ -143,6 +143,20 @@
                             </p>
                             <p class="text-xs text-stone-500">{{ $ad->user->city?->label }} · {{ __('ads.page.member_since', ['date' => mdate($ad->user->created_at, 'M Y')]) }}</p>
                             <p class="text-xs text-stone-500">{{ trans_choice('ads.page.seller_ads', max(1, $sellerLiveAds), ['count' => $sellerLiveAds]) }}</p>
+                            @feature('sellers.badges')
+                                @php($tenure = \App\Support\Users\SellerBadges::tenure($ad->user))
+                                @php($fast = \App\Support\Users\SellerBadges::repliesFast($ad->user))
+                                @if ($tenure || $fast)
+                                    <ul class="mt-1.5 flex flex-wrap gap-1.5 text-xs font-medium" aria-label="{{ __('ads.page.seller') }}">
+                                        @if ($tenure)
+                                            <li class="flex items-center gap-1 rounded-full bg-brand-50 px-2 py-0.5 text-brand-800">{{ icon('clock', 'size-3.5') }} {{ trans_choice('ads.badges.'.$tenure['unit'], $tenure['count'], ['count' => $tenure['count']]) }}</li>
+                                        @endif
+                                        @if ($fast)
+                                            <li class="flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-emerald-800" title="{{ __('ads.badges.fast_hint') }}">{{ icon('zap', 'size-3.5') }} {{ __('ads.badges.fast') }}</li>
+                                        @endif
+                                    </ul>
+                                @endif
+                            @endfeature
                             @include('partials.seller-rating', ['seller' => $ad->user])
                             @if (feature('shops') && $ad->user->shop?->isActive())
                                 <a href="{{ $ad->user->shop->url() }}" class="mt-1 inline-flex items-center gap-1 text-sm font-semibold text-brand-700 hover:underline">{{ icon('store', 'size-4') }} {{ __('account.shop.visit') }}</a>
@@ -156,6 +170,12 @@
                                 {{ icon('user', 'size-5') }} <span class="ms-1">{{ __('ads.page.show_number') }}</span>
                             </button>
                             <p class="hidden text-center text-lg font-bold tracking-wide" data-number></p>
+                            @feature('contact.safety_tip')
+                                <p class="hidden rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-900 ring-1 ring-amber-200" data-safety-tip role="note">
+                                    {{ icon('shield-check', 'size-4 me-1 inline-block align-[-3px]') }}{{ __('ads.page.contact_tip') }}
+                                    @feature('site.safety_box') <a href="{{ lroute('page', ['slug' => 'safety']) }}" class="font-medium underline">{{ __('ads.page.contact_tip_more') }}</a>@endfeature
+                                </p>
+                            @endfeature
                             <div class="hidden grid-cols-2 gap-2" data-buttons>
                                 @feature('contact.whatsapp')
                                     <a href="#" data-whatsapp class="hidden items-center justify-center gap-2 rounded-lg bg-[#1f9d55] px-3 py-3 font-semibold text-white hover:bg-[#188046]" target="_blank" rel="noopener">{{ __('ads.page.whatsapp') }}</a>
@@ -171,6 +191,14 @@
                             @auth
                                 <form method="post" action="{{ lroute('chat.start', ['ad' => $ad->id]) }}" class="mt-2">
                                     @csrf
+                                    @feature('chat.quick_replies')
+                                        <p class="mb-1.5 text-xs font-medium text-stone-500">{{ __('chat.quick.title') }}</p>
+                                        <div class="mb-2 flex flex-wrap gap-1.5">
+                                            @foreach (\App\Http\Controllers\Account\ChatController::QUICK as $q)
+                                                <button type="submit" name="quick" value="{{ $q }}" class="rounded-full bg-brand-50 px-3 py-1.5 text-sm font-medium text-brand-800 ring-1 ring-brand-200 hover:bg-brand-200">{{ __('chat.quick.'.$q) }}</button>
+                                            @endforeach
+                                        </div>
+                                    @endfeature
                                     <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-lg px-3 py-3 font-semibold text-brand-800 ring-1 ring-brand-200 hover:bg-brand-50">{{ icon('message-circle', 'size-5') }} {{ __('chat.start') }}</button>
                                 </form>
                             @else
@@ -226,6 +254,46 @@
                                     <button class="rounded-lg bg-red-700 px-4 py-2 text-sm font-semibold text-white">{{ __('ads.page.report_send') }}</button>
                                 </form>
                             </details>
+                        @elseif (feature('ads.guest_reports'))
+                            {{-- Not signed in: report without an account (no cookie; the answer comes back in the address). --}}
+                            @php($guestState = in_array(request()->query('report'), ['thanks', 'error', 'check'], true) ? request()->query('report') : null)
+                            @if ($guestState === 'thanks')
+                                <p class="text-sm text-green-800" role="status">{{ __('ads.page.report_thanks') }}</p>
+                            @else
+                                @php($reportToken = \App\Support\Safety\GuestReports::token())
+                                <details @if ($guestState) open @endif>
+                                    <summary class="cursor-pointer text-sm font-medium text-red-700">{{ __('ads.page.report') }}</summary>
+                                    @if ($guestState === 'error')
+                                        <p class="form-error mt-2" role="alert">{{ __('ads.page.report_guest_error') }}</p>
+                                    @endif
+                                    <form method="post" action="{{ lroute('ad.report_guest', ['ad' => $ad->id]) }}" class="mt-3 space-y-3">
+                                        <fieldset>
+                                            <legend class="form-label">{{ __('ads.page.report_reason') }}</legend>
+                                            @foreach (\App\Models\Report::REASONS as $reason)
+                                                <label class="flex items-center gap-2 py-0.5 text-sm"><input type="radio" name="reason" value="{{ $reason }}" required class="size-4"> {{ __('reports.reason.'.$reason) }}</label>
+                                            @endforeach
+                                        </fieldset>
+                                        <textarea name="details" rows="2" maxlength="500" class="form-input" aria-label="{{ __('ads.page.report_details') }}" placeholder="{{ __('ads.page.report_details') }}"></textarea>
+                                        <div>
+                                            <label for="report-contact" class="form-label">{{ __('ads.page.report_contact') }}</label>
+                                            <input id="report-contact" name="contact" type="text" maxlength="120" autocomplete="tel" class="form-input" aria-describedby="report-contact-help">
+                                            <p id="report-contact-help" class="form-help">{{ __('ads.page.report_contact_help') }}</p>
+                                        </div>
+                                        @if ($guestState === 'check' || \App\Support\Safety\GuestReports::underAttack())
+                                            @php([$sumA, $sumB] = \App\Support\Safety\GuestReports::sum($reportToken))
+                                            <div>
+                                                <label for="report-sum" class="form-label">{{ __('ads.page.report_sum', ['a' => $sumA, 'b' => $sumB]) }}</label>
+                                                <input id="report-sum" name="sum" type="text" inputmode="numeric" maxlength="2" required class="form-input w-20">
+                                            </div>
+                                        @endif
+                                        <input type="hidden" name="t" value="{{ $reportToken }}">
+                                        {{-- Honeypot: hidden from people, bots fill it --}}
+                                        <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true">
+                                        <button class="rounded-lg bg-red-700 px-4 py-2 text-sm font-semibold text-white">{{ __('ads.page.report_send') }}</button>
+                                        <p class="text-xs text-stone-500">{{ __('ads.page.report_guest_privacy') }}</p>
+                                    </form>
+                                </details>
+                            @endif
                         @elseif (feature('login.google'))
                             <a href="{{ lroute('login') }}" class="text-sm font-medium text-red-700 underline">{{ __('ads.page.report_sign_in') }}</a>
                         @endif

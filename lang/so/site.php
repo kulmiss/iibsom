@@ -60,6 +60,16 @@ return [
         'help' => 'Caawimaad',
         'safety' => 'Talooyin ammaan',
         'rights' => 'Xuquuqda oo dhan way dhowran tahay.',
+        'col_about' => 'Nagu saabsan',
+        'col_support' => 'Caawimaad',
+        'col_popular' => 'Kuwa la jecel yahay',
+        'col_follow' => 'Na raac',
+        'cookies' => 'Macluumaadka kukiyada',
+        'copyright' => 'Xuquuqda & dhibaatooyinka',
+        'contact' => 'Nala soo xiriir',
+        'faq' => "Xarunta caawimaadda & su'aalaha",
+        'language' => 'Luqadda',
+        'tagline' => 'Ka iibso kana iibi Soomaaliya.',
     ],
 
     'errors' => [

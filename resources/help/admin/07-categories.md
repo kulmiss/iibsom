@@ -3,6 +3,8 @@
 Add, rename, sort and switch categories ON or OFF. No code needed.
 
 - Each main category has sub categories. Ads are posted in sub categories.
+- **Order:** drag the dots (computer) or tap the arrows (phone) to move a category up or down. It changes the order on the website at once.
+- **Part type, Brand…:** for a third level (for example Vehicle Parts → Engine, Wheels & Tyres), use a list field instead of more sub categories: buyers filter by it.
 - **Somali name:** shown when the site is in Somali.
 - **Popular:** shown in the "Popular categories" box on the home page.
 - **Fields:** extra questions sellers answer (for example Brand, Year, Kilometres). Buyers can filter by them. Removing a field keeps the answers on old ads.

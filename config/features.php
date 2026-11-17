@@ -26,6 +26,7 @@ return [
     'ads.trusted_sellers' => ['group' => 'Ads', 'default' => false, 'label' => 'Trusted sellers skip approval', 'description' => 'Sellers with enough approved ads post instantly.'],
     'ads.expiry' => ['group' => 'Ads', 'default' => true, 'label' => 'Ads expire', 'description' => 'Ads end after the number of days in Settings and can be renewed.'],
     'ads.reports' => ['group' => 'Ads', 'default' => true, 'label' => 'Report an ad', 'description' => 'Signed-in users can report bad ads.'],
+    'ads.guest_reports' => ['group' => 'Ads', 'default' => true, 'label' => 'Report an ad without signing in', 'description' => 'Visitors who are not signed in can report an ad too (reason, short note, phone or email if they want an answer). Bots are stopped without keeping anyone\'s IP; the same report again counts +1; at most 20 guest reports per ad per day. Needs "Report an ad" ON.'],
     'ads.similar' => ['group' => 'Ads', 'default' => true, 'label' => 'Similar ads', 'description' => 'Show similar ads on the ad page.'],
 
     'ads.edit_changes' => ['group' => 'Ads', 'default' => true, 'label' => 'Show what sellers changed', 'description' => 'An ad edited after approval shows "Edited" in the queue, with the old and new text side by side.'],
@@ -44,6 +45,14 @@ return [
     // Site content
     'site.safety_box' => ['group' => 'Site', 'default' => true, 'label' => 'Safety tips box', 'description' => 'Safety tips on every ad page.'],
     'site.banners' => ['group' => 'Site', 'default' => true, 'label' => 'Home banners', 'description' => 'Banners on the home page.'],
+    'site.new_footer' => ['group' => 'Site', 'default' => true, 'label' => 'Big footer', 'description' => 'The footer with the coast picture, link columns (About, Support, Popular), social pages and languages. Links and social pages are set in Settings → General → Footer. OFF: a short row of links.'],
+    'sellers.badges' => ['group' => 'Site', 'default' => true, 'label' => 'Seller badges', 'description' => 'Next to the seller on ad pages: "2 years on iibsom" and, while chat is ON, "Replies fast" (answers buyers within an hour). Worked out from dates only.'],
+    'ads.card_badges' => ['group' => 'Site', 'default' => true, 'label' => 'Photo count and "Popular" on ads', 'description' => 'Ad cards show how many photos an ad has, and "Popular" for ads with many views (needs "Ad statistics").'],
+    'site.header_icons' => ['group' => 'Site', 'default' => true, 'label' => 'Header icons for signed-in people', 'description' => 'On computers: a "My ads" button, and the number of unread messages on the messages icon (phones: on the bottom bar).'],
+    'help.how_to_sell' => ['group' => 'Site', 'default' => true, 'label' => 'How to sell', 'description' => 'A short "How to sell fast" help article (English and Somali), opened from the "How to sell" button on the home page and a link on the posting page. Needs "Help page".'],
+    'contact.safety_tip' => ['group' => 'Safety', 'default' => true, 'label' => 'Safety tip at the phone number', 'description' => 'When a buyer taps "Show number", a short tip appears: meet in a public place, never pay before you see the item.'],
+    'chat.quick_replies' => ['group' => 'Site', 'default' => true, 'label' => 'Quick chat questions', 'description' => 'Buttons like "Is it still available?" that start a chat with one tap (needs "Chat").'],
+    'photos.watermark' => ['group' => 'Site', 'default' => false, 'label' => 'Mark on photos', 'description' => 'New ad photos get a small "iibsom" in the corner of the big and middle sizes (makes copying to other sites less useful). Only photos processed while ON; the small list pictures stay clean.'],
     'site.language_switch' => ['group' => 'Site', 'default' => true, 'label' => 'Language switcher', 'description' => 'Visitors can change the language. Hidden while only one language is ON.'],
     'pwa' => ['group' => 'Site', 'default' => true, 'label' => 'Installable website (app icon)', 'description' => 'People can add iibsom to their home screen like an app; repeat visits load faster and a friendly page shows when offline. OFF removes it from phones on their next visit.'],
     'seo.landing_pages' => ['group' => 'Site', 'default' => true, 'label' => 'Brand pages and links for Google', 'description' => 'Pages like "Toyota Cars in Mogadishu", plus links to popular brands and other cities on category pages.'],
@@ -53,6 +62,8 @@ return [
     'admin.setup_wizard' => ['group' => 'Site', 'default' => true, 'label' => 'First-time setup wizard', 'description' => '5 short steps for the Super Admin at the first sign-in: languages, ad rules, cities, emails, demo data. Can be run again from Settings → General.'],
     'help.admin_guide' => ['group' => 'Site', 'default' => true, 'label' => 'Admin guide', 'description' => 'The "?" button next to each admin page title, the Guide page and its PDF. OFF hides them (for staff who know the admin well).'],
     'site.welcome_tour' => ['group' => 'Site', 'default' => true, 'label' => 'Welcome tour', 'description' => '3 short slides (find, sell, stay safe) shown once after a customer\'s first sign-in, and from Account → Quick tour.'],
+    'search.more_filters' => ['group' => 'Site', 'default' => true, 'label' => 'More search filters', 'description' => 'On category and search pages: area, "posted within", only with photos, verified sellers, most viewed, quick price ranges with counts and the live "Show N results" number. OFF keeps only search, price, condition and the category fields.'],
+    'catalog.hide_empty' => ['group' => 'Site', 'default' => false, 'label' => 'Hide empty sub categories', 'description' => 'Sub categories with no live ads are not shown on the home page panel and the category pages (sellers can still post in them). Turn ON once the site has many ads.'],
     'site.demo_data' => ['group' => 'Site', 'default' => false, 'label' => 'Show demo data', 'description' => 'Show the demo ads. Never ON in production.'],
 
     // Speed and API

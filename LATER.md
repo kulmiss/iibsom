@@ -16,6 +16,7 @@ Tick `[x]` with the date when done.
 - [ ] Add Somali bad words to admin → Settings → General → Bad words
 - [ ] Set **Help email for customers** (admin → Settings → General). Help articles tell people to write to it (e.g. to delete their account).
 - [ ] About page says "use the contact details below" but has none: add them (admin → Pages → About)
+- [ ] Read the new **Cookie info** and **Copyright** pages (admin → Pages) and paste iibsom's social page links (admin → Settings → General → Footer)
 - [ ] Delete all demo data before launch (admin → Settings → Delete all demo data)
 
 - [ ] Admin → Settings → General → **Weekly summary email to**: add your email, press "Send me a test now" (needs working MAIL_ settings in `.env`)
@@ -25,6 +26,7 @@ Tick `[x]` with the date when done.
 - [ ] Add iibsom.com to Google Search Console and submit https://iibsom.com/sitemap.xml
 
 ## Can wait
+- [ ] Decide (money/legal, from the Jiji study): SMS phone-number check (needs an SMS provider), delivery partners, job applications with CVs (personal data)
 - [ ] Choose which Phase 2/3 switches to turn on (recommended first: Favourites, Saved search alerts, Ad stats; see docs/features.md)
 - [ ] SMS provider for phone login (S1), only if phone login is wanted
 - [ ] Choose staff accounts (Moderator / Support) and give them 2FA apps

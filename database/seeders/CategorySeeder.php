@@ -32,6 +32,30 @@ class CategorySeeder extends Seeder
         }
     }
 
+    /**
+     * For sites that already exist (data migrations): add only the categories and fields that are missing.
+     * Never changes what is there, so the admin's names, order, icons, parents and switches stay.
+     * New categories go to the end of their level.
+     */
+    public function addMissing(): void
+    {
+        foreach ($this->tree() as $main) {
+            $parent = Category::where('slug', $main['slug'] ?? Str::slug($main['name']))->first()
+                ?? $this->upsert(null, $main, (int) Category::whereNull('parent_id')->max('sort') + 1);
+
+            foreach ($main['children'] as $child) {
+                $category = Category::where('slug', $child['slug'] ?? Str::slug($child['name']))->first()
+                    ?? $this->upsert($parent, $child, (int) Category::where('parent_id', $parent->id)->max('sort') + 1);
+
+                foreach ($child['fields'] ?? [] as $field) {
+                    if (! CategoryField::where('category_id', $category->id)->where('key', $field['key'])->exists()) {
+                        $this->field($category, $field, (int) CategoryField::where('category_id', $category->id)->max('sort') + 1);
+                    }
+                }
+            }
+        }
+    }
+
     /** @param  array<string, mixed>  $data */
     private function upsert(?Category $parent, array $data, int $sort): Category
     {
@@ -95,6 +119,7 @@ class CategorySeeder extends Seeder
         ];
         $plotSize = [['key' => 'size', 'type' => 'number', 'label' => 'Size', 'unit' => 'm²', 'required' => true]];
         $quantity = [['key' => 'quantity', 'type' => 'number', 'label' => 'How many']];
+        $partTypes = ['Engine & Gearbox', 'Wheels & Tyres', 'Car Care', 'Oils & Fluids', 'Lights & Electrics', 'Body Parts', 'Batteries', 'Car Audio & Screens', 'Other Parts'];
         $jobType = [['key' => 'job_type', 'type' => 'select', 'label' => 'Job type', 'options' => ['Full-time', 'Part-time', 'Contract', 'Temporary']]];
 
         return [
@@ -103,16 +128,27 @@ class CategorySeeder extends Seeder
                     ['key' => 'brand', 'type' => 'select', 'label' => 'Brand', 'options' => $carBrands, 'required' => true],
                     ['key' => 'model', 'type' => 'text', 'label' => 'Model', 'filterable' => false],
                     $year, $km, $fuel, $gear,
+                    ['key' => 'colour', 'type' => 'select', 'label' => 'Colour', 'options' => ['White', 'Black', 'Silver', 'Grey', 'Blue', 'Red', 'Green', 'Brown', 'Other']],
                 ]],
                 ['name' => 'Motorcycles & Bajaj', 'slug' => 'motorcycles', 'icon' => 'motorbike', 'fields' => [$year]],
-                ['name' => 'Trucks & Buses', 'icon' => 'truck', 'fields' => [$year, $km, $fuel]],
-                ['name' => 'Vehicle Parts', 'icon' => 'cog'],
+                // Slug kept from "Trucks & Buses" so old links keep working; buses have their own sub category now.
+                ['name' => 'Trucks', 'slug' => 'trucks-buses', 'icon' => 'truck', 'fields' => [$year, $km, $fuel]],
+                ['name' => 'Buses & Minibuses', 'slug' => 'buses', 'icon' => 'bus', 'fields' => [$year, $km, $fuel,
+                    ['key' => 'seats', 'type' => 'number', 'label' => 'Seats']]],
+                // A third level (Engine, Tyres…) is a "Part type" list: one filter instead of 8 tiny sub categories.
+                ['name' => 'Vehicle Parts & Accessories', 'slug' => 'vehicle-parts', 'icon' => 'cog', 'fields' => [
+                    ['key' => 'part_type', 'type' => 'select', 'label' => 'Part type', 'required' => true, 'options' => $partTypes],
+                ]],
+                ['name' => 'Boats', 'icon' => 'sailboat'],
             ]],
             ['name' => 'Property', 'icon' => 'house', 'condition' => false, 'children' => [
                 ['name' => 'Houses & Apartments for Rent', 'slug' => 'houses-for-rent', 'icon' => 'key', 'popular' => true, 'fields' => $home],
                 ['name' => 'Houses & Apartments for Sale', 'slug' => 'houses-for-sale', 'icon' => 'house', 'popular' => true, 'fields' => $home],
                 ['name' => 'Land & Plots', 'slug' => 'land', 'icon' => 'land-plot', 'popular' => true, 'fields' => $plotSize],
                 ['name' => 'Shops & Offices', 'slug' => 'commercial-property', 'icon' => 'building', 'fields' => $plotSize],
+                ['name' => 'Rooms for Rent', 'slug' => 'rooms', 'icon' => 'bed-single', 'fields' => [
+                    ['key' => 'furnished', 'type' => 'boolean', 'label' => 'Furnished'],
+                ]],
             ]],
             ['name' => 'Phones & Tablets', 'slug' => 'phones-tablets', 'icon' => 'smartphone', 'children' => [
                 ['name' => 'Mobile Phones', 'icon' => 'smartphone', 'popular' => true, 'fields' => [
@@ -128,7 +164,9 @@ class CategorySeeder extends Seeder
                     ['key' => 'ram', 'type' => 'select', 'label' => 'RAM', 'options' => ['4 GB', '8 GB', '16 GB', '32 GB+']],
                     $storage,
                 ]],
+                ['name' => 'Computer Accessories', 'icon' => 'mouse'],
                 ['name' => 'TV & Audio', 'icon' => 'tv'],
+                ['name' => 'Solar & Generators', 'slug' => 'solar-generators', 'icon' => 'sun'],
                 ['name' => 'Cameras', 'icon' => 'camera'],
                 ['name' => 'Other Electronics', 'icon' => 'headphones'],
             ]],
@@ -136,19 +174,24 @@ class CategorySeeder extends Seeder
                 ['name' => 'Furniture', 'icon' => 'sofa', 'popular' => true],
                 ['name' => 'Home Appliances', 'icon' => 'refrigerator'],
                 ['name' => 'Kitchen', 'icon' => 'utensils'],
+                ['name' => 'Home Decor & Carpets', 'slug' => 'home-decor', 'icon' => 'lamp'],
             ]],
             ['name' => 'Fashion', 'icon' => 'shirt', 'children' => [
                 ['name' => "Men's Clothing", 'slug' => 'mens-clothing', 'icon' => 'shirt'],
                 ['name' => "Women's Clothing", 'slug' => 'womens-clothing', 'icon' => 'shopping-bag'],
+                ['name' => 'Traditional Wear', 'slug' => 'traditional-wear', 'icon' => 'gem'],
                 ['name' => 'Shoes', 'icon' => 'footprints'],
                 ['name' => 'Bags', 'icon' => 'shopping-bag'],
                 ['name' => 'Watches & Jewellery', 'slug' => 'watches-jewellery', 'icon' => 'watch'],
             ]],
             ['name' => 'Livestock & Animals', 'slug' => 'livestock', 'icon' => 'paw-print', 'condition' => false, 'children' => [
                 ['name' => 'Camels', 'icon' => 'paw-print', 'popular' => true, 'fields' => $quantity],
-                ['name' => 'Cattle', 'icon' => 'paw-print', 'fields' => $quantity],
-                ['name' => 'Goats & Sheep', 'icon' => 'paw-print', 'popular' => true, 'fields' => $quantity],
+                ['name' => 'Cows', 'slug' => 'cattle', 'icon' => 'paw-print', 'fields' => $quantity],
+                // Slug kept from "Goats & Sheep" so old links keep working; sheep have their own sub category now.
+                ['name' => 'Goats', 'slug' => 'goats-sheep', 'icon' => 'paw-print', 'popular' => true, 'fields' => $quantity],
+                ['name' => 'Sheep', 'icon' => 'paw-print', 'fields' => $quantity],
                 ['name' => 'Poultry', 'icon' => 'bird', 'fields' => $quantity],
+                ['name' => 'Animal Feed & Supplies', 'slug' => 'animal-feed', 'icon' => 'wheat'],
                 ['name' => 'Pets', 'icon' => 'paw-print'],
             ]],
             ['name' => 'Agriculture & Food', 'slug' => 'agriculture', 'icon' => 'sprout', 'children' => [
@@ -158,6 +201,9 @@ class CategorySeeder extends Seeder
             ]],
             ['name' => 'Services', 'icon' => 'wrench', 'condition' => false, 'children' => [
                 ['name' => 'Building & Repair', 'icon' => 'hammer'],
+                ['name' => 'Car Repair', 'icon' => 'car'],
+                ['name' => 'Phone & Electronics Repair', 'slug' => 'electronics-repair', 'icon' => 'smartphone'],
+                ['name' => 'Beauty & Salon', 'slug' => 'salon', 'icon' => 'scissors'],
                 ['name' => 'Cleaning', 'icon' => 'hand-helping'],
                 ['name' => 'Transport & Moving', 'icon' => 'truck'],
                 ['name' => 'Computer & IT', 'icon' => 'laptop'],
@@ -172,6 +218,7 @@ class CategorySeeder extends Seeder
             ['name' => 'Health & Beauty', 'icon' => 'heart-pulse', 'children' => [
                 ['name' => 'Beauty & Cosmetics', 'slug' => 'beauty', 'icon' => 'heart-pulse'],
                 ['name' => 'Health & Medical', 'slug' => 'health', 'icon' => 'heart-pulse'],
+                ['name' => 'Perfume, Oud & Incense', 'slug' => 'perfume', 'icon' => 'spray-can'],
             ]],
             ['name' => 'Babies & Kids', 'icon' => 'baby', 'children' => [
                 ['name' => "Kids' Clothing", 'slug' => 'kids-clothing', 'icon' => 'baby'],
@@ -186,7 +233,7 @@ class CategorySeeder extends Seeder
             ['name' => 'Construction & Tools', 'slug' => 'construction', 'icon' => 'hammer', 'children' => [
                 ['name' => 'Building Materials', 'icon' => 'hard-hat'],
                 ['name' => 'Tools', 'icon' => 'wrench'],
-                ['name' => 'Solar & Generators', 'slug' => 'solar-generators', 'icon' => 'package'],
+                ['name' => 'Plumbing & Electrical', 'slug' => 'plumbing-electrical', 'icon' => 'plug-zap'],
             ]],
             ['name' => 'Everything Else', 'slug' => 'other', 'icon' => 'package', 'children' => [
                 ['name' => 'Other Items', 'icon' => 'package'],

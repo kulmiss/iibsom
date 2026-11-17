@@ -17,7 +17,9 @@ return [
         ['Toyota Surf 2005, diesel', 9500, 13000, 'toyota 4runner'], ['Toyota Premio 2011', 7000, 9000, 'toyota premio'], ['Nissan Note 2012', 4000, 5500, 'nissan note'],
     ],
     'motorcycles' => [['Bajaj RE three-wheeler 2020', 2200, 3200, 'auto rickshaw'], ['Bajaj Boxer 150', 800, 1200], ['TVS King tuk-tuk, good engine', 1800, 2800, 'tuk tuk'], ['Yamaha motorcycle 125cc', 900, 1500, 'yamaha motorcycle'], ['Honda CG 125', 750, 1100, 'honda cg125'], ['Bajaj Pulsar 180', 1200, 1700, 'bajaj pulsar']],
-    'trucks-buses' => [['Isuzu NPR truck 2009', 14000, 19000, 'isuzu truck'], ['Toyota Coaster bus 30 seats', 16000, 24000, 'toyota coaster bus'], ['Mitsubishi Canter tipper', 12000, 17000, 'mitsubishi canter'], ['Isuzu water tanker', 18000, 25000, 'water tanker truck']],
+    'trucks-buses' => [['Isuzu NPR truck 2009', 14000, 19000, 'isuzu truck'], ['Mitsubishi Canter tipper', 12000, 17000, 'mitsubishi canter'], ['Isuzu water tanker', 18000, 25000, 'water tanker truck']],
+    'buses' => [['Toyota Coaster bus 30 seats', 16000, 24000, 'toyota coaster bus'], ['Toyota Hiace minibus 2012', 9000, 13000, 'toyota hiace van'], ['Nissan Civilian bus for schools', 14000, 20000, 'school bus']],
+    'boats' => [['Fishing boat with engine, 8 m', 3500, 7000, 'fishing boat'], ['Outboard engine 40 HP', 1800, 3000]],
     'vehicle-parts' => [['Toyota tyres 195/65 R15, set of 4', 180, 320, 'car tyres'], ['Car battery 70Ah, new', 70, 120], ['Land Cruiser headlights', 90, 180], ['Engine oil 5L, original', 25, 45], ['Alloy wheels 17 inch', 250, 450, 'alloy wheel']],
 
     'houses-for-rent' => [['2 bedroom apartment in Hodan', 250, 450, 'apartment building africa'], ['3 bedroom house with garden, Wadajir', 400, 700, 'house with garden'], ['Furnished flat near KM4', 500, 900, 'furnished apartment living room'], ['1 bedroom studio, Hamar Weyne', 150, 250, 'bedroom apartment interior'], ['Big villa for rent, Daynile road', 900, 1600, 'villa house'], ['4 bedroom house, Howlwadaag', 600, 1000, 'house exterior']],
@@ -45,7 +47,9 @@ return [
 
     'camels' => [['Young camels for sale', 700, 1200, 'camels'], ['Milking camel with calf', 1200, 1800, 'camel calf'], ['Camels for Eid, healthy', 800, 1400, 'camels'], ['Strong male camel', 1000, 1600, 'camel']],
     'cattle' => [['Dairy cows, good milk', 500, 900, 'dairy cows'], ['Bulls for meat', 450, 800], ['Young calves', 150, 300, 'calves']],
-    'goats-sheep' => [['Somali goats, healthy', 60, 120, 'goats'], ['Black head sheep for Eid', 80, 150, 'sheep farm'], ['Goats, 20 heads', 1200, 2200], ['Fat sheep for weddings', 90, 160, 'sheep']],
+    'goats-sheep' => [['Somali goats, healthy', 60, 120, 'goats'], ['Goats, 20 heads', 1200, 2200], ['Young goats for breeding', 50, 100, 'goats']],
+    'sheep' => [['Black head sheep for Eid', 80, 150, 'sheep farm'], ['Fat sheep for weddings', 90, 160, 'sheep'], ['Sheep, 10 heads', 800, 1400, 'sheep farm']],
+    'animal-feed' => [['Animal feed sacks, 50 kg', 18, 30], ['Hay bales for camels and goats', 4, 9, 'hay bales']],
     'poultry' => [['Local chickens', 6, 12, 'hens'], ['Layers, 100 birds', 450, 700, 'chicken coop'], ['Chicks one week old', 1, 3]],
     'pets' => [['Persian cat, friendly', 60, 150, 'persian cat'], ['Parrot that talks', 80, 200, 'parrot'], ['German Shepherd puppy', 200, 400, 'german shepherd puppy']],
 
@@ -80,4 +84,15 @@ return [
     'solar-generators' => [['Solar panel 300W, new', 90, 150, 'solar panel'], ['Generator 5 kVA, diesel', 700, 1200, 'diesel generator'], ['Solar system for home, full set', 450, 900, 'rooftop solar'], ['Inverter 3 kW with batteries', 400, 750, 'inverter batteries'], ['Solar water pump', 300, 600]],
 
     'other-items' => [['Office printer HP', 90, 180, 'office printer'], ['Big water tank 2000 L', 120, 220], ['Second hand items, cheap', 5, 50]],
+
+    // Round 2 (PR 50): demo ads for the new sub categories
+    'rooms' => [['Room for rent near KM4, with toilet', 60, 120, 'bedroom apartment interior'], ['Furnished room for students, Hodan', 80, 150, 'bedroom apartment interior']],
+    'computer-accessories' => [['Wireless mouse and keyboard set', 15, 35, 'computer keyboard'], ['Laptop bag, waterproof', 12, 25], ['External hard drive 1 TB', 45, 70, 'external hard drive']],
+    'home-decor' => [['Persian carpet 3x4 m', 120, 300, 'persian carpet'], ['Curtains for living room', 30, 80, 'curtains window']],
+    'traditional-wear' => [['Dirac and garbasaar set', 25, 60, 'colorful dress fabric'], ['Guntiino, new, many colours', 20, 45, 'colorful dress fabric'], ['Macawis and koofiyad set', 15, 35, 'sarong fabric']],
+    'perfume' => [['Cuud (oud) wood, best quality', 20, 60], ['Uunsi incense, 1 kg', 10, 25, 'frankincense resin'], ['Dabqaad incense burner', 8, 20]],
+    'car-repair' => [['Car mechanic, comes to your home', 0, 0], ['Car AC repair and gas refill', 0, 0], ['Panel beating and painting', 0, 0]],
+    'electronics-repair' => [['Phone screen repair, same day', 0, 0], ['Laptop repair and cleaning', 0, 0]],
+    'salon' => [['Henna for weddings, at home', 0, 0], ['Barber shop, KM4', 0, 0]],
+    'plumbing-electrical' => [['Water pump 1 HP, new', 60, 120], ['Electric cable 100 m', 25, 50], ['PVC pipes, all sizes', 3, 15]],
 ];
