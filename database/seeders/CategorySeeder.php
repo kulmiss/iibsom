@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Category;
 use App\Models\CategoryField;
+use Database\Seeders\Concerns\TranslatesNames;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -14,6 +15,8 @@ use Illuminate\Support\Str;
  */
 class CategorySeeder extends Seeder
 {
+    use TranslatesNames;
+
     public function run(): void
     {
         foreach ($this->tree() as $sort => $main) {
@@ -29,15 +32,16 @@ class CategorySeeder extends Seeder
         }
     }
 
+    /** @param  array<string, mixed>  $data */
     private function upsert(?Category $parent, array $data, int $sort): Category
     {
         $slug = $data['slug'] ?? Str::slug($data['name']);
         $category = Category::firstOrNew(['slug' => $slug]);
         $category->fill([
             'parent_id' => $parent?->id,
-            'name' => ['en' => $data['name']],
-            'icon' => $data['icon'] ?? $parent?->icon ?? 'tag',
-            'has_condition' => $data['condition'] ?? $parent?->has_condition ?? true,
+            'name' => $this->names($category->exists ? $category->getAttribute('name') : null, $data['name']),
+            'icon' => $data['icon'] ?? $parent->icon ?? 'tag',
+            'has_condition' => $data['condition'] ?? $parent->has_condition ?? true,
             'sort' => $sort,
         ]);
         if (! $category->exists) {
@@ -49,25 +53,31 @@ class CategorySeeder extends Seeder
         return $category;
     }
 
+    /** @param  array<string, mixed>  $f */
     private function field(Category $category, array $f, int $sort): void
     {
-        CategoryField::updateOrCreate(
-            ['category_id' => $category->id, 'key' => $f['key']],
-            [
-                'type' => $f['type'],
-                'label' => ['en' => $f['label']],
-                'options' => isset($f['options']) ? array_map(
-                    fn (string $o) => ['value' => Str::slug($o), 'label' => ['en' => $o]],
-                    $f['options'],
-                ) : null,
-                'unit' => $f['unit'] ?? null,
-                'required' => $f['required'] ?? false,
-                'filterable' => $f['filterable'] ?? true,
-                'sort' => $sort,
-            ],
-        );
+        $field = CategoryField::firstOrNew(['category_id' => $category->id, 'key' => $f['key']]);
+        $options = null;
+        if (isset($f['options'])) {
+            $old = collect($field->options ?? [])->keyBy('value');
+            $options = array_map(fn (string $o) => [
+                'value' => Str::slug($o),
+                'label' => $this->names($old->get(Str::slug($o))['label'] ?? null, $o),
+            ], $f['options']);
+        }
+
+        $field->fill([
+            'type' => $f['type'],
+            'label' => $this->names($field->exists ? $field->label : null, $f['label']),
+            'options' => $options,
+            'unit' => $f['unit'] ?? null,
+            'required' => $f['required'] ?? false,
+            'filterable' => $f['filterable'] ?? true,
+            'sort' => $sort,
+        ])->save();
     }
 
+    /** @return list<array<string, mixed>> */
     private function tree(): array
     {
         $year = ['key' => 'year', 'type' => 'number', 'label' => 'Year'];

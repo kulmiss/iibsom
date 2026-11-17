@@ -52,6 +52,15 @@ return [
 
     'channels' => [
 
+        // Sign-ins, failed sign-ins, bans, admin actions. Kept 90 days.
+        'security' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/security.log'),
+            'level' => 'info',
+            'days' => 90,
+            'replace_placeholders' => true,
+        ],
+
         'stack' => [
             'driver' => 'stack',
             'channels' => explode(',', (string) env('LOG_STACK', 'single')),

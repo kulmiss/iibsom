@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Category;
 use App\Models\City;
+use App\Support\Features\FeatureManager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
@@ -27,7 +28,7 @@ class HomePageTest extends TestCase
             ->assertSee('Vehicles')
             ->assertSee('Livestock &amp; Animals', false)
             ->assertSee('Popular categories')
-            ->assertSee('Trending ads')
+            ->assertSee('Latest ads')
             ->assertSee('No ads yet');
     }
 
@@ -42,14 +43,18 @@ class HomePageTest extends TestCase
 
     public function test_location_picker_has_only_live_cities(): void
     {
+        // Only Mogadishu is live → no picker at all.
         $this->get('/')
-            ->assertSee('<option value="mogadishu">Mogadishu</option>', false)
-            ->assertDontSee('All Somalia')
-            ->assertDontSee('Kismayo');
+            ->assertDontSee('<select id="city"', false)
+            ->assertDontSee('All Somalia');
 
         City::where('slug', 'kismayo')->first()->update(['enabled' => true]);
 
-        $this->get('/')->assertSee('All Somalia')->assertSee('Kismayo');
+        $this->get('/')
+            ->assertSee('<select id="city"', false)
+            ->assertSee('All Somalia')
+            ->assertSee('<option value="mogadishu">Mogadishu</option>', false)
+            ->assertSee('Kismayo');
     }
 
     public function test_disabled_category_disappears_from_home(): void
@@ -73,14 +78,16 @@ class HomePageTest extends TestCase
 
     public function test_home_uses_few_database_queries(): void
     {
+        app(FeatureManager::class)->set('performance.page_cache', false); // measure the real work
         $this->get('/'); // warm caches
 
         DB::enableQueryLog();
         $this->get('/')->assertOk();
 
-        // Budget: switches, settings and lists all come from the cache.
+        // Budget: switches, settings, categories, cities and banners come from the cache;
+        // only "latest ads" (+ their photos/category/city) hit the database.
         // (The `cache` table is ignored: on shared hosting the cache lives in the database.)
         $queries = collect(DB::getQueryLog())->reject(fn ($q) => str_contains($q['query'], '`cache`'));
-        $this->assertLessThanOrEqual(2, $queries->count(), $queries->toJson());
+        $this->assertLessThanOrEqual(5, $queries->count(), $queries->toJson());
     }
 }

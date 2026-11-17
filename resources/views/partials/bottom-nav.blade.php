@@ -7,16 +7,20 @@
             </a>
         </li>
         @feature('favourites')
-            <li><a href="#" class="bottom-nav-item">{{ icon('bookmark', 'size-6') }}<span>{{ __('site.nav.saved') }}</span></a></li>
+            <li><a href="{{ lroute('saved') }}" class="bottom-nav-item {{ request()->routeIs('saved', 'loc.saved') ? 'text-brand-700' : '' }}">{{ icon('bookmark', 'size-6') }}<span>{{ __('site.nav.saved') }}</span></a></li>
         @endfeature
-        @feature('ads.posting')
-            <li><a href="#" class="bottom-nav-item">{{ icon('square-plus', 'size-6') }}<span>{{ __('site.nav.sell') }}</span></a></li>
-        @endfeature
+        @if (feature('ads.posting') && (auth()->check() || feature('login.google')))
+            <li><a href="{{ lroute('post') }}" class="bottom-nav-item">{{ icon('square-plus', 'size-6') }}<span>{{ __('site.nav.sell') }}</span></a></li>
+        @endif
         @feature('chat')
-            <li><a href="#" class="bottom-nav-item">{{ icon('message-circle', 'size-6') }}<span>{{ __('site.nav.messages') }}</span></a></li>
+            <li><a href="{{ lroute('chat') }}" class="bottom-nav-item relative {{ request()->routeIs('chat', 'loc.chat', 'chat.show', 'loc.chat.show') ? 'text-brand-700' : '' }}">{{ icon('message-circle', 'size-6') }}<span>{{ __('site.nav.messages') }}</span>@if (($chatUnread ?? 0) > 0)<span class="absolute end-1/4 top-1 size-2.5 rounded-full bg-red-600" aria-label="{{ __('chat.new') }}"></span>@endif</a></li>
         @endfeature
-        @feature('login.google')
-            <li><a href="#" class="bottom-nav-item">{{ icon('user', 'size-6') }}<span>{{ __('site.nav.profile') }}</span></a></li>
-        @endfeature
+        @auth
+            <li><a href="{{ lroute('account') }}" class="bottom-nav-item {{ request()->routeIs('account*', 'loc.account*') ? 'text-brand-700' : '' }}">{{ icon('user', 'size-6') }}<span>{{ __('site.nav.profile') }}</span></a></li>
+        @else
+            @feature('login.google')
+                <li><a href="{{ lroute('login') }}" class="bottom-nav-item {{ request()->routeIs('login', 'loc.login') ? 'text-brand-700' : '' }}">{{ icon('user', 'size-6') }}<span>{{ __('site.nav.profile') }}</span></a></li>
+            @endfeature
+        @endauth
     </ul>
 </nav>

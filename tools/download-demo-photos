@@ -1,0 +1,212 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Download REAL free-licence photos for the demo ads.
+ *
+ *   php tools/download-demo-photos            # get missing photos
+ *   php tools/download-demo-photos --fresh    # start again
+ *   php tools/download-demo-photos --credits  # only rebuild CREDITS.md (after you delete a photo you don't like)
+ *
+ * Don't like a photo? Delete its file, add its source_url to database/demo/photos-rejected.json,
+ * run with --credits. Rules used: no people (above all no children), the photo shows the thing in the title.
+ *
+ * Sources (first one that works):
+ *   1. Pexels   (set PEXELS_API_KEY)      – Pexels licence, free to use
+ *   2. Unsplash (set UNSPLASH_ACCESS_KEY) – Unsplash licence, free to use
+ *   3. Openverse (no key)                 – only CC0, Public Domain or CC BY (credit given)
+ *
+ * Writes database/demo/photos/<kind>-<n>.jpg (max 800 px, EXIF removed),
+ * database/demo/photos.json and CREDITS.md. Safe to run again: it skips what it has.
+ */
+
+const OUT = __DIR__.'/../database/demo/photos';
+const JSON_FILE = __DIR__.'/../database/demo/photos.json';
+const CREDITS = __DIR__.'/../CREDITS.md';
+const REJECTED = __DIR__.'/../database/demo/photos-rejected.json'; // source URLs never to use
+const UA = 'iibsom-demo-photos/1.0 (+https://iibsom.com)';
+
+// Photo words come from database/demo/content.php (4th value of each title).
+// Kinds used by 2+ titles get 2 photos, others 1. File names: <kind-slug>-<n>.jpg
+$wanted = [];
+foreach (require __DIR__.'/../database/demo/content.php' as $category => $items) {
+    foreach ($items as $item) {
+        if (! isset($item[3])) {
+            continue; // services and jobs: no photo, like most real ones
+        }
+        $kind = slugify($item[3]);
+        $wanted[$kind] ??= ['query' => $item[3], 'category' => $category, 'count' => 0];
+        $wanted[$kind]['count'] = min(2, $wanted[$kind]['count'] + 1);
+    }
+}
+
+if (in_array('--fresh', $argv, true)) {
+    array_map('unlink', glob(OUT.'/*.jpg') ?: []);
+    @unlink(JSON_FILE);
+}
+@mkdir(OUT, 0775, true);
+
+$photos = is_file(JSON_FILE) ? json_decode(file_get_contents(JSON_FILE), true) : [];
+$have = [];
+foreach ($photos as $p) {
+    $have[$p['kind'] ?? ''][] = $p;
+}
+
+$rejected = is_file(REJECTED) ? (json_decode((string) file_get_contents(REJECTED), true) ?: []) : [];
+
+$pexels = getenv('PEXELS_API_KEY') ?: null;
+$unsplash = getenv('UNSPLASH_ACCESS_KEY') ?: null;
+
+// Photos deleted by hand are dropped from the list.
+$photos = array_values(array_filter($photos, fn ($p) => is_file(OUT.'/'.$p['file'])));
+$have = [];
+foreach ($photos as $p) {
+    $have[$p['kind'] ?? ''][] = $p;
+}
+if (in_array('--credits', $argv, true)) {
+    $wanted = [];
+}
+
+foreach ($wanted as $slug => ['query' => $query, 'category' => $category, 'count' => $count]) {
+    $missing = $count - count($have[$slug] ?? []);
+    if ($missing <= 0) {
+        continue;
+    }
+
+    $found = $pexels ? pexels($query, $pexels) : ($unsplash ? unsplash($query, $unsplash) : openverse($query));
+    // Photos already used, or rejected by hand (people, children, wrong thing): never again.
+    $used = [...array_column($have[$slug] ?? [], 'source_url'), ...$rejected];
+
+    foreach ($found as $item) {
+        if ($missing <= 0) {
+            break;
+        }
+        if (in_array($item['source_url'], $used, true)) {
+            continue;
+        }
+        $n = 1;
+        while (is_file(OUT."/{$slug}-{$n}.jpg")) {
+            $n++;
+        }
+        $file = "{$slug}-{$n}.jpg";
+        if (! save($item['download'], OUT.'/'.$file, $item['fallback'] ?? null)) {
+            continue;
+        }
+        $row = ['file' => $file, 'kind' => $slug, 'category' => $category] + array_diff_key($item, ['download' => 1, 'fallback' => 1]);
+        $photos[] = $row;
+        $have[$slug][] = $row;
+        $missing--;
+        echo "  ✓ {$file}  ({$item['licence']}, {$item['creator']})\n";
+        file_put_contents(JSON_FILE, json_encode($photos, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)."\n");
+    }
+    if ($missing > 0) {
+        echo "  ! {$slug}: {$missing} still missing (run again later)\n";
+    }
+    usleep(3_200_000); // stay under the free search limits (20 per minute)
+}
+
+usort($photos, fn ($a, $b) => strnatcmp($a['file'], $b['file']));
+file_put_contents(JSON_FILE, json_encode($photos, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)."\n");
+writeCredits($photos);
+echo count($photos)." photos. Credits in CREDITS.md\n";
+
+// ---------------------------------------------------------------------------
+
+function slugify(string $text): string
+{
+    return trim(preg_replace('/[^a-z0-9]+/', '-', strtolower($text)) ?? '', '-');
+}
+
+function http(string $url, array $headers = []): ?string
+{
+    $ch = curl_init($url);
+    curl_setopt_array($ch, [CURLOPT_RETURNTRANSFER => true, CURLOPT_FOLLOWLOCATION => true, CURLOPT_TIMEOUT => 40,
+        CURLOPT_USERAGENT => UA, CURLOPT_HTTPHEADER => $headers]);
+    $body = curl_exec($ch);
+    $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    return $code === 200 && $body !== false ? $body : null;
+}
+
+function openverse(string $q): array
+{
+    $url = 'https://api.openverse.org/v1/images/?'.http_build_query([
+        'q' => $q, 'license' => 'cc0,pdm,by', 'mature' => 'false', 'page_size' => 20, 'aspect_ratio' => 'wide,square',
+    ]);
+    $data = json_decode(http($url) ?? '{}', true);
+    $out = [];
+    foreach ($data['results'] ?? [] as $r) {
+        if (($r['width'] ?? 0) && $r['width'] < 640) {
+            continue;
+        }
+        $out[] = [
+            'download' => $r['url'],
+            'fallback' => "https://api.openverse.org/v1/images/{$r['id']}/thumb/?full_size=true&compressed=true",
+            'title' => mb_substr((string) ($r['title'] ?? ''), 0, 120),
+            'creator' => (string) ($r['creator'] ?? 'Unknown'),
+            'creator_url' => (string) ($r['creator_url'] ?? ''),
+            'source_url' => (string) $r['foreign_landing_url'],
+            'licence' => match ($r['license']) { 'pdm' => 'Public Domain Mark', 'cc0' => 'CC0 1.0', default => 'CC '.strtoupper($r['license']).' '.($r['license_version'] ?? '') },
+            'licence_url' => (string) ($r['license_url'] ?? ''),
+            'provider' => 'Openverse / '.($r['provider'] ?? ''),
+        ];
+    }
+
+    return $out;
+}
+
+function pexels(string $q, string $key): array
+{
+    $data = json_decode(http('https://api.pexels.com/v1/search?'.http_build_query(['query' => $q, 'per_page' => 20, 'orientation' => 'landscape']), ["Authorization: {$key}"]) ?? '{}', true);
+
+    return array_map(fn ($p) => [
+        'download' => $p['src']['large2x'] ?? $p['src']['large'],
+        'title' => (string) ($p['alt'] ?? ''), 'creator' => $p['photographer'], 'creator_url' => $p['photographer_url'],
+        'source_url' => $p['url'], 'licence' => 'Pexels License', 'licence_url' => 'https://www.pexels.com/license/', 'provider' => 'Pexels',
+    ], $data['photos'] ?? []);
+}
+
+function unsplash(string $q, string $key): array
+{
+    $data = json_decode(http('https://api.unsplash.com/search/photos?'.http_build_query(['query' => $q, 'per_page' => 20, 'orientation' => 'landscape']), ["Authorization: Client-ID {$key}"]) ?? '{}', true);
+
+    return array_map(fn ($p) => [
+        'download' => $p['urls']['regular'],
+        'title' => (string) ($p['alt_description'] ?? ''), 'creator' => $p['user']['name'], 'creator_url' => $p['user']['links']['html'].'?utm_source=iibsom&utm_medium=referral',
+        'source_url' => $p['links']['html'], 'licence' => 'Unsplash License', 'licence_url' => 'https://unsplash.com/license', 'provider' => 'Unsplash',
+    ], $data['results'] ?? []);
+}
+
+/** Download, check it really is a photo, shrink to 800 px, re-save as JPEG (drops EXIF/GPS). */
+function save(string $url, string $path, ?string $fallback): bool
+{
+    $raw = http($url) ?? ($fallback ? http($fallback) : null);
+    if (! $raw || ! ($img = @imagecreatefromstring($raw))) {
+        return false;
+    }
+    [$w, $h] = [imagesx($img), imagesy($img)];
+    if ($w < 480 || $h < 320) {
+        return false;
+    }
+    $scale = min(1, 800 / max($w, $h));
+    $out = imagescale($img, (int) round($w * $scale), (int) round($h * $scale), IMG_BICUBIC);
+
+    return imagejpeg($out, $path, 72);
+}
+
+function writeCredits(array $photos): void
+{
+    $md = "# Credits\n\n| What | Source | Licence |\n|------|--------|---------|\n";
+    $md .= "| Icons (`resources/svg/icons`) | [Lucide](https://lucide.dev) | ISC (see `resources/svg/icons/LICENSE-lucide`) |\n\n";
+    $md .= "## Demo photos\n\nThe demo ads use real photos with free licences. They are only for local testing and demos\n";
+    $md .= "and are removed with \"Delete all demo data\". Made by `php tools/download-demo-photos`.\n\n";
+    $md .= "| File | Photo | By | Licence |\n|------|-------|----|---------|\n";
+    foreach ($photos as $p) {
+        $title = str_replace('|', '/', $p['title'] ?: 'photo');
+        $by = $p['creator_url'] ? "[{$p['creator']}]({$p['creator_url']})" : $p['creator'];
+        $licence = $p['licence_url'] ? "[{$p['licence']}]({$p['licence_url']})" : $p['licence'];
+        $md .= "| {$p['file']} | [{$title}]({$p['source_url']}) | ".str_replace('|', '/', $by)." | {$licence} via {$p['provider']} |\n";
+    }
+    $md .= "\nThird-party code licences are in THIRD_PARTY_NOTICES.md.\n";
+    file_put_contents(CREDITS, $md);
+}

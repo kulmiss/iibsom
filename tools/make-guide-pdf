@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+"""Make the admin guide PDF (resources/help/admin-guide.pdf) from the print page.
+
+    IIBSOM_ADMIN_COOKIE="name=value" python3 tools/make-guide-pdf [base-url]
+        base-url  default http://localhost:8095
+
+IIBSOM_ADMIN_COOKIE = a signed-in staff session cookie (any role), copied from the
+browser on a test site. Needs Python Playwright (pip install playwright).
+Also writes resources/help/admin-guide.version: a test checks it matches the guide,
+so the PDF is never older than the text.
+"""
+import os
+import sys
+
+from playwright.sync_api import sync_playwright
+
+BASE = (sys.argv[1] if len(sys.argv) > 1 else 'http://localhost:8095').rstrip('/')
+OUT = 'resources/help/admin-guide.pdf'
+
+cookie = os.environ.get('IIBSOM_ADMIN_COOKIE', '')
+if '=' not in cookie:
+    sys.exit('Set IIBSOM_ADMIN_COOKIE="name=value" (a signed-in staff session cookie).')
+name, value = cookie.split('=', 1)
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(executable_path=os.environ.get('CHROME') or None)
+    ctx = browser.new_context()
+    ctx.add_cookies([{'name': name, 'value': value, 'url': BASE}])
+    page = ctx.new_page()
+    response = page.goto(BASE + '/admin/api/guide/print', wait_until='networkidle')
+    if response is None or response.status != 200:
+        sys.exit(f'Could not open the print page (HTTP {response.status if response else "?"}). Is the cookie still signed in?')
+    version = page.get_attribute('meta[name="guide-version"]', 'content')
+    page.pdf(path=OUT, format='A4', print_background=True,
+             margin={'top': '18mm', 'bottom': '18mm', 'left': '16mm', 'right': '16mm'})
+    browser.close()
+
+with open('resources/help/admin-guide.version', 'w') as f:
+    f.write(version + '\n')
+print(f'Saved {OUT} (version {version})')

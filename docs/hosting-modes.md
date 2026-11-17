@@ -1,20 +1,22 @@
 # Hosting modes: VPS and shared hosting
 
+Guides: [deploy-shared.md](deploy-shared.md) · [deploy-vps.md](deploy-vps.md) · [cloudflare-r2.md](cloudflare-r2.md) · [scaling.md](scaling.md)
+
 The same code runs on both. You choose the mode in `.env`:
 
 ```dotenv
-IIBSOM_HOSTING=vps      # or: shared
+HOSTING_MODE=vps      # or: shared
 ```
 
 ## Settings for each mode
 
 | `.env` setting | VPS (recommended for growth) | Shared hosting (cPanel etc.) |
 |----------------|------------------------------|------------------------------|
-| `IIBSOM_HOSTING` | `vps` | `shared` |
+| `HOSTING_MODE` | `vps` | `shared` |
 | `CACHE_STORE` | `redis` | `database` |
 | `SESSION_DRIVER` | `redis` | `database` |
 | `QUEUE_CONNECTION` | `redis` | `database` |
-| `FILESYSTEM_DISK` (photos) | `r2` | `r2` |
+| `PHOTOS_DISK` (photos) | `r2` | `r2` |
 | Search | database, Meilisearch later | database |
 
 ## What runs in the background

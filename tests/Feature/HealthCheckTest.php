@@ -20,6 +20,7 @@ class HealthCheckTest extends TestCase
     public function test_database_and_cache_are_ok(): void
     {
         Storage::fake('local');
+        Storage::fake('public');
 
         $this->assertSame('ok', $this->check('database')['status']);
         $this->assertContains($this->check('cache')['status'], ['ok', 'warn']);
@@ -50,6 +51,7 @@ class HealthCheckTest extends TestCase
     public function test_health_command_prints_checks(): void
     {
         Storage::fake('local');
+        Storage::fake('public');
         app(HealthChecker::class)->beat();
 
         $this->artisan('iibsom:health')

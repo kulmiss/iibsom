@@ -24,7 +24,11 @@ class Locales
         return config('iibsom.locales');
     }
 
-    /** Codes that are ON (the default language is always ON). @return list<string> */
+    /**
+     * Codes that are ON (the default language is always ON).
+     *
+     * @return list<string>
+     */
     public function enabled(): array
     {
         $on = (array) $this->settings->get('languages.enabled', []);

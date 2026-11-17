@@ -33,7 +33,7 @@ return [
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app/private'),
-            'serve' => true,
+            'serve' => false, // private files (ID photos, receipts) never get a web address
             'throw' => false,
             'report' => false,
         ],
@@ -44,6 +44,21 @@ return [
             'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
             'visibility' => 'public',
             'throw' => false,
+            'report' => false,
+        ],
+
+        // Cloudflare R2 (S3-compatible) for ad photos in production. Never the app server's disk.
+        'r2' => [
+            'driver' => 's3',
+            'key' => env('R2_ACCESS_KEY_ID'),
+            'secret' => env('R2_SECRET_ACCESS_KEY'),
+            'region' => 'auto',
+            'bucket' => env('R2_BUCKET'),
+            'endpoint' => env('R2_ENDPOINT'), // https://<account-id>.r2.cloudflarestorage.com
+            'url' => env('R2_PUBLIC_URL'),    // https://photos.iibsom.com (served via Cloudflare CDN)
+            'use_path_style_endpoint' => true,
+            'visibility' => 'public',
+            'throw' => true,
             'report' => false,
         ],
 

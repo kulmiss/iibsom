@@ -64,7 +64,7 @@ class LayoutTest extends TestCase
     public function test_page_has_title_and_description_for_google(): void
     {
         $this->get('/')
-            ->assertSee('<title>Buy and sell in Somalia · Iibsom</title>', false)
+            ->assertSee('<title>Buy and sell in Somalia · iibsom</title>', false)
             ->assertSee('<meta name="description" content="Buy and sell cars', false);
     }
 

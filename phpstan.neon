@@ -1,0 +1,12 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    # Strictest level we keep at zero errors. Run: vendor/bin/phpstan analyse
+    level: 8
+    paths:
+        - app
+        - database/seeders
+        - routes
+    # Read the casts() method of models (Laravel 11+ style).
+    parseModelCastsMethod: true

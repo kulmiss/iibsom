@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'iibsom'), // lowercase on purpose: a capital I looks like "l"
 
     /*
     |--------------------------------------------------------------------------

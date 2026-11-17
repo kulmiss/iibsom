@@ -26,3 +26,7 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 dump.rdb
+/public/admin-app
+/admin/node_modules
+iibsom-release-*.zip
+.lighthouseci/

@@ -18,7 +18,7 @@ class HealthTest extends TestCase
     {
         $this->get('/')
             ->assertOk()
-            ->assertSee('Iibsom')
+            ->assertSee('iibsom')
             ->assertSee('What are you looking for?');
     }
 

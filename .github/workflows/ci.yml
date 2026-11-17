@@ -50,7 +50,7 @@ jobs:
       DB_USERNAME: iibsom
       DB_PASSWORD: secret
       REDIS_HOST: 127.0.0.1
-      IIBSOM_HOSTING: ${{ matrix.hosting }}
+      HOSTING_MODE: ${{ matrix.hosting }}
       CACHE_STORE: ${{ matrix.cache }}
     steps:
       - uses: actions/checkout@v4
@@ -87,6 +87,10 @@ jobs:
       - name: Code style (Pint)
         run: vendor/bin/pint --test
 
+      - name: Static analysis (Larastan level 8, zero errors)
+        if: matrix.hosting == 'vps'
+        run: vendor/bin/phpstan analyse --memory-limit=1G --no-progress
+
       - name: Tests
         run: php artisan test
 
@@ -95,6 +99,93 @@ jobs:
 
       - name: npm security audit
         run: npm audit --omit=dev --audit-level=high
+
+  admin:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.draft == false
+    name: admin app (lint + build)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: admin
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: corepack enable
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - name: Lint
+        run: pnpm lint
+      - name: Type-check + build
+        run: pnpm build
+      - name: Security audit
+        run: pnpm audit --prod --audit-level high
+
+  lighthouse:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.draft == false
+    name: lighthouse (phone)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: iibsom_testing
+          MYSQL_USER: iibsom
+          MYSQL_PASSWORD: secret
+          MYSQL_ROOT_PASSWORD: rootsecret
+        ports: ["3306:3306"]
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -uroot -prootsecret"
+          --health-interval=5s --health-timeout=5s --health-retries=20
+    env:
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_DATABASE: iibsom_testing
+      DB_USERNAME: iibsom
+      DB_PASSWORD: secret
+      HOSTING_MODE: shared
+      CACHE_STORE: database
+      SESSION_DRIVER: database
+      QUEUE_CONNECTION: sync
+      APP_URL: http://localhost:8095
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: pdo_mysql, intl, zip, gd, exif, bcmath
+          coverage: none
+          tools: composer:v2
+      - name: Install PHP packages
+        run: composer install --no-interaction --prefer-dist --no-progress
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Build front-end
+        run: npm ci && npm run build
+      - name: Site with demo data (shared-hosting mode)
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          php artisan migrate --seed --force
+          php artisan iib:demo-reset --force
+          php artisan tinker --execute='app(App\Support\Settings\SettingsManager::class)->set("languages.enabled", ["en", "so"]);'
+          php artisan storage:link
+          php artisan serve --port=8095 > /tmp/serve.log 2>&1 &
+          sleep 3
+      - name: Lighthouse (home, category, search, page, ad)
+        run: bash tools/lighthouse http://localhost:8095
+      - name: Keep the reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci
+          retention-days: 7
 
   secret-scan:
     if: github.event_name == 'workflow_dispatch' || github.event.pull_request.draft == false

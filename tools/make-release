@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Build a ready-to-upload zip for shared hosting (no Node or Composer needed on the server).
+#   bash tools/make-release            → iibsom-release-YYYYMMDD-HHMM.zip
+# Needs on YOUR computer: PHP 8.3+, Composer, Node 20+, pnpm.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+stamp=$(date +%Y%m%d-%H%M)
+out="iibsom-release-${stamp}.zip"
+tmp=$(mktemp -d)
+
+echo "1/4 Building the website files (npm)…"
+npm ci --silent && npm run build --silent
+
+echo "2/4 Building the admin panel (pnpm)…"
+(cd admin && pnpm install --frozen-lockfile --silent && pnpm build >/dev/null)
+
+echo "3/4 Copying the app without development files…"
+git ls-files -z | grep -zv -E '^(admin/|tests/|tools/|\.github/|docker|Dockerfile|database/demo/)' | xargs -0 -I{} cp --parents {} "$tmp/"
+cp -r public/build public/admin-app "$tmp/public/"
+(cd "$tmp" && composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction --quiet)
+
+echo "4/4 Making ${out}…"
+(cd "$tmp" && zip -qr - . -x "*/.git/*" "*/.github/*") > "$out"
+rm -rf "$tmp"
+echo "Done: ${out} ($(du -h "$out" | cut -f1)). Upload it as in docs/deploy-shared.md"

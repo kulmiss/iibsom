@@ -5,6 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property-read Category $category
+ * @property array<string, string> $label
+ * @property list<array{value: string, label: array<string, string>}>|null $options
+ */
 class CategoryField extends Model
 {
     public const TYPES = ['text', 'number', 'select', 'boolean'];
@@ -19,6 +24,7 @@ class CategoryField extends Model
         'enabled' => 'boolean',
     ];
 
+    /** @return BelongsTo<Category, $this> */
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
@@ -33,7 +39,7 @@ class CategoryField extends Model
     public function optionList(): array
     {
         return collect($this->options ?? [])
-            ->mapWithKeys(fn (array $o) => [$o['value'] => translated($o['label'] ?? $o['value'])])
+            ->mapWithKeys(fn (array $o) => [$o['value'] => translated($o['label'] ?: $o['value'])])
             ->all();
     }
 }

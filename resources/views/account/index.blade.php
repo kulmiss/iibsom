@@ -1,0 +1,101 @@
+@extends('layouts.app')
+
+@section('title', __('account.account.title'))
+
+@php($user = auth()->user())
+
+@section('content')
+    <section class="mx-auto max-w-md px-4 py-8">
+        <div class="flex items-center gap-4 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-stone-200">
+            <span class="flex size-14 shrink-0 items-center justify-center rounded-full bg-brand-700 text-xl font-bold text-white">{{ $user->initial() }}</span>
+            <div class="min-w-0">
+                <h1 class="truncate text-lg font-bold">{{ $user->name }}</h1>
+                <p class="text-sm text-stone-600">{{ $user->city?->label }} · {{ \App\Support\Phone\SomaliPhone::format($user->phone) }}</p>
+                <p class="text-xs text-stone-500">{{ __('account.account.member_since', ['date' => mdate($user->created_at, 'M Y')]) }}</p>
+            </div>
+        </div>
+
+        <ul class="mt-4 divide-y divide-stone-100 overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-stone-200">
+            <li>
+                <a href="{{ lroute('account.profile') }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50">
+                    {{ icon('user', 'size-5 text-brand-700') }}<span class="flex-1">{{ __('account.account.edit_profile') }}</span>{{ icon('chevron-right', 'size-4 text-stone-400') }}
+                </a>
+            </li>
+            @feature('ads.my_ads')
+                <li>
+                    <a href="{{ lroute('account.ads') }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50">
+                        {{ icon('list', 'size-5 text-brand-700') }}<span class="flex-1">{{ __('account.account.my_ads') }}</span>{{ icon('chevron-right', 'size-4 text-stone-400') }}
+                    </a>
+                </li>
+            @endfeature
+            @feature('boosts')
+                <li>
+                    <a href="{{ lroute('account.payments') }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50">
+                        {{ icon('rocket', 'size-5 text-brand-700') }}<span class="flex-1">{{ __('ads.boost.payments') }}</span>{{ icon('chevron-right', 'size-4 text-stone-400') }}
+                    </a>
+                </li>
+            @endfeature
+            @feature('shops')
+                <li>
+                    <a href="{{ lroute('account.shop') }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50">
+                        {{ icon('store', 'size-5 text-brand-700') }}<span class="flex-1">{{ __('account.shop.title') }}</span>{{ icon('chevron-right', 'size-4 text-stone-400') }}
+                    </a>
+                </li>
+            @endfeature
+            @if (feature('seller_ratings') && auth()->user()?->rating_count > 0)
+                <li>
+                    <a href="{{ lroute('seller.reviews', ['user' => auth()->id()]) }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50">
+                        {{ icon('star', 'size-5 text-brand-700') }}<span class="flex-1">{{ __('ads.ratings.mine') }}</span>{{ icon('chevron-right', 'size-4 text-stone-400') }}
+                    </a>
+                </li>
+            @endif
+            @feature('api.write')
+                <li>
+                    <a href="{{ lroute('account.api') }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50">
+                        {{ icon('key', 'size-5 text-brand-700') }}<span class="flex-1">{{ __('account.api.menu') }}</span>{{ icon('chevron-right', 'size-4 text-stone-400') }}
+                    </a>
+                </li>
+            @endfeature
+            @feature('verified_badge')
+                <li>
+                    <a href="{{ lroute('verify') }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50">
+                        {{ icon('badge-check', 'size-5 text-brand-700') }}<span class="flex-1">{{ __('account.verify.title') }}</span>{{ icon('chevron-right', 'size-4 text-stone-400') }}
+                    </a>
+                </li>
+            @endfeature
+            @feature('favourites')
+                <li>
+                    <a href="{{ lroute('saved') }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50">
+                        {{ icon('bookmark', 'size-5 text-brand-700') }}<span class="flex-1">{{ __('ads.saved.title') }}</span>{{ icon('chevron-right', 'size-4 text-stone-400') }}
+                    </a>
+                </li>
+            @endfeature
+            @feature('saved_searches')
+                <li>
+                    <a href="{{ lroute('searches') }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50">
+                        {{ icon('bell', 'size-5 text-brand-700') }}<span class="flex-1">{{ __('account.account.searches') }}</span>{{ icon('chevron-right', 'size-4 text-stone-400') }}
+                    </a>
+                </li>
+            @endfeature
+            @feature('site.welcome_tour')
+                <li>
+                    <a href="{{ lroute('account', ['tour' => 1]) }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50">
+                        {{ icon('map-pin', 'size-5 text-brand-700') }}<span class="flex-1">{{ __('account.account.tour') }}</span>{{ icon('chevron-right', 'size-4 text-stone-400') }}
+                    </a>
+                </li>
+            @endfeature
+            @feature('help.centre')
+                <li>
+                    <a href="{{ lroute('help') }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50">
+                        {{ icon('circle-help', 'size-5 text-brand-700') }}<span class="flex-1">{{ __('account.account.help') }}</span>{{ icon('chevron-right', 'size-4 text-stone-400') }}
+                    </a>
+                </li>
+            @endfeature
+        </ul>
+
+        <form method="post" action="{{ lroute('logout') }}" class="mt-4">
+            @csrf
+            <button type="submit" class="w-full rounded-lg px-4 py-3 font-semibold text-red-700 ring-1 ring-red-200 hover:bg-red-50">{{ __('account.account.logout') }}</button>
+        </form>
+    </section>
+@endsection

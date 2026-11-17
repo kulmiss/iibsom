@@ -29,6 +29,13 @@ class SecurityHeadersTest extends TestCase
         $this->assertStringNotContainsString("script-src 'self' 'unsafe-inline'", $csp);
     }
 
+    public function test_photos_host_is_allowed_for_images(): void
+    {
+        config(['iibsom.photos_disk' => 'r2', 'filesystems.disks.r2.url' => 'https://photos.iibsom.com/']);
+
+        $this->assertStringContainsString("img-src 'self' data: blob: https://photos.iibsom.com", $this->get('/')->headers->get('Content-Security-Policy'));
+    }
+
     public function test_nonce_changes_every_request(): void
     {
         $a = $this->get('/')->headers->get('Content-Security-Policy');
