@@ -165,4 +165,38 @@ class GuestReportsTest extends TestCase
         $this->assertNull(Report::where('reason', 'scam')->firstOrFail()->contact);
         $this->assertSame('0615559999', Report::where('reason', 'sold')->firstOrFail()->contact, 'Kept while recent.');
     }
+
+    public function test_a_fresh_time_stamp_comes_when_the_form_opens(): void
+    {
+        // Ad pages are cached for guests (up to 2 minutes), so the stamp inside the page can be old;
+        // the form asks for a fresh one when it opens (JavaScript), so "too fast" works for cached pages too.
+        $html = (string) $this->get($this->ad->url())->assertOk()->getContent();
+        $this->assertStringContainsString('data-guest-report="'.url('/report-token').'"', $html);
+
+        $this->travel(90)->seconds();
+        $res = $this->getJson('/report-token')->assertOk()
+            ->assertHeader('Cache-Control', 'no-store, private')
+            ->assertJsonStructure(['t'])->assertJsonPath('sum', null);
+        $this->assertSame([], $res->headers->getCookies(), 'No cookie for guests.');
+        $t = (string) $res->json('t');
+        $this->assertSame((string) now()->getTimestamp(), explode('.', $t)[0]);
+
+        // Sent at once with the fresh stamp: dropped quietly (a bot). Three seconds later: kept.
+        $this->assertSame('thanks', $this->state($this->report(['t' => $t])));
+        $this->assertSame(0, Report::count());
+        $this->travel(4)->seconds();
+        $this->assertSame('thanks', $this->state($this->report(['t' => $t])));
+        $this->assertSame(1, Report::count());
+
+        // While many reports arrive, the question for the sum comes with it (matching the new stamp).
+        for ($i = 0; $i < GuestReports::UNDER_ATTACK; $i++) {
+            GuestReports::countTry();
+        }
+        $res = $this->getJson('/report-token')->assertOk();
+        [$a, $b] = GuestReports::sum((string) $res->json('t'));
+        $this->assertSame(__('ads.page.report_sum', ['a' => $a, 'b' => $b]), $res->json('sum'));
+
+        app(FeatureManager::class)->set('ads.guest_reports', false);
+        $this->getJson('/report-token')->assertNotFound();
+    }
 }

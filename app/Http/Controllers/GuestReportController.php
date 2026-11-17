@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Ad;
 use App\Models\Report;
 use App\Support\Safety\GuestReports;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -17,6 +18,23 @@ use Illuminate\Validation\Rule;
  */
 class GuestReportController extends Controller
 {
+    /**
+     * A fresh signed time stamp, asked for by the form when it opens. Ad pages are cached for guests,
+     * so the stamp in the page may be minutes old; this keeps the "too fast = a bot" check working.
+     * Nothing about the visitor is kept, and no cookie is sent.
+     */
+    public function token(): JsonResponse
+    {
+        $token = GuestReports::token();
+        $sum = null;
+        if (GuestReports::underAttack()) {
+            [$a, $b] = GuestReports::sum($token);
+            $sum = __('ads.page.report_sum', ['a' => $a, 'b' => $b]);
+        }
+
+        return response()->json(['t' => $token, 'sum' => $sum])->header('Cache-Control', 'no-store, private');
+    }
+
     public function store(Request $request, Ad $ad): RedirectResponse
     {
         abort_unless($ad->isLive(), 404);

@@ -7,6 +7,7 @@ import { initFavourites } from './favourite';
 import { initFilters } from './filters';
 import { initFooter } from './footer';
 import { initForYou } from './for-you';
+import { initGuestReport } from './guest-report';
 import { initPwa } from './pwa';
 import { initTour } from './tour';
 
@@ -19,6 +20,7 @@ initFavourites();
 initFilters();
 initFooter();
 initForYou();
+initGuestReport();
 initPwa();
 initTour();
 

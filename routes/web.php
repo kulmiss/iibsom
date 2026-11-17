@@ -147,6 +147,10 @@ $publicRoutes = function () use ($stateless) {
     Route::post('/ads/{ad}/report-guest', [GuestReportController::class, 'store'])->whereNumber('ad')
         ->middleware(['feature:ads.reports', 'feature:ads.guest_reports', 'throttle:5,10'])
         ->withoutMiddleware($stateless)->name('ad.report_guest');
+    // A fresh time stamp for that form when it opens (the page itself may come from the page cache).
+    Route::get('/report-token', [GuestReportController::class, 'token'])
+        ->middleware(['feature:ads.reports', 'feature:ads.guest_reports', 'throttle:30,1'])
+        ->withoutMiddleware($stateless)->name('ad.report_token');
 
     // Seller's number after a tap (JSON, rate-limited).
     Route::get('/ads/{ad}/contact', [AdPageController::class, 'contact'])->whereNumber('ad')->middleware('throttle:30,1')

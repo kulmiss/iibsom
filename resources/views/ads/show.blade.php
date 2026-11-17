@@ -266,7 +266,7 @@
                                     @if ($guestState === 'error')
                                         <p class="form-error mt-2" role="alert">{{ __('ads.page.report_guest_error') }}</p>
                                     @endif
-                                    <form method="post" action="{{ lroute('ad.report_guest', ['ad' => $ad->id]) }}" class="mt-3 space-y-3">
+                                    <form method="post" action="{{ lroute('ad.report_guest', ['ad' => $ad->id]) }}" class="mt-3 space-y-3" data-guest-report="{{ lroute('ad.report_token') }}">
                                         <fieldset>
                                             <legend class="form-label">{{ __('ads.page.report_reason') }}</legend>
                                             @foreach (\App\Models\Report::REASONS as $reason)
