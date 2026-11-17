@@ -4,6 +4,7 @@ use App\Enums\AdStatus;
 use App\Models\Ad;
 use App\Support\Ads\AdStats;
 use App\Support\Health\HealthChecker;
+use App\Support\Money\Boosts;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
 
@@ -67,3 +68,6 @@ Schedule::command('iibsom:saved-search-alerts')->name('saved-search-alerts')
 
 // Ad stats: delete daily counts older than 13 months.
 Schedule::call(fn () => AdStats::prune())->name('ad-stats-prune')->dailyAt('03:30')->timezone('Africa/Mogadishu');
+
+// Paid boosts: a boost that ended goes back to a normal ad.
+Schedule::call(fn () => Boosts::endExpired())->name('end-boosts')->everyMinute()->withoutOverlapping();

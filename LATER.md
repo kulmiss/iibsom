@@ -27,3 +27,5 @@ Tick `[x]` with the date when done.
 ## Can wait
 - [ ] SMS provider for phone login (S1), only if phone login is wanted
 - [ ] Choose staff accounts (Moderator / Support) and give them 2FA apps
+- [ ] **Boosts (when you want to sell them):** real prices for Top / VIP / Diamond (edit `config/boosts.php` or tell the developer), and your merchant numbers for EVC Plus, Zaad, Sahal, eDahab (admin → Settings → General → Payments for boosts). Then turn **Test mode** OFF and the **Paid boosts** switch ON.
+- [ ] **Shop plans:** decide the monthly price for shop pages (turned on by hand in admin → Shops for now).

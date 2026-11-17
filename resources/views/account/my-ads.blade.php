@@ -58,6 +58,9 @@
 
                         <div class="mt-2 flex flex-wrap gap-2 text-sm">
                             <a href="{{ $ad->url() }}" class="btn-chip">{{ __('ads.mine.view') }}</a>
+                            @if (feature('boosts') && $ad->isLive())
+                                <a href="{{ lroute('account.boost', ['ad' => $ad->id]) }}" class="btn-chip">{{ icon('rocket', 'size-3.5') }} {{ $ad->activeBoost() ? \App\Support\Money\Boosts::label($ad->activeBoost()) : __('ads.boost.button') }}</a>
+                            @endif
                             @feature('ad_stats')
                                 <a href="{{ lroute('account.ads.stats', ['ad' => $ad->id]) }}" class="btn-chip">{{ icon('chart-column', 'size-3.5') }} {{ __('ads.stats.open') }}</a>
                             @endfeature

@@ -8,6 +8,7 @@ use App\Support\Settings\GeneralSettings;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Validation\ValidationException;
 
 /** Settings → General. */
 class SettingsController extends Controller
@@ -20,6 +21,9 @@ class SettingsController extends Controller
     public function update(Request $request, GeneralSettings $general): JsonResponse
     {
         $data = $request->validate(GeneralSettings::rules(), GeneralSettings::messages());
+        if ($problem = GeneralSettings::paymentProblem($data)) {
+            throw ValidationException::withMessages(['payments_test_mode' => $problem]);
+        }
 
         $before = $general->values();
         $general->save($data, $this->authUser($request)->id);

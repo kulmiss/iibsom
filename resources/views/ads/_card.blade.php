@@ -2,6 +2,9 @@
 @php($cover = $ad->cover)
 <a href="{{ $ad->url() }}" class="group flex flex-col overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-stone-200 hover:ring-brand-200">
     <div class="relative aspect-[4/3] bg-stone-100">
+        @if ($boost = $ad->activeBoost())
+            <span class="absolute start-2 top-2 z-10 rounded-full px-2 py-0.5 text-xs font-bold shadow-sm {{ $boost === 3 ? 'bg-sky-900 text-white' : ($boost === 2 ? 'bg-amber-400 text-stone-950' : 'bg-brand-700 text-white') }}">{{ \App\Support\Money\Boosts::label($boost) }}</span>
+        @endif
         @if ($cover)
             <picture>
                 @if ($avif = $cover->url('thumb', 'avif'))

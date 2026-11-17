@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\FeatureController;
 use App\Http\Controllers\Admin\GuideController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\PageAdminController;
+use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\SetupController;
@@ -74,6 +75,15 @@ Route::prefix('admin/api')->group(function () {
         Route::get('/users/{user}', [UserController::class, 'show'])->middleware('admin.can:users.view');
         Route::post('/users/{user}/ban', [UserController::class, 'ban'])->middleware('admin.can:users.ban');
         Route::post('/users/{user}/unban', [UserController::class, 'unban'])->middleware('admin.can:users.ban');
+        // Paid boosts (Phase 2): receipt payments + ledger.
+        Route::middleware(['feature:boosts', 'admin.can:payments.manage'])->group(function () {
+            Route::get('/payments', [PaymentController::class, 'index']);
+            Route::get('/payments/summary', [PaymentController::class, 'summary']);
+            Route::get('/payments/{payment}/receipt', [PaymentController::class, 'receipt'])->middleware('throttle:60,1');
+            Route::post('/payments/{payment}/approve', [PaymentController::class, 'approve']);
+            Route::post('/payments/{payment}/reject', [PaymentController::class, 'reject']);
+        });
+
         // Business shop pages (Phase 2): monthly plans turned on by an admin.
         Route::middleware(['feature:shops', 'admin.can:shops.manage'])->group(function () {
             Route::get('/shops', [ShopController::class, 'index']);

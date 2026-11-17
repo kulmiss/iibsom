@@ -3,11 +3,13 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { api, apiErrorMessage } from '@/lib/api'
+import { useAuthStore } from '@/stores/auth-store'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import { ContentSection } from '../components/content-section'
 
@@ -22,6 +24,9 @@ type General = {
   weekly_emails: string[]
   weekly_last_sent: string | null
   support_email: string
+  payments_test_mode: boolean
+  payment_numbers: Record<string, string>
+  payment_methods: Record<string, string>
 }
 
 export function SettingsGeneral() {
@@ -33,6 +38,7 @@ export function SettingsGeneral() {
 function GeneralForm({ initial }: { initial: General }) {
   const qc = useQueryClient()
   const [form, setForm] = useState<General>(initial)
+  const boostsOn = useAuthStore((st) => !!st.user?.boosts)
   const [emails, setEmails] = useState(initial.weekly_emails.join('\n'))
 
   const save = useMutation({
@@ -114,6 +120,26 @@ function GeneralForm({ initial }: { initial: General }) {
           <Input id='support_email' type='email' className='max-w-md' value={form.support_email} onChange={(e) => setForm({ ...form, support_email: e.target.value })} placeholder='help@iibsom.com' />
           <p className='text-xs text-muted-foreground'>Shown at the bottom of the Help page (&quot;Still need help?&quot;). Empty = not shown.</p>
         </div>
+        {boostsOn && (
+          <fieldset className='grid gap-3 rounded-lg border p-4'>
+            <legend className='px-1 text-sm font-medium'>Payments for boosts</legend>
+            <label className='flex items-start justify-between gap-4'>
+              <span>
+                <span className='block font-medium'>Test mode</span>
+                <span className='block text-xs text-muted-foreground'>ON: sellers see &quot;Do not send real money&quot; and payments stay out of the real books. Turn OFF only when the merchant numbers below are real.</span>
+              </span>
+              <Switch checked={form.payments_test_mode} onCheckedChange={(v) => setForm({ ...form, payments_test_mode: v })} aria-label='Test mode' />
+            </label>
+            <div className='grid gap-3 sm:grid-cols-2'>
+              {Object.entries(form.payment_methods).map(([key, label]) => (
+                <div key={key} className='grid gap-1.5'>
+                  <Label htmlFor={`pay-${key}`}>{label} merchant number</Label>
+                  <Input id={`pay-${key}`} inputMode='tel' value={form.payment_numbers[key] ?? ''} onChange={(e) => setForm({ ...form, payment_numbers: { ...form.payment_numbers, [key]: e.target.value } })} placeholder='Empty = not offered' />
+                </div>
+              ))}
+            </div>
+          </fieldset>
+        )}
         <p className='text-sm text-muted-foreground'>
           Want the short step-by-step version?{' '}
           <Link to='/setup' className='text-primary underline'>

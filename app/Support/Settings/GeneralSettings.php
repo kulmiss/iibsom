@@ -26,7 +26,27 @@ class GeneralSettings
             'weekly_emails' => ['nullable', 'array', 'max:5'],
             'weekly_emails.*' => ['email:rfc', 'max:120'],
             'support_email' => ['nullable', 'email:rfc', 'max:120'],
+            'payments_test_mode' => ['sometimes', 'boolean'],
+            'payment_numbers' => ['sometimes', 'array'],
+            'payment_numbers.*' => ['nullable', 'string', 'max:30', 'regex:/^[0-9 +\-]*$/'],
         ];
+    }
+
+    /**
+     * Real money needs somewhere to send it: test mode can only be turned off
+     * when at least one merchant number is filled in.
+     *
+     * @param  array<string, mixed>  $data
+     */
+    public static function paymentProblem(array $data): ?string
+    {
+        $testMode = array_key_exists('payments_test_mode', $data) ? (bool) $data['payments_test_mode'] : (bool) setting('payments.test_mode');
+        $numbers = array_key_exists('payment_numbers', $data) ? (array) $data['payment_numbers'] : (array) setting('payments.numbers');
+        if (! $testMode && array_filter(array_map(fn ($n) => trim((string) $n), $numbers)) === []) {
+            return 'Add at least one merchant number before turning test mode off.';
+        }
+
+        return null;
     }
 
     /** @return array<string, string> */
@@ -35,6 +55,7 @@ class GeneralSettings
         return [
             'weekly_emails.*.email' => 'Each weekly summary address must be a valid email.',
             'support_email.email' => 'The help email must be a valid email address.',
+            'payment_numbers.*.regex' => 'A merchant number can only have numbers, spaces, + and -.',
         ];
     }
 
@@ -64,6 +85,17 @@ class GeneralSettings
             $this->settings->set('reports.weekly_emails', $emails, $userId);
         }
 
+        if (array_key_exists('payment_numbers', $data)) {
+            $numbers = [];
+            foreach (array_keys(config()->array('boosts.methods')) as $method) {
+                $numbers[$method] = trim((string) ($data['payment_numbers'][$method] ?? ''));
+            }
+            $this->settings->set('payments.numbers', $numbers, $userId);
+        }
+        if (array_key_exists('payments_test_mode', $data)) {
+            $this->settings->set('payments.test_mode', (bool) $data['payments_test_mode'], $userId);
+        }
+
         if (array_key_exists('support_email', $data)) {
             $this->settings->set('site.support_email', mb_strtolower(trim((string) ($data['support_email'] ?? ''))), $userId);
         }
@@ -83,6 +115,9 @@ class GeneralSettings
             'weekly_emails' => SendWeeklySummary::recipients(),
             'weekly_last_sent' => setting('reports.weekly_last_sent') ?: null,
             'support_email' => setting('site.support_email'),
+            'payments_test_mode' => (bool) setting('payments.test_mode'),
+            'payment_numbers' => (object) setting('payments.numbers'),
+            'payment_methods' => config()->array('boosts.methods'),
         ];
     }
 }

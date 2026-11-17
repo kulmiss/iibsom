@@ -50,6 +50,8 @@ return [
         'ads.renew_days_before' => 7, // "Renew" shows this many days before an ad ends
         'reports.weekly_emails' => [], // Admin → Settings → General → Weekly summary
         'reports.weekly_last_sent' => '', // e.g. "2026-W46" (set by the command)
+        'payments.test_mode' => true, // TEST MODE: nobody should send real money; test payments stay out of the real books
+        'payments.numbers' => ['evc_plus' => '', 'zaad' => '', 'sahal' => '', 'edahab' => ''], // merchant numbers buyers pay to
         'setup.completed_at' => '', // first-time setup wizard: '' = not done yet
         'site.support_email' => '', // shown on the Help page ("Still need help?"); empty = hidden
     ],

@@ -41,6 +41,10 @@ class DatabaseAdSearch implements AdSearch
             $this->field($query, $key, $value);
         }
 
+        // Paid boosts (switch "boosts") come first in the default order: Diamond, VIP, Top.
+        if (($filters['sort'] ?? 'newest') === 'newest' && feature('boosts')) {
+            $query->orderByDesc('ads.boost_level');
+        }
         match ($filters['sort'] ?? 'newest') {
             'cheapest' => $query->orderByRaw('price is null')->orderBy('price'),
             'expensive' => $query->orderByDesc('price'),

@@ -108,6 +108,12 @@ class User extends Authenticatable
         return $this->hasMany(VerificationRequest::class);
     }
 
+    /** @return HasMany<Payment, $this> */
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
+
     /** @return HasOne<Shop, $this> */
     public function shop(): HasOne
     {

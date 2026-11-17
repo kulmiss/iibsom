@@ -21,7 +21,7 @@ account.account.edit_profile,"Edit profile","Wax ka beddel akoonka","needs nativ
 account.account.help,Help,Caawimaad,"needs native review",resources/views/account/index.blade.php,account-index.png
 account.account.tour,"Quick tour","Socod gaaban","needs native review",resources/views/account/index.blade.php,account-index.png
 account.account.searches,"Saved searches","Raadintayada la kaydiyey","needs native review",resources/views/account/index.blade.php,account-index.png
-account.account.my_ads,"My ads",Xayeysiisyadayda,"needs native review","resources/views/account/ad-stats.blade.php | resources/views/account/index.blade.php",account-index.png
+account.account.my_ads,"My ads",Xayeysiisyadayda,"needs native review","resources/views/account/ad-stats.blade.php | resources/views/account/boost.blade.php | resources/views/account/index.blade.php",account-index.png
 account.account.member_since,"Member since :date","Xubin tan iyo :date","needs native review",resources/views/account/index.blade.php,account-index.png
 account.account.logout,"Log out","Ka bax","needs native review",resources/views/account/index.blade.php,account-index.png
 account.form.name,"Your name",Magacaaga,"needs native review","app/Http/Controllers/Account/ProfileController.php | resources/views/account/profile-form.blade.php",account-profile-form.png
@@ -251,6 +251,32 @@ ads.stats.daily,"Views per day (last 14 days)","Daawashooyinka maalintii (14-kii
 ads.stats.day,Day,Maalin,"needs native review",resources/views/account/ad-stats.blade.php,
 ads.stats.privacy,"Only numbers are counted. We never keep who looked at your ad. Your own visits are not counted.","Tirada oo keliya ayaa la tiriyaa. Weligeen ma kaydinno cidda eegtay xayeysiiskaaga. Booqashooyinkaaga lama tiriyo.","needs native review",resources/views/account/ad-stats.blade.php,
 ads.stats.tip,"Few views? Add clear photos, a good title and a fair price.","Daawasho yar? Ku dar sawirro cad, cinwaan wanaagsan iyo qiime caddaalad ah.","needs native review",resources/views/account/ad-stats.blade.php,
+ads.boost.title,"Boost this ad","Kor u qaad xayeysiiskan","needs native review",resources/views/account/boost.blade.php,
+ads.boost.button,Boost,"Kor u qaad","needs native review",resources/views/account/my-ads.blade.php,account-my-ads.png
+ads.boost.intro,"Boosted ads show first in lists, with a label, so more buyers see them.","Xayeysiisyada kor loo qaaday waxay ka muuqdaan liisaska bilowgooda, calaamad leh, si iibsadayaal badan u arkaan.","needs native review",resources/views/account/boost.blade.php,
+ads.boost.test_mode,"TEST MODE: payments are being tested. Do not send real money.","HABKA TIJAABADA: lacag-bixinta waa la tijaabinayaa. Ha dirin lacag dhab ah.","needs native review",resources/views/account/boost.blade.php,
+ads.boost.top,Top,Top,"needs native review",app/Support/Money/Boosts.php,
+ads.boost.vip,VIP,VIP,"needs native review",app/Support/Money/Boosts.php,
+ads.boost.diamond,Diamond,Diamond,"needs native review",app/Support/Money/Boosts.php,
+ads.boost.days,":count day|:count days",":count maalin|:count maalmood","needs native review",resources/views/account/boost.blade.php,
+ads.boost.package,Package,Xirmada,"needs native review","app/Http/Controllers/Account/BoostController.php | resources/views/account/boost.blade.php",
+ads.boost.method,"How you paid","Sida aad u bixisay","needs native review","app/Http/Controllers/Account/BoostController.php | resources/views/account/boost.blade.php",
+ads.boost.how_to,"Send the price of your package to one of these numbers, then fill in the form below.","U dir qiimaha xirmadaada mid ka mid ah lambarradan, kadib buuxi foomka hoose.","needs native review",resources/views/account/boost.blade.php,
+ads.boost.reference,"Transaction ID (from the payment SMS)","Aqoonsiga macaamilka (ka eeg SMS-ka lacag-bixinta)","needs native review","app/Http/Controllers/Account/BoostController.php | resources/views/account/boost.blade.php",
+ads.boost.reference_rule,"Use only letters, numbers, dots and dashes, as in the SMS.","Isticmaal xarfo, lambarro, dhibco iyo xariiqyo oo keliya, sida SMS-ka.","needs native review",app/Http/Controllers/Account/BoostController.php,
+ads.boost.reference_used,"This transaction ID was already used. Check the SMS and try again.","Aqoonsigan macaamilka horay ayaa loo isticmaalay. Hubi SMS-ka oo isku day mar kale.","needs native review",app/Http/Controllers/Account/BoostController.php,
+ads.boost.receipt,"Screenshot of the payment SMS","Sawirka shaashadda ee SMS-ka lacag-bixinta","needs native review","app/Http/Controllers/Account/BoostController.php | resources/views/account/boost.blade.php",
+ads.boost.send,"Send for checking","U dir hubin","needs native review",resources/views/account/boost.blade.php,
+ads.boost.sent,"Thank you. Our team will check your payment and start the boost.","Mahadsanid. Kooxdayadu waxay hubin doontaa lacag-bixintaada, kadibna kor u qaadista ayaa bilaabanaysa.","needs native review",app/Http/Controllers/Account/BoostController.php,
+ads.boost.pending,"We are checking a payment for this ad. You can boost again after that.","Waxaan hubinaynaa lacag-bixin xayeysiiskan ah. Taas kadib mar kale ayaad kor u qaadi kartaa.","needs native review",resources/views/account/boost.blade.php,
+ads.boost.not_available,"Boosts are not available right now.","Kor u qaadistu hadda lama heli karo.","needs native review",resources/views/account/boost.blade.php,
+ads.boost.payments,"My payments",Lacag-bixinnadayda,"needs native review","resources/views/account/index.blade.php | resources/views/account/payments.blade.php",account-index.png
+ads.boost.no_payments,"No payments yet.","Weli lacag-bixin ma jirto.","needs native review",resources/views/account/payments.blade.php,
+ads.boost.status_pending,"Being checked","Waa la hubinayaa","needs native review",resources/views/account/payments.blade.php,
+ads.boost.status_approved,Approved,"Waa la oggolaaday","needs native review",resources/views/account/payments.blade.php,
+ads.boost.status_rejected,"Not approved: :reason","Lama oggolaan: :reason","needs native review",resources/views/account/payments.blade.php,
+ads.boost.test,Test,Tijaabo,"needs native review",resources/views/account/payments.blade.php,
+ads.boost.boosted_until,":level until :date",":level ilaa :date","needs native review",resources/views/account/boost.blade.php,
 pagination.previous,"&laquo; Previous","&laquo; Hore","needs native review","Next / Previous page buttons under lists",
 pagination.next,"Next &raquo;","Xiga &raquo;","needs native review","Next / Previous page buttons under lists",
 reports.reason.scam,"Scam or fraud","Khiyaano ama musuqmaasuq","needs native review","app/Http/Controllers/Admin/ReportController.php | resources/views/ads/show.blade.php",ads-show.png

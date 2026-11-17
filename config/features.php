@@ -60,7 +60,7 @@ return [
     'api' => ['group' => 'Speed', 'default' => true, 'label' => 'Public API (/api/v1)', 'description' => 'Read-only JSON for the future mobile app: categories, cities, ads. No personal data.'],
 
     // Phase 2: money + trust (build only when the owner says)
-    'boosts' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Boosts', 'description' => 'Top / VIP / Diamond ads. Paid outside the site; an admin turns them on.'],
+    'boosts' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Paid boosts', 'description' => 'Sellers pay for Top / VIP / Diamond with EVC Plus, Zaad, Sahal or eDahab and upload the receipt; staff approve it and the ad shows first in lists. Starts in TEST MODE (Settings → General).'],
     'verified_badge' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Verified badge', 'description' => 'Sellers send a photo of their ID; staff check it and give a "Verified" badge shown next to the seller name. The ID photo is kept encrypted and deleted after the check.'],
     'shops' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Business shop pages', 'description' => 'Sellers make a shop page (logo, hours, all their ads) at /shop/name. It is public only while an admin has turned it on for some months (paid outside the site for now).'],
     'chat' => ['group' => 'Phase 2', 'default' => false, 'label' => 'In-app chat', 'description' => 'Buyers and sellers chat inside the site.'],

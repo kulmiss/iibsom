@@ -45,6 +45,7 @@ return [
         'settings.manage' => 'Change settings',
         'pages.manage' => 'Edit pages (About, Terms...)',
         'banners.manage' => 'Edit home banners',
+        'payments.manage' => 'Check boost payments and see the money books',
         'shops.manage' => 'Turn business shop pages on or off (monthly plans)',
         'activity.view' => 'See the activity log',
         'health.view' => 'See system health',

@@ -36,6 +36,8 @@ class Ad extends Model
             'fields' => 'array',
             'price_negotiable' => 'boolean',
             'is_demo' => 'boolean',
+            'boost_level' => 'integer',
+            'boosted_until' => 'datetime',
             'published_at' => 'datetime',
             'expires_at' => 'datetime',
             'sold_at' => 'datetime',
@@ -120,6 +122,12 @@ class Ad extends Model
     public function scopeLive(Builder $query): void
     {
         $query->where('status', AdStatus::Live)->where(fn ($q) => $q->whereNull('expires_at')->orWhere('expires_at', '>', now()));
+    }
+
+    /** Paid boost running now (and the switch is ON): 1 Top, 2 VIP, 3 Diamond, else 0. */
+    public function activeBoost(): int
+    {
+        return feature('boosts') && $this->boost_level > 0 && $this->boosted_until?->isFuture() ? $this->boost_level : 0;
     }
 
     public function isLive(): bool

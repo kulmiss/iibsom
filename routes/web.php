@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Account\BoostController;
 use App\Http\Controllers\Account\FavouriteController;
 use App\Http\Controllers\Account\MyAdsController;
 use App\Http\Controllers\Account\ProfileController;
@@ -77,6 +78,13 @@ $publicRoutes = function () use ($stateless) {
             });
 
             Route::get('/account/ads/{ad}/stats', [AdStatsController::class, 'show'])->whereNumber('ad')->middleware('feature:ad_stats')->name('account.ads.stats');
+
+            // Paid boosts (Phase 2): pay by mobile money + receipt; staff approve.
+            Route::middleware('feature:boosts')->group(function () {
+                Route::get('/account/ads/{ad}/boost', [BoostController::class, 'show'])->whereNumber('ad')->name('account.boost');
+                Route::post('/account/ads/{ad}/boost', [BoostController::class, 'store'])->whereNumber('ad')->middleware('throttle:10,60')->name('account.boost.store');
+                Route::get('/account/payments', [BoostController::class, 'payments'])->name('account.payments');
+            });
 
             // Business shop page (Phase 2).
             Route::middleware('feature:shops')->group(function () {
