@@ -35,7 +35,7 @@ Each page 15 times, one after another (server time + network on the same machine
 | "Show N results" count (JSON) | 19 ms | 22 ms |
 | Brand page (Cars › Mogadishu › Toyota), re-measured | 63 ms | 82 ms |
 
-All well under the 150 ms goal. The brand page reads the brand from each ad's extra fields (JSON), so it is the slowest list; if it ever matters, a generated column with an index fixes it (ROADMAP).
+**After PR 53–55** (big footer, photo count on cards, seller badges), same machine: home 24 ms, Cars 29 ms, ad page 39 ms, filters 22–51 ms, brand page 56 ms. All well under the 150 ms goal. The brand page reads the brand from each ad's extra fields (JSON), so it is the slowest list; if it ever matters, a generated column with an index fixes it (ROADMAP).
 
 Many people at once (a mix of home, lists, search, ad pages and the API; one computer, so some answers are "too many requests" from our own rate limits, which is correct):
 

@@ -170,6 +170,12 @@
                                 {{ icon('user', 'size-5') }} <span class="ms-1">{{ __('ads.page.show_number') }}</span>
                             </button>
                             <p class="hidden text-center text-lg font-bold tracking-wide" data-number></p>
+                            @feature('contact.safety_tip')
+                                <p class="hidden rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-900 ring-1 ring-amber-200" data-safety-tip role="note">
+                                    {{ icon('shield-check', 'size-4 me-1 inline-block align-[-3px]') }}{{ __('ads.page.contact_tip') }}
+                                    @feature('site.safety_box') <a href="{{ lroute('page', ['slug' => 'safety']) }}" class="font-medium underline">{{ __('ads.page.contact_tip_more') }}</a>@endfeature
+                                </p>
+                            @endfeature
                             <div class="hidden grid-cols-2 gap-2" data-buttons>
                                 @feature('contact.whatsapp')
                                     <a href="#" data-whatsapp class="hidden items-center justify-center gap-2 rounded-lg bg-[#1f9d55] px-3 py-3 font-semibold text-white hover:bg-[#188046]" target="_blank" rel="noopener">{{ __('ads.page.whatsapp') }}</a>
@@ -185,6 +191,14 @@
                             @auth
                                 <form method="post" action="{{ lroute('chat.start', ['ad' => $ad->id]) }}" class="mt-2">
                                     @csrf
+                                    @feature('chat.quick_replies')
+                                        <p class="mb-1.5 text-xs font-medium text-stone-500">{{ __('chat.quick.title') }}</p>
+                                        <div class="mb-2 flex flex-wrap gap-1.5">
+                                            @foreach (\App\Http\Controllers\Account\ChatController::QUICK as $q)
+                                                <button type="submit" name="quick" value="{{ $q }}" class="rounded-full bg-brand-50 px-3 py-1.5 text-sm font-medium text-brand-800 ring-1 ring-brand-200 hover:bg-brand-200">{{ __('chat.quick.'.$q) }}</button>
+                                            @endforeach
+                                        </div>
+                                    @endfeature
                                     <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-lg px-3 py-3 font-semibold text-brand-800 ring-1 ring-brand-200 hover:bg-brand-50">{{ icon('message-circle', 'size-5') }} {{ __('chat.start') }}</button>
                                 </form>
                             @else

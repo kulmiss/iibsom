@@ -54,10 +54,15 @@ class HelpCentre
      */
     private static function files(string $locale): array
     {
-        return array_merge(
+        $files = array_merge(
             self::filesIn(resource_path('help/'.config('iibsom.default_locale'))),
             self::filesIn(resource_path("help/{$locale}")),
         );
+        if (! feature('help.how_to_sell')) {
+            unset($files['how-to-sell']); // switch "help.how_to_sell"
+        }
+
+        return $files;
     }
 
     private static function fill(string $body): string

@@ -12,6 +12,7 @@ return [
     ],
 
     'post' => [
+        'how_to_sell' => 'Ma ku cusub tahay iibinta? 6 talo oo dhakhso loogu iibiyo',
         'title' => 'Dhig xayeysiis',
         'choose' => 'Maxaad iibinaysaa?',
         'choose_help' => 'Dooro qaybta ugu habboon. Waxay ka caawisaa iibsadayaasha inay helaan xayeysiiskaaga.',
@@ -150,6 +151,8 @@ return [
         'description' => 'Sharaxaad',
         'seller' => 'Iibiyaha',
         'member_since' => 'Xubin tan iyo :date',
+        'contact_tip' => 'Ku kulma meel dadweyne oo mashquul ah oo marka hore arag alaabta. Weligaa lacag hore ha u dirin.',
+        'contact_tip_more' => 'Talooyin ammaan',
         'seller_ads' => '{1} 1 xayeysiis oo muuqda|[2,*] :count xayeysiis oo muuqda',
         'show_number' => 'Muuji lambarka',
         'call' => 'Wac',

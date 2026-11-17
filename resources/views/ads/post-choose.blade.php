@@ -7,6 +7,9 @@
         <p class="text-sm font-medium text-brand-700">{{ __('ads.post.step', ['step' => 1]) }}</p>
         <h1 class="text-2xl font-bold">{{ __('ads.post.choose') }}</h1>
         <p class="mt-1 text-stone-600">{{ __('ads.post.choose_help') }}</p>
+        @if (feature('help.how_to_sell') && feature('help.centre'))
+            <p class="mt-2 text-sm"><a href="{{ lroute('help.show', ['article' => 'how-to-sell']) }}" class="inline-flex items-center gap-1 font-medium text-brand-700 underline">{{ icon('lightbulb', 'size-4') }} {{ __('ads.post.how_to_sell') }}</a></p>
+        @endif
 
         <div class="mt-5 space-y-2">
             @foreach ($categories as $main)

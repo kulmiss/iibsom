@@ -10,6 +10,7 @@ return [
     ],
 
     'post' => [
+        'how_to_sell' => 'New to selling? 6 tips to sell fast',
         'title' => 'Post an ad',
         'choose' => 'What are you selling?',
         'choose_help' => 'Pick the best category. It helps buyers find your ad.',
@@ -148,6 +149,8 @@ return [
         'description' => 'Description',
         'seller' => 'Seller',
         'member_since' => 'Member since :date',
+        'contact_tip' => 'Meet in a busy public place and see the item first. Never send money before.',
+        'contact_tip_more' => 'Safety tips',
         'seller_ads' => '{1} 1 ad live|[2,*] :count ads live',
         'show_number' => 'Show phone number',
         'call' => 'Call',

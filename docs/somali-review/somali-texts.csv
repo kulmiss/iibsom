@@ -105,6 +105,7 @@ ads.status.live,Live,"Waa muuqdaa","needs native review",app/Enums/AdStatus.php,
 ads.status.rejected,Rejected,"Waa la diiday","needs native review",app/Enums/AdStatus.php,
 ads.status.sold,Sold,"Waa la iibiyey","needs native review",app/Enums/AdStatus.php,
 ads.status.expired,Expired,"Waa dhacay","needs native review",app/Enums/AdStatus.php,
+ads.post.how_to_sell,"New to selling? 6 tips to sell fast","Ma ku cusub tahay iibinta? 6 talo oo dhakhso loogu iibiyo","needs native review",resources/views/ads/post-choose.blade.php,ads-post-choose.png
 ads.post.title,"Post an ad","Dhig xayeysiis","needs native review","resources/views/ads/post-choose.blade.php | resources/views/ads/post-form.blade.php","ads-post-choose.png | ads-post-form.png"
 ads.post.choose,"What are you selling?","Maxaad iibinaysaa?","needs native review",resources/views/ads/post-choose.blade.php,ads-post-choose.png
 ads.post.choose_help,"Pick the best category. It helps buyers find your ad.","Dooro qaybta ugu habboon. Waxay ka caawisaa iibsadayaasha inay helaan xayeysiiskaaga.","needs native review",resources/views/ads/post-choose.blade.php,ads-post-choose.png
@@ -222,6 +223,8 @@ ads.page.details,Details,Faahfaahin,"needs native review",resources/views/ads/sh
 ads.page.description,Description,Sharaxaad,"needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.seller,Seller,Iibiyaha,"needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.member_since,"Member since :date","Xubin tan iyo :date","needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.page.contact_tip,"Meet in a busy public place and see the item first. Never send money before.","Ku kulma meel dadweyne oo mashquul ah oo marka hore arag alaabta. Weligaa lacag hore ha u dirin.","needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.page.contact_tip_more,"Safety tips","Talooyin ammaan","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.seller_ads,"{1} 1 ad live|[2,*] :count ads live","{1} 1 xayeysiis oo muuqda|[2,*] :count xayeysiis oo muuqda","needs native review","resources/views/ads/show.blade.php | resources/views/sellers/reviews.blade.php",ads-show.png
 ads.page.show_number,"Show phone number","Muuji lambarka","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.call,Call,Wac,"needs native review",resources/views/ads/show.blade.php,ads-show.png
@@ -374,6 +377,11 @@ chat.block_confirm,"Block this chat? Neither of you can send more messages.","Ma
 chat.blocked_by_you,"You blocked this chat.","Adiga ayaa xannibay sheekadan.","needs native review",resources/views/chat/show.blade.php,
 chat.blocked_by_them,"This chat was blocked.","Sheekadan waa la xannibay.","needs native review",resources/views/chat/show.blade.php,
 chat.new,New,Cusub,"needs native review","resources/views/chat/index.blade.php | resources/views/partials/unread-badge.blade.php",home.png
+chat.quick.title,"Ask the seller","Weydii iibiyaha","needs native review","app/Http/Controllers/Account/ChatController.php | resources/views/ads/show.blade.php",ads-show.png
+chat.quick.available,"Is it still available?","Weli ma la heli karaa?","needs native review","app/Http/Controllers/Account/ChatController.php | resources/views/ads/show.blade.php",ads-show.png
+chat.quick.price,"What is your last price?","Waa imisa qiimahaaga ugu dambeeya?","needs native review","app/Http/Controllers/Account/ChatController.php | resources/views/ads/show.blade.php",ads-show.png
+chat.quick.see,"When can I see it?","Goorma ayaan arki karaa?","needs native review","app/Http/Controllers/Account/ChatController.php | resources/views/ads/show.blade.php",ads-show.png
+chat.quick.where,"Where are you?","Xaggee joogtaa?","needs native review","app/Http/Controllers/Account/ChatController.php | resources/views/ads/show.blade.php",ads-show.png
 chat.unread,"{1} 1 chat with new messages|[2,*] :count chats with new messages","{1} 1 wada-hadal oo fariimo cusub leh|[2,*] :count wada-hadal oo fariimo cusub leh","needs native review",resources/views/partials/unread-badge.blade.php,home.png
 chat.safety,"Stay safe: never send money before you see the item. Meet in a busy place.","Ammaan ahaw: weligaa lacag ha dirin intaadan arag alaabta. Ku kulma meel mashquul ah.","needs native review",resources/views/chat/show.blade.php,
 chat.first,"Say hello and ask about the ad. Your phone number is not shown here.","Salaan oo wax ka weydii xayeysiiska. Lambarkaaga taleefanka halkan laguma muujiyo.","needs native review",resources/views/chat/show.blade.php,
@@ -617,6 +625,26 @@ Isticmaal **Ka warbixi xayeysiiskan** ee bogga xayeysiiska, ama iimaylka caawima
 - Wax bogga ka mid ah oo aan shaqeyn: u qor iimaylka caawimaadda oo noo sheeg waxa aad samaysay iyo waxa aad aragtay.
 
 Kooxdayadu way hubisaa warbixin kasta. Haddii xayeysiisku jebiyo xeerarka, waan saarnaa.","needs native review","Page /copyright (starter text; admin > Pages can change it)",
+help.how-to-sell.title,"How to sell fast on iibsom","Sida dhakhso ugu iibiso iibsom","needs native review","Help page /help/how-to-sell",help-index.png
+help.how-to-sell.body,"Selling on iibsom is free. These 6 steps help buyers find your ad and trust you.
+
+1. **Post your ad.** Tap **Sell**, choose the category and fill in the details. Our team checks every ad before it goes live. [How to post an ad](:help_url/post-an-ad)
+2. **Take good photos.** Daylight, a clean background, the whole item and close-ups. Up to :max_photos photos; the first one is the main photo. [Good photos](:help_url/good-photos)
+3. **Give a fair price.** Look at similar ads first. Ads with a price get more calls than ""Negotiable"".
+4. **Write the important details.** Year, size, condition, what is included. Buyers skip ads that leave them guessing.
+5. **Answer quickly.** Keep your phone on and reply to calls and messages. Sellers who answer fast sell faster.
+6. **Meet safely.** Meet in a busy public place, and never send money first. [Safety tips](:safety_url)
+
+When it is sold, press **Mark as sold** in **My ads**, so buyers stop calling. Ads end after :expiry_days days; you can renew them in **My ads**.","Ka iibinta iibsom waa bilaash. 6-dan tallaabo ayaa iibsadayaasha ka caawiya inay helaan xayeysiiskaaga oo ay kugu kalsoonaadaan.
+
+1. **Dhig xayeysiiskaaga.** Riix **iibi**, dooro qaybta oo buuxi faahfaahinta. Kooxdayadu waxay hubisaa xayeysiis kasta ka hor inta uusan muuqan. [Sida loo dhigo xayeysiis](:help_url/post-an-ad)
+2. **Qaad sawirro wanaagsan.** Iftiinka maalinta, gadaal nadiif ah, alaabta oo dhan iyo meelo dhow. Ilaa :max_photos sawir; kan koowaad waa sawirka ugu muhiimsan. [Sawirro wanaagsan](:help_url/good-photos)
+3. **Dhig qiimo cadaalad ah.** Marka hore eeg xayeysiisyo la mid ah. Xayeysiisyada qiimaha leh waxay helaan wicitaanno ka badan kuwa ""Waa laga wada hadli karaa"".
+4. **Qor faahfaahinta muhiimka ah.** Sannadka, cabbirka, xaaladda, iyo waxa ku jira. Iibsadayaashu way ka gudbaan xayeysiisyada aan wax cad sheegin.
+5. **Si dhakhso ah u jawaab.** Taleefankaaga daar oo ka jawaab wicitaannada iyo fariimaha. Iibiyeyaasha si dhakhso ah u jawaaba ayaa dhakhso u iibiya.
+6. **Si ammaan ah u kulma.** Ku kulma meel dadweyne oo mashquul ah, hana lacag hore u dirin. [Talooyin ammaan](:safety_url)
+
+Marka la iibiyo, riix **Calaamadee waa la iibiyey** gudaha **Xayeysiisyadayda**, si iibsadayaashu u joojiyaan wicitaanka. Xayeysiisyadu waxay dhammaadaan :expiry_days maalmood kadib; waad cusboonaysiin kartaa gudaha **Xayeysiisyadayda**.","needs native review","Help page /help/how-to-sell",
 help.post-an-ad.title,"How to post an ad","Sida loo dhigo xayeysiis","needs native review","Help page /help/post-an-ad",help-index.png
 help.post-an-ad.body,"Posting is free.
 

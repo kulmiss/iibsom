@@ -32,6 +32,7 @@ contact?.querySelector('[data-reveal]')?.addEventListener('click', async (e) => 
         number.textContent = data.display;
         number.classList.remove('hidden');
         btn.classList.add('hidden');
+        contact.querySelector('[data-safety-tip]')?.classList.remove('hidden'); // switch "contact.safety_tip"
 
         const buttons = contact.querySelector('[data-buttons]');
         buttons.classList.remove('hidden');

@@ -91,7 +91,7 @@
         <div class="min-w-0">
             {{-- Quick links --}}
             <div class="flex flex-wrap gap-2">
-                <a href="{{ lroute('post') }}" class="chip bg-accent-400/30 ring-accent-400">{{ icon('tag', 'size-4') }} {{ __('site.home.how_to_sell') }}</a>
+                <a href="{{ feature('help.how_to_sell') && feature('help.centre') ? lroute('help.show', ['article' => 'how-to-sell']) : lroute('post') }}" class="chip bg-accent-400/30 ring-accent-400">{{ icon('tag', 'size-4') }} {{ __('site.home.how_to_sell') }}</a>
                 @feature('site.safety_box')
                     <a href="{{ lroute('page', ['slug' => 'safety']) }}" class="chip bg-brand-50 ring-brand-200">{{ icon('shield-check', 'size-4') }} {{ __('site.home.safety_tips') }}</a>
                 @endfeature

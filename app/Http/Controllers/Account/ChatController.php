@@ -45,8 +45,18 @@ class ChatController extends Controller
             ['seller_id' => $ad->user_id],
         );
 
-        return redirect(lroute('chat.show', ['conversation' => $conversation->id]));
+        // Quick question (switch "chat.quick_replies"): put the words in the box; the buyer still taps Send.
+        $quick = (string) $request->input('quick');
+        $params = ['conversation' => $conversation->id];
+        if (feature('chat.quick_replies') && in_array($quick, self::QUICK, true)) {
+            $params['say'] = $quick;
+        }
+
+        return redirect(lroute('chat.show', $params));
     }
+
+    /** Quick questions a buyer can start a chat with (texts in lang/{code}/chat.php → quick). */
+    public const QUICK = ['available', 'price', 'see', 'where'];
 
     public function show(Request $request, Conversation $conversation): View
     {
@@ -60,6 +70,8 @@ class ChatController extends Controller
             'other' => $conversation->other($user),
             'messages' => $conversation->messages()->latest('id')->limit(100)->get()->reverse()->values(),
             'user' => $user,
+            'draft' => feature('chat.quick_replies') && in_array($request->query('say'), self::QUICK, true)
+                ? __('chat.quick.'.$request->query('say')) : '',
             // Seller ratings (Phase 3): only the buyer, only after the seller answered.
             'canRate' => feature('seller_ratings') && SellerReview::canRate($conversation, $user),
             'myReview' => feature('seller_ratings') && $conversation->buyer_id === $user->id

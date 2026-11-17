@@ -20,6 +20,13 @@ return [
     'blocked_by_you' => 'You blocked this chat.',
     'blocked_by_them' => 'This chat was blocked.',
     'new' => 'New',
+    'quick' => [
+        'title' => 'Ask the seller',
+        'available' => 'Is it still available?',
+        'price' => 'What is your last price?',
+        'see' => 'When can I see it?',
+        'where' => 'Where are you?',
+    ],
     'unread' => '{1} 1 chat with new messages|[2,*] :count chats with new messages',
     'safety' => 'Stay safe: never send money before you see the item. Meet in a busy place.',
     'first' => 'Say hello and ask about the ad. Your phone number is not shown here.',

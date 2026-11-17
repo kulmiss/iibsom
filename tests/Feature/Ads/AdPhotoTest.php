@@ -5,6 +5,7 @@ namespace Tests\Feature\Ads;
 use App\Jobs\ProcessAdPhoto;
 use App\Models\AdPhoto;
 use App\Models\User;
+use App\Support\Features\FeatureManager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Queue;
@@ -107,5 +108,42 @@ class AdPhotoTest extends TestCase
         }
 
         $this->actingAs($this->seller)->postJson('/post-photos', ['photo' => UploadedFile::fake()->image('car.jpg', 800, 600)])->assertStatus(429);
+    }
+
+    public function test_watermark_only_while_on_and_never_on_list_pictures(): void
+    {
+        $corner = function (string $path): array {
+            $img = imagecreatefromstring(Storage::disk('public')->get($path));
+            $this->assertNotFalse($img);
+            $w = imagesx($img);
+            $h = imagesy($img);
+            // Average brightness of the bottom-right corner, where the mark goes.
+            $sum = 0;
+            $n = 0;
+            for ($x = (int) ($w * 0.75); $x < $w - 2; $x += 3) {
+                for ($y = (int) ($h * 0.85); $y < $h - 2; $y += 3) {
+                    $c = imagecolorat($img, $x, $y);
+                    $sum += (($c >> 16) & 255) + (($c >> 8) & 255) + ($c & 255);
+                    $n++;
+                }
+            }
+
+            return [$sum / max(1, $n), $w];
+        };
+        $upload = fn () => $this->actingAs($this->seller)
+            ->postJson('/post-photos', ['photo' => UploadedFile::fake()->image('car.jpg', 1600, 1200)])->assertCreated()->json('id');
+
+        $plain = AdPhoto::findOrFail($upload());
+        app(FeatureManager::class)->set('photos.watermark', true);
+        $marked = AdPhoto::findOrFail($upload());
+
+        [$plainLarge] = $corner($plain->variants['large']['webp']);
+        [$markedLarge] = $corner($marked->variants['large']['webp']);
+        [$markedMedium] = $corner($marked->variants['medium']['webp']);
+        [$plainThumb] = $corner($plain->variants['thumb']['webp']);
+        [$markedThumb] = $corner($marked->variants['thumb']['webp']);
+        $this->assertGreaterThan($plainLarge + 5, $markedLarge, 'Large photo has the light mark.');
+        $this->assertGreaterThan($plainLarge + 5, $markedMedium, 'Middle size too.');
+        $this->assertEqualsWithDelta($plainThumb, $markedThumb, 1.0, 'List pictures stay clean.');
     }
 }
