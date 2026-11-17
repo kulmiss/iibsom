@@ -76,6 +76,21 @@ class LocalizationTest extends TestCase
             ->assertSee('hreflang="x-default" href="'.url('/').'"', false);
     }
 
+    /** The globe menu: current code on the button, every ON language in its own name, current one marked. */
+    public function test_globe_menu_shows_code_and_native_names(): void
+    {
+        $this->enableSomali();
+
+        $this->get('/so')->assertOk()
+            ->assertSee('data-lang-menu', false)
+            ->assertSee('aria-label="Luqadda: Soomaali"', false)
+            ->assertSeeInOrder(['>SO<', 'English', 'Soomaali'], false)
+            ->assertSee('lang="so"'.'
+'.'                       data-lang-switch="so"', false);
+        $this->assertMatchesRegularExpression('/data-lang-switch="so"[^>]*aria-current="true"/s', (string) $this->get('/so')->getContent());
+        $this->assertDoesNotMatchRegularExpression('/data-lang-switch="en"[^>]*aria-current="true"/s', (string) $this->get('/so')->getContent());
+    }
+
     public function test_language_switch_feature_off_hides_switcher(): void
     {
         $this->enableSomali();

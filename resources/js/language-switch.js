@@ -32,7 +32,7 @@ async function swapTo(url, code, push = true) {
     document.documentElement.lang = doc.documentElement.lang;
     document.documentElement.dir = doc.documentElement.dir;
 
-    for (const selector of ['header', '[data-page]', 'footer']) {
+    for (const selector of ['header', '[data-page]', 'footer', '[data-bottom-nav]']) {
         const next = doc.querySelector(selector);
         const current = document.querySelector(selector);
         if (next && current) current.replaceWith(next);
@@ -56,7 +56,20 @@ export function initLanguageSwitch() {
         if (!link || event.metaKey || event.ctrlKey || event.shiftKey) return;
 
         event.preventDefault();
+        link.closest('details')?.removeAttribute('open');
         swapTo(link.href, link.dataset.langSwitch);
+    });
+
+    // The globe menu: close it with Escape (focus back on the globe) or a tap outside.
+    document.addEventListener('keydown', (event) => {
+        const menu = document.querySelector('details[data-lang-menu][open]');
+        if (event.key !== 'Escape' || !menu) return;
+        menu.removeAttribute('open');
+        menu.querySelector('summary')?.focus();
+    });
+    document.addEventListener('click', (event) => {
+        const menu = document.querySelector('details[data-lang-menu][open]');
+        if (menu && !menu.contains(event.target)) menu.removeAttribute('open');
     });
 
     window.addEventListener('popstate', () => {

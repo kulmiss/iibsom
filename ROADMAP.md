@@ -27,6 +27,7 @@ Google sign-in, post an ad, browse + search, ad page, My Ads, safety (reports, a
 - More regions (other countries) via region switches
 
 ## Ideas
+- Search suggestions while typing (categories + common words), "Request call back" button, notifications bell (ad approved, new message, price drop) — from the Jiji study (docs/jiji-study.md).
 - ✅ Admin Health page (PR 12). ✅ "Move to VPS" checklist (docs/scaling.md, PR 19).
 - ✅ (PR 21) Admin "Edited" badge in the approval queue showing what changed since the last approval.
 - ✅ (PR 22) Match demo photos to the brand/type in the title.

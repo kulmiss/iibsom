@@ -1,5 +1,5 @@
 {{-- Phone bottom bar (like a mobile app). Items follow their feature switches. --}}
-<nav class="fixed inset-x-0 bottom-0 z-30 border-t border-stone-200 bg-white pb-[env(safe-area-inset-bottom)] lg:hidden" aria-label="Bottom">
+<nav data-bottom-nav class="fixed inset-x-0 bottom-0 z-30 border-t border-stone-200 bg-white pb-[env(safe-area-inset-bottom)] lg:hidden" aria-label="Bottom">
     <ul class="mx-auto flex max-w-md items-stretch justify-around text-[11px] font-medium text-stone-600">
         <li>
             <a href="{{ lroute('home') }}" class="bottom-nav-item {{ request()->routeIs('home', 'loc.home') ? 'text-brand-700' : '' }}" @if (request()->routeIs('home', 'loc.home')) aria-current="page" @endif>
