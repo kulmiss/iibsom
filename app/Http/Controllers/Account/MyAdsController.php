@@ -96,7 +96,7 @@ class MyAdsController extends Controller
         $ad->save();
 
         // expires_at is always set here (renew needs the "ads expire" switch), but never crash on it.
-        return redirect(lroute('account.ads'))->with('status', __('ads.mine.renewed', ['date' => $ad->expires_at?->translatedFormat('j M Y') ?? '']));
+        return redirect(lroute('account.ads'))->with('status', __('ads.mine.renewed', ['date' => mdate($ad->expires_at)]));
     }
 
     public function destroy(Request $request, Ad $ad): RedirectResponse

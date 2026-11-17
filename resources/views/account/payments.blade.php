@@ -18,7 +18,7 @@
                                 @if ($p->is_test)<span class="ms-1 rounded bg-amber-100 px-1.5 py-0.5 text-xs font-semibold text-amber-900">{{ __('ads.boost.test') }}</span>@endif
                             </p>
                             <p class="truncate text-sm text-stone-600">{{ $p->ad?->title }}</p>
-                            <p class="text-xs text-stone-500">{{ config('boosts.methods.'.$p->method) }} · <span class="font-mono">{{ $p->reference }}</span> · {{ $p->created_at?->translatedFormat('j M Y') }}</p>
+                            <p class="text-xs text-stone-500">{{ config('boosts.methods.'.$p->method) }} · <span class="font-mono">{{ $p->reference }}</span> · {{ mdate($p->created_at) }}</p>
                         </div>
                         <p class="text-sm font-semibold {{ $p->status === 'approved' ? 'text-green-700' : ($p->status === 'rejected' ? 'text-red-700' : 'text-stone-600') }}">
                             @if ($p->status === 'approved') {{ __('ads.boost.status_approved') }}

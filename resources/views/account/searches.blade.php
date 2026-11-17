@@ -19,7 +19,7 @@
                         <div class="min-w-0 flex-1">
                             <p class="font-medium break-words">{{ $search->label }}</p>
                             @if ($search->last_sent_at)
-                                <p class="text-xs text-stone-500">{{ __('ads.searches.last_sent', ['date' => $search->last_sent_at->translatedFormat('j M Y')]) }}</p>
+                                <p class="text-xs text-stone-500">{{ __('ads.searches.last_sent', ['date' => mdate($search->last_sent_at)]) }}</p>
                             @endif
                         </div>
                         <a href="{{ $search->url() }}" class="chip ring-stone-200">{{ __('ads.searches.open') }}</a>

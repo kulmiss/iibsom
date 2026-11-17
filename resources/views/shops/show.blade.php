@@ -25,7 +25,7 @@
                     @endif
                 </h1>
                 <p class="mt-1 text-sm text-stone-600">
-                    @if ($shop->city){{ $shop->city->label }} · @endif{{ __('account.shop.member_since', ['date' => $shop->user->created_at->translatedFormat('M Y')]) }}
+                    @if ($shop->city){{ $shop->city->label }} · @endif{{ __('account.shop.member_since', ['date' => mdate($shop->user->created_at, 'M Y')]) }}
                 </p>
                 @include('partials.seller-rating', ['seller' => $shop->user])
                 @if ($shop->hours)

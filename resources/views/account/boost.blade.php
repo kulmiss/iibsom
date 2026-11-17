@@ -14,7 +14,7 @@
 
         @if ($ad->activeBoost())
             <p class="mt-4 rounded-xl bg-brand-50 p-4 text-sm text-brand-900 ring-1 ring-brand-200">
-                {{ __('ads.boost.boosted_until', ['level' => \App\Support\Money\Boosts::label($ad->activeBoost()), 'date' => $ad->boosted_until->translatedFormat('j M Y')]) }}
+                {{ __('ads.boost.boosted_until', ['level' => \App\Support\Money\Boosts::label($ad->activeBoost()), 'date' => mdate($ad->boosted_until)]) }}
             </p>
         @endif
 

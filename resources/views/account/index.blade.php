@@ -11,7 +11,7 @@
             <div class="min-w-0">
                 <h1 class="truncate text-lg font-bold">{{ $user->name }}</h1>
                 <p class="text-sm text-stone-600">{{ $user->city?->label }} · {{ \App\Support\Phone\SomaliPhone::format($user->phone) }}</p>
-                <p class="text-xs text-stone-500">{{ __('account.account.member_since', ['date' => $user->created_at->translatedFormat('M Y')]) }}</p>
+                <p class="text-xs text-stone-500">{{ __('account.account.member_since', ['date' => mdate($user->created_at, 'M Y')]) }}</p>
             </div>
         </div>
 

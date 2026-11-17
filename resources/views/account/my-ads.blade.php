@@ -37,9 +37,9 @@
                         <p class="text-sm font-bold text-brand-800">{{ $ad->priceLabel() }}</p>
                         <p class="text-xs text-stone-500">
                             {{ $ad->status->label() }}
-                            @if ($ad->status === \App\Enums\AdStatus::Sold && $ad->sold_at) · {{ __('ads.mine.sold_on', ['date' => $ad->sold_at->translatedFormat('j M Y')]) }}
-                            @elseif ($ad->expires_at && $ad->expires_at->isPast()) · {{ __('ads.mine.ended_on', ['date' => $ad->expires_at->translatedFormat('j M Y')]) }}
-                            @elseif ($ad->expires_at) · {{ __('ads.mine.ends', ['date' => $ad->expires_at->translatedFormat('j M Y')]) }}
+                            @if ($ad->status === \App\Enums\AdStatus::Sold && $ad->sold_at) · {{ __('ads.mine.sold_on', ['date' => mdate($ad->sold_at)]) }}
+                            @elseif ($ad->expires_at && $ad->expires_at->isPast()) · {{ __('ads.mine.ended_on', ['date' => mdate($ad->expires_at)]) }}
+                            @elseif ($ad->expires_at) · {{ __('ads.mine.ends', ['date' => mdate($ad->expires_at)]) }}
                             @endif
                         </p>
                         @feature('ad_stats')

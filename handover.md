@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-17 (PR 43)_
+_Last updated: 2026-11-17 (PR 44)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -84,7 +84,8 @@ See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example 
 40. **PR 40:** Price guide on the post/edit form (`PriceHint`, switch `price_suggestions`, OFF).
 41. **PR 41:** Seller ratings from the chat + public ratings page + admin Ratings (switch `seller_ratings`, OFF).
 42. **PR 42:** Auto-post new ads to Telegram / Facebook behind `SocialNetwork` (switch `social.autopost`, OFF; keys in .env; docs/social-autopost.md).
-43. **PR 43:** Help for buyers abroad: safety note + approximate price in their money from typed rates (switch `diaspora`, OFF). Part C done. Next: Part D (bug hunt, security audit, load test, docs), then Part D review — owner's big job list of 2026-11-16.
+43. **PR 43:** Help for buyers abroad: safety note + approximate price in their money from typed rates (switch `diaspora`, OFF). Part C done.
+44. **PR 44:** Final bug hunt: dates in Somalia time everywhere (`mdate()`), 150-page crawl with every switch ON (clean), query budgets for Phase 2/3 pages. Next: Part D (security audit, load test, docs), then Part D review — owner's big job list of 2026-11-16.
 
 ## Known notes
 - The local PHP Docker image could not be built inside Claude's sandbox (the Alpine package site is blocked there). CI builds it on GitHub to prove it works.

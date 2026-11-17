@@ -141,7 +141,7 @@
                                     @include('partials.verified-badge')
                                 @endif
                             </p>
-                            <p class="text-xs text-stone-500">{{ $ad->user->city?->label }} · {{ __('ads.page.member_since', ['date' => $ad->user->created_at->translatedFormat('M Y')]) }}</p>
+                            <p class="text-xs text-stone-500">{{ $ad->user->city?->label }} · {{ __('ads.page.member_since', ['date' => mdate($ad->user->created_at, 'M Y')]) }}</p>
                             <p class="text-xs text-stone-500">{{ trans_choice('ads.page.seller_ads', max(1, $sellerLiveAds), ['count' => $sellerLiveAds]) }}</p>
                             @include('partials.seller-rating', ['seller' => $ad->user])
                             @if (feature('shops') && $ad->user->shop?->isActive())
