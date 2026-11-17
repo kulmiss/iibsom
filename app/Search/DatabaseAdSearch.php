@@ -16,7 +16,75 @@ class DatabaseAdSearch implements AdSearch
     /** @return LengthAwarePaginator<int, Ad> */
     public function search(array $filters, int $perPage = 24, int $page = 1): LengthAwarePaginator
     {
-        $query = self::publicQuery()->with(['category:id,name,slug,icon,parent_id', 'city:id,name,slug', 'cover']);
+        $query = $this->filtered($filters)->with(['category:id,name,slug,icon,parent_id', 'city:id,name,slug', 'cover']);
+
+        // Paid boosts (switch "boosts") come first in the default order: Diamond, VIP, Top.
+        if (($filters['sort'] ?? 'newest') === 'newest' && feature('boosts')) {
+            $query->orderByDesc('ads.boost_level');
+        }
+        match ($filters['sort'] ?? 'newest') {
+            'cheapest' => $query->orderByRaw('price is null')->orderBy('price'),
+            'expensive' => $query->orderByDesc('price'),
+            // "Most viewed" needs the view numbers (switch "ad_stats"); without them: newest.
+            'popular' => feature('ad_stats') ? $query->orderByDesc('views')->orderByDesc('published_at') : $query->orderByDesc('published_at'),
+            default => $query->orderByDesc('published_at'),
+        };
+        $query->orderByDesc('id');
+
+        $total = fn () => $this->cachedCount($filters, $query);
+
+        return $query->paginate($perPage, ['ads.*'], 'page', $page, $total);
+    }
+
+    /** How many ads match (for "Show 120 results" while filters change). Kept in the cache until anything changes. */
+    public function count(array $filters): int
+    {
+        return $this->cachedCount($filters, $this->filtered($filters));
+    }
+
+    /**
+     * Quick price ranges with how many ads each has, for the current filters without the price.
+     * Only ranges that have ads; at most 6. One query (kept in the cache like the counts).
+     *
+     * @return list<array{min: int, max: ?int, count: int}>
+     */
+    public function priceBuckets(array $filters): array
+    {
+        $filters = Arr::except($filters, ['min', 'max', 'sort']);
+        $key = 'ad-buckets:'.PageCache::version().':'.(int) feature('site.demo_data').':'.md5((string) json_encode($filters));
+
+        return Cache::remember($key, 600, function () use ($filters) {
+            $edges = self::BUCKETS;
+            $selects = [];
+            foreach ($edges as $i => [$min, $max]) {
+                $selects[] = 'SUM(CASE WHEN price >= '.$min.($max !== null ? ' AND price < '.$max : '').' THEN 1 ELSE 0 END) AS b'.$i;
+            }
+            $row = (array) $this->filtered($filters)->toBase()->whereNotNull('price')->selectRaw(implode(', ', $selects))->first();
+
+            $out = [];
+            foreach ($edges as $i => [$min, $max]) {
+                $count = (int) ($row['b'.$i] ?? 0);
+                if ($count > 0) {
+                    $out[] = ['min' => $min, 'max' => $max, 'count' => $count];
+                }
+            }
+
+            return $out;
+        });
+    }
+
+    /** Price ranges in US dollars: [from, under] (null = no top). */
+    public const BUCKETS = [[0, 100], [100, 500], [500, 1000], [1000, 5000], [5000, 20000], [20000, null]];
+
+    /**
+     * All filters, no order and no eager loading (shared by the list, the count and the price ranges).
+     *
+     * @param  array<string, mixed>  $filters
+     * @return Builder<Ad>
+     */
+    private function filtered(array $filters): Builder
+    {
+        $query = self::publicQuery();
 
         if ($q = trim((string) ($filters['q'] ?? ''))) {
             $this->keyword($query, $q);
@@ -27,6 +95,9 @@ class DatabaseAdSearch implements AdSearch
         if (! empty($filters['city_id'])) {
             $query->where('city_id', $filters['city_id']);
         }
+        if (! empty($filters['area_id'])) {
+            $query->where('area_id', $filters['area_id']);
+        }
         if (isset($filters['min'])) {
             $query->where('price', '>=', (int) $filters['min']);
         }
@@ -36,6 +107,17 @@ class DatabaseAdSearch implements AdSearch
         if (! empty($filters['condition'])) {
             $query->where('condition', $filters['condition']);
         }
+        // "Posted within": the last 24 hours / 7 days / 30 days.
+        if (isset($filters['posted']) && ($hours = self::POSTED[$filters['posted']] ?? null)) {
+            $query->where('ads.published_at', '>=', now()->subHours($hours));
+        }
+        if (! empty($filters['photos'])) {
+            $query->whereExists(fn ($q) => $q->selectRaw('1')->from('ad_photos')->whereColumn('ad_photos.ad_id', 'ads.id')->where('ad_photos.status', 'ready'));
+        }
+        // Only sellers with the Verified badge (only while that switch is ON).
+        if (! empty($filters['verified']) && feature('verified_badge')) {
+            $query->whereIn('ads.user_id', fn ($q) => $q->select('id')->from('users')->whereNotNull('verified_at'));
+        }
         // Saved-search alerts: only ads published since the last check.
         if (($filters['published_after'] ?? null) instanceof \DateTimeInterface) {
             $query->where('ads.published_at', '>', $filters['published_after']);
@@ -44,23 +126,23 @@ class DatabaseAdSearch implements AdSearch
             $this->field($query, $key, $value);
         }
 
-        // Paid boosts (switch "boosts") come first in the default order: Diamond, VIP, Top.
-        if (($filters['sort'] ?? 'newest') === 'newest' && feature('boosts')) {
-            $query->orderByDesc('ads.boost_level');
-        }
-        match ($filters['sort'] ?? 'newest') {
-            'cheapest' => $query->orderByRaw('price is null')->orderBy('price'),
-            'expensive' => $query->orderByDesc('price'),
-            default => $query->orderByDesc('published_at'),
-        };
-        $query->orderByDesc('id');
+        return $query;
+    }
 
+    /** Hours for "posted within". */
+    public const POSTED = ['24h' => 24, '7d' => 24 * 7, '30d' => 24 * 30];
+
+    /**
+     * @param  array<string, mixed>  $filters
+     * @param  Builder<Ad>  $query
+     */
+    private function cachedCount(array $filters, Builder $query): int
+    {
         // Counting all live ads is the slowest part of a list (≈0.2 s at 100k ads, load test).
         // The count is kept until anything changes (every ad save bumps the page-cache version).
-        $countKey = 'ad-count:'.PageCache::version().':'.(int) feature('site.demo_data').':'.md5((string) json_encode(Arr::except($filters, ['sort'])));
-        $total = fn () => (int) Cache::remember($countKey, 600, fn () => $query->toBase()->getCountForPagination());
+        $countKey = 'ad-count:'.PageCache::version().':'.(int) feature('site.demo_data').':'.(int) feature('verified_badge').':'.md5((string) json_encode(Arr::except($filters, ['sort'])));
 
-        return $query->paginate($perPage, ['ads.*'], 'page', $page, $total);
+        return (int) Cache::remember($countKey, 600, fn () => $query->toBase()->getCountForPagination());
     }
 
     /**

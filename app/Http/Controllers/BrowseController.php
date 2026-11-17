@@ -2,14 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ad;
+use App\Models\Area;
 use App\Models\Category;
+use App\Models\CategoryField;
 use App\Models\City;
 use App\Search\AdSearch;
 use App\Search\SearchCriteria;
 use App\Search\SearchRequest;
 use App\Support\Catalog;
 use App\Support\Seo\Landing;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\View\View;
 
 /** Search results and category pages (/cars, /cars/mogadishu, /search?q=...). */
@@ -61,9 +68,13 @@ class BrowseController extends Controller
             'min' => ['nullable', 'integer', 'min:0'],
             'max' => ['nullable', 'integer', 'min:0'],
             'condition' => ['nullable', 'in:new,used'],
-            'sort' => ['nullable', 'in:newest,cheapest,expensive'],
+            'sort' => ['nullable', 'in:newest,cheapest,expensive,popular'],
             'f' => ['nullable', 'array', 'max:20'],
             'page' => ['nullable', 'integer', 'min:1', 'max:500'],
+            'area' => ['nullable', 'integer', 'min:1'],
+            'posted' => ['nullable', 'in:24h,7d,30d'],
+            'photos' => ['nullable', 'in:1'],
+            'verified' => ['nullable', 'in:1'],
         ]);
 
         if ($category && ! $category->isLive()) {
@@ -85,11 +96,24 @@ class BrowseController extends Controller
             $fields = $fields->reject(fn ($f) => $f->key === 'brand')->values(); // the page IS the brand
         }
 
-        $results = $this->search->search(SearchRequest::basic($request) + [
+        // An area only counts inside its own (live) city.
+        $more = feature('search.more_filters');
+        $areas = $city && $more ? Area::where('city_id', $city->id)->where('enabled', true)->orderBy('sort')->get(['id', 'name']) : collect();
+        $area = $request->filled('area') ? $areas->firstWhere('id', $request->integer('area')) : null;
+
+        $searchFilters = SearchRequest::basic($request) + [
             'category_ids' => $categoryIds,
             'city_id' => $city?->id,
+            'area_id' => $area?->id,
+            'posted' => $more ? ($data['posted'] ?? null) : null,
+            'photos' => $more && isset($data['photos']),
+            'verified' => $more && isset($data['verified']) && feature('verified_badge'),
             'fields' => $fieldFilters,
-        ], 24, max(1, $request->integer('page', 1)))->withQueryString();
+        ];
+        if (! $more && $searchFilters['sort'] === 'popular') {
+            $searchFilters['sort'] = 'newest';
+        }
+        $results = $this->search->search($searchFilters, 24, max(1, $request->integer('page', 1)))->withQueryString();
 
         return view('browse.index', [
             'results' => $results,
@@ -97,6 +121,10 @@ class BrowseController extends Controller
             'city' => $city,
             'fields' => $fields,
             'filters' => $data + ['f' => $fieldFilters],
+            'area' => $area,
+            'areas' => $areas,
+            'priceBuckets' => $more ? $this->search->priceBuckets($searchFilters) : [],
+            'active' => $this->activeChips($request, $fields, $fieldFilters, $area, $brand, $more),
             'categories' => $this->catalog->categories(),
             'cities' => $this->catalog->cities(),
             'brand' => $brand,
@@ -104,5 +132,95 @@ class BrowseController extends Controller
                 ? Landing::topBrands($category, $city) : [],
             'cityLinks' => $category && feature('seo.landing_pages') ? Landing::otherCities($city, $this->catalog->cities()) : [],
         ]);
+    }
+
+    /**
+     * "Show 120 results" while filters change on the phone sheet (JSON, no cookie, cached counts).
+     * Same rules as the list: the filters are read the same way by results().
+     */
+    public function count(Request $request): JsonResponse
+    {
+        $request->validate(['category' => ['nullable', 'string', 'max:80'], 'city' => ['nullable', 'string', 'max:80'], 'brand' => ['nullable', 'string', 'max:80']]);
+        $category = $request->filled('category') ? Category::where('slug', $request->string('category'))->first() : null;
+        $city = $request->filled('city') ? City::where('slug', $request->string('city'))->first() : null;
+        // Brand pages (/cars/mogadishu/toyota) count only that brand; an unknown brand is ignored.
+        $brandLabel = $category && $city && $request->filled('brand') ? (Landing::brands($category)[(string) $request->string('brand')] ?? null) : null;
+        $brand = $brandLabel !== null ? ['value' => (string) $request->string('brand'), 'label' => $brandLabel] : null;
+        $view = $this->results($request, $category, $city, $brand);
+        /** @var LengthAwarePaginator<int, Ad> $results */
+        $results = $view->getData()['results'];
+        $total = $results->total();
+
+        return response()->json(['count' => $total, 'text' => trans_choice('ads.browse.show_results', $total, ['count' => number_format($total)])])
+            ->header('Cache-Control', 'public, max-age=30');
+    }
+
+    /**
+     * The filters in use, each with a link that removes only it.
+     *
+     * @param  Collection<int, CategoryField>  $fields
+     * @param  array<string, mixed>  $fieldFilters
+     * @param  array{value: string, label: string}|null  $brand
+     * @return list<array{label: string, url: string}>
+     */
+    private function activeChips(Request $request, Collection $fields, array $fieldFilters, ?Area $area, ?array $brand, bool $more): array
+    {
+        $query = Arr::except($request->query(), ['page']);
+        $without = fn (string ...$keys) => $request->url().(($q = http_build_query(Arr::except($query, $keys))) !== '' ? '?'.$q : '');
+        $chips = [];
+        if ($request->filled('q')) {
+            $chips[] = ['label' => '“'.$request->string('q').'”', 'url' => $without('q')];
+        }
+        if ($request->filled('min') || $request->filled('max')) {
+            $chips[] = ['label' => __('ads.browse.price').': '.self::range($request->input('min'), $request->input('max'), '$'), 'url' => $without('min', 'max')];
+        }
+        if ($request->filled('condition')) {
+            $chips[] = ['label' => __('ads.form.'.$request->string('condition')), 'url' => $without('condition')];
+        }
+        if ($area) {
+            $chips[] = ['label' => $area->label, 'url' => $without('area')];
+        }
+        if ($more && $request->filled('posted')) {
+            $chips[] = ['label' => __('ads.browse.posted_'.$request->string('posted')), 'url' => $without('posted')];
+        }
+        if ($more && $request->filled('photos')) {
+            $chips[] = ['label' => __('ads.browse.with_photos'), 'url' => $without('photos')];
+        }
+        if ($more && $request->filled('verified') && feature('verified_badge')) {
+            $chips[] = ['label' => __('ads.browse.verified_only'), 'url' => $without('verified')];
+        }
+        foreach ($fields as $field) {
+            $value = $fieldFilters[$field->key] ?? null;
+            if ($value === null || $value === '' || ($brand !== null && $field->key === 'brand')) {
+                continue;
+            }
+            $label = match (true) {
+                is_array($value) => self::range($value['min'] ?? null, $value['max'] ?? null, '', $field->unit),
+                $field->type === 'boolean' => __('ads.form.yes'),
+                default => $field->optionList()[(string) $value] ?? (string) $value,
+            };
+            if ($label === '') {
+                continue;
+            }
+            $rest = $query;
+            unset($rest['f'][$field->key]);
+            $chips[] = ['label' => $field->label_text.': '.$label, 'url' => $request->url().(($q = http_build_query($rest)) !== '' ? '?'.$q : '')];
+        }
+
+        return $chips;
+    }
+
+    private static function range(mixed $min, mixed $max, string $prefix, ?string $unit = null): string
+    {
+        $fmt = fn (mixed $v) => $prefix.number_format((int) $v).($unit ? ' '.$unit : '');
+        $hasMin = $min !== null && $min !== '';
+        $hasMax = $max !== null && $max !== '';
+
+        return match (true) {
+            $hasMin && $hasMax => $fmt($min).' – '.$fmt($max),
+            $hasMin => __('ads.browse.from').' '.$fmt($min),
+            $hasMax => __('ads.browse.to').' '.$fmt($max),
+            default => '',
+        };
     }
 }

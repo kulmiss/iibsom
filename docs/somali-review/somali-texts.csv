@@ -135,26 +135,26 @@ ads.diaspora.title,"Buying for family from abroad?","Ma waxaad qoyskaaga wax uga
 ads.diaspora.tip_see,"Ask someone you trust in :city to see the item and meet the seller first.","Weydii qof aad aaminsan tahay oo jooga :city inuu marka hore arko alaabta oo la kulmo iibiyaha.","needs native review",resources/views/ads/_diaspora.blade.php,
 ads.diaspora.tip_money,"Never send money before they have seen it and it is handed over.","Weligaa lacag ha dirin ka hor intaanay arkin oo aan la gacansiin.","needs native review",resources/views/ads/_diaspora.blade.php,
 ads.diaspora.tip_chat,"Keep the seller's number and agree everything in writing.","Kaydso lambarka iibiyaha oo wax walba ku heshiiya qoraal.","needs native review",resources/views/ads/_diaspora.blade.php,
-ads.form.photos,Photos,Sawirro,"needs native review","resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
-ads.form.photos_help,"Up to :max photos. The first photo is the cover. Drag to change the order.","Ilaa :max sawir. Sawirka koowaad waa kan hore. Jiid si aad u beddesho kala horreynta.","needs native review","resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
-ads.form.add_photos,"Add photos","Ku dar sawirro","needs native review","resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
-ads.form.title,Title,Cinwaan,"needs native review","app/Support/Ads/AdForm.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
-ads.form.title_help,"Short and clear, e.g. ""Toyota Vitz 2012, automatic"".","Gaaban oo cad, tusaale ""Toyota Vitz 2012, otomaatig"".","needs native review","resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
-ads.form.description,Description,Faahfaahin,"needs native review","app/Support/Ads/AdForm.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
-ads.form.description_help,"What is it like? Any problems? Why are you selling?","Sidee buu yahay? Wax dhibaato ah ma leeyahay? Maxaad u iibinaysaa?","needs native review","resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
-ads.form.price,"Price (USD)","Qiimaha (USD)","needs native review","app/Support/Ads/AdForm.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
-ads.form.negotiable,Negotiable,"Waa laga wada hadli karaa","needs native review","app/Models/Ad.php | app/Support/Social/SocialPosts.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
-ads.form.condition,Condition,Xaaladda,"needs native review","app/Support/Ads/AdForm.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
-ads.form.new,New,Cusub,"needs native review","resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php | resources/views/browse/index.blade.php","ads-post-form.png | ads-show.png | browse-index.png"
-ads.form.used,Used,"La isticmaalay","needs native review","resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php | resources/views/browse/index.blade.php","ads-post-form.png | ads-show.png | browse-index.png"
-ads.form.city,City,Magaalada,"needs native review","app/Support/Ads/AdForm.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
-ads.form.area,"Area / district","Xaafadda / degmada","needs native review","app/Support/Ads/AdForm.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
-ads.form.area_any,"Choose area (optional)","Dooro xaafadda (ikhtiyaari)","needs native review","resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
-ads.form.choose,Choose…,Dooro…,"needs native review","resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
-ads.form.yes,Yes,Haa,"needs native review","app/Http/Controllers/AdPageController.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
-ads.form.no,No,Maya,"needs native review","app/Http/Controllers/AdPageController.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
-ads.form.duplicate,"You already posted this ad. Edit the old one instead.","Xayeysiiskan horay ayaad u dhigtay. Wax ka beddel kii hore.","needs native review","app/Support/Ads/AdForm.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
-ads.form.daily_limit,"You can post up to :count ads per day. Please try again tomorrow.","Maalintii waxaad dhigi kartaa ilaa :count xayeysiis. Fadlan berri isku day.","needs native review","app/Support/Ads/AdForm.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
+ads.form.photos,Photos,Sawirro,"needs native review","app/Http/Controllers/BrowseController.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
+ads.form.photos_help,"Up to :max photos. The first photo is the cover. Drag to change the order.","Ilaa :max sawir. Sawirka koowaad waa kan hore. Jiid si aad u beddesho kala horreynta.","needs native review","app/Http/Controllers/BrowseController.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
+ads.form.add_photos,"Add photos","Ku dar sawirro","needs native review","app/Http/Controllers/BrowseController.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
+ads.form.title,Title,Cinwaan,"needs native review","app/Http/Controllers/BrowseController.php | app/Support/Ads/AdForm.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
+ads.form.title_help,"Short and clear, e.g. ""Toyota Vitz 2012, automatic"".","Gaaban oo cad, tusaale ""Toyota Vitz 2012, otomaatig"".","needs native review","app/Http/Controllers/BrowseController.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
+ads.form.description,Description,Faahfaahin,"needs native review","app/Http/Controllers/BrowseController.php | app/Support/Ads/AdForm.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
+ads.form.description_help,"What is it like? Any problems? Why are you selling?","Sidee buu yahay? Wax dhibaato ah ma leeyahay? Maxaad u iibinaysaa?","needs native review","app/Http/Controllers/BrowseController.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
+ads.form.price,"Price (USD)","Qiimaha (USD)","needs native review","app/Http/Controllers/BrowseController.php | app/Support/Ads/AdForm.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
+ads.form.negotiable,Negotiable,"Waa laga wada hadli karaa","needs native review","app/Http/Controllers/BrowseController.php | app/Models/Ad.php | app/Support/Social/SocialPosts.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
+ads.form.condition,Condition,Xaaladda,"needs native review","app/Http/Controllers/BrowseController.php | app/Support/Ads/AdForm.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
+ads.form.new,New,Cusub,"needs native review","app/Http/Controllers/BrowseController.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php | resources/views/browse/_filters.blade.php","ads-post-form.png | ads-show.png"
+ads.form.used,Used,"La isticmaalay","needs native review","app/Http/Controllers/BrowseController.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php | resources/views/browse/_filters.blade.php","ads-post-form.png | ads-show.png"
+ads.form.city,City,Magaalada,"needs native review","app/Http/Controllers/BrowseController.php | app/Support/Ads/AdForm.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
+ads.form.area,"Area / district","Xaafadda / degmada","needs native review","app/Http/Controllers/BrowseController.php | app/Support/Ads/AdForm.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php | resources/views/browse/_filters.blade.php","ads-post-form.png | ads-show.png"
+ads.form.area_any,"Choose area (optional)","Dooro xaafadda (ikhtiyaari)","needs native review","app/Http/Controllers/BrowseController.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
+ads.form.choose,Choose…,Dooro…,"needs native review","app/Http/Controllers/BrowseController.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
+ads.form.yes,Yes,Haa,"needs native review","app/Http/Controllers/AdPageController.php | app/Http/Controllers/BrowseController.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
+ads.form.no,No,Maya,"needs native review","app/Http/Controllers/AdPageController.php | app/Http/Controllers/BrowseController.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
+ads.form.duplicate,"You already posted this ad. Edit the old one instead.","Xayeysiiskan horay ayaad u dhigtay. Wax ka beddel kii hore.","needs native review","app/Http/Controllers/BrowseController.php | app/Support/Ads/AdForm.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
+ads.form.daily_limit,"You can post up to :count ads per day. Please try again tomorrow.","Maalintii waxaad dhigi kartaa ilaa :count xayeysiis. Fadlan berri isku day.","needs native review","app/Http/Controllers/BrowseController.php | app/Support/Ads/AdForm.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
 ads.photos.uploading,Uploading…,"Waa la soo gelinayaa…","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
 ads.photos.failed,"Upload failed. Tap to remove and try again.","Soo gelintu way fashilantay. Riix si aad u saarto oo mar kale isku day.","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
 ads.photos.too_many,"Too many photos waiting. Post your ad or remove some photos first.","Sawirro badan ayaa sugaya. Marka hore dhig xayeysiiskaaga ama saar sawirro.","needs native review",app/Http/Controllers/Ads/AdPhotoController.php,
@@ -163,38 +163,60 @@ ads.photos.move_left,"Move left","U dhaqaaji bidix","needs native review",resour
 ads.photos.move_right,"Move right","U dhaqaaji midig","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
 ads.photos.cover,Cover,"Kan hore","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
 ads.photos.limit,"You can add up to :max photos.","Waxaad ku dari kartaa ilaa :max sawir.","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
-ads.browse.all_ads,"All ads","Dhammaan xayeysiisyada","needs native review","resources/views/browse/index.blade.php | resources/views/home.blade.php","browse-index.png | home.png"
-ads.browse.results_for,"{0} No results for :what in :where|{1} 1 result for :what in :where|[2,*] :count results for :what in :where","{0} Wax natiijo ah looma helin :what gudaha :where|{1} 1 natiijo oo :what ah gudaha :where|[2,*] :count natiijo oo :what ah gudaha :where","needs native review",resources/views/browse/index.blade.php,browse-index.png
-ads.browse.somalia,Somalia,Soomaaliya,"needs native review",resources/views/browse/index.blade.php,browse-index.png
-ads.browse.all_in,"All in :category","Dhammaan :category","needs native review","resources/views/browse/index.blade.php | resources/views/home.blade.php","browse-index.png | home.png"
-ads.browse.sub_categories,"Sub categories of :category","Qaybaha hoose ee :category","needs native review","resources/views/browse/index.blade.php | resources/views/home.blade.php","browse-index.png | home.png"
-ads.browse.more_in,"More in :category","Wax kale oo :category ah","needs native review",resources/views/browse/index.blade.php,browse-index.png
-ads.browse.results,"{0} No ads found|{1} 1 ad|[2,*] :count ads","{0} Xayeysiis lama helin|{1} 1 xayeysiis|[2,*] :count xayeysiis","needs native review",resources/views/browse/index.blade.php,browse-index.png
-ads.browse.in_city,"in :city","gudaha :city","needs native review",resources/views/browse/index.blade.php,browse-index.png
-ads.browse.search_for,"Results for “:q”","Natiijooyinka “:q”","needs native review",resources/views/browse/index.blade.php,browse-index.png
-ads.browse.filters,Filters,Shaandheyn,"needs native review",resources/views/browse/index.blade.php,browse-index.png
-ads.browse.apply,"Show ads","Muuji xayeysiisyada","needs native review",resources/views/browse/index.blade.php,browse-index.png
-ads.browse.clear,"Clear filters","Tirtir shaandheynta","needs native review",resources/views/browse/index.blade.php,browse-index.png
-ads.browse.category,Category,Qaybta,"needs native review",resources/views/browse/index.blade.php,browse-index.png
-ads.browse.all_categories,"All categories","Qaybaha oo dhan","needs native review",resources/views/browse/index.blade.php,browse-index.png
-ads.browse.city,City,Magaalada,"needs native review",resources/views/browse/index.blade.php,browse-index.png
-ads.browse.all_cities,"All cities","Magaalooyinka oo dhan","needs native review",resources/views/browse/index.blade.php,browse-index.png
-ads.browse.price,"Price (USD)","Qiimaha (USD)","needs native review",resources/views/browse/index.blade.php,browse-index.png
-ads.browse.min,Min,"Ugu yar","needs native review",resources/views/browse/index.blade.php,browse-index.png
-ads.browse.max,Max,"Ugu badan","needs native review",resources/views/browse/index.blade.php,browse-index.png
-ads.browse.condition,Condition,Xaaladda,"needs native review",resources/views/browse/index.blade.php,browse-index.png
-ads.browse.any,Any,"Mid kasta","needs native review",resources/views/browse/index.blade.php,browse-index.png
-ads.browse.sort,Sort,"Kala soocid","needs native review",resources/views/browse/index.blade.php,browse-index.png
-ads.browse.newest,Newest,"Kuwa ugu cusub","needs native review",resources/views/browse/index.blade.php,browse-index.png
-ads.browse.cheapest,Cheapest,"Kuwa ugu jaban","needs native review",resources/views/browse/index.blade.php,browse-index.png
-ads.browse.expensive,"Most expensive","Kuwa ugu qaalisan","needs native review",resources/views/browse/index.blade.php,browse-index.png
-ads.browse.brand_title,":brand :category",":category :brand","needs native review",resources/views/browse/index.blade.php,browse-index.png
-ads.browse.popular_brands,"Popular brands","Shirkadaha ugu badan","needs native review",resources/views/browse/index.blade.php,browse-index.png
-ads.browse.other_cities,"Also in:","Sidoo kale:","needs native review",resources/views/browse/index.blade.php,browse-index.png
-ads.browse.nothing_title,"No ads match","Xayeysiis ku habboon lama helin","needs native review",resources/views/browse/index.blade.php,browse-index.png
-ads.browse.nothing_text,"Try fewer filters or other words.","Isku day shaandheyn yar ama erayo kale.","needs native review",resources/views/browse/index.blade.php,browse-index.png
-ads.browse.from,From,"Laga bilaabo","needs native review",resources/views/browse/index.blade.php,browse-index.png
-ads.browse.to,To,Ilaa,"needs native review",resources/views/browse/index.blade.php,browse-index.png
+ads.browse.all_ads,"All ads","Dhammaan xayeysiisyada","needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/index.blade.php | resources/views/home.blade.php","browse-index.png | home.png"
+ads.browse.show_results,"{0} No results|{1} Show 1 result|[2,*] Show :count results","{0} Natiijo ma jirto|{1} Tus 1 natiijo|[2,*] Tus :count natiijo","needs native review","app/Http/Controllers/BrowseController.php | resources/views/browse/_filters.blade.php",
+ads.browse.posted,Posted,"La dhigay","needs native review",resources/views/browse/_filters.blade.php,
+ads.browse.posted_any,"Any time","Wakhti kasta","needs native review",resources/views/browse/_filters.blade.php,
+ads.browse.posted_24h,"Last 24 hours","24kii saac ee u dambeeyay","needs native review",resources/views/browse/_filters.blade.php,
+ads.browse.posted_7d,"Last 7 days","7dii maalmood ee u dambeeyay","needs native review",resources/views/browse/_filters.blade.php,
+ads.browse.posted_30d,"Last 30 days","30kii maalmood ee u dambeeyay","needs native review",resources/views/browse/_filters.blade.php,
+ads.browse.with_photos,"Only with photos","Kaliya kuwa sawirro leh","needs native review","app/Http/Controllers/BrowseController.php | resources/views/browse/_filters.blade.php",
+ads.browse.verified_only,"Only verified sellers","Kaliya iibiyeyaal la xaqiijiyay","needs native review","app/Http/Controllers/BrowseController.php | resources/views/browse/_filters.blade.php",
+ads.browse.popular,"Most viewed","Kuwa ugu badan ee la daawaday","needs native review",resources/views/browse/_filters.blade.php,
+ads.browse.location,Location,Goobta,"needs native review",resources/views/browse/_filters.blade.php,
+ads.browse.all_areas,"All areas","Dhammaan xaafadaha","needs native review",resources/views/browse/_filters.blade.php,
+ads.browse.categories,Categories,Qaybaha,"needs native review",resources/views/browse/_filters.blade.php,
+ads.browse.show_all_categories,"Show all categories","Tus dhammaan qaybaha","needs native review",resources/views/browse/_filters.blade.php,
+ads.browse.price_range,":from – :to",":from – :to","needs native review",resources/views/browse/_filters.blade.php,
+ads.browse.price_over,"Over :from","Ka badan :from","needs native review",resources/views/browse/_filters.blade.php,
+ads.browse.price_under,"Under :to","Ka yar :to","needs native review",resources/views/browse/_filters.blade.php,
+ads.browse.clear_all,"Clear all","Tirtir dhammaan","needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/index.blade.php",browse-index.png
+ads.browse.remove_filter,"Remove filter: :filter","Ka saar shaandhada: :filter","needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/index.blade.php",browse-index.png
+ads.browse.active_filters,"Filters in use","Shaandhooyinka la isticmaalayo","needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/index.blade.php",browse-index.png
+ads.browse.view_grid,"Show as grid","U tus shabakad ahaan","needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/index.blade.php",browse-index.png
+ads.browse.view_list,"Show as list","U tus liis ahaan","needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/index.blade.php",browse-index.png
+ads.browse.close,Close,Xir,"needs native review",resources/views/browse/_filters.blade.php,
+ads.browse.results_for,"{0} No results for :what in :where|{1} 1 result for :what in :where|[2,*] :count results for :what in :where","{0} Wax natiijo ah looma helin :what gudaha :where|{1} 1 natiijo oo :what ah gudaha :where|[2,*] :count natiijo oo :what ah gudaha :where","needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/index.blade.php",browse-index.png
+ads.browse.somalia,Somalia,Soomaaliya,"needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/index.blade.php",browse-index.png
+ads.browse.all_in,"All in :category","Dhammaan :category","needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/index.blade.php | resources/views/home.blade.php","browse-index.png | home.png"
+ads.browse.sub_categories,"Sub categories of :category","Qaybaha hoose ee :category","needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/index.blade.php | resources/views/home.blade.php","browse-index.png | home.png"
+ads.browse.more_in,"More in :category","Wax kale oo :category ah","needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/index.blade.php",browse-index.png
+ads.browse.results,"{0} No ads found|{1} 1 ad|[2,*] :count ads","{0} Xayeysiis lama helin|{1} 1 xayeysiis|[2,*] :count xayeysiis","needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/index.blade.php",browse-index.png
+ads.browse.in_city,"in :city","gudaha :city","needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/index.blade.php",browse-index.png
+ads.browse.search_for,"Results for “:q”","Natiijooyinka “:q”","needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/index.blade.php",browse-index.png
+ads.browse.filters,Filters,Shaandheyn,"needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/index.blade.php",browse-index.png
+ads.browse.apply,"Show ads","Muuji xayeysiisyada","needs native review",resources/views/browse/_filters.blade.php,
+ads.browse.clear,"Clear filters","Tirtir shaandheynta","needs native review",resources/views/browse/_filters.blade.php,
+ads.browse.category,Category,Qaybta,"needs native review",resources/views/browse/_filters.blade.php,
+ads.browse.all_categories,"All categories","Qaybaha oo dhan","needs native review",resources/views/browse/_filters.blade.php,
+ads.browse.city,City,Magaalada,"needs native review",resources/views/browse/_filters.blade.php,
+ads.browse.all_cities,"All cities","Magaalooyinka oo dhan","needs native review",resources/views/browse/_filters.blade.php,
+ads.browse.price,"Price (USD)","Qiimaha (USD)","needs native review","app/Http/Controllers/BrowseController.php | resources/views/browse/_filters.blade.php",
+ads.browse.min,Min,"Ugu yar","needs native review",resources/views/browse/_filters.blade.php,
+ads.browse.max,Max,"Ugu badan","needs native review",resources/views/browse/_filters.blade.php,
+ads.browse.condition,Condition,Xaaladda,"needs native review",resources/views/browse/_filters.blade.php,
+ads.browse.any,Any,"Mid kasta","needs native review",resources/views/browse/_filters.blade.php,
+ads.browse.sort,Sort,"Kala soocid","needs native review",resources/views/browse/_filters.blade.php,
+ads.browse.newest,Newest,"Kuwa ugu cusub","needs native review",resources/views/browse/_filters.blade.php,
+ads.browse.cheapest,Cheapest,"Kuwa ugu jaban","needs native review",resources/views/browse/_filters.blade.php,
+ads.browse.expensive,"Most expensive","Kuwa ugu qaalisan","needs native review",resources/views/browse/_filters.blade.php,
+ads.browse.brand_title,":brand :category",":category :brand","needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/index.blade.php",browse-index.png
+ads.browse.popular_brands,"Popular brands","Shirkadaha ugu badan","needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/index.blade.php",browse-index.png
+ads.browse.other_cities,"Also in:","Sidoo kale:","needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/index.blade.php",browse-index.png
+ads.browse.nothing_title,"No ads match","Xayeysiis ku habboon lama helin","needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/index.blade.php",browse-index.png
+ads.browse.nothing_text,"Try fewer filters or other words.","Isku day shaandheyn yar ama erayo kale.","needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/index.blade.php",browse-index.png
+ads.browse.from,From,"Laga bilaabo","needs native review","app/Http/Controllers/BrowseController.php | resources/views/browse/_filters.blade.php",
+ads.browse.to,To,Ilaa,"needs native review","app/Http/Controllers/BrowseController.php | resources/views/browse/_filters.blade.php",
 ads.page.posted,"Posted :when","La dhigay :when","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.details,Details,Faahfaahin,"needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.description,Description,Sharaxaad,"needs native review",resources/views/ads/show.blade.php,ads-show.png
@@ -384,7 +406,7 @@ site.social.line,":price · :city · :category",":price · :city · :category","
 site.home.title,"Buy and sell in Somalia","Ka iibso oo iibi Soomaaliya","needs native review","resources/views/home.blade.php | resources/views/layouts/app.blade.php",home.png
 site.home.heading,"What are you looking for?","Maxaad raadinaysaa?","needs native review",resources/views/home.blade.php,home.png
 site.home.search_placeholder,"I am looking for...","Waxaan raadinayaa...","needs native review",resources/views/home.blade.php,home.png
-site.home.search_button,Search,Raadi,"needs native review","resources/views/browse/index.blade.php | resources/views/home.blade.php","browse-index.png | home.png"
+site.home.search_button,Search,Raadi,"needs native review","resources/views/browse/_filters.blade.php | resources/views/home.blade.php",home.png
 site.home.location_label,Location,Goobta,"needs native review",resources/views/home.blade.php,home.png
 site.home.all_somalia,"All Somalia","Soomaaliya oo dhan","needs native review",resources/views/home.blade.php,home.png
 site.home.categories,Categories,Qaybaha,"needs native review",resources/views/home.blade.php,home.png
@@ -622,6 +644,15 @@ help.your-account.body,"- **Sign in:** tap **Sign in** and choose your Google ac
 - **Lambarkaaga taleefanka:** iibsadayaashu waxay ku arkaan xayeysiisyadaada markay riixaan **Muuji lambarka**.
 - **Luqadda:** riix **English** ama **Soomaali** xagga sare ee bog kasta.
 - **Tirtir akoonkaaga:** noo soo qor, akoonkaaga iyo xayeysiisyadaada ayaan tirtiri doonnaa. Iimaylkayagu wuxuu ku qoran yahay xagga hoose ee [bogga Caawimaadda](:help_url).","needs native review","Help page /help/your-account",
+catalogue.Colour,Colour,Midabka,"needs native review","Category, field and place names (starter list; admin can change them)",
+catalogue.White,White,Caddaan,"needs native review","Category, field and place names (starter list; admin can change them)",
+catalogue.Black,Black,Madow,"needs native review","Category, field and place names (starter list; admin can change them)",
+catalogue.Silver,Silver,Silfar,"needs native review","Category, field and place names (starter list; admin can change them)",
+catalogue.Grey,Grey,Cawl,"needs native review","Category, field and place names (starter list; admin can change them)",
+catalogue.Blue,Blue,Buluug,"needs native review","Category, field and place names (starter list; admin can change them)",
+catalogue.Red,Red,Casaan,"needs native review","Category, field and place names (starter list; admin can change them)",
+catalogue.Green,Green,Cagaar,"needs native review","Category, field and place names (starter list; admin can change them)",
+catalogue.Brown,Brown,Bunni,"needs native review","Category, field and place names (starter list; admin can change them)",
 catalogue.Trucks,Trucks,"Gaari xamuul","needs native review","Category, field and place names (starter list; admin can change them)",
 "catalogue.Buses & Minibuses","Buses & Minibuses","Bas & Mini-bas","needs native review","Category, field and place names (starter list; admin can change them)",
 catalogue.Seats,Seats,Kuraasta,"needs native review","Category, field and place names (starter list; admin can change them)",

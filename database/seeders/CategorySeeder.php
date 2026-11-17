@@ -32,6 +32,30 @@ class CategorySeeder extends Seeder
         }
     }
 
+    /**
+     * For sites that already exist (data migrations): add only the categories and fields that are missing.
+     * Never changes what is there, so the admin's names, order, icons, parents and switches stay.
+     * New categories go to the end of their level.
+     */
+    public function addMissing(): void
+    {
+        foreach ($this->tree() as $main) {
+            $parent = Category::where('slug', $main['slug'] ?? Str::slug($main['name']))->first()
+                ?? $this->upsert(null, $main, (int) Category::whereNull('parent_id')->max('sort') + 1);
+
+            foreach ($main['children'] as $child) {
+                $category = Category::where('slug', $child['slug'] ?? Str::slug($child['name']))->first()
+                    ?? $this->upsert($parent, $child, (int) Category::where('parent_id', $parent->id)->max('sort') + 1);
+
+                foreach ($child['fields'] ?? [] as $field) {
+                    if (! CategoryField::where('category_id', $category->id)->where('key', $field['key'])->exists()) {
+                        $this->field($category, $field, (int) CategoryField::where('category_id', $category->id)->max('sort') + 1);
+                    }
+                }
+            }
+        }
+    }
+
     /** @param  array<string, mixed>  $data */
     private function upsert(?Category $parent, array $data, int $sort): Category
     {
@@ -104,6 +128,7 @@ class CategorySeeder extends Seeder
                     ['key' => 'brand', 'type' => 'select', 'label' => 'Brand', 'options' => $carBrands, 'required' => true],
                     ['key' => 'model', 'type' => 'text', 'label' => 'Model', 'filterable' => false],
                     $year, $km, $fuel, $gear,
+                    ['key' => 'colour', 'type' => 'select', 'label' => 'Colour', 'options' => ['White', 'Black', 'Silver', 'Grey', 'Blue', 'Red', 'Green', 'Brown', 'Other']],
                 ]],
                 ['name' => 'Motorcycles & Bajaj', 'slug' => 'motorcycles', 'icon' => 'motorbike', 'fields' => [$year]],
                 // Slug kept from "Trucks & Buses" so old links keep working; buses have their own sub category now.

@@ -72,8 +72,16 @@ export function initLanguageSwitch() {
         if (menu && !menu.contains(event.target)) menu.removeAttribute('open');
     });
 
-    window.addEventListener('popstate', () => {
-        swapTo(location.href, document.documentElement.lang, false);
+    // Back/forward between languages. Only our own history entries carry a language: a jump to
+    // "#filters" or "#report" also fires popstate (with no state), and must NOT reload the page parts
+    // (that would drop the target, so the phone filter sheet would not open).
+    if (!history.state || !history.state.lang) {
+        history.replaceState({ ...(history.state || {}), lang: document.documentElement.lang }, '');
+    }
+    window.addEventListener('popstate', (event) => {
+        const lang = event.state?.lang;
+        if (!lang || lang === document.documentElement.lang) return;
+        swapTo(location.href, lang, false);
     });
 
     // Returning visitor: show their remembered language.

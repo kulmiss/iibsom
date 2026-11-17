@@ -25,6 +25,18 @@ Each page 15 times, one after another (server time + network on the same machine
 | Admin users list | 21 ms | |
 | My ads (seller with the most ads) | 32 ms | |
 
+**Filters (PR 52, same machine, page cache OFF, 100k ads):**
+
+| Page | Median | 95% under |
+|---|---|---|
+| Cars, last 7 days + only with photos | 24 ms | 27 ms |
+| Vehicles, most viewed | 44 ms | 55 ms |
+| Cars, price + condition + 30 days + photos + cheapest | 18 ms | 19 ms |
+| "Show N results" count (JSON) | 19 ms | 22 ms |
+| Brand page (Cars › Mogadishu › Toyota), re-measured | 63 ms | 82 ms |
+
+All well under the 150 ms goal. The brand page reads the brand from each ad's extra fields (JSON), so it is the slowest list; if it ever matters, a generated column with an index fixes it (ROADMAP).
+
 Many people at once (a mix of home, lists, search, ad pages and the API; one computer, so some answers are "too many requests" from our own rate limits, which is correct):
 
 | Setting | Users at once | Pages per second | Median | 95% under |

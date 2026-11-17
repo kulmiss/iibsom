@@ -48,7 +48,8 @@ class CategoryPanelTest extends TestCase
 
         $this->get('/')->assertOk()->assertSee(url('/cars'), false)->assertDontSee(url('/boats'), false);
         $this->get('/vehicles')->assertOk()->assertSee(url('/buses'), false)->assertDontSee(url('/boats'), false);
-        $this->get('/boats')->assertOk(); // the page itself still works
+        $this->get('/boats')->assertOk()->assertSee('aria-current="page"', false); // the page itself still works, and shows itself in the filter tree
+        $this->get('/cars')->assertOk()->assertDontSee(url('/boats'), false); // filter sidebar too
         $this->actingAs(User::factory()->completed()->create())->get('/post')->assertOk()->assertSee(url('/post/boats'), false); // posting offers all
     }
 

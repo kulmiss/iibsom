@@ -21,7 +21,8 @@
     @php
         $extraFilters = array_diff_key($filters['f'] ?? [], $brand ? ['brand' => 1] : []);
     @endphp
-    @if ($results->currentPage() > 1 || !empty($filters['q']) || $extraFilters || !empty($filters['min']) || !empty($filters['max']) || !empty($filters['condition']) || $results->total() === 0)
+    @if ($results->currentPage() > 1 || !empty($filters['q']) || $extraFilters || !empty($filters['min']) || !empty($filters['max']) || !empty($filters['condition'])
+        || request()->hasAny(['area', 'posted', 'photos', 'verified', 'sort']) || $results->total() === 0)
         <meta name="robots" content="noindex, follow">
     @endif
     @if (count($crumbs) > 1)
@@ -122,93 +123,27 @@
             </p>
         @endif
 
-        <div class="mt-4 grid gap-5 lg:grid-cols-[16rem_1fr]">
-            {{-- Filters: a fold-out box on phones, a sidebar on desktop --}}
-            <details class="group rounded-xl bg-white shadow-sm ring-1 ring-stone-200 lg:open:block" @if (request()->hasAny(['min','max','condition','f'])) open @endif>
-                <summary class="flex cursor-pointer list-none items-center justify-between px-4 py-3 font-semibold lg:hidden">
-                    {{ __('ads.browse.filters') }} {{ icon('chevron-down', 'size-5 transition group-open:rotate-180') }}
-                </summary>
-                <form method="get" action="{{ $action }}" class="space-y-4 border-t border-stone-100 p-4 lg:border-0">
-                    @if (!$category)
-                        <input type="hidden" name="q" value="{{ $filters['q'] ?? '' }}">
-                    @else
-                        <div>
-                            <label for="fq" class="form-label">{{ __('site.home.search_button') }}</label>
-                            <input id="fq" name="q" type="search" value="{{ $filters['q'] ?? '' }}" class="form-input">
-                        </div>
-                    @endif
+        <div class="mt-4 grid gap-5 lg:grid-cols-[17rem_1fr]">
+            @include('browse._filters')
 
-                    @if (count($cities) > 1 && $category)
-                        <div>
-                            <p class="form-label">{{ __('ads.browse.city') }}</p>
-                            <ul class="space-y-1 text-sm">
-                                <li><a href="{{ lroute('browse.category', ['category' => $category->slug]) }}" @class(['font-semibold text-brand-700' => !$city])>{{ __('ads.browse.all_cities') }}</a></li>
-                                @foreach ($cities as $c)
-                                    <li><a href="{{ lroute('browse.category', ['category' => $category->slug, 'city' => $c['slug']]) }}" @class(['font-semibold text-brand-700' => $city?->id === $c['id']])>{{ translated($c['name']) }}</a></li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-
-                    <div>
-                        <p class="form-label">{{ __('ads.browse.price') }}</p>
-                        <div class="flex gap-2">
-                            <input name="min" type="number" min="0" inputmode="numeric" placeholder="{{ __('ads.browse.min') }}" value="{{ $filters['min'] ?? '' }}" class="form-input" aria-label="{{ __('ads.browse.min') }}">
-                            <input name="max" type="number" min="0" inputmode="numeric" placeholder="{{ __('ads.browse.max') }}" value="{{ $filters['max'] ?? '' }}" class="form-input" aria-label="{{ __('ads.browse.max') }}">
-                        </div>
-                    </div>
-
-                    @if (!$category || $category->has_condition)
-                        <div>
-                            <label for="fcond" class="form-label">{{ __('ads.browse.condition') }}</label>
-                            <select id="fcond" name="condition" class="form-input">
-                                <option value="">{{ __('ads.browse.any') }}</option>
-                                <option value="new" @selected(($filters['condition'] ?? '') === 'new')>{{ __('ads.form.new') }}</option>
-                                <option value="used" @selected(($filters['condition'] ?? '') === 'used')>{{ __('ads.form.used') }}</option>
-                            </select>
-                        </div>
-                    @endif
-
-                    @foreach ($fields as $field)
-                        @php($v = $filters['f'][$field->key] ?? null)
-                        <div>
-                            @if ($field->type === 'number')
-                                <p class="form-label">{{ $field->label_text }}@if ($field->unit) ({{ $field->unit }})@endif</p>
-                                <div class="flex gap-2">
-                                    <input name="f[{{ $field->key }}][min]" type="number" min="0" placeholder="{{ __('ads.browse.from') }}" value="{{ is_array($v) ? ($v['min'] ?? '') : '' }}" class="form-input" aria-label="{{ $field->label_text }} {{ __('ads.browse.from') }}">
-                                    <input name="f[{{ $field->key }}][max]" type="number" min="0" placeholder="{{ __('ads.browse.to') }}" value="{{ is_array($v) ? ($v['max'] ?? '') : '' }}" class="form-input" aria-label="{{ $field->label_text }} {{ __('ads.browse.to') }}">
-                                </div>
-                            @elseif ($field->type === 'select')
-                                <label for="ff-{{ $field->key }}" class="form-label">{{ $field->label_text }}</label>
-                                <select id="ff-{{ $field->key }}" name="f[{{ $field->key }}]" class="form-input">
-                                    <option value="">{{ __('ads.browse.any') }}</option>
-                                    @foreach ($field->optionList() as $ov => $ol)
-                                        <option value="{{ $ov }}" @selected($v === $ov)>{{ $ol }}</option>
-                                    @endforeach
-                                </select>
-                            @elseif ($field->type === 'boolean')
-                                <label class="flex items-center gap-2 text-sm font-medium">
-                                    <input type="checkbox" name="f[{{ $field->key }}]" value="1" @checked($v === '1') class="size-4 rounded border-stone-300"> {{ $field->label_text }}
-                                </label>
-                            @endif
-                        </div>
-                    @endforeach
-
-                    <div>
-                        <label for="fsort" class="form-label">{{ __('ads.browse.sort') }}</label>
-                        <select id="fsort" name="sort" class="form-input">
-                            @foreach (['newest', 'cheapest', 'expensive'] as $s)
-                                <option value="{{ $s }}" @selected(($filters['sort'] ?? 'newest') === $s)>{{ __('ads.browse.'.$s) }}</option>
+            <div class="min-w-0 scroll-mt-20" id="results">
+                {{-- Toolbar: Filters (phones), the filters in use, grid or list --}}
+                <div class="mb-3 flex flex-wrap items-center gap-2">
+                    <a href="#filters" class="btn-chip lg:hidden">{{ icon('sliders-horizontal', 'size-4') }} {{ __('ads.browse.filters') }}@if ($active) <span class="rounded-full bg-brand-700 px-1.5 text-xs text-white">{{ count($active) }}</span>@endif</a>
+                    @if ($active)
+                        <ul class="flex flex-wrap gap-2" aria-label="{{ __('ads.browse.active_filters') }}">
+                            @foreach ($active as $chip)
+                                <li><a href="{{ $chip['url'] }}" class="btn-chip !bg-brand-50 !ring-brand-200" aria-label="{{ __('ads.browse.remove_filter', ['filter' => $chip['label']]) }}">{{ $chip['label'] }} {{ icon('x', 'size-3.5') }}</a></li>
                             @endforeach
-                        </select>
+                        </ul>
+                        <a href="{{ $action }}" class="text-sm font-medium text-brand-700 underline">{{ __('ads.browse.clear_all') }}</a>
+                    @endif
+                    <div class="ms-auto hidden gap-1 sm:flex" data-view-toggle>
+                        <button type="button" class="flex size-9 items-center justify-center rounded-lg text-stone-600 hover:bg-stone-100 aria-pressed:bg-brand-50 aria-pressed:text-brand-700" data-view="grid" aria-pressed="true" title="{{ __('ads.browse.view_grid') }}">{{ icon('layout-grid', 'size-5') }}<span class="sr-only">{{ __('ads.browse.view_grid') }}</span></button>
+                        <button type="button" class="flex size-9 items-center justify-center rounded-lg text-stone-600 hover:bg-stone-100 aria-pressed:bg-brand-50 aria-pressed:text-brand-700" data-view="list" aria-pressed="false" title="{{ __('ads.browse.view_list') }}">{{ icon('list', 'size-5') }}<span class="sr-only">{{ __('ads.browse.view_list') }}</span></button>
                     </div>
+                </div>
 
-                    <button type="submit" class="btn-primary w-full justify-center py-2.5">{{ __('ads.browse.apply') }}</button>
-                    <a href="{{ $action }}" class="block text-center text-sm text-stone-600 underline">{{ __('ads.browse.clear') }}</a>
-                </form>
-            </details>
-
-            <div class="min-w-0">
                 @if (!$category)
                     <div class="mb-3 flex gap-2 overflow-x-auto pb-1">
                         @foreach ($categories as $main)
@@ -223,7 +158,7 @@
                         <p class="mt-1 text-sm text-stone-600">{{ __('ads.browse.nothing_text') }}</p>
                     </div>
                 @else
-                    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
+                    <div class="group/results grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4 data-[view=list]:grid-cols-1" data-results data-view="grid">
                         @foreach ($results as $ad)
                             @include('ads._card', ['ad' => $ad])
                         @endforeach

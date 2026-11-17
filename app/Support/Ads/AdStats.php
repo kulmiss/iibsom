@@ -35,6 +35,10 @@ class AdStats
         $row = ['ad_id' => $ad->id, 'day' => self::today()->toDateString()] + array_fill_keys(self::EVENTS, 0);
         $row[$event] = 1;
         DB::table('ad_stats')->upsert([$row], ['ad_id', 'day'], [$event => DB::raw("`{$event}` + 1")]);
+        if ($event === 'views') {
+            // A running total on the ad itself, for "Most viewed" in lists (no updated_at change, no events).
+            DB::table('ads')->where('id', $ad->id)->increment('views');
+        }
 
         return true;
     }

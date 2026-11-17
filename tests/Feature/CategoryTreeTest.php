@@ -6,6 +6,7 @@ use App\Models\Ad;
 use App\Models\Category;
 use App\Models\City;
 use App\Models\User;
+use Database\Seeders\CategorySeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -65,5 +66,33 @@ class CategoryTreeTest extends TestCase
         $this->assertSame('trucks-buses', $demoTruck->fresh()?->category->slug);
         // Counters recounted (demo ads are not counted while demo data is hidden): only the real bus.
         $this->assertSame(1, Category::where('slug', 'trucks-buses')->firstOrFail()->ads_count);
+    }
+
+    public function test_upgrades_keep_what_the_admin_set(): void
+    {
+        $this->seed();
+        // The admin re-ordered, changed an icon, moved a category and edited a field; Colour (PR 52) is not there yet.
+        $cars = Category::where('slug', 'cars')->firstOrFail();
+        $cars->forceFill(['sort' => 9, 'icon' => 'star'])->save();
+        $drones = Category::where('slug', 'boats')->firstOrFail();
+        $drones->forceFill(['parent_id' => Category::where('slug', 'electronics')->value('id')])->save();
+        $cars->fields()->where('key', 'fuel')->update(['filterable' => false, 'required' => true]);
+        $cars->fields()->where('key', 'colour')->delete();
+        Category::where('slug', 'rooms')->delete(); // missing on this site
+
+        (require database_path('migrations/2026_11_17_250000_fuller_category_tree.php'))->up();
+        (new CategorySeeder)->addMissing(); // what the PR 52 migration runs after adding its column
+
+        $cars->refresh();
+        $this->assertSame([9, 'star'], [$cars->sort, $cars->icon], 'Order and icon kept.');
+        $this->assertSame('electronics', $drones->fresh()?->parent?->slug, 'Moved category stays moved.');
+        $fuel = $cars->fields()->where('key', 'fuel')->firstOrFail();
+        $this->assertSame([false, true], [(bool) $fuel->filterable, (bool) $fuel->required], 'Field settings kept.');
+        $colour = $cars->fields()->where('key', 'colour')->firstOrFail();
+        $this->assertSame('Midabka', $colour->label['so'] ?? null);
+        $this->assertGreaterThan($fuel->sort, $colour->sort, 'New field goes last.');
+        $rooms = Category::where('slug', 'rooms')->firstOrFail();
+        $this->assertSame('property', $rooms->parent?->slug);
+        $this->assertTrue((bool) $rooms->enabled);
     }
 }

@@ -8,6 +8,8 @@
 
 return [
     // Categories
+    // Round 2 (PR 52): car colours
+    'Colour' => 'Midabka', 'White' => 'Caddaan', 'Black' => 'Madow', 'Silver' => 'Silfar', 'Grey' => 'Cawl', 'Blue' => 'Buluug', 'Red' => 'Casaan', 'Green' => 'Cagaar', 'Brown' => 'Bunni',
     // Round 2 (PR 50): fuller category tree
     'Trucks' => 'Gaari xamuul', 'Buses & Minibuses' => 'Bas & Mini-bas', 'Seats' => 'Kuraasta',
     'Vehicle Parts & Accessories' => 'Qalabka & Agabka gaadiidka', 'Part type' => 'Nooca qalabka', 'Boats' => 'Doonyo',

@@ -153,6 +153,9 @@ $publicRoutes = function () use ($stateless) {
         ->withoutMiddleware($stateless)->name('ad.contact');
 
     Route::get('/search', [BrowseController::class, 'search'])->name('search');
+    // "Show 120 results" on the phone filter sheet (JSON; no session or cookie for guests).
+    Route::get('/browse-count', [BrowseController::class, 'count'])->middleware(['feature:search.more_filters', 'throttle:120,1'])
+        ->withoutMiddleware($stateless)->name('browse.count');
 
     // "Recommended for you" cards (the browser sends its own history; nothing stored).
     Route::get('/for-you', [ForYouController::class, 'show'])->middleware(['feature:recommendations', 'throttle:60,1'])->name('for-you');

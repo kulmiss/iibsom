@@ -9,7 +9,7 @@ use Illuminate\Database\Migrations\Migration;
 
 /**
  * Round 2 (PR 50): the fuller Somali category tree on sites that already exist.
- * - Adds the new sub categories (the seeder is safe to run again; it never turns anything on or off).
+ * - Adds the new sub categories and fields that are missing (nothing an admin set is changed).
  * - Renames 4 sub categories, but only when an admin did not change the name already.
  * - Moves "Solar & Generators" to Electronics, unless an admin moved it.
  * - Moves DEMO bus and sheep ads to the new sub categories (real ads are never moved).
@@ -45,7 +45,7 @@ return new class extends Migration
             $solar->forceFill(['parent_id' => $electronics])->save();
         }
 
-        (new CategorySeeder)->run();
+        (new CategorySeeder)->addMissing(); // only what is missing: the admin's order, icons and parents stay
 
         $moves = [
             ['trucks-buses', 'buses', '/(bus|coaster|minibus)/i'],
