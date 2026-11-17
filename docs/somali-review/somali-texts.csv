@@ -209,7 +209,12 @@ ads.page.report,"Report this ad","Ka warbixi xayeysiiskan","needs native review"
 ads.page.report_reason,"What is wrong?","Maxaa khaldan?","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.report_details,"Tell us more (optional)","Wax dheeraad ah noo sheeg (ikhtiyaari)","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.report_send,"Send report","Dir warbixinta","needs native review",resources/views/ads/show.blade.php,ads-show.png
-ads.page.report_thanks,"Thank you. Our team will check this ad.","Mahadsanid. Kooxdayadu way hubin doontaa xayeysiiskan.","needs native review",app/Http/Controllers/AdPageController.php,
+ads.page.report_contact,"Your phone or email (optional)","Taleefankaaga ama iimaylkaaga (ikhtiyaari)","needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.page.report_contact_help,"Only if you want our team to answer you. Only staff see it.","Kaliya haddii aad rabto in kooxdayadu kuu jawaabaan. Shaqaalaha kaliya ayaa arka.","needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.page.report_guest_error,"Please choose a reason. A phone number or email must look right.","Fadlan dooro sabab. Lambarka taleefanka ama iimaylku waa inuu sax yahay.","needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.page.report_sum,"To stop robots: what is :a + :b?","Si loo joojiyo robots: imisa waa :a + :b?","needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.page.report_guest_privacy,"We don't keep your IP address or put a cookie on your phone for this.","Uma haynno cinwaankaaga IP mana dhigno cookie taleefankaaga tan awgeed.","needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.page.report_thanks,"Thank you. Our team will check this ad.","Mahadsanid. Kooxdayadu way hubin doontaa xayeysiiskan.","needs native review","app/Http/Controllers/AdPageController.php | resources/views/ads/show.blade.php",ads-show.png
 ads.page.report_sign_in,"Sign in to report","Gal si aad u warbixiso","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.reported,"You reported this ad. Thank you.","Waad ka warbixisay xayeysiiskan. Mahadsanid.","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.safety_title,"Stay safe","Ammaan ahaw","needs native review",resources/views/ads/show.blade.php,ads-show.png

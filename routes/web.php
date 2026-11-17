@@ -20,6 +20,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BannerClickController;
 use App\Http\Controllers\BrowseController;
 use App\Http\Controllers\ForYouController;
+use App\Http\Controllers\GuestReportController;
 use App\Http\Controllers\HelpController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\SellerReviewsController;
@@ -141,6 +142,11 @@ $publicRoutes = function () use ($stateless) {
             Route::post('/account/profile', [ProfileController::class, 'save'])->middleware('throttle:20,1')->name('account.profile.save');
         });
     });
+
+    // Report an ad without signing in (no session, no cookie, no IP stored; see GuestReports).
+    Route::post('/ads/{ad}/report-guest', [GuestReportController::class, 'store'])->whereNumber('ad')
+        ->middleware(['feature:ads.reports', 'feature:ads.guest_reports', 'throttle:5,10'])
+        ->withoutMiddleware($stateless)->name('ad.report_guest');
 
     // Seller's number after a tap (JSON, rate-limited).
     Route::get('/ads/{ad}/contact', [AdPageController::class, 'contact'])->whereNumber('ad')->middleware('throttle:30,1')

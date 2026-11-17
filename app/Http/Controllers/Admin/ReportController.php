@@ -21,13 +21,16 @@ class ReportController extends Controller
             'per_page' => ['nullable', 'integer', 'min:5', 'max:100'],
         ]);
 
-        $page = Report::query()
+        $page = Report::query()->select('reports.*')
             ->with(['ad:id,title,status,user_id', 'ad.user:id,name', 'user:id,name', 'handler:id,name'])
             ->when(! feature('site.demo_data'), fn ($q) => $q->where('is_demo', false))
             ->when($request->status, fn ($q, $s) => $q->whereIn('status', explode(',', $s)))
             ->when($request->reason, fn ($q, $r) => $q->whereIn('reason', explode(',', $r)))
             ->when($request->search, fn ($q, $s) => $q->whereHas('ad', fn ($q) => ctype_digit($s) ? $q->whereKey((int) $s) : $q->where('title', 'like', '%'.addcslashes($s, '%_').'%')))
-            ->orderByRaw("status = 'waiting' desc")->latest('id')
+            // Waiting first; then the ads with the most waiting reports (guest repeats count) come to the top.
+            ->addSelect(['ad_reports' => Report::from('reports as r2')->selectRaw('COALESCE(SUM(r2.times), 0)')
+                ->whereColumn('r2.ad_id', 'reports.ad_id')->where('r2.status', 'waiting')])
+            ->orderByRaw("status = 'waiting' desc")->orderByDesc('ad_reports')->latest('id')
             ->paginate($request->integer('per_page', 20));
 
         return response()->json([
@@ -77,7 +80,11 @@ class ReportController extends Controller
             'ad_title' => $r->ad->title,
             'ad_status' => $r->ad->status->value,
             'seller' => $r->ad->user->name,
-            'reporter' => $r->user->name,
+            'reporter' => $r->user !== null ? $r->user->name : 'Guest',
+            'is_guest' => $r->user_id === null,
+            'contact' => $r->contact,
+            'times' => (int) $r->times,
+            'ad_reports' => (int) ($r->getAttribute('ad_reports') ?? 0),
             'handled_by' => $r->handler?->name,
             'staff_note' => $r->staff_note,
             'created_at' => $r->created_at?->toIso8601String(),

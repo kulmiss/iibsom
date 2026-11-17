@@ -26,6 +26,7 @@ return [
     'ads.trusted_sellers' => ['group' => 'Ads', 'default' => false, 'label' => 'Trusted sellers skip approval', 'description' => 'Sellers with enough approved ads post instantly.'],
     'ads.expiry' => ['group' => 'Ads', 'default' => true, 'label' => 'Ads expire', 'description' => 'Ads end after the number of days in Settings and can be renewed.'],
     'ads.reports' => ['group' => 'Ads', 'default' => true, 'label' => 'Report an ad', 'description' => 'Signed-in users can report bad ads.'],
+    'ads.guest_reports' => ['group' => 'Ads', 'default' => true, 'label' => 'Report an ad without signing in', 'description' => 'Visitors who are not signed in can report an ad too (reason, short note, phone or email if they want an answer). Bots are stopped without keeping anyone\'s IP; the same report again counts +1; at most 20 guest reports per ad per day. Needs "Report an ad" ON.'],
     'ads.similar' => ['group' => 'Ads', 'default' => true, 'label' => 'Similar ads', 'description' => 'Show similar ads on the ad page.'],
 
     'ads.edit_changes' => ['group' => 'Ads', 'default' => true, 'label' => 'Show what sellers changed', 'description' => 'An ad edited after approval shows "Edited" in the queue, with the old and new text side by side.'],

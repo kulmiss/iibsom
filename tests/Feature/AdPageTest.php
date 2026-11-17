@@ -44,7 +44,7 @@ class AdPageTest extends TestCase
             ->assertSee('Toyota Hilux 2016')->assertSee('$18,500')
             ->assertSee('Toyota')->assertSee('120,000 km')->assertSee('2016')
             ->assertSee('Cabdi Seller')->assertSee('Show phone number')
-            ->assertSee('Stay safe')->assertSee('Sign in to report')
+            ->assertSee('Stay safe')->assertSee('report-guest', false) // guests can report (PR 49)
             ->assertSee('&lt;b&gt;bold?&lt;/b&gt;', false);
     }
 

@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-17 (PR 48)_
+_Last updated: 2026-11-17 (PR 49)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -94,7 +94,8 @@ See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example 
 45. **PR 45:** Security audit (ASVS L2) + SECURITY_REPORT.md; fixed HEAD sessions, private-disk routes, 2 missing rate limits; `SecurityAuditTest`.
 46. **PR 46:** Load test 100k ads / 10k users (docs/load-test.md, `iibsom:load-data`, `tools/load-test`); 3 indexes, cached list totals, dashboard from counters, deferred counters for bulk actions. 
 47. **PR 47:** All docs updated (README, docs/features.md, deploy cron list, TESTING_GUIDE, ROADMAP). Owner's big job list of 2026-11-16 is done.
-48. **PR 48:** Round 2 starts (owner's list of 2026-11-17): Jiji study (docs/jiji-study.md) + globe language menu; fix: bottom bar language after instant switch. Next: guest reports, category tree, filters, footer, Jiji-style extras.
+48. **PR 48:** Round 2 starts (owner's list of 2026-11-17): Jiji study (docs/jiji-study.md) + globe language menu; fix: bottom bar language after instant switch. 
+49. **PR 49:** Report an ad without signing in (`GuestReports`, stateless, no IP; switch `ads.guest_reports` ON); admin queue: Guest label, contact, most-reported first. Next: category tree, filters, footer, Jiji-style extras.
 
 ## Known notes
 - The local PHP Docker image could not be built inside Claude's sandbox (the Alpine package site is blocked there). CI builds it on GitHub to prove it works.

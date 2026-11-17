@@ -226,6 +226,46 @@
                                     <button class="rounded-lg bg-red-700 px-4 py-2 text-sm font-semibold text-white">{{ __('ads.page.report_send') }}</button>
                                 </form>
                             </details>
+                        @elseif (feature('ads.guest_reports'))
+                            {{-- Not signed in: report without an account (no cookie; the answer comes back in the address). --}}
+                            @php($guestState = in_array(request()->query('report'), ['thanks', 'error', 'check'], true) ? request()->query('report') : null)
+                            @if ($guestState === 'thanks')
+                                <p class="text-sm text-green-800" role="status">{{ __('ads.page.report_thanks') }}</p>
+                            @else
+                                @php($reportToken = \App\Support\Safety\GuestReports::token())
+                                <details @if ($guestState) open @endif>
+                                    <summary class="cursor-pointer text-sm font-medium text-red-700">{{ __('ads.page.report') }}</summary>
+                                    @if ($guestState === 'error')
+                                        <p class="form-error mt-2" role="alert">{{ __('ads.page.report_guest_error') }}</p>
+                                    @endif
+                                    <form method="post" action="{{ lroute('ad.report_guest', ['ad' => $ad->id]) }}" class="mt-3 space-y-3">
+                                        <fieldset>
+                                            <legend class="form-label">{{ __('ads.page.report_reason') }}</legend>
+                                            @foreach (\App\Models\Report::REASONS as $reason)
+                                                <label class="flex items-center gap-2 py-0.5 text-sm"><input type="radio" name="reason" value="{{ $reason }}" required class="size-4"> {{ __('reports.reason.'.$reason) }}</label>
+                                            @endforeach
+                                        </fieldset>
+                                        <textarea name="details" rows="2" maxlength="500" class="form-input" aria-label="{{ __('ads.page.report_details') }}" placeholder="{{ __('ads.page.report_details') }}"></textarea>
+                                        <div>
+                                            <label for="report-contact" class="form-label">{{ __('ads.page.report_contact') }}</label>
+                                            <input id="report-contact" name="contact" type="text" maxlength="120" autocomplete="tel" class="form-input" aria-describedby="report-contact-help">
+                                            <p id="report-contact-help" class="form-help">{{ __('ads.page.report_contact_help') }}</p>
+                                        </div>
+                                        @if ($guestState === 'check' || \App\Support\Safety\GuestReports::underAttack())
+                                            @php([$sumA, $sumB] = \App\Support\Safety\GuestReports::sum($reportToken))
+                                            <div>
+                                                <label for="report-sum" class="form-label">{{ __('ads.page.report_sum', ['a' => $sumA, 'b' => $sumB]) }}</label>
+                                                <input id="report-sum" name="sum" type="text" inputmode="numeric" maxlength="2" required class="form-input w-20">
+                                            </div>
+                                        @endif
+                                        <input type="hidden" name="t" value="{{ $reportToken }}">
+                                        {{-- Honeypot: hidden from people, bots fill it --}}
+                                        <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true">
+                                        <button class="rounded-lg bg-red-700 px-4 py-2 text-sm font-semibold text-white">{{ __('ads.page.report_send') }}</button>
+                                        <p class="text-xs text-stone-500">{{ __('ads.page.report_guest_privacy') }}</p>
+                                    </form>
+                                </details>
+                            @endif
                         @elseif (feature('login.google'))
                             <a href="{{ lroute('login') }}" class="text-sm font-medium text-red-700 underline">{{ __('ads.page.report_sign_in') }}</a>
                         @endif

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property-read Ad $ad
- * @property-read User $user
+ * @property-read User|null $user (null = a guest report)
  */
 class Report extends Model
 {

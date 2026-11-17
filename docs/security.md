@@ -31,3 +31,6 @@ Stored encrypted (Laravel `Crypt`, APP_KEY) on the private `local` disk under `v
 
 ## Security audit (PR 45)
 Full ASVS level 2 review: see **SECURITY_REPORT.md** in the project root. Fixed there: HEAD requests no longer start a guest session; the private disk has no web address (`serve => false`); every changing customer route has a rate limit (a test keeps it so); every admin API route needs staff (a test keeps it so).
+
+## Guest reports (PR 49)
+`POST /ads/{id}/report-guest` is stateless (no session, cookie or CSRF token, like the stats beacon). Bots are stopped by a hidden field, a signed time stamp, a 5-per-10-minutes limit by a keyed hash of the IP (cache, 10 minutes), 20 per ad per day, merging of repeats, and a small sum only while there is a flood. Nothing about the visitor is stored; a contact they type is deleted 30 days after the report is handled.
