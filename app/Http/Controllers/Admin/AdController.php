@@ -8,6 +8,7 @@ use App\Models\Ad;
 use App\Models\AdminActivity;
 use App\Models\CategoryField;
 use App\Support\Admin\Activity;
+use App\Support\Ads\AdCounters;
 use App\Support\Ads\AdSnapshot;
 use App\Support\Ads\Moderation;
 use Illuminate\Http\JsonResponse;
@@ -129,19 +130,22 @@ class AdController extends Controller
 
         $done = 0;
         $skipped = 0;
-        foreach (Ad::whereIn('id', $data['ids'])->get() as $ad) {
-            try {
-                match ($data['action']) {
-                    'approve' => Moderation::approve($ad, $this->authUser($request)),
-                    'reject' => Moderation::reject($ad, $this->authUser($request), strip_tags($data['reason'])),
-                    'delete' => $this->deleteAd($ad),
-                    default => throw new LogicException('Unknown bulk action.'), // validation allows only the 3 above
-                };
-                $done++;
-            } catch (InvalidArgumentException) {
-                $skipped++;
+        // Counters (live ads per category/city) are counted once at the end, not once per ad.
+        AdCounters::deferred(function () use ($data, $request, &$done, &$skipped) {
+            foreach (Ad::whereIn('id', $data['ids'])->get() as $ad) {
+                try {
+                    match ($data['action']) {
+                        'approve' => Moderation::approve($ad, $this->authUser($request)),
+                        'reject' => Moderation::reject($ad, $this->authUser($request), strip_tags($data['reason'])),
+                        'delete' => $this->deleteAd($ad),
+                        default => throw new LogicException('Unknown bulk action.'), // validation allows only the 3 above
+                    };
+                    $done++;
+                } catch (InvalidArgumentException) {
+                    $skipped++;
+                }
             }
-        }
+        });
 
         return response()->json(['done' => $done, 'skipped' => $skipped]);
     }

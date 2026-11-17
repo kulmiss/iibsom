@@ -3,8 +3,11 @@
 namespace App\Search;
 
 use App\Models\Ad;
+use App\Support\Cache\PageCache;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 /** MySQL/MariaDB full-text search + indexed filters. */
@@ -52,7 +55,12 @@ class DatabaseAdSearch implements AdSearch
         };
         $query->orderByDesc('id');
 
-        return $query->paginate($perPage, ['ads.*'], 'page', $page);
+        // Counting all live ads is the slowest part of a list (≈0.2 s at 100k ads, load test).
+        // The count is kept until anything changes (every ad save bumps the page-cache version).
+        $countKey = 'ad-count:'.PageCache::version().':'.(int) feature('site.demo_data').':'.md5((string) json_encode(Arr::except($filters, ['sort'])));
+        $total = fn () => (int) Cache::remember($countKey, 600, fn () => $query->toBase()->getCountForPagination());
+
+        return $query->paginate($perPage, ['ads.*'], 'page', $page, $total);
     }
 
     /**

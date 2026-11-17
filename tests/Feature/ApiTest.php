@@ -103,4 +103,16 @@ class ApiTest extends TestCase
         app(Catalog::class)->flush();
         $this->getJson('/api/v1/categories/cars/fields')->assertNotFound(); // parent OFF
     }
+
+    /** Load test: the total is kept in the cache, but any change of an ad shows at once. */
+    public function test_total_is_cached_but_follows_every_change(): void
+    {
+        $first = $this->ad();
+        $this->getJson('/api/v1/ads')->assertJsonPath('meta.total', 1);
+        $this->ad();
+        $this->getJson('/api/v1/ads')->assertJsonPath('meta.total', 2);
+        $first->delete();
+        $this->getJson('/api/v1/ads')->assertJsonPath('meta.total', 1);
+        $this->get('/search')->assertOk()->assertSee('1');
+    }
 }

@@ -25,6 +25,12 @@ class PageCache
         rescue(fn () => Cache::forever(self::VERSION_KEY, (string) hrtime(true)), report: false);
     }
 
+    /** Changes on every bump(): use it in other cache keys that must follow every change of ads or settings. */
+    public static function version(): string
+    {
+        return (string) rescue(fn () => Cache::get(self::VERSION_KEY, '0'), '0', report: false);
+    }
+
     public static function key(Request $request): string
     {
         $version = Cache::get(self::VERSION_KEY, '0');

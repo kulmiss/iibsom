@@ -10,6 +10,7 @@ use App\Models\Category;
 use App\Models\City;
 use App\Models\Report;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class AdminModerationTest extends AdminTestCase
 {
@@ -82,6 +83,29 @@ class AdminModerationTest extends AdminTestCase
         $this->assertSame(3, Ad::where('status', AdStatus::Live)->count());
 
         $this->postJson('/admin/api/ads/bulk', ['ids' => $ads->pluck('id'), 'action' => 'reject'])->assertUnprocessable(); // reason needed
+    }
+
+    /** Load test: counters are recounted once per bulk action, not once per ad, and stay right. */
+    public function test_bulk_counts_live_ads_once_and_correctly(): void
+    {
+        $this->asStaff('moderator');
+        $cars = Category::where('slug', 'cars')->firstOrFail();
+        $mogadishu = City::where('slug', 'mogadishu')->firstOrFail();
+        $ads = Ad::factory()->count(10)->create(['category_id' => $cars->id, 'city_id' => $mogadishu->id]);
+
+        DB::enableQueryLog();
+        $this->postJson('/admin/api/ads/bulk', ['ids' => $ads->pluck('id'), 'action' => 'approve'])->assertOk()->assertJson(['done' => 10]);
+        $counts = collect(DB::getQueryLog())->filter(fn ($q) => str_contains($q['query'], 'count(*)') && str_contains($q['query'], 'from `ads`'))->count();
+        DB::disableQueryLog();
+
+        $this->assertLessThanOrEqual(4, $counts, "Counted {$counts} times for 10 ads.");
+        $this->assertSame(10, $cars->fresh()?->ads_count);
+        $this->assertSame(10, $cars->parent?->fresh()?->ads_count);
+        $this->assertSame(10, $mogadishu->fresh()?->ads_count);
+
+        $this->postJson('/admin/api/ads/bulk', ['ids' => $ads->take(4)->pluck('id'), 'action' => 'delete'])->assertOk();
+        $this->assertSame(6, $cars->fresh()?->ads_count);
+        $this->assertSame(6, $mogadishu->fresh()?->ads_count);
     }
 
     public function test_support_cannot_moderate_or_delete(): void

@@ -7,7 +7,7 @@ iibsom is built so each step is a settings change, not a rewrite.
 | **Start** (shared hosting) | < ~2,000 visitors a day, < 50k ads | Cloudflare in front, page cache ON (default), photos on R2 |
 | **1. VPS** | Host warns about CPU; pages often > 1 s; photos wait for cron | Move to a VPS ([deploy-vps.md](deploy-vps.md)): `HOSTING_MODE=vps`, Redis for cache/sessions/queue, 2 queue workers |
 | **2. Bigger VPS** | CPU often > 70% | More CPU/RAM (resize in the provider panel, minutes); more PHP-FPM children; 4 queue workers |
-| **3. Search server** | > ~100k ads or search > 300 ms | Meilisearch on the VPS, a new `AdSearch` class (the interface is ready), set in `.env` |
+| **3. Search server** | > ~500k ads or search > 300 ms (load test: 35 ms at 100k ads, docs/load-test.md) | Meilisearch on the VPS, a new `AdSearch` class (the interface is ready), set in `.env` |
 | **4. Separate database** | DB is the busy part | Managed MySQL (or a 2nd VPS) + read replica; set `DB_HOST` |
 | **5. More app servers** | One VPS is not enough | 2+ app servers behind a load balancer; sessions/cache already in Redis; photos already on R2 — nothing on disk to share |
 
