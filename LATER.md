@@ -26,6 +26,7 @@ Tick `[x]` with the date when done.
 - [ ] Add iibsom.com to Google Search Console and submit https://iibsom.com/sitemap.xml
 
 ## Can wait
+- [ ] When picomatch ships a fix for GHSA-fc5q-39xc-vjpf, run `pnpm update` in `admin/` (build tool only; not in the served admin)
 - [ ] Decide (money/legal, from the Jiji study): SMS phone-number check (needs an SMS provider), delivery partners, job applications with CVs (personal data)
 - [ ] Choose which Phase 2/3 switches to turn on (recommended first: Favourites, Saved search alerts, Ad stats; see docs/features.md)
 - [ ] SMS provider for phone login (S1), only if phone login is wanted
