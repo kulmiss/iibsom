@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Account\BoostController;
+use App\Http\Controllers\Account\ChatController;
 use App\Http\Controllers\Account\FavouriteController;
 use App\Http\Controllers\Account\MyAdsController;
 use App\Http\Controllers\Account\ProfileController;
@@ -79,6 +80,16 @@ $publicRoutes = function () use ($stateless) {
             });
 
             Route::get('/account/ads/{ad}/stats', [AdStatsController::class, 'show'])->whereNumber('ad')->middleware('feature:ad_stats')->name('account.ads.stats');
+
+            // In-website chat (Phase 2).
+            Route::middleware('feature:chat')->group(function () {
+                Route::get('/messages', [ChatController::class, 'index'])->name('chat');
+                Route::post('/ads/{ad}/chat', [ChatController::class, 'start'])->whereNumber('ad')->middleware('throttle:20,1')->name('chat.start');
+                Route::get('/messages/{conversation}', [ChatController::class, 'show'])->whereNumber('conversation')->name('chat.show');
+                Route::post('/messages/{conversation}', [ChatController::class, 'send'])->whereNumber('conversation')->middleware('throttle:20,1')->name('chat.send');
+                Route::get('/messages/{conversation}/since', [ChatController::class, 'since'])->whereNumber('conversation')->middleware('throttle:30,1')->name('chat.since');
+                Route::post('/messages/{conversation}/block', [ChatController::class, 'block'])->whereNumber('conversation')->middleware('throttle:10,1')->name('chat.block');
+            });
 
             // Paid boosts (Phase 2): pay by mobile money + receipt; staff approve.
             Route::middleware('feature:boosts')->group(function () {

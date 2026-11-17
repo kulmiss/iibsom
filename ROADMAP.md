@@ -30,6 +30,7 @@ Google sign-in, post an ad, browse + search, ad page, My Ads, safety (reports, a
 - ✅ Admin Health page (PR 12). ✅ "Move to VPS" checklist (docs/scaling.md, PR 19).
 - ✅ (PR 21) Admin "Edited" badge in the approval queue showing what changed since the last approval.
 - ✅ (PR 22) Match demo photos to the brand/type in the title.
+- Chat: email or push when a message waits for more than an hour; "Report this chat" for staff; photos in chat.
 - Refunds for boosts (reverse ledger lines, end the boost) and pay for shop plans with the same receipt flow.
 - Ad stats on busy sites: count views in Redis and write to the database once a minute (fewer writes).
 - Verified badge on ad cards in lists, and a "Verified sellers only" filter.

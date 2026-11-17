@@ -162,6 +162,20 @@
                             </div>
                         </div>
                     @endif
+                    @feature('chat')
+                        @if ($ad->isLive() && auth()->id() !== $ad->user_id)
+                            @auth
+                                <form method="post" action="{{ lroute('chat.start', ['ad' => $ad->id]) }}" class="mt-2">
+                                    @csrf
+                                    <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-lg px-3 py-3 font-semibold text-brand-800 ring-1 ring-brand-200 hover:bg-brand-50">{{ icon('message-circle', 'size-5') }} {{ __('chat.start') }}</button>
+                                </form>
+                            @else
+                                @feature('login.google')
+                                    <a href="{{ lroute('login') }}" class="mt-2 flex w-full items-center justify-center gap-2 rounded-lg px-3 py-3 font-semibold text-brand-800 ring-1 ring-brand-200 hover:bg-brand-50" title="{{ __('chat.sign_in') }}">{{ icon('message-circle', 'size-5') }} {{ __('chat.start') }}</a>
+                                @endfeature
+                            @endauth
+                        @endif
+                    @endfeature
                 </section>
 
                 @include('partials.banner-ad', ['bannerAd' => \App\Models\Banner::pick('ad', $ad->category, $ad->city_id), 'sizes' => '(min-width: 1024px) 352px, 100vw'])

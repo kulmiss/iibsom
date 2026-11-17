@@ -1,10 +1,12 @@
 import { initLanguageSwitch } from './language-switch';
+import { initChat } from './chat';
 import { initFavourites } from './favourite';
 import { initForYou } from './for-you';
 import { initPwa } from './pwa';
 import { initTour } from './tour';
 
 initLanguageSwitch();
+initChat();
 initFavourites();
 initForYou();
 initPwa();

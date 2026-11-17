@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'title' => 'Messages',
+    'start' => 'Chat with seller',
+    'sign_in' => 'Sign in to chat with the seller',
+    'empty_inbox' => 'No messages yet. Open an ad and tap "Chat with seller".',
+    'about' => 'About: :title',
+    'ad_gone' => 'This ad is no longer on the site.',
+    'message' => 'Message',
+    'placeholder' => 'Write a message…',
+    'send' => 'Send',
+    'empty' => 'Write a message first.',
+    'blocked' => 'This chat is blocked. No more messages can be sent.',
+    'unavailable' => 'This person can no longer receive messages.',
+    'not_allowed' => 'Your message has words that are not allowed. Please change it.',
+    'block' => 'Block',
+    'unblock' => 'Unblock',
+    'block_confirm' => 'Block this chat? Neither of you can send more messages.',
+    'blocked_by_you' => 'You blocked this chat.',
+    'blocked_by_them' => 'This chat was blocked.',
+    'new' => 'New',
+    'safety' => 'Stay safe: never send money before you see the item. Meet in a busy place.',
+    'first' => 'Say hello and ask about the ad. Your phone number is not shown here.',
+    'all' => 'All messages',
+];

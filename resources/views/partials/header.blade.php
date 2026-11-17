@@ -13,7 +13,7 @@
                 <a href="{{ lroute('saved') }}" class="icon-btn hidden lg:flex" title="{{ __('site.nav.saved') }}">{{ icon('bookmark') }}<span class="sr-only">{{ __('site.nav.saved') }}</span></a>
             @endfeature
             @feature('chat')
-                <a href="#" class="icon-btn hidden lg:flex" title="{{ __('site.nav.messages') }}">{{ icon('message-circle') }}<span class="sr-only">{{ __('site.nav.messages') }}</span></a>
+                <a href="{{ lroute('chat') }}" class="icon-btn relative hidden lg:flex" title="{{ __('site.nav.messages') }}">{{ icon('message-circle') }}<span class="sr-only">{{ __('site.nav.messages') }}</span>@if (($chatUnread ?? 0) > 0)<span class="absolute end-1 top-1 size-2.5 rounded-full bg-accent-400 ring-2 ring-brand-700" aria-label="{{ __('chat.new') }}"></span>@endif</a>
             @endfeature
             @feature('saved_searches')
                 <a href="{{ lroute('searches') }}" class="icon-btn" title="{{ __('site.nav.alerts') }}">{{ icon('bell') }}<span class="sr-only">{{ __('site.nav.alerts') }}</span></a>

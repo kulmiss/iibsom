@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'title' => 'Fariimaha',
+    'start' => 'La sheekayso iibiyaha',
+    'sign_in' => 'Gal si aad ula sheekaysato iibiyaha',
+    'empty_inbox' => 'Weli fariin ma jirto. Fur xayeysiis oo riix "La sheekayso iibiyaha".',
+    'about' => 'Ku saabsan: :title',
+    'ad_gone' => 'Xayeysiiskan hadda kuma jiro bogga.',
+    'message' => 'Fariin',
+    'placeholder' => 'Qor fariin…',
+    'send' => 'Dir',
+    'empty' => 'Marka hore qor fariin.',
+    'blocked' => 'Sheekadan waa la xannibay. Fariimo kale lama diri karo.',
+    'unavailable' => 'Qofkan hadda fariimo ma heli karo.',
+    'not_allowed' => 'Fariintaadu waxay leedahay erayo aan la oggolayn. Fadlan beddel.',
+    'block' => 'Xannib',
+    'unblock' => 'Ka qaad xannibaadda',
+    'block_confirm' => 'Ma xannibaysaa sheekadan? Midkiinna fariimo kale ma diri karo.',
+    'blocked_by_you' => 'Adiga ayaa xannibay sheekadan.',
+    'blocked_by_them' => 'Sheekadan waa la xannibay.',
+    'new' => 'Cusub',
+    'safety' => 'Ammaan ahaw: weligaa lacag ha dirin intaadan arag alaabta. Ku kulma meel mashquul ah.',
+    'first' => 'Salaan oo wax ka weydii xayeysiiska. Lambarkaaga taleefanka halkan laguma muujiyo.',
+    'all' => 'Dhammaan fariimaha',
+];
