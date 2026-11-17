@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Link } from '@tanstack/react-router'
+import { Link, Navigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { api, apiErrorMessage } from '@/lib/api'
 import { useAuthStore } from '@/stores/auth-store'
@@ -37,7 +37,10 @@ type General = {
 }
 
 export function SettingsGeneral() {
-  const { data } = useQuery({ queryKey: ['settings-general'], queryFn: async () => (await api.get<General>('/settings/general')).data })
+  // Staff without "settings.manage" (moderator, support) only have their own settings: open those.
+  const canManage = useAuthStore((st) => st.can('settings.manage'))
+  const { data } = useQuery({ queryKey: ['settings-general'], queryFn: async () => (await api.get<General>('/settings/general')).data, enabled: canManage })
+  if (!canManage) return <Navigate to='/settings/appearance' replace />
   if (!data) return <Skeleton className='h-64 w-full' />
   return <GeneralForm initial={data} />
 }

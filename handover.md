@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-18 (PR 58)_
+_Last updated: 2026-11-18 (PR 59)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -105,6 +105,7 @@ See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example 
 56. **PR 56:** Saved searches keep area / only with photos / verified sellers (alerts use them). Found by the 43-row checklist run.
 57. **PR 57:** Guest report form gets a fresh time stamp when it opens (cached pages); friendly 403/419/429/500/503 pages in both languages.
 58. **PR 58:** Grid/list buttons on phones too.
+59. **PR 59:** Staff without site-settings rights open Settings on Appearance (no broken page); phone settings menu follows the address.
 
 ## Known notes
 - The local PHP Docker image could not be built inside Claude's sandbox (the Alpine package site is blocked there). CI builds it on GitHub to prove it works.
