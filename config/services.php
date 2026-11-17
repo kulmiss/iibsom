@@ -35,6 +35,17 @@ return [
         'redirect' => env('GOOGLE_REDIRECT_URI', '/auth/google/callback'),
     ],
 
+    // Auto-post new ads (switch "social.autopost", OFF). Guide: docs/social-autopost.md.
+    'telegram' => [
+        'bot_token' => env('TELEGRAM_BOT_TOKEN'),
+        'chat_id' => env('TELEGRAM_CHAT_ID'), // e.g. @iibsom or -100123...
+    ],
+    'facebook' => [
+        'page_id' => env('FACEBOOK_PAGE_ID'),
+        'page_token' => env('FACEBOOK_PAGE_TOKEN'),
+        'graph_version' => env('FACEBOOK_GRAPH_VERSION', 'v21.0'),
+    ],
+
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\AdStatus;
 use App\Support\Ads\AdCounters;
 use App\Support\Cache\PageCache;
+use App\Support\Social\SocialPosts;
 use Database\Factories\AdFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -54,6 +55,12 @@ class Ad extends Model
         static::saved(function (Ad $ad) {
             if ($ad->wasChanged(['status', 'category_id', 'city_id', 'expires_at', 'is_demo']) || $ad->wasRecentlyCreated) {
                 AdCounters::refreshFor($ad);
+            }
+        });
+        // Auto-post (switch "social.autopost", OFF): share an ad once, when it first goes live.
+        static::saved(function (Ad $ad) {
+            if ($ad->status === AdStatus::Live && ($ad->wasChanged('status') || $ad->wasRecentlyCreated)) {
+                SocialPosts::queueFor($ad);
             }
         });
         static::deleted(fn (Ad $ad) => AdCounters::refreshFor($ad));

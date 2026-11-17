@@ -28,4 +28,5 @@ Tick `[x]` with the date when done.
 - [ ] SMS provider for phone login (S1), only if phone login is wanted
 - [ ] Choose staff accounts (Moderator / Support) and give them 2FA apps
 - [ ] **Boosts (when you want to sell them):** real prices for Top / VIP / Diamond (edit `config/boosts.php` or tell the developer), and your merchant numbers for EVC Plus, Zaad, Sahal, eDahab (admin → Settings → General → Payments for boosts). Then turn **Test mode** OFF and the **Paid boosts** switch ON.
+- [ ] **Auto-post (when you want it):** make the Telegram bot/channel and/or Facebook Page token (docs/social-autopost.md), put the keys in `.env`, turn **Auto-post** ON, post one test ad and check System health.
 - [ ] **Shop plans:** decide the monthly price for shop pages (turned on by hand in admin → Shops for now).

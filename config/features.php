@@ -73,6 +73,7 @@ return [
     // Phase 3: growth
     'price_suggestions' => ['group' => 'Phase 3', 'default' => false, 'label' => 'Price guide', 'description' => 'While posting, sellers see "Most Toyota Vitz ads are $4,500 – $7,000" from similar live and sold ads of the last 6 months (only when there are at least 5, so no single price shows).'],
     'seller_ratings' => ['group' => 'Phase 3', 'default' => false, 'label' => 'Seller ratings', 'description' => 'Buyers give a seller 1–5 stars (and a short comment) from the chat, only after the seller answered them. Stars show next to the seller name; staff can hide unfair ratings (admin → Ratings). Needs "In-website chat" ON.'],
+    'social.autopost' => ['group' => 'Phase 3', 'default' => false, 'label' => 'Auto-post to Facebook and Telegram', 'description' => 'Each new ad is shared once, when it first goes live, to the iibsom Facebook Page and/or Telegram channel (only the networks whose keys are in .env). Demo ads never. A failed post never stops the ad. See System health.'],
     'app' => ['group' => 'Phase 3', 'default' => false, 'label' => 'Mobile app', 'description' => 'Flutter app + push notifications.'],
 
 ];

@@ -22,6 +22,11 @@ return [
         'skip_to_content' => 'U gudub nuxurka',
     ],
 
+    // Auto-post text (Facebook / Telegram).
+    'social' => [
+        'line' => ':price · :city · :category',
+    ],
+
     'home' => [
         'title' => 'Ka iibso oo iibi Soomaaliya',
         'heading' => 'Maxaad raadinaysaa?',

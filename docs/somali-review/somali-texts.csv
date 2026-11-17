@@ -137,7 +137,7 @@ ads.form.title_help,"Short and clear, e.g. ""Toyota Vitz 2012, automatic"".","Ga
 ads.form.description,Description,Faahfaahin,"needs native review","app/Support/Ads/AdForm.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
 ads.form.description_help,"What is it like? Any problems? Why are you selling?","Sidee buu yahay? Wax dhibaato ah ma leeyahay? Maxaad u iibinaysaa?","needs native review","resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
 ads.form.price,"Price (USD)","Qiimaha (USD)","needs native review","app/Support/Ads/AdForm.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
-ads.form.negotiable,Negotiable,"Waa laga wada hadli karaa","needs native review","app/Models/Ad.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
+ads.form.negotiable,Negotiable,"Waa laga wada hadli karaa","needs native review","app/Models/Ad.php | app/Support/Social/SocialPosts.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
 ads.form.condition,Condition,Xaaladda,"needs native review","app/Support/Ads/AdForm.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
 ads.form.new,New,Cusub,"needs native review","resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php | resources/views/browse/index.blade.php","ads-post-form.png | ads-show.png | browse-index.png"
 ads.form.used,Used,"La isticmaalay","needs native review","resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php | resources/views/browse/index.blade.php","ads-post-form.png | ads-show.png | browse-index.png"
@@ -364,6 +364,7 @@ site.nav.profile,Profile,Akoon,"needs native review",resources/views/partials/bo
 site.nav.sign_in,"Sign in",Gal,"needs native review",resources/views/partials/header.blade.php,home.png
 site.nav.language,Language,Luqadda,"needs native review",resources/views/partials/language-switcher.blade.php,home.png
 site.nav.skip_to_content,"Skip to content","U gudub nuxurka","needs native review",resources/views/layouts/app.blade.php,home.png
+site.social.line,":price · :city · :category",":price · :city · :category","needs native review",app/Support/Social/SocialPosts.php,
 site.home.title,"Buy and sell in Somalia","Ka iibso oo iibi Soomaaliya","needs native review","resources/views/home.blade.php | resources/views/layouts/app.blade.php",home.png
 site.home.heading,"What are you looking for?","Maxaad raadinaysaa?","needs native review",resources/views/home.blade.php,home.png
 site.home.search_placeholder,"I am looking for...","Waxaan raadinayaa...","needs native review",resources/views/home.blade.php,home.png

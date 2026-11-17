@@ -2,6 +2,8 @@
 
 namespace App\Support\Health;
 
+use App\Models\SocialPost;
+use App\Support\Social\SocialPosts;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -34,6 +36,7 @@ class HealthChecker
             $this->storage(),
             $this->images(),
             $this->debugMode(),
+            ...(feature('social.autopost') ? [$this->social()] : []),
         ];
     }
 
@@ -174,6 +177,25 @@ class HealthChecker
         $bad = config('app.debug') && app()->environment('production');
 
         return $this->result('debug', 'Debug mode', $bad ? 'fail' : 'ok', $bad ? 'Debug is ON in production.' : 'OK', $bad ? 'Set APP_DEBUG=false in .env.' : null);
+    }
+
+    /** @return Check  Auto-post: which networks have keys, and failures in the last 24 hours. */
+    private function social(): array
+    {
+        $ready = array_values(array_filter(SocialPosts::networks(), fn ($n) => $n->isConfigured()));
+        if ($ready === []) {
+            return $this->result('social', 'Auto-post', 'warn', 'The switch is ON but no network has keys, so nothing is shared.', 'Add the Telegram and/or Facebook keys to .env (docs/social-autopost.md).');
+        }
+        $failed = SocialPost::where('status', 'failed')->where('updated_at', '>=', now()->subDay());
+        $count = (clone $failed)->count();
+        $names = implode(' + ', array_map(fn ($n) => $n->label(), $ready));
+        if ($count > 0) {
+            $last = $failed->latest('updated_at')->first();
+
+            return $this->result('social', 'Auto-post', 'warn', "{$names}: {$count} failed in the last 24 hours. Last reason: ".($last->error ?? 'unknown'), 'Check the keys in .env (a Facebook Page token can expire).');
+        }
+
+        return $this->result('social', 'Auto-post', 'ok', "{$names}: ".SocialPost::where('status', 'posted')->where('posted_at', '>=', now()->subDay())->count().' shared in the last 24 hours.');
     }
 
     private function cronHint(): string

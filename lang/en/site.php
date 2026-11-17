@@ -20,6 +20,11 @@ return [
         'skip_to_content' => 'Skip to content',
     ],
 
+    // Auto-post text (Facebook / Telegram).
+    'social' => [
+        'line' => ':price · :city · :category',
+    ],
+
     'home' => [
         'title' => 'Buy and sell in Somalia',
         'heading' => 'What are you looking for?',

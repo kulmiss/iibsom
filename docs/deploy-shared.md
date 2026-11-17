@@ -52,6 +52,8 @@ TRUSTED_PROXIES=*       # when the site is behind Cloudflare
 GOOGLE_CLIENT_ID=...    # see google-login.md
 GOOGLE_CLIENT_SECRET=...
 MAIL_HOST=...           # your host's email (SMTP) settings
+# Optional, only for auto-post (see social-autopost.md):
+# TELEGRAM_BOT_TOKEN=... TELEGRAM_CHAT_ID=... FACEBOOK_PAGE_ID=... FACEBOOK_PAGE_TOKEN=...
 ```
 
 ## 5. First run
