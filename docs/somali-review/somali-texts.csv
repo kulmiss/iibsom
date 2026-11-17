@@ -129,6 +129,12 @@ ads.ratings.from_buyers,"From buyers who talked with this seller on iibsom.","Wa
 ads.ratings.about,"About: :title","Ku saabsan: :title","needs native review",resources/views/sellers/reviews.blade.php,
 ads.ratings.none,"No ratings to show.","Qiimayn la tuso ma jirto.","needs native review",resources/views/sellers/reviews.blade.php,
 ads.ratings.mine,"My ratings",Qiimayntayda,"needs native review",resources/views/account/index.blade.php,account-index.png
+ads.diaspora.money,"Show the price in","Qiimaha ku tus","needs native review",resources/views/ads/_diaspora.blade.php,
+ads.diaspora.approx,"approximate (rate of :date)","qiyaas ahaan (sicirka :date)","needs native review",resources/views/ads/_diaspora.blade.php,
+ads.diaspora.title,"Buying for family from abroad?","Ma waxaad qoyskaaga wax uga iibsanaysaa dibadda?","needs native review",resources/views/ads/_diaspora.blade.php,
+ads.diaspora.tip_see,"Ask someone you trust in :city to see the item and meet the seller first.","Weydii qof aad aaminsan tahay oo jooga :city inuu marka hore arko alaabta oo la kulmo iibiyaha.","needs native review",resources/views/ads/_diaspora.blade.php,
+ads.diaspora.tip_money,"Never send money before they have seen it and it is handed over.","Weligaa lacag ha dirin ka hor intaanay arkin oo aan la gacansiin.","needs native review",resources/views/ads/_diaspora.blade.php,
+ads.diaspora.tip_chat,"Keep the seller's number and agree everything in writing.","Kaydso lambarka iibiyaha oo wax walba ku heshiiya qoraal.","needs native review",resources/views/ads/_diaspora.blade.php,
 ads.form.photos,Photos,Sawirro,"needs native review","resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
 ads.form.photos_help,"Up to :max photos. The first photo is the cover. Drag to change the order.","Ilaa :max sawir. Sawirka koowaad waa kan hore. Jiid si aad u beddesho kala horreynta.","needs native review","resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
 ads.form.add_photos,"Add photos","Ku dar sawirro","needs native review","resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"

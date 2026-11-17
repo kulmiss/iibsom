@@ -106,6 +106,9 @@
                         <span>{{ icon('map-pin', 'inline size-4') }} {{ $ad->city->label }}@if ($ad->area), {{ $ad->area->label }}@endif</span>
                         <span>{{ __('ads.page.posted', ['when' => ($ad->published_at ?? $ad->created_at)->diffForHumans()]) }}</span>
                     </p>
+                    @feature('diaspora')
+                        @include('ads._diaspora')
+                    @endfeature
 
                     @if ($fieldRows || $ad->condition)
                         <h2 class="mt-5 font-semibold">{{ __('ads.page.details') }}</h2>

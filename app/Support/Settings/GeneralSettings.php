@@ -3,6 +3,7 @@
 namespace App\Support\Settings;
 
 use App\Console\Commands\SendWeeklySummary;
+use App\Support\Cache\PageCache;
 use Illuminate\Validation\Rule;
 
 /**
@@ -29,6 +30,8 @@ class GeneralSettings
             'payments_test_mode' => ['sometimes', 'boolean'],
             'payment_numbers' => ['sometimes', 'array'],
             'payment_numbers.*' => ['nullable', 'string', 'max:30', 'regex:/^[0-9 +\-]*$/'],
+            'diaspora_rates' => ['sometimes', 'array'],
+            'diaspora_rates.*' => ['nullable', 'numeric', 'min:0', 'max:1000000'],
         ];
     }
 
@@ -56,6 +59,8 @@ class GeneralSettings
             'weekly_emails.*.email' => 'Each weekly summary address must be a valid email.',
             'support_email.email' => 'The help email must be a valid email address.',
             'payment_numbers.*.regex' => 'A merchant number can only have numbers, spaces, + and -.',
+            'diaspora_rates.*.numeric' => 'Each exchange rate must be a number, e.g. 0.92.',
+            'diaspora_rates.*.min' => 'An exchange rate cannot be below 0.',
         ];
     }
 
@@ -96,6 +101,18 @@ class GeneralSettings
             $this->settings->set('payments.test_mode', (bool) $data['payments_test_mode'], $userId);
         }
 
+        if (array_key_exists('diaspora_rates', $data)) {
+            $rates = [];
+            foreach (array_keys(config()->array('iibsom.diaspora_currencies')) as $code) {
+                $rates[$code] = round((float) ($data['diaspora_rates'][$code] ?? 0), 6);
+            }
+            if ($rates != setting('diaspora.rates')) {
+                $this->settings->set('diaspora.rates', $rates, $userId);
+                $this->settings->set('diaspora.rates_date', now('Africa/Mogadishu')->toDateString(), $userId);
+                PageCache::bump(); // the rates are inside cached ad pages
+            }
+        }
+
         if (array_key_exists('support_email', $data)) {
             $this->settings->set('site.support_email', mb_strtolower(trim((string) ($data['support_email'] ?? ''))), $userId);
         }
@@ -118,6 +135,9 @@ class GeneralSettings
             'payments_test_mode' => (bool) setting('payments.test_mode'),
             'payment_numbers' => (object) setting('payments.numbers'),
             'payment_methods' => config()->array('boosts.methods'),
+            'diaspora_rates' => (object) setting('diaspora.rates'),
+            'diaspora_rates_date' => setting('diaspora.rates_date') ?: null,
+            'diaspora_currencies' => config()->array('iibsom.diaspora_currencies'),
         ];
     }
 }

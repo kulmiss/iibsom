@@ -27,6 +27,9 @@ type General = {
   payments_test_mode: boolean
   payment_numbers: Record<string, string>
   payment_methods: Record<string, string>
+  diaspora_rates: Record<string, number | string>
+  diaspora_rates_date: string | null
+  diaspora_currencies: Record<string, string>
 }
 
 export function SettingsGeneral() {
@@ -39,6 +42,7 @@ function GeneralForm({ initial }: { initial: General }) {
   const qc = useQueryClient()
   const [form, setForm] = useState<General>(initial)
   const boostsOn = useAuthStore((st) => !!st.user?.boosts)
+  const diasporaOn = useAuthStore((st) => !!st.user?.diaspora)
   const [emails, setEmails] = useState(initial.weekly_emails.join('\n'))
 
   const save = useMutation({
@@ -135,6 +139,25 @@ function GeneralForm({ initial }: { initial: General }) {
                 <div key={key} className='grid gap-1.5'>
                   <Label htmlFor={`pay-${key}`}>{label} merchant number</Label>
                   <Input id={`pay-${key}`} inputMode='tel' value={form.payment_numbers[key] ?? ''} onChange={(e) => setForm({ ...form, payment_numbers: { ...form.payment_numbers, [key]: e.target.value } })} placeholder='Empty = not offered' />
+                </div>
+              ))}
+            </div>
+          </fieldset>
+        )}
+        {diasporaOn && (
+          <fieldset className='grid gap-3 rounded-lg border p-4'>
+            <legend className='px-1 text-sm font-medium'>Prices for buyers abroad</legend>
+            <p className='text-xs text-muted-foreground'>
+              How much <strong>1 US dollar</strong> is in each money (for example 0.92 for the euro). Buyers abroad see &quot;≈ €5,980&quot; under the price. 0 or empty = not shown. Update them now and then.
+              {form.diaspora_rates_date && ` Last changed: ${form.diaspora_rates_date}.`}
+            </p>
+            <div className='grid gap-3 sm:grid-cols-2'>
+              {Object.entries(form.diaspora_currencies).map(([code, name]) => (
+                <div key={code} className='grid gap-1.5'>
+                  <Label htmlFor={`rate-${code}`}>
+                    {name} ({code})
+                  </Label>
+                  <Input id={`rate-${code}`} inputMode='decimal' value={form.diaspora_rates[code] ?? ''} onChange={(e) => setForm({ ...form, diaspora_rates: { ...form.diaspora_rates, [code]: e.target.value } })} placeholder='0 = not shown' />
                 </div>
               ))}
             </div>

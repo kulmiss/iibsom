@@ -45,6 +45,14 @@ return [
         'none' => 'Qiimayn la tuso ma jirto.',
         'mine' => 'Qiimayntayda',
     ],
+    'diaspora' => [
+        'money' => 'Qiimaha ku tus',
+        'approx' => 'qiyaas ahaan (sicirka :date)',
+        'title' => 'Ma waxaad qoyskaaga wax uga iibsanaysaa dibadda?',
+        'tip_see' => 'Weydii qof aad aaminsan tahay oo jooga :city inuu marka hore arko alaabta oo la kulmo iibiyaha.',
+        'tip_money' => 'Weligaa lacag ha dirin ka hor intaanay arkin oo aan la gacansiin.',
+        'tip_chat' => 'Kaydso lambarka iibiyaha oo wax walba ku heshiiya qoraal.',
+    ],
     'form' => [
         'photos' => 'Sawirro',
         'photos_help' => 'Ilaa :max sawir. Sawirka koowaad waa kan hore. Jiid si aad u beddesho kala horreynta.',

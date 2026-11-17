@@ -43,6 +43,14 @@ return [
         'none' => 'No ratings to show.',
         'mine' => 'My ratings',
     ],
+    'diaspora' => [
+        'money' => 'Show the price in',
+        'approx' => 'approximate (rate of :date)',
+        'title' => 'Buying for family from abroad?',
+        'tip_see' => 'Ask someone you trust in :city to see the item and meet the seller first.',
+        'tip_money' => 'Never send money before they have seen it and it is handed over.',
+        'tip_chat' => 'Keep the seller\'s number and agree everything in writing.',
+    ],
     'form' => [
         'photos' => 'Photos',
         'photos_help' => 'Up to :max photos. The first photo is the cover. Drag to change the order.',

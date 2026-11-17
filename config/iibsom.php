@@ -54,6 +54,15 @@ return [
         'payments.numbers' => ['evc_plus' => '', 'zaad' => '', 'sahal' => '', 'edahab' => ''], // merchant numbers buyers pay to
         'setup.completed_at' => '', // first-time setup wizard: '' = not done yet
         'site.support_email' => '', // shown on the Help page ("Still need help?"); empty = hidden
+        // Diaspora prices (switch "diaspora"): how much 1 US dollar is in each money. 0 = not shown.
+        'diaspora.rates' => ['EUR' => 0, 'GBP' => 0, 'SEK' => 0, 'NOK' => 0, 'CAD' => 0, 'AUD' => 0, 'AED' => 0, 'KES' => 0],
+        'diaspora.rates_date' => '', // the day the rates were last changed (shown as "rate of ...")
+    ],
+
+    // Money shown to buyers abroad, picked from the phone's time zone (nothing is stored).
+    'diaspora_currencies' => [
+        'EUR' => 'Euro', 'GBP' => 'British pound', 'SEK' => 'Swedish krona', 'NOK' => 'Norwegian krone',
+        'CAD' => 'Canadian dollar', 'AUD' => 'Australian dollar', 'AED' => 'UAE dirham', 'KES' => 'Kenyan shilling',
     ],
 
 ];
