@@ -68,15 +68,14 @@
                                     <span>{{ translated($category['name']) }}</span>
                                     <a href="{{ lroute('browse.category', ['category' => $category['slug']]) }}" class="text-sm font-medium text-brand-700 hover:underline">{{ __('ads.browse.all_in', ['category' => translated($category['name'])]) }} ({{ number_format($category['ads_count']) }})</a>
                                 </p>
-                                <ul class="mt-3 grid grid-cols-2 gap-1">
+                                {{-- One sub category per line (owner's wish, 2026-11-18): name and count side by side. --}}
+                                <ul class="mt-3 grid gap-0.5" data-cat-subs>
                                     @foreach ($subs as $sub)
                                         <li>
-                                            <a href="{{ lroute('browse.category', ['category' => $sub['slug']]) }}" class="flex items-center gap-3 rounded-lg px-2 py-2 hover:bg-brand-50 focus-visible:bg-brand-50">
-                                                <span class="flex size-9 shrink-0 items-center justify-center rounded-lg bg-stone-50 text-brand-700">{{ icon($sub['icon'], 'size-5') }}</span>
-                                                <span class="min-w-0">
-                                                    <span class="block text-sm font-medium leading-tight">{{ translated($sub['name']) }}</span>
-                                                    <span class="block text-xs text-stone-500">{{ trans_choice('site.ads_count', $sub['ads_count'], ['count' => number_format($sub['ads_count'])]) }}</span>
-                                                </span>
+                                            <a href="{{ lroute('browse.category', ['category' => $sub['slug']]) }}" class="flex items-center gap-3 rounded-lg px-2 py-1.5 hover:bg-brand-50 focus-visible:bg-brand-50" title="{{ translated($sub['name']) }}">
+                                                <span class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-stone-50 text-brand-700">{{ icon($sub['icon'], 'size-5') }}</span>
+                                                <span class="min-w-0 flex-1 truncate text-sm font-medium">{{ translated($sub['name']) }}</span>
+                                                <span class="shrink-0 text-xs text-stone-500">{{ trans_choice('site.ads_count', $sub['ads_count'], ['count' => number_format($sub['ads_count'])]) }}</span>
                                             </a>
                                         </li>
                                     @endforeach

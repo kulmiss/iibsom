@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-18 (PR 61)_
+_Last updated: 2026-11-18 (PR 62)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -108,6 +108,7 @@ See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example 
 59. **PR 59:** Staff without site-settings rights open Settings on Appearance (no broken page); phone settings menu follows the address.
 60. **PR 60:** Test sign-in box on /login for your own computer only (APP_ENV=local, switch login.test_accounts); Google without keys explains instead of failing at Google.
 61. **PR 61:** Admin: @tailwindcss/vite moved to devDependencies (build-only); production audit clean.
+62. **PR 62:** Home side panel: one line per sub category (owner request).
 
 ## Known notes
 - The local PHP Docker image could not be built inside Claude's sandbox (the Alpine package site is blocked there). CI builds it on GitHub to prove it works.
