@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-16 (PR 25)_
+_Last updated: 2026-11-17 (PR 39)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -79,7 +79,8 @@ See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example 
 35. **PR 35:** Business shop pages + admin Shops (Phase 2, OFF).
 36. **PR 36:** Paid boosts in TEST MODE: receipts, double-entry ledger, admin Payments (Phase 2, OFF).
 37. **PR 37:** Banner ads in paid slots with targeting + click counts (Phase 2, OFF).
-38. **PR 38:** In-website chat (Phase 2, OFF). Part B done (this one). Next: Part B (Phase 2, OFF), Part C (Phase 3), Part D review — owner's big job list of 2026-11-16.
+38. **PR 38:** In-website chat (Phase 2, OFF). Part B done.
+39. **PR 39:** Write API with app access keys + `/categories/{slug}/fields` + docs/api.md (switch `api.write`, OFF). Next: Part C (price suggestions, seller ratings, auto-post, diaspora note), then Part D review — owner's big job list of 2026-11-16.
 
 ## Known notes
 - The local PHP Docker image could not be built inside Claude's sandbox (the Alpine package site is blocked there). CI builds it on GitHub to prove it works.

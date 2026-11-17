@@ -108,6 +108,12 @@ class User extends Authenticatable
         return $this->hasMany(VerificationRequest::class);
     }
 
+    /** @return HasMany<ApiToken, $this> */
+    public function apiTokens(): HasMany
+    {
+        return $this->hasMany(ApiToken::class);
+    }
+
     /** @return HasMany<Payment, $this> */
     public function payments(): HasMany
     {

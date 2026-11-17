@@ -7,6 +7,7 @@ use App\Models\Ad;
 use App\Models\Category;
 use App\Models\City;
 use App\Models\User;
+use App\Support\Catalog;
 use App\Support\Features\FeatureManager;
 use App\Support\Settings\SettingsManager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -87,5 +88,19 @@ class ApiTest extends TestCase
             $this->getJson('/api/v1/cities');
         }
         $this->getJson('/api/v1/cities')->assertStatus(429);
+    }
+
+    public function test_category_fields_for_posting(): void
+    {
+        $this->getJson('/api/v1/categories/cars/fields')->assertOk()
+            ->assertJsonPath('data.category', 'cars')
+            ->assertJsonPath('data.has_condition', true)
+            ->assertJsonFragment(['key' => 'brand', 'type' => 'select']);
+        $this->getJson('/api/v1/categories/vehicles/fields')->assertNotFound(); // top level: no posting
+        $this->getJson('/api/v1/categories/no-such/fields')->assertNotFound();
+
+        Category::where('slug', 'vehicles')->update(['enabled' => false]);
+        app(Catalog::class)->flush();
+        $this->getJson('/api/v1/categories/cars/fields')->assertNotFound(); // parent OFF
     }
 }

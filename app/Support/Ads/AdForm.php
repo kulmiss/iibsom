@@ -78,6 +78,16 @@ class AdForm
         return $data;
     }
 
+    /** Same limit for the website and the API: no more than N new ads in 24 hours. */
+    public static function checkDailyLimit(int $userId): void
+    {
+        $today = Ad::withTrashed()->where('user_id', $userId)->where('created_at', '>=', now()->subDay())->count();
+
+        if ($today >= setting('ads.max_per_day')) {
+            throw ValidationException::withMessages(['title' => __('ads.form.daily_limit', ['count' => setting('ads.max_per_day')])]);
+        }
+    }
+
     /** Create a new ad (pending when approval is ON). */
     /** @param  array<string, mixed>  $data  from validate() */
     public function create(Request $request, Category $category, array $data): Ad

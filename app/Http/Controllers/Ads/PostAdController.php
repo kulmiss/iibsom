@@ -11,7 +11,6 @@ use App\Support\Catalog;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 /**
@@ -49,7 +48,7 @@ class PostAdController extends Controller
         $this->ensurePostable($category);
         $user = $this->authUser($request);
 
-        $this->checkDailyLimit($user->id);
+        AdForm::checkDailyLimit($user->id);
         $ad = $form->create($request, $category, $form->validate($request, $category));
 
         Log::info('ad.created', ['ad_id' => $ad->id, 'user_id' => $user->id]);
@@ -68,15 +67,6 @@ class PostAdController extends Controller
     {
         // Only live sub categories can take ads.
         abort_if($category->parent_id === null || ! $category->isLive(), 404);
-    }
-
-    private function checkDailyLimit(int $userId): void
-    {
-        $today = Ad::withTrashed()->where('user_id', $userId)->where('created_at', '>=', now()->subDay())->count();
-
-        if ($today >= setting('ads.max_per_day')) {
-            throw ValidationException::withMessages(['title' => __('ads.form.daily_limit', ['count' => setting('ads.max_per_day')])]);
-        }
     }
 
     /** @return array<int, array<int, array{id:int, name:string}>> city id => areas */

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Account\ApiTokenController;
 use App\Http\Controllers\Account\BoostController;
 use App\Http\Controllers\Account\ChatController;
 use App\Http\Controllers\Account\FavouriteController;
@@ -102,6 +103,13 @@ $publicRoutes = function () use ($stateless) {
             Route::middleware('feature:shops')->group(function () {
                 Route::get('/account/shop', [ShopController::class, 'edit'])->name('account.shop');
                 Route::post('/account/shop', [ShopController::class, 'save'])->middleware('throttle:20,1')->name('account.shop.save');
+            });
+
+            // App access keys for the write API (docs/api.md).
+            Route::middleware('feature:api.write')->group(function () {
+                Route::get('/account/api', [ApiTokenController::class, 'index'])->name('account.api');
+                Route::post('/account/api', [ApiTokenController::class, 'store'])->middleware('throttle:10,60')->name('account.api.store');
+                Route::delete('/account/api/{token}', [ApiTokenController::class, 'destroy'])->whereNumber('token')->middleware('throttle:20,1')->name('account.api.destroy');
             });
 
             // Verified badge (Phase 2): send an ID photo.

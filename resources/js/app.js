@@ -1,5 +1,6 @@
 import { initLanguageSwitch } from './language-switch';
 import { initChat } from './chat';
+import { initCopyText } from './copy-text';
 import { initFavourites } from './favourite';
 import { initForYou } from './for-you';
 import { initPwa } from './pwa';
@@ -7,6 +8,7 @@ import { initTour } from './tour';
 
 initLanguageSwitch();
 initChat();
+initCopyText();
 initFavourites();
 initForYou();
 initPwa();

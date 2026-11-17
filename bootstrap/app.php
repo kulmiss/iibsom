@@ -3,6 +3,7 @@
 use App\Http\Middleware\AdminAuthenticate;
 use App\Http\Middleware\AdminCan;
 use App\Http\Middleware\ApiLocale;
+use App\Http\Middleware\AuthenticateApiToken;
 use App\Http\Middleware\EnsureFeatureEnabled;
 use App\Http\Middleware\EnsureProfileComplete;
 use App\Http\Middleware\GuestPages;
@@ -47,6 +48,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'feature' => EnsureFeatureEnabled::class,
+            'api.token' => AuthenticateApiToken::class,
             'locale' => SetLocale::class,
             'profile.complete' => EnsureProfileComplete::class,
             'admin' => AdminAuthenticate::class,

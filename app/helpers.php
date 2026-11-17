@@ -74,3 +74,14 @@ if (! function_exists('icon')) {
         );
     }
 }
+
+if (! function_exists('mdate')) {
+    /**
+     * A date as people in Somalia see it (Africa/Mogadishu, UTC+3), in the current language.
+     * Dates are kept in UTC; showing them in UTC can give the wrong day late at night.
+     */
+    function mdate(?DateTimeInterface $date, string $format = 'j M Y'): string
+    {
+        return $date === null ? '' : Carbon\Carbon::instance($date)->timezone('Africa/Mogadishu')->translatedFormat($format);
+    }
+}

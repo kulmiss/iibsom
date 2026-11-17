@@ -8,7 +8,7 @@ account.login.terms_note,"You will accept our Terms in the next step.","Tallaaba
 account.login.cancelled,"Sign-in was cancelled. You can try again.","Galitaanka waa la joojiyey. Mar kale isku day.","needs native review",app/Http/Controllers/Auth/GoogleController.php,
 account.login.failed,"Sign-in did not work. Please try again.","Galitaanku ma shaqeyn. Fadlan mar kale isku day.","needs native review",app/Http/Controllers/Auth/GoogleController.php,
 account.login.unverified,"Your Google email is not verified yet. Please verify it with Google and try again.","Iimaylkaaga Google weli lama xaqiijin. Ka xaqiiji Google kadibna mar kale isku day.","needs native review",app/Http/Controllers/Auth/GoogleController.php,
-account.login.banned,"This account is blocked. If you think this is a mistake, contact us.","Akoonkan waa la xiray. Haddii aad u malaynayso inay khalad tahay, nala soo xiriir.","needs native review","app/Http/Controllers/Auth/GoogleController.php | app/Http/Middleware/LogoutBannedUsers.php",
+account.login.banned,"This account is blocked. If you think this is a mistake, contact us.","Akoonkan waa la xiray. Haddii aad u malaynayso inay khalad tahay, nala soo xiriir.","needs native review","app/Http/Controllers/Auth/GoogleController.php | app/Http/Middleware/AuthenticateApiToken.php | app/Http/Middleware/LogoutBannedUsers.php",
 account.welcome.title,"Almost done","Waad ku dhowdahay","needs native review",resources/views/account/profile-form.blade.php,account-profile-form.png
 account.welcome.intro,"Buyers will use these details to contact you. You can change them later.","Iibsadayaashu waxay faahfaahintan u isticmaali doonaan inay kula soo xiriiraan. Hadhow waad beddeli kartaa.","needs native review",resources/views/account/profile-form.blade.php,account-profile-form.png
 account.welcome.submit,"Save and continue","Keydi oo sii wad","needs native review",resources/views/account/profile-form.blade.php,account-profile-form.png
@@ -76,6 +76,30 @@ account.shop.visit,"Visit shop","Booqo dukaanka","needs native review",resources
 account.shop.ads,"Ads from this shop","Xayeysiisyada dukaankan","needs native review",resources/views/shops/show.blade.php,
 account.shop.no_ads,"This shop has no ads right now.","Dukaankani hadda xayeysiis ma laha.","needs native review",resources/views/shops/show.blade.php,
 account.shop.member_since,"On iibsom since :date","Ku jira iibsom tan iyo :date","needs native review",resources/views/shops/show.blade.php,
+account.api.title,"App access","Gelitaanka app-ka","needs native review",resources/views/account/api-tokens.blade.php,
+account.api.menu,"App access (keys)","Gelitaanka app-ka (furayaal)","needs native review",resources/views/account/index.blade.php,account-index.png
+account.api.intro,"Make a key so an app can post and manage YOUR ads for you. Only give a key to an app you trust.","Samee fure si app uu kuugu dhigo oo u maamulo XAYEYSIISYADAADA. Fure sii oo kaliya app aad aaminsan tahay.","needs native review",resources/views/account/api-tokens.blade.php,
+account.api.name,"Key name","Magaca furaha","needs native review","app/Http/Controllers/Account/ApiTokenController.php | resources/views/account/api-tokens.blade.php",
+account.api.name_example,"e.g. My phone app","tusaale: App-ka taleefankayga","needs native review",resources/views/account/api-tokens.blade.php,
+account.api.write,"Allow this key to post, edit, mark sold and delete my ads (without this it can only read)","U oggolow furahan inuu dhigo, beddelo, iibsaday ka dhigo oo tirtiro xayeysiisyadayda (la'aanteed wuxuu kaliya akhrin karaa)","needs native review",resources/views/account/api-tokens.blade.php,
+account.api.make,"Make key","Samee fure","needs native review",resources/views/account/api-tokens.blade.php,
+account.api.new_title,"Your new key","Furahaaga cusub","needs native review",resources/views/account/api-tokens.blade.php,
+account.api.new_help,"Copy it now and keep it secret. You will not see it again.","Hadda koobiyee oo qarsoodi ku hay. Mar dambe ma arki doontid.","needs native review",resources/views/account/api-tokens.blade.php,
+account.api.key,Key,Fure,"needs native review",resources/views/account/api-tokens.blade.php,
+account.api.copy,"Copy key","Koobiyee furaha","needs native review",resources/views/account/api-tokens.blade.php,
+account.api.copied,Copied,"Waa la koobiyeeyay","needs native review",resources/views/account/api-tokens.blade.php,
+account.api.yours,"Your keys",Furayaashaada,"needs native review",resources/views/account/api-tokens.blade.php,
+account.api.none,"You have no keys.","Fure ma lihid.","needs native review",resources/views/account/api-tokens.blade.php,
+account.api.can_read,"Read only","Akhris kaliya","needs native review",resources/views/account/api-tokens.blade.php,
+account.api.can_write,"Read and write","Akhris iyo qoris","needs native review",resources/views/account/api-tokens.blade.php,
+account.api.last_used,"Last used :date","Markii ugu dambeysay :date","needs native review",resources/views/account/api-tokens.blade.php,
+account.api.never_used,"Never used","Weli lama isticmaalin","needs native review",resources/views/account/api-tokens.blade.php,
+account.api.expires,"Ends :date","Wuxuu dhamaanayaa :date","needs native review",resources/views/account/api-tokens.blade.php,
+account.api.delete,"Delete key :name","Tirtir furaha :name","needs native review",resources/views/account/api-tokens.blade.php,
+account.api.delete_confirm,"Delete this key? Apps using it will stop working.","Ma tirtiraysaa furahan? App-yada isticmaala way joogsan doonaan.","needs native review",resources/views/account/api-tokens.blade.php,
+account.api.deleted,"Key deleted.","Furaha waa la tirtiray.","needs native review",app/Http/Controllers/Account/ApiTokenController.php,
+account.api.too_many,"You can have up to :count keys. Delete one to make a new one.","Waxaad yeelan kartaa ilaa :count fure. Mid tirtir si aad mid cusub u sameyso.","needs native review","app/Http/Controllers/Account/ApiTokenController.php | resources/views/account/api-tokens.blade.php",
+account.api.safety,"Lost a phone or think a key was seen? Delete the key here at once. Keys end after one year.","Taleefan ma kaa lumay ama ma u malaynaysaa in fure la arkay? Halkan ka tirtir isla markiiba. Furayaashu waxay dhamaadaan hal sano kadib.","needs native review",resources/views/account/api-tokens.blade.php,
 ads.status.pending,"Waiting for approval","Wuxuu sugayaa oggolaansho","needs native review",app/Enums/AdStatus.php,
 ads.status.live,Live,"Waa muuqdaa","needs native review",app/Enums/AdStatus.php,
 ads.status.rejected,Rejected,"Waa la diiday","needs native review",app/Enums/AdStatus.php,
@@ -114,7 +138,7 @@ ads.form.choose,Choose…,Dooro…,"needs native review","resources/views/ads/po
 ads.form.yes,Yes,Haa,"needs native review","app/Http/Controllers/AdPageController.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
 ads.form.no,No,Maya,"needs native review","app/Http/Controllers/AdPageController.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
 ads.form.duplicate,"You already posted this ad. Edit the old one instead.","Xayeysiiskan horay ayaad u dhigtay. Wax ka beddel kii hore.","needs native review","app/Support/Ads/AdForm.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
-ads.form.daily_limit,"You can post up to :count ads per day. Please try again tomorrow.","Maalintii waxaad dhigi kartaa ilaa :count xayeysiis. Fadlan berri isku day.","needs native review","app/Http/Controllers/Ads/PostAdController.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
+ads.form.daily_limit,"You can post up to :count ads per day. Please try again tomorrow.","Maalintii waxaad dhigi kartaa ilaa :count xayeysiis. Fadlan berri isku day.","needs native review","app/Support/Ads/AdForm.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","ads-post-form.png | ads-show.png"
 ads.photos.uploading,Uploading…,"Waa la soo gelinayaa…","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
 ads.photos.failed,"Upload failed. Tap to remove and try again.","Soo gelintu way fashilantay. Riix si aad u saarto oo mar kale isku day.","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
 ads.photos.too_many,"Too many photos waiting. Post your ad or remove some photos first.","Sawirro badan ayaa sugaya. Marka hore dhig xayeysiiskaaga ama saar sawirro.","needs native review",app/Http/Controllers/Ads/AdPhotoController.php,
