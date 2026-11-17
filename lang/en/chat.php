@@ -20,6 +20,7 @@ return [
     'blocked_by_you' => 'You blocked this chat.',
     'blocked_by_them' => 'This chat was blocked.',
     'new' => 'New',
+    'unread' => '{1} 1 chat with new messages|[2,*] :count chats with new messages',
     'safety' => 'Stay safe: never send money before you see the item. Meet in a busy place.',
     'first' => 'Say hello and ask about the ad. Your phone number is not shown here.',
     'all' => 'All messages',

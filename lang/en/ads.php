@@ -296,4 +296,14 @@ return [
         'test' => 'Test',
         'boosted_until' => ':level until :date',
     ],
+
+    // Trust signs and card labels (PR 54)
+    'badges' => [
+        'years' => '{1} 1 year on iibsom|[2,*] :count years on iibsom',
+        'months' => '{1} 1 month on iibsom|[2,*] :count months on iibsom',
+        'fast' => 'Replies fast',
+        'fast_hint' => 'Usually answers buyers within an hour',
+        'photos' => '{1} 1 photo|[2,*] :count photos',
+        'popular' => 'Popular',
+    ],
 ];

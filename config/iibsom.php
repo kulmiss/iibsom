@@ -36,6 +36,9 @@ return [
         'so' => ['name' => 'Somali', 'native' => 'Soomaali', 'dir' => 'ltr'],
     ],
 
+    // "Popular" label on ad cards (switches "ads.card_badges" + "ad_stats"): at least this many views.
+    'popular_views' => 100,
+
     // Default values for settings the Super Admin can change.
     'settings' => [
         'languages.enabled' => ['en'],

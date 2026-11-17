@@ -88,7 +88,10 @@ class ChatTest extends TestCase
         $first = $this->say($this->buyer, $c, 'Hello')->json('message.id');
 
         // Seller sees a "new" mark in the menu and the inbox.
-        $this->actingAs($this->seller)->get('/')->assertOk()->assertSee('aria-label="New"', false);
+        $this->actingAs($this->seller)->get('/')->assertOk()->assertSee('1 chat with new messages');
+        app(FeatureManager::class)->set('site.header_icons', false); // the old dot
+        $this->actingAs($this->seller)->get('/')->assertOk()->assertSee('aria-label="New"', false)->assertDontSee('1 chat with new messages');
+        app(FeatureManager::class)->set('site.header_icons', true);
         $this->actingAs($this->seller)->get('/messages')->assertSee('New');
 
         $this->actingAs($this->buyer)->getJson("/messages/{$c->id}/since?after={$first}")->assertOk()->assertJsonCount(0, 'messages');
@@ -101,7 +104,7 @@ class ChatTest extends TestCase
         $this->assertSame(1, Conversation::unreadCount($this->seller->fresh()));
         $this->actingAs($this->seller)->get("/messages/{$c->id}");
         $this->assertSame(0, Conversation::unreadCount($this->seller->fresh()));
-        $this->actingAs($this->seller)->get('/')->assertDontSee('aria-label="New"', false);
+        $this->actingAs($this->seller)->get('/')->assertDontSee('aria-label="New"', false)->assertDontSee('chat with new messages');
     }
 
     public function test_message_times_are_shown_in_somalia_time(): void

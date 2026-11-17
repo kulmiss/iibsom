@@ -13,13 +13,16 @@
                 <a href="{{ lroute('saved') }}" class="icon-btn hidden lg:flex" title="{{ __('site.nav.saved') }}">{{ icon('bookmark') }}<span class="sr-only">{{ __('site.nav.saved') }}</span></a>
             @endfeature
             @feature('chat')
-                <a href="{{ lroute('chat') }}" class="icon-btn relative hidden lg:flex" title="{{ __('site.nav.messages') }}">{{ icon('message-circle') }}<span class="sr-only">{{ __('site.nav.messages') }}</span>@if (($chatUnread ?? 0) > 0)<span class="absolute end-1 top-1 size-2.5 rounded-full bg-accent-400 ring-2 ring-brand-700" aria-label="{{ __('chat.new') }}"></span>@endif</a>
+                <a href="{{ lroute('chat') }}" class="icon-btn relative hidden lg:flex" title="{{ __('site.nav.messages') }}">{{ icon('message-circle') }}<span class="sr-only">{{ __('site.nav.messages') }}</span>@if (($chatUnread ?? 0) > 0)@include('partials.unread-badge', ['count' => $chatUnread, 'ring' => 'ring-brand-700', 'position' => 'end-0 top-0', 'dot' => 'bg-accent-400', 'dotRing' => 'ring-2 ring-brand-700', 'dotPosition' => 'end-1 top-1'])@endif</a>
             @endfeature
             @feature('saved_searches')
                 <a href="{{ lroute('searches') }}" class="icon-btn" title="{{ __('site.nav.alerts') }}">{{ icon('bell') }}<span class="sr-only">{{ __('site.nav.alerts') }}</span></a>
             @endfeature
 
             @auth
+                @if (feature('site.header_icons') && feature('ads.my_ads'))
+                    <a href="{{ lroute('account.ads') }}" class="icon-btn hidden lg:flex" title="{{ __('account.account.my_ads') }}">{{ icon('megaphone') }}<span class="sr-only">{{ __('account.account.my_ads') }}</span></a>
+                @endif
                 <a href="{{ lroute('account') }}" class="hidden size-9 items-center justify-center rounded-full bg-white font-bold text-brand-700 lg:flex" title="{{ __('site.nav.my_account') }}">
                     {{ auth()->user()->initial() }}<span class="sr-only">{{ __('site.nav.my_account') }}</span>
                 </a>

@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-17 (PR 53)_
+_Last updated: 2026-11-17 (PR 54)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -99,7 +99,8 @@ See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example 
 50. **PR 50:** Fuller category tree (+ data migration for old sites, Part type field), admin drag-and-drop order, new demo ads/photos; fix: delete demo data with test payments. 
 51. **PR 51:** Home category side panel (desktop) + sub category tiles/chips on category pages, results line, `catalog.hide_empty` (OFF).
 52. **PR 52:** Filters: left column (computer) / full-screen sheet with "Show N results" (phone), area, posted within, photos, verified, most viewed, price ranges, chips, grid/list; switch `search.more_filters` (ON). Fix: language switch reacted to `#` jumps.
-53. **PR 53:** Big footer with the coast drawing, link columns, social pages and languages, set in Settings → General → Footer; new pages Cookie info + Copyright; switch `site.new_footer` (ON). Next: Jiji-style extras.
+53. **PR 53:** Big footer with the coast drawing, link columns, social pages and languages, set in Settings → General → Footer; new pages Cookie info + Copyright; switch `site.new_footer` (ON).
+54. **PR 54:** Seller badges (years on iibsom, Replies fast), photo count + Popular on cards, My ads + unread number in the header; switches `sellers.badges`, `ads.card_badges`, `site.header_icons` (all ON). Fix: old view totals kept. Next: How to sell, safety tip before contact, quick chat replies, photo watermark.
 
 ## Known notes
 - The local PHP Docker image could not be built inside Claude's sandbox (the Alpine package site is blocked there). CI builds it on GitHub to prove it works.

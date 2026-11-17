@@ -15,7 +15,7 @@ class ShopPageController extends Controller
 
         // Same rules as every list: live, not ended, demo ads only while demo data is ON.
         $ads = $found->user->ads()->live()->when(! feature('site.demo_data'), fn ($q) => $q->where('is_demo', false))
-            ->with(['category:id,name,slug,icon,parent_id', 'city:id,name,slug', 'cover'])
+            ->with(['category:id,name,slug,icon,parent_id', 'city:id,name,slug', 'cover'])->withPhotoCount()
             ->latest('published_at')->paginate(24);
 
         return view('shops.show', ['shop' => $found, 'ads' => $ads]);

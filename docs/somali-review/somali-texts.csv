@@ -21,7 +21,7 @@ account.account.edit_profile,"Edit profile","Wax ka beddel akoonka","needs nativ
 account.account.help,Help,Caawimaad,"needs native review",resources/views/account/index.blade.php,account-index.png
 account.account.tour,"Quick tour","Socod gaaban","needs native review",resources/views/account/index.blade.php,account-index.png
 account.account.searches,"Saved searches","Raadintayada la kaydiyey","needs native review",resources/views/account/index.blade.php,account-index.png
-account.account.my_ads,"My ads",Xayeysiisyadayda,"needs native review","resources/views/account/ad-stats.blade.php | resources/views/account/boost.blade.php | resources/views/account/index.blade.php",account-index.png
+account.account.my_ads,"My ads",Xayeysiisyadayda,"needs native review","resources/views/account/ad-stats.blade.php | resources/views/account/boost.blade.php | resources/views/account/index.blade.php | resources/views/partials/header.blade.php","account-index.png | home.png"
 account.account.member_since,"Member since :date","Xubin tan iyo :date","needs native review",resources/views/account/index.blade.php,account-index.png
 account.account.logout,"Log out","Ka bax","needs native review",resources/views/account/index.blade.php,account-index.png
 account.form.name,"Your name",Magacaaga,"needs native review","app/Http/Controllers/Account/ProfileController.php | resources/views/account/profile-form.blade.php",account-profile-form.png
@@ -349,6 +349,12 @@ ads.boost.status_approved,Approved,"Waa la oggolaaday","needs native review",res
 ads.boost.status_rejected,"Not approved: :reason","Lama oggolaan: :reason","needs native review",resources/views/account/payments.blade.php,
 ads.boost.test,Test,Tijaabo,"needs native review",resources/views/account/payments.blade.php,
 ads.boost.boosted_until,":level until :date",":level ilaa :date","needs native review",resources/views/account/boost.blade.php,
+ads.badges.years,"{1} 1 year on iibsom|[2,*] :count years on iibsom","{1} 1 sano ku jira iibsom|[2,*] :count sano ku jira iibsom","needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.badges.months,"{1} 1 month on iibsom|[2,*] :count months on iibsom","{1} 1 bil ku jira iibsom|[2,*] :count bilood ku jira iibsom","needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.badges.fast,"Replies fast","Si dhakhso ah ayuu u jawaabaa","needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.badges.fast_hint,"Usually answers buyers within an hour","Badanaa wuxuu iibsadayaasha ugu jawaabaa saacad gudaheed","needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.badges.photos,"{1} 1 photo|[2,*] :count photos","{1} 1 sawir|[2,*] :count sawir","needs native review","resources/views/ads/_card.blade.php | resources/views/ads/show.blade.php","browse-index.png | ads-show.png"
+ads.badges.popular,Popular,"Caan ah","needs native review","resources/views/ads/_card.blade.php | resources/views/ads/show.blade.php","browse-index.png | ads-show.png"
 chat.title,Messages,Fariimaha,"needs native review","resources/views/chat/index.blade.php | resources/views/chat/show.blade.php",
 chat.start,"Chat with seller","La sheekayso iibiyaha","needs native review","resources/views/ads/show.blade.php | routes/web.php",ads-show.png
 chat.sign_in,"Sign in to chat with the seller","Gal si aad ula sheekaysato iibiyaha","needs native review",resources/views/ads/show.blade.php,ads-show.png
@@ -367,7 +373,8 @@ chat.unblock,Unblock,"Ka qaad xannibaadda","needs native review",resources/views
 chat.block_confirm,"Block this chat? Neither of you can send more messages.","Ma xannibaysaa sheekadan? Midkiinna fariimo kale ma diri karo.","needs native review",resources/views/chat/show.blade.php,
 chat.blocked_by_you,"You blocked this chat.","Adiga ayaa xannibay sheekadan.","needs native review",resources/views/chat/show.blade.php,
 chat.blocked_by_them,"This chat was blocked.","Sheekadan waa la xannibay.","needs native review",resources/views/chat/show.blade.php,
-chat.new,New,Cusub,"needs native review","resources/views/chat/index.blade.php | resources/views/partials/bottom-nav.blade.php | resources/views/partials/header.blade.php",home.png
+chat.new,New,Cusub,"needs native review","resources/views/chat/index.blade.php | resources/views/partials/unread-badge.blade.php",home.png
+chat.unread,"{1} 1 chat with new messages|[2,*] :count chats with new messages","{1} 1 wada-hadal oo fariimo cusub leh|[2,*] :count wada-hadal oo fariimo cusub leh","needs native review",resources/views/partials/unread-badge.blade.php,home.png
 chat.safety,"Stay safe: never send money before you see the item. Meet in a busy place.","Ammaan ahaw: weligaa lacag ha dirin intaadan arag alaabta. Ku kulma meel mashquul ah.","needs native review",resources/views/chat/show.blade.php,
 chat.first,"Say hello and ask about the ad. Your phone number is not shown here.","Salaan oo wax ka weydii xayeysiiska. Lambarkaaga taleefanka halkan laguma muujiyo.","needs native review",resources/views/chat/show.blade.php,
 chat.all,"All messages","Dhammaan fariimaha","needs native review",resources/views/chat/show.blade.php,

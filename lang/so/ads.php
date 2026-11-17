@@ -298,4 +298,14 @@ return [
         'test' => 'Tijaabo',
         'boosted_until' => ':level ilaa :date',
     ],
+
+    // Calaamadaha kalsoonida iyo summadaha kaararka (PR 54)
+    'badges' => [
+        'years' => '{1} 1 sano ku jira iibsom|[2,*] :count sano ku jira iibsom',
+        'months' => '{1} 1 bil ku jira iibsom|[2,*] :count bilood ku jira iibsom',
+        'fast' => 'Si dhakhso ah ayuu u jawaabaa',
+        'fast_hint' => 'Badanaa wuxuu iibsadayaasha ugu jawaabaa saacad gudaheed',
+        'photos' => '{1} 1 sawir|[2,*] :count sawir',
+        'popular' => 'Caan ah',
+    ],
 ];

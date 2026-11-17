@@ -20,6 +20,7 @@ return [
     'blocked_by_you' => 'Adiga ayaa xannibay sheekadan.',
     'blocked_by_them' => 'Sheekadan waa la xannibay.',
     'new' => 'Cusub',
+    'unread' => '{1} 1 wada-hadal oo fariimo cusub leh|[2,*] :count wada-hadal oo fariimo cusub leh',
     'safety' => 'Ammaan ahaw: weligaa lacag ha dirin intaadan arag alaabta. Ku kulma meel mashquul ah.',
     'first' => 'Salaan oo wax ka weydii xayeysiiska. Lambarkaaga taleefanka halkan laguma muujiyo.',
     'all' => 'Dhammaan fariimaha',

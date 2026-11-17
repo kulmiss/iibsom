@@ -143,6 +143,20 @@
                             </p>
                             <p class="text-xs text-stone-500">{{ $ad->user->city?->label }} · {{ __('ads.page.member_since', ['date' => mdate($ad->user->created_at, 'M Y')]) }}</p>
                             <p class="text-xs text-stone-500">{{ trans_choice('ads.page.seller_ads', max(1, $sellerLiveAds), ['count' => $sellerLiveAds]) }}</p>
+                            @feature('sellers.badges')
+                                @php($tenure = \App\Support\Users\SellerBadges::tenure($ad->user))
+                                @php($fast = \App\Support\Users\SellerBadges::repliesFast($ad->user))
+                                @if ($tenure || $fast)
+                                    <ul class="mt-1.5 flex flex-wrap gap-1.5 text-xs font-medium" aria-label="{{ __('ads.page.seller') }}">
+                                        @if ($tenure)
+                                            <li class="flex items-center gap-1 rounded-full bg-brand-50 px-2 py-0.5 text-brand-800">{{ icon('clock', 'size-3.5') }} {{ trans_choice('ads.badges.'.$tenure['unit'], $tenure['count'], ['count' => $tenure['count']]) }}</li>
+                                        @endif
+                                        @if ($fast)
+                                            <li class="flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-emerald-800" title="{{ __('ads.badges.fast_hint') }}">{{ icon('zap', 'size-3.5') }} {{ __('ads.badges.fast') }}</li>
+                                        @endif
+                                    </ul>
+                                @endif
+                            @endfeature
                             @include('partials.seller-rating', ['seller' => $ad->user])
                             @if (feature('shops') && $ad->user->shop?->isActive())
                                 <a href="{{ $ad->user->shop->url() }}" class="mt-1 inline-flex items-center gap-1 text-sm font-semibold text-brand-700 hover:underline">{{ icon('store', 'size-4') }} {{ __('account.shop.visit') }}</a>

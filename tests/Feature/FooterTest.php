@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Page;
 use App\Support\Features\FeatureManager;
 use App\Support\Settings\SettingsManager;
+use App\Support\Site\Footer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -58,7 +59,7 @@ class FooterTest extends TestCase
 
     public function test_every_network_has_its_icon(): void
     {
-        foreach (array_keys(\App\Support\Site\Footer::NETWORKS) as $key) {
+        foreach (array_keys(Footer::NETWORKS) as $key) {
             $this->assertFileExists(resource_path("svg/icons/social-{$key}.svg"));
         }
     }
