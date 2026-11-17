@@ -138,7 +138,7 @@
                         </ul>
                         <a href="{{ $action }}" class="text-sm font-medium text-brand-700 underline">{{ __('ads.browse.clear_all') }}</a>
                     @endif
-                    <div class="ms-auto hidden gap-1 sm:flex" data-view-toggle>
+                    <div class="ms-auto flex gap-1" data-view-toggle>
                         <button type="button" class="flex size-9 items-center justify-center rounded-lg text-stone-600 hover:bg-stone-100 aria-pressed:bg-brand-50 aria-pressed:text-brand-700" data-view="grid" aria-pressed="true" title="{{ __('ads.browse.view_grid') }}">{{ icon('layout-grid', 'size-5') }}<span class="sr-only">{{ __('ads.browse.view_grid') }}</span></button>
                         <button type="button" class="flex size-9 items-center justify-center rounded-lg text-stone-600 hover:bg-stone-100 aria-pressed:bg-brand-50 aria-pressed:text-brand-700" data-view="list" aria-pressed="false" title="{{ __('ads.browse.view_list') }}">{{ icon('list', 'size-5') }}<span class="sr-only">{{ __('ads.browse.view_list') }}</span></button>
                     </div>
