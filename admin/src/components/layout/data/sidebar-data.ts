@@ -13,6 +13,7 @@ import {
   MapPin,
   Megaphone,
   Palette,
+  Store,
   Settings,
   ShieldCheck,
   ToggleRight,
@@ -37,6 +38,7 @@ export const sidebarData: SidebarData = {
         { title: 'Reports', url: '/reports', icon: Flag, permission: 'reports.view' },
         { title: 'Users', url: '/users', icon: Users, permission: 'users.view' },
         { title: 'ID checks', url: '/verifications', icon: BadgeCheck, permission: 'users.verify', feature: 'verified_badge' },
+        { title: 'Shops', url: '/shops', icon: Store, permission: 'shops.manage', feature: 'shops' },
       ],
     },
     {
@@ -78,7 +80,7 @@ export const sidebarData: SidebarData = {
 
 /** The menu for this staff member (items they may not use, or switched OFF, are removed). */
 export function visibleNavGroups(can: (permission: string) => boolean, user: StaffUser | null): SidebarData['navGroups'] {
-  const allowed = (item: { permission?: string; feature?: 'guide' | 'verified_badge' }) => (!item.permission || can(item.permission)) && (!item.feature || !!user?.[item.feature])
+  const allowed = (item: { permission?: string; feature?: 'guide' | 'verified_badge' | 'shops' }) => (!item.permission || can(item.permission)) && (!item.feature || !!user?.[item.feature])
   return sidebarData.navGroups
     .map((group) => ({
       ...group,

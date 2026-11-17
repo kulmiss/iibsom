@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Shop;
 use App\Search\DatabaseAdSearch;
 use App\Support\Catalog;
 use App\Support\Help\HelpCentre;
@@ -18,6 +19,11 @@ class SitemapController extends Controller
             $urls = [['loc' => url('/'), 'changefreq' => 'hourly']];
             foreach (['about', 'safety', 'terms', 'privacy'] as $page) {
                 $urls[] = ['loc' => url('/'.$page), 'changefreq' => 'monthly'];
+            }
+            if (feature('shops')) {
+                foreach (Shop::active()->orderBy('id')->limit(5000)->get(['slug', 'updated_at']) as $shop) {
+                    $urls[] = ['loc' => route('shop.show', ['shop' => $shop->slug]), 'lastmod' => $shop->updated_at?->toAtomString(), 'changefreq' => 'daily'];
+                }
             }
             if (feature('help.centre')) {
                 $urls[] = ['loc' => route('help'), 'changefreq' => 'monthly'];

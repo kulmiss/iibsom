@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\PageAdminController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\SetupController;
+use App\Http\Controllers\Admin\ShopController;
 use App\Http\Controllers\Admin\SpaController;
 use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\SystemController;
@@ -73,6 +74,12 @@ Route::prefix('admin/api')->group(function () {
         Route::get('/users/{user}', [UserController::class, 'show'])->middleware('admin.can:users.view');
         Route::post('/users/{user}/ban', [UserController::class, 'ban'])->middleware('admin.can:users.ban');
         Route::post('/users/{user}/unban', [UserController::class, 'unban'])->middleware('admin.can:users.ban');
+        // Business shop pages (Phase 2): monthly plans turned on by an admin.
+        Route::middleware(['feature:shops', 'admin.can:shops.manage'])->group(function () {
+            Route::get('/shops', [ShopController::class, 'index']);
+            Route::post('/shops/{shop}/activate', [ShopController::class, 'activate']);
+        });
+
         // Verified badge (Phase 2): check ID photos.
         Route::middleware(['feature:verified_badge', 'admin.can:users.verify'])->group(function () {
             Route::get('/verifications', [VerificationController::class, 'index']);

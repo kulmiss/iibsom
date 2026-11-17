@@ -201,6 +201,7 @@ class AuthController extends Controller
             'demo_data' => feature('site.demo_data'),
             'guide' => feature('help.admin_guide'),
             'verified_badge' => feature('verified_badge'),
+            'shops' => feature('shops'),
             'setup_needed' => feature('admin.setup_wizard') && $user->hasPermission('settings.manage') && ! SetupController::completed(),
         ];
     }

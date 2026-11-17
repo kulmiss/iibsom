@@ -26,7 +26,7 @@ account.account.member_since,"Member since :date","Xubin tan iyo :date","needs n
 account.account.logout,"Log out","Ka bax","needs native review",resources/views/account/index.blade.php,account-index.png
 account.form.name,"Your name",Magacaaga,"needs native review","app/Http/Controllers/Account/ProfileController.php | resources/views/account/profile-form.blade.php",account-profile-form.png
 account.form.name_help,"Shown on your ads.","Waxa uu ka muuqdaa xayeysiisyadaada.","needs native review",resources/views/account/profile-form.blade.php,account-profile-form.png
-account.form.city,"Your city",Magaaladaada,"needs native review","app/Http/Controllers/Account/ProfileController.php | resources/views/account/profile-form.blade.php",account-profile-form.png
+account.form.city,"Your city",Magaaladaada,"needs native review","app/Http/Controllers/Account/ProfileController.php | resources/views/account/profile-form.blade.php | resources/views/account/shop.blade.php",account-profile-form.png
 account.form.phone,"Phone number","Lambarka taleefanka","needs native review","app/Http/Controllers/Account/ProfileController.php | resources/views/account/profile-form.blade.php",account-profile-form.png
 account.form.phone_help,"Somali mobile number, for example 61 5123456. Buyers see it only after tapping ""Show number"".","Lambar mobile Soomaaliyeed, tusaale 61 5123456. Iibsadayaashu waxay arkaan marka ay riixaan ""Muuji lambarka"" oo keliya.","needs native review",resources/views/account/profile-form.blade.php,account-profile-form.png
 account.form.whatsapp,"I use WhatsApp on this number","Lambarkan WhatsApp ayaan ku isticmaalaa","needs native review",resources/views/account/profile-form.blade.php,account-profile-form.png
@@ -55,6 +55,27 @@ account.verify.verified,"You are verified. The badge shows next to your name on 
 account.verify.rejected,"We could not verify your ID: :reason","Ma aanan xaqiijin karin aqoonsigaaga: :reason","needs native review",resources/views/account/verify.blade.php,
 account.verify.try_again,"You can send a new photo below.","Waxaad hoos ka soo diri kartaa sawir cusub.","needs native review",resources/views/account/verify.blade.php,
 account.verify.privacy,"Your ID photo is never shown to buyers. It is stored encrypted and deleted as soon as our team decides.","Sawirka aqoonsigaaga weligii lama tuso iibsadayaasha. Si qarsoodi ah ayaa loo kaydiyaa, waana la tirtiraa marka kooxdayadu go'aan gaarto.","needs native review",resources/views/account/verify.blade.php,
+account.shop.title,"My shop",Dukaankayga,"needs native review","resources/views/account/index.blade.php | resources/views/account/shop.blade.php",account-index.png
+account.shop.intro,"A shop page shows your logo, opening hours and all your ads at one web address you can share.","Bogga dukaanku wuxuu muujiyaa astaantaada, saacadaha furitaanka iyo dhammaan xayeysiisyadaada hal cinwaan oo aad wadaagi karto.","needs native review",resources/views/account/shop.blade.php,
+account.shop.name,"Shop name","Magaca dukaanka","needs native review","app/Http/Controllers/Account/ShopController.php | resources/views/account/shop.blade.php",
+account.shop.slug,"Web address","Cinwaanka bogga","needs native review","app/Http/Controllers/Account/ShopController.php | resources/views/account/shop.blade.php",
+account.shop.slug_help,"Small letters, numbers and - only. Your page: :url","Xarfo yaryar, lambarro iyo - oo keliya. Boggaaga: :url","needs native review",resources/views/account/shop.blade.php,
+account.shop.slug_rule,"Use small letters (a-z), numbers and - only, for example: abdi-motors.","Isticmaal xarfo yaryar (a-z), lambarro iyo - oo keliya, tusaale: abdi-motors.","needs native review",app/Http/Controllers/Account/ShopController.php,
+account.shop.slug_taken,"Another shop already uses this web address. Try another one.","Dukaan kale ayaa isticmaala cinwaankan. Isku day mid kale.","needs native review",app/Http/Controllers/Account/ShopController.php,
+account.shop.description,"About your shop","Ku saabsan dukaankaaga","needs native review","app/Http/Controllers/Account/ShopController.php | resources/views/account/shop.blade.php",
+account.shop.hours,"Opening hours","Saacadaha furitaanka","needs native review","app/Http/Controllers/Account/ShopController.php | resources/views/account/shop.blade.php",
+account.shop.hours_placeholder,"Sat–Thu 8:00–20:00","Sabti–Khamiis 8:00–20:00","needs native review",resources/views/account/shop.blade.php,
+account.shop.logo,Logo,Astaan,"needs native review","app/Http/Controllers/Account/ShopController.php | resources/views/account/shop.blade.php",
+account.shop.logo_help,"Square picture works best. JPG, PNG or WebP, up to 5 MB.","Sawir laba-jibbaaran ayaa ugu fiican. JPG, PNG ama WebP, ilaa 5 MB.","needs native review",resources/views/account/shop.blade.php,
+account.shop.save,"Save shop","Kaydi dukaanka","needs native review","resources/views/account/shop.blade.php | routes/web.php",
+account.shop.saved,"Shop saved.","Dukaanka waa la kaydiyey.","needs native review",app/Http/Controllers/Account/ShopController.php,
+account.shop.not_active,"Your shop page is not public yet. Contact us to turn it on (monthly plan).","Bogga dukaankaagu weli ma furna. Nala soo xiriir si loo furo (qorshe bille ah).","needs native review",resources/views/account/shop.blade.php,
+account.shop.active_until,"Your shop page is public until :date.","Bogga dukaankaagu wuu furan yahay ilaa :date.","needs native review",resources/views/account/shop.blade.php,
+account.shop.view,"View my shop page","Arag bogga dukaankayga","needs native review",resources/views/account/shop.blade.php,
+account.shop.visit,"Visit shop","Booqo dukaanka","needs native review",resources/views/ads/show.blade.php,ads-show.png
+account.shop.ads,"Ads from this shop","Xayeysiisyada dukaankan","needs native review",resources/views/shops/show.blade.php,
+account.shop.no_ads,"This shop has no ads right now.","Dukaankani hadda xayeysiis ma laha.","needs native review",resources/views/shops/show.blade.php,
+account.shop.member_since,"On iibsom since :date","Ku jira iibsom tan iyo :date","needs native review",resources/views/shops/show.blade.php,
 ads.status.pending,"Waiting for approval","Wuxuu sugayaa oggolaansho","needs native review",app/Enums/AdStatus.php,
 ads.status.live,Live,"Waa muuqdaa","needs native review",app/Enums/AdStatus.php,
 ads.status.rejected,Rejected,"Waa la diiday","needs native review",app/Enums/AdStatus.php,

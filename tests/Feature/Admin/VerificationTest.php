@@ -130,6 +130,23 @@ class VerificationTest extends AdminTestCase
         $this->assertFalse($this->seller->fresh()?->isVerified());
     }
 
+    public function test_badge_changes_refresh_cached_guest_pages(): void
+    {
+        $this->on();
+        $this->send();
+        $ad = Ad::factory()->live()->create(['user_id' => $this->seller->id, 'category_id' => Category::where('slug', 'cars')->value('id'), 'city_id' => City::where('slug', 'mogadishu')->value('id')]);
+        $url = $ad->url();
+        auth()->logout();
+        $this->get($url)->assertHeader('X-Page-Cache', 'MISS');
+        $this->get($url)->assertHeader('X-Page-Cache', 'HIT');
+
+        $this->asStaff('moderator');
+        $this->postJson('/admin/api/verifications/'.VerificationRequest::firstOrFail()->id.'/approve')->assertOk();
+        auth()->logout();
+
+        $this->get($url)->assertHeader('X-Page-Cache', 'MISS')->assertSee('Our team checked this seller&#039;s ID', false);
+    }
+
     public function test_remove_badge_later(): void
     {
         $this->on();

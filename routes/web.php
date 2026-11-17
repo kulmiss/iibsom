@@ -4,6 +4,7 @@ use App\Http\Controllers\Account\FavouriteController;
 use App\Http\Controllers\Account\MyAdsController;
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\Account\SavedSearchController;
+use App\Http\Controllers\Account\ShopController;
 use App\Http\Controllers\Account\VerificationController;
 use App\Http\Controllers\AdPageController;
 use App\Http\Controllers\Ads\AdPhotoController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\BrowseController;
 use App\Http\Controllers\ForYouController;
 use App\Http\Controllers\HelpController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\ShopPageController;
 use App\Http\Controllers\SitemapController;
 use App\Models\Page;
 use App\Support\Localization\Locales;
@@ -76,6 +78,12 @@ $publicRoutes = function () use ($stateless) {
 
             Route::get('/account/ads/{ad}/stats', [AdStatsController::class, 'show'])->whereNumber('ad')->middleware('feature:ad_stats')->name('account.ads.stats');
 
+            // Business shop page (Phase 2).
+            Route::middleware('feature:shops')->group(function () {
+                Route::get('/account/shop', [ShopController::class, 'edit'])->name('account.shop');
+                Route::post('/account/shop', [ShopController::class, 'save'])->middleware('throttle:20,1')->name('account.shop.save');
+            });
+
             // Verified badge (Phase 2): send an ID photo.
             Route::middleware('feature:verified_badge')->group(function () {
                 Route::get('/account/verify', [VerificationController::class, 'show'])->name('verify');
@@ -109,6 +117,9 @@ $publicRoutes = function () use ($stateless) {
 
     // "Recommended for you" cards (the browser sends its own history; nothing stored).
     Route::get('/for-you', [ForYouController::class, 'show'])->middleware(['feature:recommendations', 'throttle:60,1'])->name('for-you');
+
+    // Business shop pages (Phase 2): public only while an admin has the shop active.
+    Route::get('/shop/{shop}', [ShopPageController::class, 'show'])->where('shop', '[a-z0-9]+(-[a-z0-9]+)*')->middleware('feature:shops')->name('shop.show');
 
     // Help centre for customers (articles in resources/help).
     Route::middleware('feature:help.centre')->group(function () {

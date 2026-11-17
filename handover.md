@@ -75,7 +75,8 @@ See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example 
 31. **PR 31:** Favourites / Saved ads (Phase 2, OFF).
 32. **PR 32:** Saved searches + daily email alerts (Phase 2, OFF).
 33. **PR 33:** Ad stats (Phase 2, OFF) + guest "Show number" no longer creates a session.
-34. **PR 34:** Verified badge with encrypted ID photos + admin ID checks (Phase 2, OFF) (this one). Next: Part B (Phase 2, OFF), Part C (Phase 3), Part D review — owner's big job list of 2026-11-16.
+34. **PR 34:** Verified badge with encrypted ID photos + admin ID checks (Phase 2, OFF).
+35. **PR 35:** Business shop pages + admin Shops (Phase 2, OFF) (this one). Next: Part B (Phase 2, OFF), Part C (Phase 3), Part D review — owner's big job list of 2026-11-16.
 
 ## Known notes
 - The local PHP Docker image could not be built inside Claude's sandbox (the Alpine package site is blocked there). CI builds it on GitHub to prove it works.

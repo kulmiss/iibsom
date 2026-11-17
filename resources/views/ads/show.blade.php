@@ -140,6 +140,9 @@
                             </p>
                             <p class="text-xs text-stone-500">{{ $ad->user->city?->label }} · {{ __('ads.page.member_since', ['date' => $ad->user->created_at->translatedFormat('M Y')]) }}</p>
                             <p class="text-xs text-stone-500">{{ trans_choice('ads.page.seller_ads', max(1, $sellerLiveAds), ['count' => $sellerLiveAds]) }}</p>
+                            @if (feature('shops') && $ad->user->shop?->isActive())
+                                <a href="{{ $ad->user->shop->url() }}" class="mt-1 inline-flex items-center gap-1 text-sm font-semibold text-brand-700 hover:underline">{{ icon('store', 'size-4') }} {{ __('account.shop.visit') }}</a>
+                            @endif
                         </div>
                     </div>
 

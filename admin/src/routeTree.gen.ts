@@ -30,6 +30,7 @@ import { Route as AuthenticatedPagesRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
 import { Route as AuthenticatedSettingsRouteRouteImport } from './routes/_authenticated/settings/route'
 import { Route as AuthenticatedSetupRouteImport } from './routes/_authenticated/setup'
+import { Route as AuthenticatedShopsRouteImport } from './routes/_authenticated/shops'
 import { Route as AuthenticatedStaffRouteImport } from './routes/_authenticated/staff'
 import { Route as AuthenticatedUsersRouteImport } from './routes/_authenticated/users'
 import { Route as AuthenticatedVerificationsRouteImport } from './routes/_authenticated/verifications'
@@ -146,6 +147,11 @@ const AuthenticatedSetupRoute = AuthenticatedSetupRouteImport.update({
   path: '/setup',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedShopsRoute = AuthenticatedShopsRouteImport.update({
+  id: '/shops',
+  path: '/shops',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedStaffRoute = AuthenticatedStaffRouteImport.update({
   id: '/staff',
   path: '/staff',
@@ -224,6 +230,7 @@ export interface FileRoutesByFullPath {
   '/pages': typeof AuthenticatedPagesRoute
   '/reports': typeof AuthenticatedReportsRoute
   '/setup': typeof AuthenticatedSetupRoute
+  '/shops': typeof AuthenticatedShopsRoute
   '/staff': typeof AuthenticatedStaffRoute
   '/users': typeof AuthenticatedUsersRoute
   '/verifications': typeof AuthenticatedVerificationsRoute
@@ -254,6 +261,7 @@ export interface FileRoutesByTo {
   '/pages': typeof AuthenticatedPagesRoute
   '/reports': typeof AuthenticatedReportsRoute
   '/setup': typeof AuthenticatedSetupRoute
+  '/shops': typeof AuthenticatedShopsRoute
   '/staff': typeof AuthenticatedStaffRoute
   '/users': typeof AuthenticatedUsersRoute
   '/verifications': typeof AuthenticatedVerificationsRoute
@@ -288,6 +296,7 @@ export interface FileRoutesById {
   '/_authenticated/pages': typeof AuthenticatedPagesRoute
   '/_authenticated/reports': typeof AuthenticatedReportsRoute
   '/_authenticated/setup': typeof AuthenticatedSetupRoute
+  '/_authenticated/shops': typeof AuthenticatedShopsRoute
   '/_authenticated/staff': typeof AuthenticatedStaffRoute
   '/_authenticated/users': typeof AuthenticatedUsersRoute
   '/_authenticated/verifications': typeof AuthenticatedVerificationsRoute
@@ -323,6 +332,7 @@ export interface FileRouteTypes {
     | '/pages'
     | '/reports'
     | '/setup'
+    | '/shops'
     | '/staff'
     | '/users'
     | '/verifications'
@@ -353,6 +363,7 @@ export interface FileRouteTypes {
     | '/pages'
     | '/reports'
     | '/setup'
+    | '/shops'
     | '/staff'
     | '/users'
     | '/verifications'
@@ -386,6 +397,7 @@ export interface FileRouteTypes {
     | '/_authenticated/pages'
     | '/_authenticated/reports'
     | '/_authenticated/setup'
+    | '/_authenticated/shops'
     | '/_authenticated/staff'
     | '/_authenticated/users'
     | '/_authenticated/verifications'
@@ -560,6 +572,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSetupRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/shops': {
+      id: '/_authenticated/shops'
+      path: '/shops'
+      fullPath: '/shops'
+      preLoaderRoute: typeof AuthenticatedShopsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/staff': {
       id: '/_authenticated/staff'
       path: '/staff'
@@ -665,6 +684,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedPagesRoute: typeof AuthenticatedPagesRoute
   AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
   AuthenticatedSetupRoute: typeof AuthenticatedSetupRoute
+  AuthenticatedShopsRoute: typeof AuthenticatedShopsRoute
   AuthenticatedStaffRoute: typeof AuthenticatedStaffRoute
   AuthenticatedUsersRoute: typeof AuthenticatedUsersRoute
   AuthenticatedVerificationsRoute: typeof AuthenticatedVerificationsRoute
@@ -686,6 +706,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedPagesRoute: AuthenticatedPagesRoute,
   AuthenticatedReportsRoute: AuthenticatedReportsRoute,
   AuthenticatedSetupRoute: AuthenticatedSetupRoute,
+  AuthenticatedShopsRoute: AuthenticatedShopsRoute,
   AuthenticatedStaffRoute: AuthenticatedStaffRoute,
   AuthenticatedUsersRoute: AuthenticatedUsersRoute,
   AuthenticatedVerificationsRoute: AuthenticatedVerificationsRoute,

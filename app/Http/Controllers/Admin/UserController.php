@@ -8,6 +8,7 @@ use App\Models\BlockedPhone;
 use App\Models\Report;
 use App\Models\User;
 use App\Support\Admin\Activity;
+use App\Support\Cache\PageCache;
 use App\Support\Phone\SomaliPhone;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -92,6 +93,7 @@ class UserController extends Controller
             }
         });
 
+        PageCache::bump(); // their shop page and seller details must not stay in the guest page cache
         Activity::log('user.banned', "Banned {$user->name} (#{$user->id}): {$reason}", $user, $data);
 
         return response()->json($this->row($user->refresh()->loadCount('ads')));
@@ -100,6 +102,7 @@ class UserController extends Controller
     public function unban(User $user): JsonResponse
     {
         $user->forceFill(['banned_at' => null, 'ban_reason' => null])->save();
+        PageCache::bump();
         Activity::log('user.unbanned', "Unbanned {$user->name} (#{$user->id})", $user);
 
         return response()->json($this->row($user->refresh()->loadCount('ads')));

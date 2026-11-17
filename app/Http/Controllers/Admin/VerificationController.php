@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\VerificationRequest;
 use App\Support\Admin\Activity;
+use App\Support\Cache\PageCache;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -66,6 +67,7 @@ class VerificationController extends Controller
             $locked->save();
             $locked->user->forceFill(['verified_at' => now()])->save();
         });
+        PageCache::bump(); // the badge shows on cached ad pages
         Activity::log('verification.approved', 'Gave the Verified badge to '.$verification->user->name, $verification->user);
 
         return response()->json(['ok' => true]);
@@ -93,6 +95,7 @@ class VerificationController extends Controller
     {
         abort_if($user->verified_at === null, 409, 'This user has no Verified badge.');
         $user->forceFill(['verified_at' => null])->save();
+        PageCache::bump();
         Activity::log('verification.revoked', 'Removed the Verified badge of '.$user->name, $user);
 
         return response()->json(['ok' => true]);

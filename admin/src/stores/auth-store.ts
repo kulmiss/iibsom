@@ -14,6 +14,8 @@ export type StaffUser = {
   guide: boolean
   /** "Verified badge" switch (Phase 2). */
   verified_badge: boolean
+  /** "Business shop pages" switch (Phase 2). */
+  shops: boolean
   /** Super Admin who has not done the first-time setup yet. */
   setup_needed: boolean
 }

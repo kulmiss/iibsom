@@ -28,6 +28,13 @@
                     </a>
                 </li>
             @endfeature
+            @feature('shops')
+                <li>
+                    <a href="{{ lroute('account.shop') }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50">
+                        {{ icon('store', 'size-5 text-brand-700') }}<span class="flex-1">{{ __('account.shop.title') }}</span>{{ icon('chevron-right', 'size-4 text-stone-400') }}
+                    </a>
+                </li>
+            @endfeature
             @feature('verified_badge')
                 <li>
                     <a href="{{ lroute('verify') }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50">
