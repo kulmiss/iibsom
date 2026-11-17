@@ -29,7 +29,8 @@ class GuestPages
 
         config(['session.driver' => 'array']); // nothing is written for guests
 
-        $useCache = feature('performance.page_cache') && $this->serverCacheable($request);
+        // HEAD answers have no body, so they are never read from or put in the server cache.
+        $useCache = feature('performance.page_cache') && $request->isMethod('GET') && $this->serverCacheable($request);
         if ($useCache && ($hit = PageCache::get($request))) {
             return $hit;
         }
@@ -53,7 +54,8 @@ class GuestPages
 
     private function isGuestPage(Request $request): bool
     {
-        if (! $request->isMethod('GET') || $request->hasHeader('Authorization')) {
+        // HEAD too: bots send it a lot, and it must not start a session (a database row) either.
+        if (! in_array($request->getMethod(), ['GET', 'HEAD'], true) || $request->hasHeader('Authorization')) {
             return false;
         }
 

@@ -53,7 +53,7 @@ $publicRoutes = function () use ($stateless) {
     });
 
     Route::middleware('auth')->group(function () {
-        Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+        Route::post('/logout', [LoginController::class, 'logout'])->middleware('throttle:30,1')->name('logout');
 
         Route::get('/welcome', [ProfileController::class, 'welcome'])->name('welcome');
         Route::post('/welcome', [ProfileController::class, 'save'])->middleware('throttle:20,1')->name('welcome.save');
@@ -68,7 +68,7 @@ $publicRoutes = function () use ($stateless) {
 
                 Route::get('/post/{category:slug}/price-hint', [PriceHintController::class, 'show'])->middleware(['feature:price_suggestions', 'throttle:60,1'])->name('post.price_hint');
                 Route::post('/post-photos', [AdPhotoController::class, 'store'])->middleware('throttle:60,1')->name('post.photos.store');
-                Route::delete('/post-photos/{photo}', [AdPhotoController::class, 'destroy'])->whereNumber('photo')->name('post.photos.destroy');
+                Route::delete('/post-photos/{photo}', [AdPhotoController::class, 'destroy'])->whereNumber('photo')->middleware('throttle:60,1')->name('post.photos.destroy');
             });
 
             Route::post('/ads/{ad}/report', [AdPageController::class, 'report'])->whereNumber('ad')

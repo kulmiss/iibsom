@@ -49,6 +49,23 @@ class GuestPrivacyTest extends TestCase
         $this->assertStringNotContainsString($this->nonce($first), $second->getContent());
     }
 
+    /** Security audit D22: bots often send HEAD; it must not start a session (a database row) either. */
+    public function test_head_requests_are_cookie_free_and_never_empty_the_cache(): void
+    {
+        config(['session.driver' => 'database']);
+        $this->app['session']->forgetDrivers();
+
+        $head = $this->call('HEAD', '/');
+        $head->assertOk();
+        $this->assertSame([], $head->headers->getCookies());
+        $this->assertSame(0, DB::table('sessions')->count());
+
+        // A HEAD answer has no body: it must never be kept as the page for everyone.
+        $get = $this->get('/')->assertOk();
+        $this->assertStringContainsString('</html>', (string) $get->getContent());
+        $this->assertStringContainsString('</html>', (string) $this->get('/')->getContent());
+    }
+
     public function test_cached_page_gets_the_new_nonce_in_its_html(): void
     {
         $html = '<script nonce="'.str_repeat('a', 32).'"></script>';

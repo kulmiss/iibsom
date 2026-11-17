@@ -28,3 +28,6 @@ user text, so there is no place to inject a script; the server page cache always
 
 ## ID photos (PR 34, Verified badge)
 Stored encrypted (Laravel `Crypt`, APP_KEY) on the private `local` disk under `verifications/`, never in `public/`. Shown only to staff with `users.verify` through `/admin/api/verifications/{id}/photo` (no-store, noindex; each view logged). Deleted when staff approve or reject.
+
+## Security audit (PR 45)
+Full ASVS level 2 review: see **SECURITY_REPORT.md** in the project root. Fixed there: HEAD requests no longer start a guest session; the private disk has no web address (`serve => false`); every changing customer route has a rate limit (a test keeps it so); every admin API route needs staff (a test keeps it so).
