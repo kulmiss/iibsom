@@ -64,6 +64,8 @@ return [
         'bad_text' => 'Xarfaha qaarkood lama akhrin karo. Fadlan mar kale qor.',
     ],
 
+    'banner_ad' => 'Xayeysiis',
+
     'help' => [
         'title' => 'Caawimaad',
         'heading' => 'Sideen kuu caawin karnaa?',

@@ -327,6 +327,7 @@ site.errors.not_found_title,"Page not found","Boggan lama helin","needs native r
 site.errors.not_found_text,"This page does not exist or was removed.","Boggan ma jiro ama waa la saaray.","needs native review",resources/views/errors/404.blade.php,errors-404.png
 site.errors.back_home,"Back to home","Ku noqo bogga hore","needs native review","resources/views/errors/400.blade.php | resources/views/errors/404.blade.php",errors-404.png
 site.errors.bad_text,"Some characters in your text could not be read. Please type it again.","Xarfaha qaarkood lama akhrin karo. Fadlan mar kale qor.","needs native review","app/Http/Middleware/RejectInvalidUtf8.php | resources/views/errors/400.blade.php",
+site.banner_ad,Ad,Xayeysiis,"needs native review",resources/views/partials/banner-ad.blade.php,home.png
 site.help.title,Help,Caawimaad,"needs native review",resources/views/help/index.blade.php,help-index.png
 site.help.heading,"How can we help?","Sideen kuu caawin karnaa?","needs native review",resources/views/help/index.blade.php,help-index.png
 site.help.intro,"Short answers to common questions.","Jawaabo gaagaaban oo su'aalaha caadiga ah.","needs native review",resources/views/help/index.blade.php,help-index.png

@@ -3,6 +3,7 @@
 namespace App\Support\Ads;
 
 use App\Models\Ad;
+use App\Support\Privacy\Bots;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -19,15 +20,12 @@ class AdStats
     /** Rows older than this are deleted (iibsom:ad-stats:prune). */
     public const KEEP_DAYS = 400;
 
-    private const BOTS = '/bot|crawl|spider|slurp|preview|lighthouse|headless|facebookexternalhit|curl|wget|python|scrapy/i';
-
     public static function record(Ad $ad, string $event, Request $request): bool
     {
         if (! feature('ad_stats') || ! in_array($event, self::EVENTS, true) || ! $ad->isLive()) {
             return false;
         }
-        $agent = trim((string) $request->userAgent());
-        if ($agent === '' || preg_match(self::BOTS, $agent) === 1) {
+        if (Bots::is($request->userAgent())) {
             return false;
         }
         if ($request->user() !== null && $request->user()->id === $ad->user_id) {

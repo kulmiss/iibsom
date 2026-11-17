@@ -164,6 +164,8 @@
                     @endif
                 </section>
 
+                @include('partials.banner-ad', ['bannerAd' => \App\Models\Banner::pick('ad', $ad->category, $ad->city_id), 'sizes' => '(min-width: 1024px) 352px, 100vw'])
+
                 @feature('share.buttons')
                     <section class="flex flex-wrap items-center gap-2 rounded-xl bg-white p-4 ring-1 ring-stone-200" data-share data-url="{{ $ad->url() }}" data-title="{{ $ad->title }}">
                         <span class="text-sm font-semibold">{{ __('ads.page.share') }}:</span>

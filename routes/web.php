@@ -13,6 +13,7 @@ use App\Http\Controllers\Ads\PostAdController;
 use App\Http\Controllers\AdStatsController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\BannerClickController;
 use App\Http\Controllers\BrowseController;
 use App\Http\Controllers\ForYouController;
 use App\Http\Controllers\HelpController;
@@ -148,6 +149,10 @@ $publicRoutes = function () use ($stateless) {
     Route::get('/{category}/{city?}', [BrowseController::class, 'category'])
         ->where(['category' => '[a-z0-9-]+', 'city' => '[a-z0-9-]+'])->name('browse.category');
 };
+
+// Banner click: counted, then sent on to the banner's link (stateless).
+Route::get('/b/{banner}', BannerClickController::class)->whereNumber('banner')->middleware('throttle:60,1')
+    ->withoutMiddleware($stateless)->name('banner.click');
 
 // Ad stats beacon (switch "ad_stats"): one number per ad per day, nothing about the visitor.
 Route::post('/ads/{ad}/event', [AdStatsController::class, 'event'])

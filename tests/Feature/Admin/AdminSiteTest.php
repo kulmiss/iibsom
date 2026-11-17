@@ -68,7 +68,10 @@ class AdminSiteTest extends AdminTestCase
 
         $banner = Banner::first();
         Storage::disk('public')->assertExists($banner->image['wide']);
-        $this->get('/')->assertSee('alt="Sell your car today"', false)->assertSee('href="/post"', false);
+        // The link goes through /b/{id} (counts the click), then on to /post.
+        $this->get('/')->assertSee('alt="Sell your car today"', false)->assertSee('href="'.url("/b/{$banner->id}").'"', false);
+        $this->withHeader('User-Agent', 'Mozilla/5.0 (Android 13) Chrome/120')->get("/b/{$banner->id}")->assertRedirect(url('/post'));
+        $this->assertSame(1, $banner->fresh()?->clicks);
     }
 
     public function test_banner_link_must_be_safe(): void

@@ -84,6 +84,8 @@
                 </div>
             @endif
 
+            @include('partials.banner-ad', ['bannerAd' => \App\Models\Banner::pick('home'), 'class' => 'mt-4'])
+
             {{-- Category tiles (phones), like a mobile app --}}
             <nav class="mt-4 grid grid-cols-4 gap-x-2 gap-y-4 sm:grid-cols-6 lg:hidden" aria-label="{{ __('site.home.categories') }}">
                 @feature('ads.posting')

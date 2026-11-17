@@ -62,6 +62,8 @@ return [
         'bad_text' => 'Some characters in your text could not be read. Please type it again.',
     ],
 
+    'banner_ad' => 'Ad',
+
     'help' => [
         'title' => 'Help',
         'heading' => 'How can we help?',

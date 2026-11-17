@@ -151,6 +151,7 @@ Route::prefix('admin/api')->group(function () {
         });
         Route::middleware('admin.can:banners.manage')->group(function () {
             Route::get('/banners', [BannerController::class, 'index'])->name('admin.api.banners');
+            Route::get('/banners/options', [BannerController::class, 'options'])->name('admin.api.banners.options');
             Route::post('/banners', [BannerController::class, 'store'])->name('admin.api.banners.store');
             Route::post('/banners/{banner}', [BannerController::class, 'update'])->name('admin.api.banners.update');
             Route::delete('/banners/{banner}', [BannerController::class, 'destroy'])->name('admin.api.banners.destroy');

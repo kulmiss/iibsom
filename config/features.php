@@ -66,7 +66,7 @@ return [
     'chat' => ['group' => 'Phase 2', 'default' => false, 'label' => 'In-app chat', 'description' => 'Buyers and sellers chat inside the site.'],
     'favourites' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Favourites', 'description' => 'Save ads to a list.'],
     'saved_searches' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Saved search alerts', 'description' => 'Get alerts for new matching ads.'],
-    'banner_ads' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Banner ads', 'description' => 'Banner ads for businesses, activated by an admin.'],
+    'banner_ads' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Banner ads', 'description' => 'Paid banners for businesses on the home page, lists of ads and ad pages, aimed at a category and/or city, with start and end dates and click counts (admin → Home banners).'],
     'ad_stats' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Ad stats', 'description' => 'Sellers see how many people viewed each ad and tapped Show number, WhatsApp or Call (last 30 days). Only numbers are kept: nothing about the visitor.'],
 
     // Phase 3: growth

@@ -57,6 +57,8 @@
             @endfeature
         </div>
 
+        @include('partials.banner-ad', ['bannerAd' => \App\Models\Banner::pick('list', $category, $city?->id), 'class' => 'mt-3'])
+
         {{-- Links Google (and people) can follow: popular brands here, the same category in other cities. --}}
         @if ($brandLinks)
             <nav class="-mx-4 mt-3 overflow-x-auto px-4" aria-label="{{ __('ads.browse.popular_brands') }}">
