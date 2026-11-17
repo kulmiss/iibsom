@@ -5,7 +5,7 @@ Most important tests first. "Expected" is what you should see.
 ## Automated (run before every merge)
 | # | Command | Expected |
 |---|---------|----------|
-| 1 | `php artisan test` | All tests green (310+) |
+| 1 | `php artisan test` | All tests green (520+) |
 | 2 | `vendor/bin/pint --test` | "passed" (code style OK) |
 | 2b | `vendor/bin/phpstan analyse` | "No errors" (Larastan level 8) |
 | 2c | Site running with demo data → `bash tools/lighthouse` | "All results processed", no failed assertions |
@@ -27,6 +27,27 @@ Start: `php artisan migrate --seed`, `npm run build`, `cd admin && pnpm build`, 
 | 8 | Admin → Settings → General → tick Somali → site → **Soomaali** | Whole site in Somali, no reload |
 | 9 | Admin → Feature switches → turn **WhatsApp button** OFF | Button disappears from ad pages |
 | 10 | Admin → Settings → Demo data → Delete all demo data | Site is empty again (your own data stays) |
+
+## Manual (PRs 31–46: Phase 2/3 switches and Part D)
+Turn the switch ON in Admin → Feature switches first. Turn it OFF again afterwards.
+
+| # | Switch / PR | Do this | Expected |
+|---|---|---|---|
+| 1 | `favourites` (31) | Ad page → **Save** → Account → Saved ads | The ad is listed |
+| 2 | `saved_searches` (32) | Search "toyota" → **Save this search** | Listed in Account → Saved searches |
+| 3 | `ad_stats` (33) | Open your own live ad in another browser, tap Show number → My ads | Views and taps counted |
+| 4 | `verified_badge` (34) | Account → Get the Verified badge → send a photo → Admin → ID checks → approve | Badge next to your name on your ads; photo gone |
+| 5 | `shops` (35) | Account → My shop → save → Admin → Shops → +1 month | /shop/your-name opens |
+| 6 | `boosts` (36) | My ads → Boost → test receipt → Admin → Payments → approve | Ad first in lists with a label |
+| 7 | `banner_ads` (37) | Admin → Home banners → add one with place "Lists of ads" | Shows on category pages with "Ad" |
+| 8 | `chat` (38) | Another account → ad page → Chat with seller → reply | Messages arrive within 10 s |
+| 9 | `api.write` (39) | Account → App access → make a key → `curl -H "Authorization: Bearer <key>" localhost:8095/api/v1/me` | Your name in JSON |
+| 10 | `price_suggestions` (40) | Sell → Cars → pick Toyota | "Most Toyota ads are $… – $…" |
+| 11 | `seller_ratings` (41, chat ON) | As the buyer in a chat the seller answered → Rate this seller | Stars on the ad page; Admin → Ratings can hide |
+| 12 | `social.autopost` (42) | Without keys: Admin → System health | "Auto-post: no network has keys" |
+| 13 | `diaspora` (43) | Settings → rates → F12 → Sensors → location London (or change the PC time zone) → ad page | Safety note + "≈ £…" |
+| 14 | PR 44 | My ads late in the evening (after 21:00 Somalia time) | Dates are the Somalia day |
+| 15 | PR 46 | Admin → Waiting → select 20 → Approve | Done in about a second |
 
 ## Manual (PR 1: foundation)
 | # | Do this | Expected |

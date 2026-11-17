@@ -25,6 +25,7 @@ Tick `[x]` with the date when done.
 - [ ] Add iibsom.com to Google Search Console and submit https://iibsom.com/sitemap.xml
 
 ## Can wait
+- [ ] Choose which Phase 2/3 switches to turn on (recommended first: Favourites, Saved search alerts, Ad stats; see docs/features.md)
 - [ ] SMS provider for phone login (S1), only if phone login is wanted
 - [ ] Choose staff accounts (Moderator / Support) and give them 2FA apps
 - [ ] **Boosts (when you want to sell them):** real prices for Top / VIP / Diamond (edit `config/boosts.php` or tell the developer), and your merchant numbers for EVC Plus, Zaad, Sahal, eDahab (admin → Settings → General → Payments for boosts). Then turn **Test mode** OFF and the **Paid boosts** switch ON.

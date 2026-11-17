@@ -74,7 +74,7 @@ Panel → **Cron Jobs** → every minute (`* * * * *`):
 ```
 cd ~/iibsom && php artisan schedule:run >> /dev/null 2>&1
 ```
-This expires old ads, resizes photos (queue) and shows the heartbeat on the admin Health page.
+This runs everything that happens by itself: resizing photos and sending emails (the queue, every minute), ending old ads (hourly), ending boosts (every minute), saved-search emails (08:00), ad-stats clean-up (03:30), the weekly summary (Monday 07:00), auto-post (queue) and the heartbeat on the admin Health page.
 
 ## 7. Check
 - https://iibsom.com opens; https://iibsom.com/admin → sign in → set up 2FA on your phone.

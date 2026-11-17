@@ -6,7 +6,7 @@ Google sign-in, post an ad, browse + search, ad page, My Ads, safety (reports, a
 ### Phase 1 additions (owner request 2026-11-16)
 - ✅ (PR 15) **"Recommended for you"** on the home page (like Jiji): remember the categories and ads a visitor looked at and show similar ads. Guests: kept **only in their own browser** (no server tracking, no IP; page stays cacheable). Signed-in users: can also be saved to their account. Own feature switch `recommendations`. Build right after browse + ad pages (PR 10).
 
-## Phase 2 — Money + trust (build only when owner says)
+## Phase 2 — Money + trust ✅ built, switched OFF (PRs 31–38, 2026-11-17; see docs/features.md)
 - Boosts (Top / VIP / Diamond): seller pays the owner outside the site; **admin activates** (no payment code, decision #14)
 - Verified badge (phone + ID)
 - Business shop pages with monthly plans (activated by admin)
@@ -15,7 +15,7 @@ Google sign-in, post an ad, browse + search, ad page, My Ads, safety (reports, a
 - Banner ads (activated by admin)
 - Ad stats (views, calls, WhatsApp clicks)
 
-## Phase 3 — Growth (build only when owner says)
+## Phase 3 — Growth: ✅ built and OFF (PRs 39–43): price guide, seller ratings, auto-post, diaspora help, write API. Still open below
 - Flutter app + push notifications
 - Somali language: texts written (PR 17); turn ON after a native speaker review
 - Arabic

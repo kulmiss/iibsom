@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-17 (PR 46)_
+_Last updated: 2026-11-17 (PR 47)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -27,6 +27,11 @@ _Last updated: 2026-11-17 (PR 46)_
 - **PR 23 (weekly email):** `iibsom:weekly-summary` (Monday 07:00 Mogadishu, once per week), `WeeklySummary` numbers, admin field + test button. Fixed: shared rate-limit counter across pages (posting could be blocked after photo uploads); app name lowercase.
 - **PR 24 (SEO landing pages):** `browse.brand` route + `Landing` helper (brands, top brands, other cities), better titles/breadcrumbs/JSON-LD, empty pages noindex, sitemap landing URLs. Fixed: active language pill had too little contrast. Lighthouse now also checks a brand page and /so.
 - **PR 25 (installable website):** `public/manifest.webmanifest`, `public/icons/*`, `public/sw.js` (VERSION constant: bump it to drop old caches), `public/offline.html`, `resources/js/pwa.js`; Apache/nginx headers for sw.js and /build.
+- **PRs 26–30 (Part A):** Somali review sheet, Help centre, Super Admin guide + PDF, welcome tour, setup wizard.
+- **PRs 31–38 (Part B, Phase 2, all OFF):** favourites, saved searches, ad stats, verified badge, shop pages, paid boosts (test mode, ledger), banner ads, chat.
+- **PRs 39–43 (Part C, Phase 3, all OFF):** write API + keys, price guide, seller ratings, auto-post, help for buyers abroad.
+- **PRs 44–47 (Part D):** bug hunt (Somalia-time dates), security audit (SECURITY_REPORT.md), load test 100k ads (docs/load-test.md), docs.
+- Which switch does what, and what to turn on first: **docs/features.md**.
 - Nothing is deployed yet.
 - Owner runs locally with **Laragon** on Windows (see docs/local-setup.md → A).
 
@@ -87,7 +92,8 @@ See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example 
 43. **PR 43:** Help for buyers abroad: safety note + approximate price in their money from typed rates (switch `diaspora`, OFF). Part C done.
 44. **PR 44:** Final bug hunt: dates in Somalia time everywhere (`mdate()`), 150-page crawl with every switch ON (clean), query budgets for Phase 2/3 pages.
 45. **PR 45:** Security audit (ASVS L2) + SECURITY_REPORT.md; fixed HEAD sessions, private-disk routes, 2 missing rate limits; `SecurityAuditTest`.
-46. **PR 46:** Load test 100k ads / 10k users (docs/load-test.md, `iibsom:load-data`, `tools/load-test`); 3 indexes, cached list totals, dashboard from counters, deferred counters for bulk actions. Next: Part D (update all docs) — owner's big job list of 2026-11-16.
+46. **PR 46:** Load test 100k ads / 10k users (docs/load-test.md, `iibsom:load-data`, `tools/load-test`); 3 indexes, cached list totals, dashboard from counters, deferred counters for bulk actions. 
+47. **PR 47:** All docs updated (README, docs/features.md, deploy cron list, TESTING_GUIDE, ROADMAP). Owner's big job list of 2026-11-16 is done; the top PR points at main.
 
 ## Known notes
 - The local PHP Docker image could not be built inside Claude's sandbox (the Alpine package site is blocked there). CI builds it on GitHub to prove it works.

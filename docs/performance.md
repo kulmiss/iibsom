@@ -27,3 +27,6 @@ curl -s -o /dev/null -w '%{time_total}\n' http://localhost:8095/
 curl -sD - -o /dev/null http://localhost:8095/ | grep -i 'x-page-cache\|cache-control'
 ```
 On the live site also run PageSpeed Insights (https://pagespeed.web.dev) on the home page and an ad page.
+
+## At 100,000 ads
+See [load-test.md](load-test.md): pages answer in about 25–45 ms without the page cache, and about 130 pages a second with it, on 2 cores.

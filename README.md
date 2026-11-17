@@ -1,7 +1,7 @@
 # iibsom
 
 Classifieds website for Somalia (iibsom.com): buy and sell cars, houses, land, phones, livestock, services and jobs.
-Every ad is checked by an admin. English now, Somali ready.
+Every ad is checked by an admin. English now, Somali ready. Phase 1 is ready; Phase 2 and 3 are built and switched OFF ([docs/features.md](docs/features.md)).
 
 - **Stack:** Laravel 13 + MySQL 8.4 (+ Redis on a VPS), Blade + Tailwind public site, React admin (shadcn-admin) at `/admin`.
 - **Hosting:** the same code runs on shared hosting or a VPS (`HOSTING_MODE` in `.env`), Cloudflare in front, photos on Cloudflare R2.
@@ -37,7 +37,11 @@ Tests: `php artisan test` (MySQL database `iibsom_testing`).
 | [demo-data.md](docs/demo-data.md) | Demo data and photos |
 | [translations.md](docs/translations.md) · [somali-review](docs/somali-review/README.md) | Somali texts and the review sheet |
 | [Admin guide (PDF)](resources/help/admin-guide.pdf) | How every admin page works (also inside the admin: **?** buttons). Remake: `tools/make-guide-pdf` |
-| [security.md](docs/security.md) · [performance.md](docs/performance.md) | Security check, speed numbers |
+| [features.md](docs/features.md) | Every feature switch, and which to turn on first |
+| [SECURITY_REPORT.md](SECURITY_REPORT.md) · [security.md](docs/security.md) | Security audit (ASVS L2) and details per feature |
+| [performance.md](docs/performance.md) · [load-test.md](docs/load-test.md) | Speed numbers; test with 100k ads |
+| [api.md](docs/api.md) | API v1 for the mobile app (read + write) |
+| [social-autopost.md](docs/social-autopost.md) | Auto-post new ads to Telegram / Facebook |
 
 ## Project memory
 
