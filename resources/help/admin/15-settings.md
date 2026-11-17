@@ -6,7 +6,8 @@
 - **Languages ON:** English is always ON. Turn Somali ON when the translation is checked.
 - **Bad words:** ads with these words are refused. Add Somali words too.
 - **Weekly summary email:** last week's numbers every Monday morning. **Send me a test now** checks that email works.
-- **Help email for customers:** shown on the Help page.
+- **Help email for customers:** shown on the Help page and as **Contact us** in the footer.
+- **Footer:** tick the links to show (About, Terms, Privacy, Cookie info, Copyright, Contact us, Safety tips, Help centre, Popular categories and cities) and paste the links of iibsom's social pages (Facebook, Instagram, TikTok, YouTube, Telegram, WhatsApp). Empty = hidden. Only https links on the network's own site are accepted. The switch **Big footer** (Switches → Site) turns the whole footer on or off.
 - **Run the first-time setup again:** the same questions in 5 short steps.
 
 ## Appearance

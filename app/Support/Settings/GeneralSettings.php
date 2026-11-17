@@ -4,6 +4,7 @@ namespace App\Support\Settings;
 
 use App\Console\Commands\SendWeeklySummary;
 use App\Support\Cache\PageCache;
+use App\Support\Site\Footer;
 use Illuminate\Validation\Rule;
 
 /**
@@ -32,6 +33,10 @@ class GeneralSettings
             'payment_numbers.*' => ['nullable', 'string', 'max:30', 'regex:/^[0-9 +\-]*$/'],
             'diaspora_rates' => ['sometimes', 'array'],
             'diaspora_rates.*' => ['nullable', 'numeric', 'min:0', 'max:1000000'],
+            'footer_social' => ['sometimes', 'array'],
+            'footer_social.*' => ['nullable', 'string', 'max:200'],
+            'footer_links' => ['sometimes', 'array'],
+            'footer_links.*' => [Rule::in(array_keys(Footer::LINKS))],
         ];
     }
 
@@ -50,6 +55,27 @@ class GeneralSettings
         }
 
         return null;
+    }
+
+    /**
+     * A social link must be an https address on that network's own site (no look-alike or other pages).
+     *
+     * @param  array<string, mixed>  $data
+     * @return array<string, string> field => message
+     */
+    public static function socialProblems(array $data): array
+    {
+        $problems = [];
+        foreach ((array) ($data['footer_social'] ?? []) as $network => $url) {
+            $url = trim((string) $url);
+            if (! isset(Footer::NETWORKS[$network])) {
+                $problems['footer_social'] = 'Unknown social network.';
+            } elseif ($url !== '' && ! Footer::allowed((string) $network, $url)) {
+                $problems['footer_social.'.$network] = 'The '.Footer::NETWORKS[$network][0].' link must start with https:// and be on '.implode(' or ', Footer::NETWORKS[$network][1]).'.';
+            }
+        }
+
+        return $problems;
     }
 
     /** @return array<string, string> */
@@ -115,6 +141,21 @@ class GeneralSettings
 
         if (array_key_exists('support_email', $data)) {
             $this->settings->set('site.support_email', mb_strtolower(trim((string) ($data['support_email'] ?? ''))), $userId);
+            PageCache::bump(); // "Contact us" is in the footer of every cached page
+        }
+
+        if (array_key_exists('footer_social', $data)) {
+            $social = [];
+            foreach (array_keys(Footer::NETWORKS) as $network) {
+                $social[$network] = trim((string) ($data['footer_social'][$network] ?? ''));
+            }
+            $this->settings->set('footer.social', $social, $userId);
+            PageCache::bump();
+        }
+        if (array_key_exists('footer_links', $data)) {
+            // Kept in the admin's list order (the order of Footer::LINKS).
+            $this->settings->set('footer.links', array_values(array_intersect(array_keys(Footer::LINKS), (array) ($data['footer_links'] ?? []))), $userId);
+            PageCache::bump();
         }
     }
 
@@ -138,6 +179,10 @@ class GeneralSettings
             'diaspora_rates' => (object) setting('diaspora.rates'),
             'diaspora_rates_date' => setting('diaspora.rates_date') ?: null,
             'diaspora_currencies' => config()->array('iibsom.diaspora_currencies'),
+            'footer_social' => (object) setting('footer.social'),
+            'footer_networks' => array_map(fn (array $n) => $n[0], Footer::NETWORKS),
+            'footer_links' => setting('footer.links'),
+            'footer_link_options' => Footer::LINKS,
         ];
     }
 }

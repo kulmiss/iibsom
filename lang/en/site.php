@@ -58,6 +58,16 @@ return [
         'help' => 'Help',
         'safety' => 'Safety tips',
         'rights' => 'All rights reserved.',
+        'col_about' => 'About',
+        'col_support' => 'Support',
+        'col_popular' => 'Popular',
+        'col_follow' => 'Follow us',
+        'cookies' => 'Cookie info',
+        'copyright' => 'Copyright & problems',
+        'contact' => 'Contact us',
+        'faq' => 'Help centre & FAQ',
+        'language' => 'Language',
+        'tagline' => 'Buy and sell in Somalia.',
     ],
 
     'errors' => [

@@ -32,7 +32,7 @@ async function swapTo(url, code, push = true) {
     document.documentElement.lang = doc.documentElement.lang;
     document.documentElement.dir = doc.documentElement.dir;
 
-    for (const selector of ['header', '[data-page]', 'footer', '[data-bottom-nav]']) {
+    for (const selector of ['header', '[data-page]', '[data-site-footer]', '[data-bottom-nav]']) {
         const next = doc.querySelector(selector);
         const current = document.querySelector(selector);
         if (next && current) current.replaceWith(next);

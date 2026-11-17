@@ -30,6 +30,10 @@ type General = {
   diaspora_rates: Record<string, number | string>
   diaspora_rates_date: string | null
   diaspora_currencies: Record<string, string>
+  footer_social: Record<string, string>
+  footer_networks: Record<string, string>
+  footer_links: string[]
+  footer_link_options: Record<string, string>
 }
 
 export function SettingsGeneral() {
@@ -122,7 +126,7 @@ function GeneralForm({ initial }: { initial: General }) {
         <div className='grid gap-2'>
           <Label htmlFor='support_email'>Help email for customers</Label>
           <Input id='support_email' type='email' className='max-w-md' value={form.support_email} onChange={(e) => setForm({ ...form, support_email: e.target.value })} placeholder='help@iibsom.com' />
-          <p className='text-xs text-muted-foreground'>Shown at the bottom of the Help page (&quot;Still need help?&quot;). Empty = not shown.</p>
+          <p className='text-xs text-muted-foreground'>Shown at the bottom of the Help page (&quot;Still need help?&quot;) and as &quot;Contact us&quot; in the footer. Empty = not shown.</p>
         </div>
         {boostsOn && (
           <fieldset className='grid gap-3 rounded-lg border p-4'>
@@ -163,6 +167,34 @@ function GeneralForm({ initial }: { initial: General }) {
             </div>
           </fieldset>
         )}
+        <fieldset className='grid gap-3 rounded-lg border p-4'>
+          <legend className='px-1 text-sm font-medium'>Footer</legend>
+          <p className='text-xs text-muted-foreground'>Shown at the bottom of every page (switch: Site → Big footer).</p>
+          <div className='grid gap-2'>
+            <Label>Links shown</Label>
+            <div className='grid gap-2 sm:grid-cols-2'>
+              {Object.entries(form.footer_link_options).map(([key, label]) => (
+                <label key={key} className='flex items-center gap-2 text-sm'>
+                  <Checkbox
+                    checked={form.footer_links.includes(key)}
+                    onCheckedChange={(v) => setForm({ ...form, footer_links: v ? [...form.footer_links, key] : form.footer_links.filter((k) => k !== key) })}
+                  />
+                  {label}
+                </label>
+              ))}
+            </div>
+            <p className='text-xs text-muted-foreground'>&quot;Contact us&quot; shows only when the help email above is filled in. Page texts: Website → Pages.</p>
+          </div>
+          <div className='grid gap-3 sm:grid-cols-2'>
+            {Object.entries(form.footer_networks).map(([key, name]) => (
+              <div key={key} className='grid gap-1.5'>
+                <Label htmlFor={`social-${key}`}>{name} page</Label>
+                <Input id={`social-${key}`} type='url' inputMode='url' value={form.footer_social[key] ?? ''} onChange={(e) => setForm({ ...form, footer_social: { ...form.footer_social, [key]: e.target.value } })} placeholder='https://… (empty = hidden)' />
+              </div>
+            ))}
+          </div>
+          <p className='text-xs text-muted-foreground'>Only https links on the network&apos;s own site are accepted (for example https://www.facebook.com/iibsom, https://t.me/iibsom, https://wa.me/252…).</p>
+        </fieldset>
         <p className='text-sm text-muted-foreground'>
           Want the short step-by-step version?{' '}
           <Link to='/setup' className='text-primary underline'>

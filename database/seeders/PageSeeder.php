@@ -6,7 +6,7 @@ use App\Models\Page;
 use Illuminate\Database\Seeder;
 
 /**
- * Starter text for the 4 core pages (database/seeders/data/pages.php).
+ * Starter text for the 6 core pages (database/seeders/data/pages.php).
  * Only adds missing text: text edited in the admin is never overwritten.
  */
 class PageSeeder extends Seeder

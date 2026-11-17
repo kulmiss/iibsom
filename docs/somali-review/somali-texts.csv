@@ -430,6 +430,16 @@ site.footer.privacy,Privacy,Qarsoodiga,"needs native review",resources/views/par
 site.footer.help,Help,Caawimaad,"needs native review",resources/views/partials/footer.blade.php,home.png
 site.footer.safety,"Safety tips","Talooyin ammaan","needs native review",resources/views/partials/footer.blade.php,home.png
 site.footer.rights,"All rights reserved.","Xuquuqda oo dhan way dhowran tahay.","needs native review",resources/views/partials/footer.blade.php,home.png
+site.footer.col_about,About,"Nagu saabsan","needs native review",resources/views/partials/footer.blade.php,home.png
+site.footer.col_support,Support,Caawimaad,"needs native review",resources/views/partials/footer.blade.php,home.png
+site.footer.col_popular,Popular,"Kuwa la jecel yahay","needs native review",resources/views/partials/footer.blade.php,home.png
+site.footer.col_follow,"Follow us","Na raac","needs native review",resources/views/partials/footer.blade.php,home.png
+site.footer.cookies,"Cookie info","Macluumaadka kukiyada","needs native review",resources/views/partials/footer.blade.php,home.png
+site.footer.copyright,"Copyright & problems","Xuquuqda & dhibaatooyinka","needs native review",resources/views/partials/footer.blade.php,home.png
+site.footer.contact,"Contact us","Nala soo xiriir","needs native review",resources/views/partials/footer.blade.php,home.png
+site.footer.faq,"Help centre & FAQ","Xarunta caawimaadda & su'aalaha","needs native review",resources/views/partials/footer.blade.php,home.png
+site.footer.language,Language,Luqadda,"needs native review",resources/views/partials/footer.blade.php,home.png
+site.footer.tagline,"Buy and sell in Somalia.","Ka iibso kana iibi Soomaaliya.","needs native review",resources/views/partials/footer.blade.php,home.png
 site.errors.not_found_title,"Page not found","Boggan lama helin","needs native review",resources/views/errors/404.blade.php,errors-404.png
 site.errors.not_found_text,"This page does not exist or was removed.","Boggan ma jiro ama waa la saaray.","needs native review",resources/views/errors/404.blade.php,errors-404.png
 site.errors.back_home,"Back to home","Ku noqo bogga hore","needs native review","resources/views/errors/400.blade.php | resources/views/errors/404.blade.php",errors-404.png
@@ -544,6 +554,62 @@ pages.privacy.body,"**Draft: to be checked by the owner before launch.**
 - **Booqdayaasha aan galin:** ma keydinno cinwaankooda IP.
 - **Sawirrada:** sawir kasta waxaan ka saarnaa xogta qarsoon sida goobta GPS.
 - **Tirtir xogtaada:** nala soo xiriir, akoonkaaga ayaan tirtiri doonnaa.","needs native review","Page /privacy (starter text; admin > Pages can change it)",pages-privacy.png
+pages.cookies.title,"Cookie info","Macluumaadka kukiyada","needs native review","Page /cookies (starter text; admin > Pages can change it)",
+pages.cookies.body,"iibsom uses **only what the site needs to work**. No advertising cookies, no tracking by other companies.
+
+## Cookies
+- **iibsom-session** and **XSRF-TOKEN**: keep you signed in and protect forms. Only when you sign in or send a form.
+- **lang**: remembers the language you chose (1 year).
+
+## Saved in your browser only (never sent to us)
+- Ads you looked at, for ""Recommended for you"".
+- Grid or list view, the money you want prices shown in, and an ad you are still writing.
+
+You can delete all of these in your browser settings at any time. The site still works, you just have to choose again.
+
+Visitors who are not signed in: we do not store their IP address.","iibsom waxay isticmaashaa **oo keliya waxa bogga ugu baahan yahay inuu shaqeeyo**. Ma jiraan kukiyo xayeysiis ah, mana jiro shirkad kale oo ku raad-raacda.
+
+## Kukiyada
+- **iibsom-session** iyo **XSRF-TOKEN**: waxay kaa dhigaan mid gudaha ku jira oo ilaaliya foomamka. Kaliya marka aad gasho ama aad foom dirto.
+- **lang**: waxay xasuusataa luqadda aad dooratay (1 sano).
+
+## Waxa lagu keydiyo browser-kaaga oo keliya (marnaba nooma yimaado)
+- Xayeysiisyada aad eegtay, si loogu talo galo ""Adiga laguu soo jeediyey"".
+- Muuqaalka shabaq ama liis, lacagta aad rabto in qiimaha lagu muujiyo, iyo xayeysiis aad wali qorayso.
+
+Kuwaas oo dhan waad tirtiri kartaa goor kasta oo ka mid ah dejinta browser-kaaga. Boggu wuu shaqeynayaa, kaliya mar kale ayaad dooran doontaa.
+
+Booqdayaasha aan soo gelin: ma keydinno ciwaankooda IP.","needs native review","Page /cookies (starter text; admin > Pages can change it)",
+pages.copyright.title,"Copyright and reporting a problem","Xuquuqda iyo soo sheegidda dhibaato","needs native review","Page /copyright (starter text; admin > Pages can change it)",
+pages.copyright.body,"## Your photos or text used without permission
+If an ad uses your photo, logo or text without your permission, tell us and we will check it quickly.
+
+Send us:
+- the link to the ad,
+- what is yours (for example: ""the first 3 photos""),
+- how we can reach you.
+
+Use **Report this ad** on the ad page, or the help email at the bottom of the page.
+
+## Other problems
+- A fake ad, a scam or a rude message: press **Report this ad**.
+- Something on the site does not work: write to the help email and tell us what you did and what you saw.
+
+Our team checks every report. If the ad breaks the rules, we remove it.","## Sawiradaada ama qoraalkaaga oo la isticmaalay idan la'aan
+Haddii xayeysiis uu isticmaalo sawirkaaga, astaantaada ama qoraalkaaga adigoo aan oggolaan, noo sheeg, si dhakhso ah ayaan u hubin doonnaa.
+
+Noo soo dir:
+- xiriirka (link-ga) xayeysiiska,
+- waxa adiga kuu gaarka ah (tusaale: ""3da sawir ee ugu horreeya""),
+- sida aan kuula soo xiriiri karno.
+
+Isticmaal **Ka warbixi xayeysiiskan** ee bogga xayeysiiska, ama iimaylka caawimaadda ee hoose ee bogga.
+
+## Dhibaatooyin kale
+- Xayeysiis been ah, khiyaano ama fariin xun: riix **Ka warbixi xayeysiiskan**.
+- Wax bogga ka mid ah oo aan shaqeyn: u qor iimaylka caawimaadda oo noo sheeg waxa aad samaysay iyo waxa aad aragtay.
+
+Kooxdayadu way hubisaa warbixin kasta. Haddii xayeysiisku jebiyo xeerarka, waan saarnaa.","needs native review","Page /copyright (starter text; admin > Pages can change it)",
 help.post-an-ad.title,"How to post an ad","Sida loo dhigo xayeysiis","needs native review","Help page /help/post-an-ad",help-index.png
 help.post-an-ad.body,"Posting is free.
 
