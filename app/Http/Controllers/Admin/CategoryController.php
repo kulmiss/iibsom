@@ -11,6 +11,7 @@ use App\Support\Catalog;
 use App\Support\Routing\ReservedSlugs;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -69,10 +70,22 @@ class CategoryController extends Controller
     /** New order: list of ids in the order they should show. */
     public function reorder(Request $request): JsonResponse
     {
-        $ids = $request->validate(['ids' => ['required', 'array', 'max:200'], 'ids.*' => ['integer']])['ids'];
-        foreach (array_values($ids) as $sort => $id) {
-            Category::whereKey($id)->update(['sort' => $sort]);
+        $ids = array_map('intval', $request->validate(['ids' => ['required', 'array', 'max:200'], 'ids.*' => ['integer', 'distinct']])['ids']);
+
+        // One list at a time, and the whole list: all main categories, or all sub categories of one main.
+        $parents = Category::whereIn('id', $ids)->pluck('parent_id')->unique();
+        $siblings = $parents->count() === 1 ? Category::where('parent_id', $parents->first())->pluck('id')->map(fn ($id) => (int) $id)->sort()->values()->all() : [];
+        $sorted = $ids;
+        sort($sorted);
+        if ($siblings === [] || $siblings !== $sorted) {
+            return response()->json(['message' => 'The order could not be saved. Reload the page and try again.'], 422);
         }
+
+        DB::transaction(function () use ($ids) {
+            foreach (array_values($ids) as $sort => $id) {
+                Category::whereKey($id)->update(['sort' => $sort]);
+            }
+        });
         app(Catalog::class)->flush();
         Activity::log('category.reordered', 'Changed the order of categories');
 
