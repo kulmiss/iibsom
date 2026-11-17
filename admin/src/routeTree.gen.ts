@@ -32,6 +32,7 @@ import { Route as AuthenticatedSettingsRouteRouteImport } from './routes/_authen
 import { Route as AuthenticatedSetupRouteImport } from './routes/_authenticated/setup'
 import { Route as AuthenticatedStaffRouteImport } from './routes/_authenticated/staff'
 import { Route as AuthenticatedUsersRouteImport } from './routes/_authenticated/users'
+import { Route as AuthenticatedVerificationsRouteImport } from './routes/_authenticated/verifications'
 import { Route as AuthenticatedAdsIndexRouteImport } from './routes/_authenticated/ads/index'
 import { Route as AuthenticatedAdsPendingRouteImport } from './routes/_authenticated/ads/pending'
 import { Route as AuthenticatedErrorsErrorRouteImport } from './routes/_authenticated/errors/$error'
@@ -155,6 +156,12 @@ const AuthenticatedUsersRoute = AuthenticatedUsersRouteImport.update({
   path: '/users',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedVerificationsRoute =
+  AuthenticatedVerificationsRouteImport.update({
+    id: '/verifications',
+    path: '/verifications',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAdsIndexRoute = AuthenticatedAdsIndexRouteImport.update({
   id: '/ads/',
   path: '/ads/',
@@ -219,6 +226,7 @@ export interface FileRoutesByFullPath {
   '/setup': typeof AuthenticatedSetupRoute
   '/staff': typeof AuthenticatedStaffRoute
   '/users': typeof AuthenticatedUsersRoute
+  '/verifications': typeof AuthenticatedVerificationsRoute
   '/ads/pending': typeof AuthenticatedAdsPendingRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
@@ -248,6 +256,7 @@ export interface FileRoutesByTo {
   '/setup': typeof AuthenticatedSetupRoute
   '/staff': typeof AuthenticatedStaffRoute
   '/users': typeof AuthenticatedUsersRoute
+  '/verifications': typeof AuthenticatedVerificationsRoute
   '/': typeof AuthenticatedIndexRoute
   '/ads/pending': typeof AuthenticatedAdsPendingRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
@@ -281,6 +290,7 @@ export interface FileRoutesById {
   '/_authenticated/setup': typeof AuthenticatedSetupRoute
   '/_authenticated/staff': typeof AuthenticatedStaffRoute
   '/_authenticated/users': typeof AuthenticatedUsersRoute
+  '/_authenticated/verifications': typeof AuthenticatedVerificationsRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/ads/pending': typeof AuthenticatedAdsPendingRoute
   '/_authenticated/errors/$error': typeof AuthenticatedErrorsErrorRoute
@@ -315,6 +325,7 @@ export interface FileRouteTypes {
     | '/setup'
     | '/staff'
     | '/users'
+    | '/verifications'
     | '/ads/pending'
     | '/errors/$error'
     | '/settings/appearance'
@@ -344,6 +355,7 @@ export interface FileRouteTypes {
     | '/setup'
     | '/staff'
     | '/users'
+    | '/verifications'
     | '/'
     | '/ads/pending'
     | '/errors/$error'
@@ -376,6 +388,7 @@ export interface FileRouteTypes {
     | '/_authenticated/setup'
     | '/_authenticated/staff'
     | '/_authenticated/users'
+    | '/_authenticated/verifications'
     | '/_authenticated/'
     | '/_authenticated/ads/pending'
     | '/_authenticated/errors/$error'
@@ -561,6 +574,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedUsersRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/verifications': {
+      id: '/_authenticated/verifications'
+      path: '/verifications'
+      fullPath: '/verifications'
+      preLoaderRoute: typeof AuthenticatedVerificationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/ads/': {
       id: '/_authenticated/ads/'
       path: '/ads'
@@ -647,6 +667,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSetupRoute: typeof AuthenticatedSetupRoute
   AuthenticatedStaffRoute: typeof AuthenticatedStaffRoute
   AuthenticatedUsersRoute: typeof AuthenticatedUsersRoute
+  AuthenticatedVerificationsRoute: typeof AuthenticatedVerificationsRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedAdsPendingRoute: typeof AuthenticatedAdsPendingRoute
   AuthenticatedErrorsErrorRoute: typeof AuthenticatedErrorsErrorRoute
@@ -667,6 +688,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSetupRoute: AuthenticatedSetupRoute,
   AuthenticatedStaffRoute: AuthenticatedStaffRoute,
   AuthenticatedUsersRoute: AuthenticatedUsersRoute,
+  AuthenticatedVerificationsRoute: AuthenticatedVerificationsRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedAdsPendingRoute: AuthenticatedAdsPendingRoute,
   AuthenticatedErrorsErrorRoute: AuthenticatedErrorsErrorRoute,

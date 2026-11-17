@@ -25,3 +25,6 @@ user text, so there is no place to inject a script; the server page cache always
 
 ## Stateless JSON calls (PR 33)
 `/ads/{id}/contact` (Show number) and `/ads/{id}/event` (ad stats beacon) run without session, cookies or CSRF token (`$stateless` in routes/web.php), so nothing is saved about guests. Both are rate-limited. The beacon only adds to counters the seller sees.
+
+## ID photos (PR 34, Verified badge)
+Stored encrypted (Laravel `Crypt`, APP_KEY) on the private `local` disk under `verifications/`, never in `public/`. Shown only to staff with `users.verify` through `/admin/api/verifications/{id}/photo` (no-store, noindex; each view logged). Deleted when staff approve or reject.

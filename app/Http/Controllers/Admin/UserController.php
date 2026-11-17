@@ -122,6 +122,7 @@ class UserController extends Controller
             'created_at' => $u->created_at?->toIso8601String(),
             'last_login_at' => $u->last_login_at?->toIso8601String(),
             'is_demo' => $u->is_demo,
+            'verified' => $u->verified_at !== null && feature('verified_badge'),
         ];
     }
 }

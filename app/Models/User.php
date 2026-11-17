@@ -31,6 +31,7 @@ class User extends Authenticatable
             'last_login_at' => 'datetime',
             'banned_at' => 'datetime',
             'phone_has_whatsapp' => 'boolean',
+            'verified_at' => 'datetime',
             'password' => 'hashed',
             'two_factor_secret' => 'encrypted',
             'two_factor_recovery_codes' => 'encrypted:array',
@@ -98,6 +99,18 @@ class User extends Authenticatable
     public function savedSearches(): HasMany
     {
         return $this->hasMany(SavedSearch::class);
+    }
+
+    /** @return HasMany<VerificationRequest, $this> */
+    public function verificationRequests(): HasMany
+    {
+        return $this->hasMany(VerificationRequest::class);
+    }
+
+    /** Shows the "Verified" badge (only while the switch is ON). */
+    public function isVerified(): bool
+    {
+        return $this->verified_at !== null && feature('verified_badge');
     }
 
     public function isBanned(): bool

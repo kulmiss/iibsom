@@ -4,6 +4,7 @@ use App\Http\Controllers\Account\FavouriteController;
 use App\Http\Controllers\Account\MyAdsController;
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\Account\SavedSearchController;
+use App\Http\Controllers\Account\VerificationController;
 use App\Http\Controllers\AdPageController;
 use App\Http\Controllers\Ads\AdPhotoController;
 use App\Http\Controllers\Ads\PostAdController;
@@ -74,6 +75,12 @@ $publicRoutes = function () use ($stateless) {
             });
 
             Route::get('/account/ads/{ad}/stats', [AdStatsController::class, 'show'])->whereNumber('ad')->middleware('feature:ad_stats')->name('account.ads.stats');
+
+            // Verified badge (Phase 2): send an ID photo.
+            Route::middleware('feature:verified_badge')->group(function () {
+                Route::get('/account/verify', [VerificationController::class, 'show'])->name('verify');
+                Route::post('/account/verify', [VerificationController::class, 'store'])->middleware('throttle:5,60')->name('verify.store');
+            });
 
             // Favourites (Phase 2): saved ads.
             Route::middleware('feature:favourites')->group(function () {

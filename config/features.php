@@ -61,7 +61,7 @@ return [
 
     // Phase 2: money + trust (build only when the owner says)
     'boosts' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Boosts', 'description' => 'Top / VIP / Diamond ads. Paid outside the site; an admin turns them on.'],
-    'verified_badge' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Verified badge', 'description' => 'Sellers verified by phone + ID.'],
+    'verified_badge' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Verified badge', 'description' => 'Sellers send a photo of their ID; staff check it and give a "Verified" badge shown next to the seller name. The ID photo is kept encrypted and deleted after the check.'],
     'shops' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Business shop pages', 'description' => 'Shop pages with monthly plans, activated by an admin.'],
     'chat' => ['group' => 'Phase 2', 'default' => false, 'label' => 'In-app chat', 'description' => 'Buyers and sellers chat inside the site.'],
     'favourites' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Favourites', 'description' => 'Save ads to a list.'],

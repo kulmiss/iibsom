@@ -30,6 +30,8 @@ Google sign-in, post an ad, browse + search, ad page, My Ads, safety (reports, a
 - ✅ Admin Health page (PR 12). ✅ "Move to VPS" checklist (docs/scaling.md, PR 19).
 - ✅ (PR 21) Admin "Edited" badge in the approval queue showing what changed since the last approval.
 - ✅ (PR 22) Match demo photos to the brand/type in the title.
+- Ad stats on busy sites: count views in Redis and write to the database once a minute (fewer writes).
+- Verified badge on ad cards in lists, and a "Verified sellers only" filter.
 - Save button (bookmark) on ad cards in lists, not only on the ad page.
 - Short video clips (30 s) in the admin guide for approving ads and banning users.
 - Help search box and "Was this helpful? yes/no" counts (no personal data) once there are more articles.

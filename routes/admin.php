@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\SpaController;
 use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\SystemController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\VerificationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -72,6 +73,14 @@ Route::prefix('admin/api')->group(function () {
         Route::get('/users/{user}', [UserController::class, 'show'])->middleware('admin.can:users.view');
         Route::post('/users/{user}/ban', [UserController::class, 'ban'])->middleware('admin.can:users.ban');
         Route::post('/users/{user}/unban', [UserController::class, 'unban'])->middleware('admin.can:users.ban');
+        // Verified badge (Phase 2): check ID photos.
+        Route::middleware(['feature:verified_badge', 'admin.can:users.verify'])->group(function () {
+            Route::get('/verifications', [VerificationController::class, 'index']);
+            Route::get('/verifications/{verification}/photo', [VerificationController::class, 'photo'])->middleware('throttle:60,1');
+            Route::post('/verifications/{verification}/approve', [VerificationController::class, 'approve']);
+            Route::post('/verifications/{verification}/reject', [VerificationController::class, 'reject']);
+            Route::post('/users/{user}/unverify', [VerificationController::class, 'revoke']);
+        });
         Route::get('/blocked-phones', [BlockedPhoneController::class, 'index'])->middleware('admin.can:users.view');
         Route::post('/blocked-phones', [BlockedPhoneController::class, 'store'])->middleware('admin.can:users.ban');
         Route::delete('/blocked-phones/{blockedPhone}', [BlockedPhoneController::class, 'destroy'])->middleware('admin.can:users.ban');

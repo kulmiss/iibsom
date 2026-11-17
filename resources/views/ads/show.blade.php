@@ -132,7 +132,12 @@
                     <div class="flex items-center gap-3">
                         <span class="flex size-12 shrink-0 items-center justify-center rounded-full bg-brand-700 text-lg font-bold text-white">{{ $ad->user->initial() }}</span>
                         <div class="min-w-0">
-                            <p class="truncate font-semibold">{{ $ad->user->name }}</p>
+                            <p class="flex min-w-0 items-center gap-1.5 font-semibold">
+                                <span class="truncate">{{ $ad->user->name }}</span>
+                                @if ($ad->user->isVerified())
+                                    @include('partials.verified-badge')
+                                @endif
+                            </p>
                             <p class="text-xs text-stone-500">{{ $ad->user->city?->label }} · {{ __('ads.page.member_since', ['date' => $ad->user->created_at->translatedFormat('M Y')]) }}</p>
                             <p class="text-xs text-stone-500">{{ trans_choice('ads.page.seller_ads', max(1, $sellerLiveAds), ['count' => $sellerLiveAds]) }}</p>
                         </div>

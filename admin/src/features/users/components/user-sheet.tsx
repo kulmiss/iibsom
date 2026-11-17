@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { format } from 'date-fns'
-import { Ban, RotateCcw } from 'lucide-react'
+import { Ban, BadgeX, RotateCcw } from 'lucide-react'
 import { toast } from 'sonner'
 import { api, apiErrorMessage } from '@/lib/api'
 import { useAuthStore } from '@/stores/auth-store'
@@ -43,6 +43,15 @@ export function UserSheet({ userId, onOpenChange }: { userId: number | null; onO
     },
     onError: (e) => toast.error(apiErrorMessage(e)),
   })
+  const unverify = useMutation({
+    mutationFn: () => api.post(`/users/${userId}/unverify`),
+    onSuccess: () => {
+      toast.success('Verified badge removed.')
+      refresh()
+    },
+    onError: (e) => toast.error(apiErrorMessage(e)),
+  })
+
   const unban = useMutation({
     mutationFn: () => api.post(`/users/${userId}/unban`),
     onSuccess: () => {
@@ -57,7 +66,7 @@ export function UserSheet({ userId, onOpenChange }: { userId: number | null; onO
       <SheetContent className='flex w-full flex-col gap-0 p-0 sm:max-w-3xl'>
         <SheetHeader className='border-b'>
           <SheetTitle className='flex items-center gap-2 pe-6'>
-            {user?.name ?? 'User'} {user?.banned && <Badge variant='destructive'>Banned</Badge>} {user?.is_demo && <Badge variant='secondary'>Demo</Badge>}
+            {user?.name ?? 'User'} {user?.banned && <Badge variant='destructive'>Banned</Badge>} {user?.verified && <Badge>Verified</Badge>} {user?.is_demo && <Badge variant='secondary'>Demo</Badge>}
           </SheetTitle>
           <SheetDescription>{user ? `#${user.id} · ${user.email}` : ''}</SheetDescription>
         </SheetHeader>
@@ -88,9 +97,14 @@ export function UserSheet({ userId, onOpenChange }: { userId: number | null; onO
             </div>
           )}
         </ScrollArea>
-        {user && can('users.ban') && (
-          <div className='flex gap-2 border-t p-3'>
-            {user.banned ? (
+        {user && (can('users.ban') || (user.verified && can('users.verify'))) && (
+          <div className='flex flex-wrap gap-2 border-t p-3'>
+            {user.verified && can('users.verify') && (
+              <Button variant='outline' onClick={() => window.confirm(`Remove the Verified badge of ${user.name}?`) && unverify.mutate()} disabled={unverify.isPending}>
+                <BadgeX /> Remove Verified badge
+              </Button>
+            )}
+            {!can('users.ban') ? null : user.banned ? (
               <Button variant='outline' onClick={() => unban.mutate()} disabled={unban.isPending}>
                 <RotateCcw /> Unban
               </Button>

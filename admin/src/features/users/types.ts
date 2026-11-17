@@ -12,6 +12,8 @@ export type UserRow = {
   created_at: string
   last_login_at: string | null
   is_demo: boolean
+  /** Has the Verified badge (only while the switch is ON). */
+  verified: boolean
 }
 
 export type UserDetail = UserRow & {
