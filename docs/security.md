@@ -22,3 +22,6 @@ Checked 2026-11-16 (PR 18). ✅ = done and tested, ⚠️ = owner action before 
 
 Known trade-off: a page kept by Cloudflare shows the same CSP nonce to everyone for up to 2 minutes. Pages escape all
 user text, so there is no place to inject a script; the server page cache always gives a fresh nonce.
+
+## Stateless JSON calls (PR 33)
+`/ads/{id}/contact` (Show number) and `/ads/{id}/event` (ad stats beacon) run without session, cookies or CSRF token (`$stateless` in routes/web.php), so nothing is saved about guests. Both are rate-limited. The beacon only adds to counters the seller sees.

@@ -197,4 +197,20 @@ return [
         'empty' => 'No saved searches yet. On a list of ads, tap "Save this search".',
         'last_sent' => 'Last email: :date',
     ],
+
+    'stats' => [
+        'title' => 'Ad stats',
+        'open' => 'Stats',
+        'last_30' => 'Last 30 days',
+        'views_n' => ':count view|:count views',
+        'contacts_n' => ':count contact|:count contacts',
+        'views' => 'Views',
+        'phone' => 'Show number taps',
+        'whatsapp' => 'WhatsApp taps',
+        'call' => 'Call taps',
+        'daily' => 'Views per day (last 14 days)',
+        'day' => 'Day',
+        'privacy' => 'Only numbers are counted. We never keep who looked at your ad. Your own visits are not counted.',
+        'tip' => 'Few views? Add clear photos, a good title and a fair price.',
+    ],
 ];

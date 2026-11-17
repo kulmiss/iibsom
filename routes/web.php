@@ -7,6 +7,7 @@ use App\Http\Controllers\Account\SavedSearchController;
 use App\Http\Controllers\AdPageController;
 use App\Http\Controllers\Ads\AdPhotoController;
 use App\Http\Controllers\Ads\PostAdController;
+use App\Http\Controllers\AdStatsController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BrowseController;
@@ -16,7 +17,12 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\SitemapController;
 use App\Models\Page;
 use App\Support\Localization\Locales;
+use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Illuminate\Cookie\Middleware\EncryptCookies;
+use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
+use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Route;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 /*
 | Public pages are registered once per URL style:
@@ -24,7 +30,11 @@ use Illuminate\Support\Facades\Route;
 |   default language:  /           (name: home)
 | Use lroute('home') in views to get the link in the current language.
 */
-$publicRoutes = function () {
+// For JSON calls from cached guest pages: no session, no cookies, no CSRF token,
+// so nothing is saved about the visitor (ad contact + ad stats beacon).
+$stateless = [EncryptCookies::class, AddQueuedCookiesToResponse::class, StartSession::class, ShareErrorsFromSession::class, PreventRequestForgery::class];
+
+$publicRoutes = function () use ($stateless) {
     Route::view('/', 'home')->name('home');
 
     // Sign in (Google only for customers).
@@ -63,6 +73,8 @@ $publicRoutes = function () {
                 Route::delete('/{ad}', [MyAdsController::class, 'destroy'])->whereNumber('ad')->middleware('throttle:30,1')->name('.destroy');
             });
 
+            Route::get('/account/ads/{ad}/stats', [AdStatsController::class, 'show'])->whereNumber('ad')->middleware('feature:ad_stats')->name('account.ads.stats');
+
             // Favourites (Phase 2): saved ads.
             Route::middleware('feature:favourites')->group(function () {
                 Route::get('/account/saved', [FavouriteController::class, 'index'])->name('saved');
@@ -83,7 +95,8 @@ $publicRoutes = function () {
     });
 
     // Seller's number after a tap (JSON, rate-limited).
-    Route::get('/ads/{ad}/contact', [AdPageController::class, 'contact'])->whereNumber('ad')->middleware('throttle:30,1')->name('ad.contact');
+    Route::get('/ads/{ad}/contact', [AdPageController::class, 'contact'])->whereNumber('ad')->middleware('throttle:30,1')
+        ->withoutMiddleware($stateless)->name('ad.contact');
 
     Route::get('/search', [BrowseController::class, 'search'])->name('search');
 
@@ -109,6 +122,11 @@ $publicRoutes = function () {
     Route::get('/{category}/{city?}', [BrowseController::class, 'category'])
         ->where(['category' => '[a-z0-9-]+', 'city' => '[a-z0-9-]+'])->name('browse.category');
 };
+
+// Ad stats beacon (switch "ad_stats"): one number per ad per day, nothing about the visitor.
+Route::post('/ads/{ad}/event', [AdStatsController::class, 'event'])
+    ->whereNumber('ad')->middleware(['feature:ad_stats', 'throttle:60,1'])
+    ->withoutMiddleware($stateless)->name('ad.event');
 
 Route::get('/sitemap.xml', [SitemapController::class, 'sitemap'])->name('sitemap');
 Route::get('/robots.txt', [SitemapController::class, 'robots'])->name('robots');

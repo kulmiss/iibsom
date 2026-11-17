@@ -199,4 +199,20 @@ return [
         'empty' => 'Weli raadin lama kaydin. Liiska xayeysiisyada, riix "Kaydi raadintan".',
         'last_sent' => 'Iimaylkii ugu dambeeyey: :date',
     ],
+
+    'stats' => [
+        'title' => 'Tirakoobka xayeysiiska',
+        'open' => 'Tirakoob',
+        'last_30' => '30-kii maalmood ee la soo dhaafay',
+        'views_n' => ':count daawasho|:count daawasho',
+        'contacts_n' => ':count xiriir|:count xiriir',
+        'views' => 'Daawashooyin',
+        'phone' => 'Riixitaanka "Muuji lambarka"',
+        'whatsapp' => 'Riixitaanka WhatsApp',
+        'call' => 'Riixitaanka wac',
+        'daily' => 'Daawashooyinka maalintii (14-kii maalmood ee la soo dhaafay)',
+        'day' => 'Maalin',
+        'privacy' => 'Tirada oo keliya ayaa la tiriyaa. Weligeen ma kaydinno cidda eegtay xayeysiiskaaga. Booqashooyinkaaga lama tiriyo.',
+        'tip' => 'Daawasho yar? Ku dar sawirro cad, cinwaan wanaagsan iyo qiime caddaalad ah.',
+    ],
 ];

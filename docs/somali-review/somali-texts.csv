@@ -21,7 +21,7 @@ account.account.edit_profile,"Edit profile","Wax ka beddel akoonka","needs nativ
 account.account.help,Help,Caawimaad,"needs native review",resources/views/account/index.blade.php,account-index.png
 account.account.tour,"Quick tour","Socod gaaban","needs native review",resources/views/account/index.blade.php,account-index.png
 account.account.searches,"Saved searches","Raadintayada la kaydiyey","needs native review",resources/views/account/index.blade.php,account-index.png
-account.account.my_ads,"My ads",Xayeysiisyadayda,"needs native review",resources/views/account/index.blade.php,account-index.png
+account.account.my_ads,"My ads",Xayeysiisyadayda,"needs native review","resources/views/account/ad-stats.blade.php | resources/views/account/index.blade.php",account-index.png
 account.account.member_since,"Member since :date","Xubin tan iyo :date","needs native review",resources/views/account/index.blade.php,account-index.png
 account.account.logout,"Log out","Ka bax","needs native review",resources/views/account/index.blade.php,account-index.png
 account.form.name,"Your name",Magacaaga,"needs native review","app/Http/Controllers/Account/ProfileController.php | resources/views/account/profile-form.blade.php",account-profile-form.png
@@ -198,6 +198,19 @@ ads.searches.delete_confirm,"Delete this saved search? You will get no more emai
 ads.searches.open,"See ads","Arag xayeysiisyada","needs native review",resources/views/account/searches.blade.php,
 ads.searches.empty,"No saved searches yet. On a list of ads, tap ""Save this search"".","Weli raadin lama kaydin. Liiska xayeysiisyada, riix ""Kaydi raadintan"".","needs native review",resources/views/account/searches.blade.php,
 ads.searches.last_sent,"Last email: :date","Iimaylkii ugu dambeeyey: :date","needs native review",resources/views/account/searches.blade.php,
+ads.stats.title,"Ad stats","Tirakoobka xayeysiiska","needs native review",resources/views/account/ad-stats.blade.php,
+ads.stats.open,Stats,Tirakoob,"needs native review",resources/views/account/my-ads.blade.php,account-my-ads.png
+ads.stats.last_30,"Last 30 days","30-kii maalmood ee la soo dhaafay","needs native review","resources/views/account/ad-stats.blade.php | resources/views/account/my-ads.blade.php",account-my-ads.png
+ads.stats.views_n,":count view|:count views",":count daawasho|:count daawasho","needs native review",resources/views/account/my-ads.blade.php,account-my-ads.png
+ads.stats.contacts_n,":count contact|:count contacts",":count xiriir|:count xiriir","needs native review",resources/views/account/my-ads.blade.php,account-my-ads.png
+ads.stats.views,Views,Daawashooyin,"needs native review",resources/views/account/ad-stats.blade.php,
+ads.stats.phone,"Show number taps","Riixitaanka ""Muuji lambarka""","needs native review",resources/views/account/ad-stats.blade.php,
+ads.stats.whatsapp,"WhatsApp taps","Riixitaanka WhatsApp","needs native review",resources/views/account/ad-stats.blade.php,
+ads.stats.call,"Call taps","Riixitaanka wac","needs native review",resources/views/account/ad-stats.blade.php,
+ads.stats.daily,"Views per day (last 14 days)","Daawashooyinka maalintii (14-kii maalmood ee la soo dhaafay)","needs native review",resources/views/account/ad-stats.blade.php,
+ads.stats.day,Day,Maalin,"needs native review",resources/views/account/ad-stats.blade.php,
+ads.stats.privacy,"Only numbers are counted. We never keep who looked at your ad. Your own visits are not counted.","Tirada oo keliya ayaa la tiriyaa. Weligeen ma kaydinno cidda eegtay xayeysiiskaaga. Booqashooyinkaaga lama tiriyo.","needs native review",resources/views/account/ad-stats.blade.php,
+ads.stats.tip,"Few views? Add clear photos, a good title and a fair price.","Daawasho yar? Ku dar sawirro cad, cinwaan wanaagsan iyo qiime caddaalad ah.","needs native review",resources/views/account/ad-stats.blade.php,
 pagination.previous,"&laquo; Previous","&laquo; Hore","needs native review","Next / Previous page buttons under lists",
 pagination.next,"Next &raquo;","Xiga &raquo;","needs native review","Next / Previous page buttons under lists",
 reports.reason.scam,"Scam or fraud","Khiyaano ama musuqmaasuq","needs native review","app/Http/Controllers/Admin/ReportController.php | resources/views/ads/show.blade.php",ads-show.png

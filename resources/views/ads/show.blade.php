@@ -68,7 +68,8 @@
             </p>
         @endunless
 
-        <div class="mt-3 grid gap-5 lg:grid-cols-[1fr_22rem]">
+        <div class="mt-3 grid gap-5 lg:grid-cols-[1fr_22rem]"
+             @if (feature('ad_stats') && $ad->isLive() && auth()->id() !== $ad->user_id) data-stats="{{ route('ad.event', ['ad' => $ad->id]) }}" data-stats-id="{{ $ad->id }}" @endif>
             <div class="min-w-0 space-y-5">
                 {{-- Gallery: swipe on phones, tap to zoom --}}
                 <section class="overflow-hidden rounded-xl bg-white ring-1 ring-stone-200" aria-label="{{ __('ads.form.photos') }}">
@@ -138,7 +139,7 @@
                     </div>
 
                     @if ($ad->isLive() && $ad->user->phone && (feature('contact.call') || feature('contact.whatsapp')))
-                        <div class="mt-4 space-y-2" data-contact data-url="{{ lroute('ad.contact', ['ad' => $ad->id]) }}">
+                        <div class="mt-4 space-y-2" data-contact data-url="{{ lroute('ad.contact', ['ad' => $ad->id] + (auth()->id() === $ad->user_id ? ['mine' => 1] : [])) }}">
                             <button type="button" class="btn-sell w-full py-3 text-base normal-case" data-reveal>
                                 {{ icon('user', 'size-5') }} <span class="ms-1">{{ __('ads.page.show_number') }}</span>
                             </button>

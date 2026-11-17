@@ -6,6 +6,7 @@ use App\Enums\AdStatus;
 use App\Models\Ad;
 use App\Models\Report;
 use App\Search\DatabaseAdSearch;
+use App\Support\Ads\AdStats;
 use App\Support\Phone\SomaliPhone;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -49,6 +50,11 @@ class AdPageController extends Controller
     {
         abort_unless($ad->isLive() && $ad->user->phone && ! $ad->user->isBanned(), 404);
         abort_unless(feature('contact.call') || feature('contact.whatsapp'), 404);
+
+        // Stateless request (no session): the seller's own page says "mine" so their own tap isn't counted.
+        if (! $request->boolean('mine')) {
+            AdStats::record($ad, 'phone', $request);
+        }
 
         $phone = $ad->user->phone;
         $text = rawurlencode(__('ads.page.whatsapp_text', ['title' => $ad->title, 'url' => $ad->url()]));

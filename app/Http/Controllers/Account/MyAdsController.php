@@ -7,6 +7,7 @@ use App\Http\Controllers\Ads\PostAdController;
 use App\Http\Controllers\Controller;
 use App\Models\Ad;
 use App\Support\Ads\AdForm;
+use App\Support\Ads\AdStats;
 use App\Support\Catalog;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
@@ -35,7 +36,9 @@ class MyAdsController extends Controller
         $ads = $this->tab($mine, $tab)->with(['cover', 'category', 'city'])
             ->latest('updated_at')->paginate(20)->withQueryString();
 
-        return view('account.my-ads', compact('ads', 'tab', 'counts'));
+        $stats = feature('ad_stats') ? AdStats::totals(array_values(array_map('intval', $ads->pluck('id')->all()))) : [];
+
+        return view('account.my-ads', compact('ads', 'tab', 'counts', 'stats'));
     }
 
     public function edit(Request $request, Ad $ad, Catalog $catalog, PostAdController $post): View

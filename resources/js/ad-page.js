@@ -1,7 +1,23 @@
 /**
  * Ad page: show the seller's number only after a tap (anti-bot),
- * copy/share link, tap a photo to zoom.
+ * copy/share link, tap a photo to zoom, and (switch "ad_stats") count
+ * views and WhatsApp/call taps: only a number per ad, nothing about the visitor.
  */
+
+const stats = document.querySelector('[data-stats]');
+const count = (event) => {
+    if (!stats || !navigator.sendBeacon) return;
+    const body = new FormData();
+    body.append('e', event);
+    navigator.sendBeacon(stats.dataset.stats, body);
+};
+if (stats) {
+    // One view per ad per browser tab (reloads don't count again).
+    const key = `iibsom:seen:${stats.dataset.statsId}`;
+    let seen = false;
+    try { seen = sessionStorage.getItem(key) === '1'; sessionStorage.setItem(key, '1'); } catch { /* private mode */ }
+    if (!seen) count('views');
+}
 
 const contact = document.querySelector('[data-contact]');
 contact?.querySelector('[data-reveal]')?.addEventListener('click', async (e) => {
@@ -22,8 +38,8 @@ contact?.querySelector('[data-reveal]')?.addEventListener('click', async (e) => 
         buttons.classList.add('grid');
         const wa = contact.querySelector('[data-whatsapp]');
         const call = contact.querySelector('[data-call]');
-        if (wa && data.whatsapp) { wa.href = data.whatsapp; wa.classList.replace('hidden', 'flex'); }
-        if (call && data.call) { call.href = data.call; call.classList.replace('hidden', 'flex'); }
+        if (wa && data.whatsapp) { wa.href = data.whatsapp; wa.classList.replace('hidden', 'flex'); wa.addEventListener('click', () => count('whatsapp'), { once: true }); }
+        if (call && data.call) { call.href = data.call; call.classList.replace('hidden', 'flex'); call.addEventListener('click', () => count('call'), { once: true }); }
     } catch {
         btn.disabled = false;
     }

@@ -2,6 +2,7 @@
 
 use App\Enums\AdStatus;
 use App\Models\Ad;
+use App\Support\Ads\AdStats;
 use App\Support\Health\HealthChecker;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
@@ -63,3 +64,6 @@ Artisan::command('iibsom:health', function (HealthChecker $health) {
 // Saved-search alerts (Phase 2, switch "saved_searches"): new matching ads, once a day.
 Schedule::command('iibsom:saved-search-alerts')->name('saved-search-alerts')
     ->dailyAt('08:00')->timezone('Africa/Mogadishu')->withoutOverlapping();
+
+// Ad stats: delete daily counts older than 13 months.
+Schedule::call(fn () => AdStats::prune())->name('ad-stats-prune')->dailyAt('03:30')->timezone('Africa/Mogadishu');

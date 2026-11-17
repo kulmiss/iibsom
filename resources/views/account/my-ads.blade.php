@@ -42,6 +42,13 @@
                             @elseif ($ad->expires_at) · {{ __('ads.mine.ends', ['date' => $ad->expires_at->translatedFormat('j M Y')]) }}
                             @endif
                         </p>
+                        @feature('ad_stats')
+                            @php($st = $stats[$ad->id] ?? ['views' => 0, 'phone' => 0, 'whatsapp' => 0, 'call' => 0])
+                            <p class="mt-1 flex flex-wrap gap-x-3 text-xs text-stone-600" aria-label="{{ __('ads.stats.last_30') }}">
+                                <span>{{ icon('eye', 'inline size-3.5') }} {{ trans_choice('ads.stats.views_n', $st['views'], ['count' => number_format($st['views'])]) }}</span>
+                                <span>{{ icon('phone', 'inline size-3.5') }} {{ trans_choice('ads.stats.contacts_n', $st['phone'] + $st['whatsapp'] + $st['call'], ['count' => number_format($st['phone'] + $st['whatsapp'] + $st['call'])]) }}</span>
+                            </p>
+                        @endfeature
                         @if ($ad->status === \App\Enums\AdStatus::Rejected)
                             <p class="mt-1 rounded-lg bg-red-50 px-2 py-1 text-xs text-red-800">
                                 @if ($ad->rejection_reason){{ __('ads.mine.rejected_reason', ['reason' => $ad->rejection_reason]) }}<br>@endif
@@ -51,6 +58,9 @@
 
                         <div class="mt-2 flex flex-wrap gap-2 text-sm">
                             <a href="{{ $ad->url() }}" class="btn-chip">{{ __('ads.mine.view') }}</a>
+                            @feature('ad_stats')
+                                <a href="{{ lroute('account.ads.stats', ['ad' => $ad->id]) }}" class="btn-chip">{{ icon('chart-column', 'size-3.5') }} {{ __('ads.stats.open') }}</a>
+                            @endfeature
                             @if ($ad->status !== \App\Enums\AdStatus::Sold)
                                 <a href="{{ lroute('account.ads.edit', ['ad' => $ad->id]) }}" class="btn-chip">{{ icon('pencil', 'size-3.5') }} {{ __('ads.mine.edit') }}</a>
                             @endif

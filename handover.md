@@ -73,7 +73,8 @@ See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example 
 29. **PR 29:** Welcome tour (3 slides) after the first sign-in.
 30. **PR 30:** First-time setup wizard for the Super Admin. Part A done.
 31. **PR 31:** Favourites / Saved ads (Phase 2, OFF).
-32. **PR 32:** Saved searches + daily email alerts (Phase 2, OFF) (this one). Next: Part B (Phase 2, OFF), Part C (Phase 3), Part D review — owner's big job list of 2026-11-16.
+32. **PR 32:** Saved searches + daily email alerts (Phase 2, OFF).
+33. **PR 33:** Ad stats (Phase 2, OFF) + guest "Show number" no longer creates a session (this one). Next: Part B (Phase 2, OFF), Part C (Phase 3), Part D review — owner's big job list of 2026-11-16.
 
 ## Known notes
 - The local PHP Docker image could not be built inside Claude's sandbox (the Alpine package site is blocked there). CI builds it on GitHub to prove it works.
