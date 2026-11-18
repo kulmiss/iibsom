@@ -129,6 +129,7 @@ class CategorySeeder extends Seeder
                     ['key' => 'model', 'type' => 'text', 'label' => 'Model', 'filterable' => false],
                     $year, $km, $fuel, $gear,
                     ['key' => 'colour', 'type' => 'select', 'label' => 'Colour', 'options' => ['White', 'Black', 'Silver', 'Grey', 'Blue', 'Red', 'Green', 'Brown', 'Other']],
+                    ['key' => 'body_type', 'type' => 'select', 'label' => 'Body type', 'options' => ['Saloon', 'Hatchback', 'SUV', 'Pickup', 'Van', 'Station wagon', 'Coupe', 'Other']],
                 ]],
                 ['name' => 'Motorcycles & Bajaj', 'slug' => 'motorcycles', 'icon' => 'motorbike', 'fields' => [$year]],
                 // Slug kept from "Trucks & Buses" so old links keep working; buses have their own sub category now.
@@ -154,6 +155,7 @@ class CategorySeeder extends Seeder
                 ['name' => 'Mobile Phones', 'icon' => 'smartphone', 'popular' => true, 'fields' => [
                     ['key' => 'brand', 'type' => 'select', 'label' => 'Brand', 'options' => $phoneBrands, 'required' => true],
                     $storage,
+                    ['key' => 'ram', 'type' => 'select', 'label' => 'RAM', 'options' => ['2 GB', '3 GB', '4 GB', '6 GB', '8 GB', '12 GB+']],
                 ]],
                 ['name' => 'Tablets', 'icon' => 'tablet', 'fields' => [['key' => 'brand', 'type' => 'select', 'label' => 'Brand', 'options' => $phoneBrands], $storage]],
                 ['name' => 'Phone Accessories', 'icon' => 'headphones'],

@@ -105,6 +105,9 @@
                     <p class="mt-1 flex flex-wrap gap-x-3 text-sm text-stone-600">
                         <span>{{ icon('map-pin', 'inline size-4') }} {{ $ad->city->label }}@if ($ad->area), {{ $ad->area->label }}@endif</span>
                         <span>{{ __('ads.page.posted', ['when' => ($ad->published_at ?? $ad->created_at)->diffForHumans()]) }}</span>
+                        @if (feature('ads.public_views') && feature('ad_stats') && (int) $ad->views > 0)
+                            <span>{{ icon('eye', 'inline size-4') }} {{ trans_choice('ads.page.views', (int) $ad->views, ['count' => number_format((int) $ad->views)]) }}</span>
+                        @endif
                     </p>
                     @feature('diaspora')
                         @include('ads._diaspora')
@@ -201,6 +204,23 @@
                                     @endfeature
                                     <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-lg px-3 py-3 font-semibold text-brand-800 ring-1 ring-brand-200 hover:bg-brand-50">{{ icon('message-circle', 'size-5') }} {{ __('chat.start') }}</button>
                                 </form>
+                                @feature('chat.offers')
+                                    {{-- Make an offer: the chat opens with the offer written in; the buyer still taps Send. --}}
+                                    <details class="mt-2 rounded-lg ring-1 ring-brand-200" data-offer @if ($errors->has('offer')) open @endif>
+                                        <summary class="flex cursor-pointer list-none items-center justify-center gap-2 px-3 py-3 font-semibold text-brand-800 hover:bg-brand-50 [&::-webkit-details-marker]:hidden">{{ icon('hand-coins', 'size-5') }} {{ __('chat.offer.button') }}</summary>
+                                        <form method="post" action="{{ lroute('chat.start', ['ad' => $ad->id]) }}" class="border-t border-brand-100 p-3">
+                                            @csrf
+                                            <label for="offer" class="text-sm font-medium">{{ __('chat.offer.label') }}</label>
+                                            <div class="mt-1 flex gap-2">
+                                                <input id="offer" name="offer" type="number" inputmode="numeric" min="1" max="99999999" step="1" required value="{{ old('offer') }}"
+                                                       class="min-w-0 flex-1 rounded-lg border-stone-300 text-base" @if ($errors->has('offer')) aria-invalid="true" aria-describedby="offer-error" @endif>
+                                                <button type="submit" class="btn-primary shrink-0">{{ __('chat.offer.continue') }}</button>
+                                            </div>
+                                            @error('offer')<p id="offer-error" class="mt-1 text-sm text-red-700">{{ $message }}</p>@enderror
+                                            <p class="mt-1.5 text-xs text-stone-500">{{ __('chat.offer.note') }}</p>
+                                        </form>
+                                    </details>
+                                @endfeature
                             @else
                                 @feature('login.google')
                                     <a href="{{ lroute('login') }}" class="mt-2 flex w-full items-center justify-center gap-2 rounded-lg px-3 py-3 font-semibold text-brand-800 ring-1 ring-brand-200 hover:bg-brand-50" title="{{ __('chat.sign_in') }}">{{ icon('message-circle', 'size-5') }} {{ __('chat.start') }}</a>

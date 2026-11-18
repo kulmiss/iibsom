@@ -67,6 +67,10 @@ The same rows run automatically in a real browser (see "Automatic run" below).
 | J10 | Show more | Open All ads (more than 24 ads), scroll down, tap "Show more ads" | 24 more ads appear under the others; no page reload; the button goes away on the last page | `lists.show_more` |
 | J11 | Popular now | Turn ON Ad statistics; open the home page | "Popular now" row with up to 8 most viewed ads of the last 30 days, above "Latest ads" | `home.popular_now` + `ad_stats` |
 | J12 | Switches | Turn OFF each of the 4 switches above | That part disappears; lists still have page numbers | – |
+| J13 | Cars | Post a car and pick a Body type; then filter Cars by Body type | The ad shows the body type; the filter finds it (Somali: "Nooca jirka") | – |
+| J14 | Phones | Post a mobile phone and pick RAM | RAM shows on the ad and as a filter | – |
+| J15 | Views | Ad statistics ON; open an ad that has views | "123 views" next to the date, for everyone | `ads.public_views` + `ad_stats` |
+| J16 | Make an offer | Chat ON, signed in as a buyer: ad page → "Make an offer" → type 4500 → "Write the offer" | Chat opens with "Hello, I would like to offer $4,500…" in the box; nothing is sent until you tap Send | `chat.offers` + `chat` |
 
 ## Automatic run
 

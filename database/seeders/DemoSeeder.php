@@ -307,7 +307,11 @@ class DemoSeeder extends Seeder
     {
         $values = [];
         foreach ($category->allFields() as $field) {
-            $values[$field->key] = match ($field->type) {
+            $values[$field->key] = match (true) {
+                $field->key === 'body_type' => $this->bodyType($title),
+                $field->key === 'ram' && $category->slug === 'mobile-phones' => stripos($title, 'nokia') !== false ? null : ['3-gb', '4-gb', '6-gb', '8-gb'][mt_rand(0, 3)],
+                default => null,
+            } ?? match ($field->type) {
                 'select' => $this->pickOption($field->optionList(), $title, $field->key === 'brand'),
                 'boolean' => (bool) mt_rand(0, 1),
                 'number' => match ($field->key) {
@@ -324,6 +328,23 @@ class DemoSeeder extends Seeder
         }
 
         return array_filter($values, fn ($v) => $v !== null && $v !== '');
+    }
+
+    /** Body type from the model in the title (a Hilux is a pickup), so filters give sensible results. */
+    private function bodyType(string $title): string
+    {
+        $types = ['pickup' => ['hilux'], 'suv' => ['land cruiser', 'x-trail', 'pajero', 'harrier', 'tucson', 'discovery', 'surf', 'rav4', 'prado'],
+            'van' => ['noah', 'voxy', 'hiace'], 'station-wagon' => ['probox'], 'hatchback' => ['vitz', 'swift', 'fit', 'demio', 'note'],
+            'saloon' => ['corolla', 'mark x', 'premio', 'camry', 'allion']];
+        foreach ($types as $type => $words) {
+            foreach ($words as $word) {
+                if (stripos($title, $word) !== false) {
+                    return $type;
+                }
+            }
+        }
+
+        return 'other';
     }
 
     /** @param  array<string, string>  $options */

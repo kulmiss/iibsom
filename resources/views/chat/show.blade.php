@@ -99,7 +99,7 @@
             <form method="post" action="{{ lroute('chat.send', ['conversation' => $conversation->id]) }}" class="sticky bottom-16 mt-4 flex items-end gap-2 rounded-2xl bg-white p-2 shadow-sm ring-1 ring-stone-200 lg:bottom-2" data-chat-form>
                 @csrf
                 <label for="body" class="sr-only">{{ __('chat.message') }}</label>
-                <textarea id="body" name="body" rows="1" maxlength="{{ \App\Models\Message::MAX_LENGTH }}" required placeholder="{{ __('chat.placeholder') }}" class="max-h-40 min-h-11 flex-1 resize-y rounded-xl border-0 bg-stone-50 px-3 py-2.5 focus:ring-2 focus:ring-brand-600" @if ($draft !== '') autofocus @endif>{{ old('body', $draft) }}</textarea>
+                <textarea id="body" name="body" rows="{{ old('body', $draft) !== '' ? 3 : 1 }}" maxlength="{{ \App\Models\Message::MAX_LENGTH }}" required placeholder="{{ __('chat.placeholder') }}" class="max-h-40 min-h-11 flex-1 resize-y rounded-xl border-0 bg-stone-50 px-3 py-2.5 focus:ring-2 focus:ring-brand-600" @if ($draft !== '') autofocus @endif>{{ old('body', $draft) }}</textarea>
                 <button type="submit" class="btn-sell h-11 px-4" aria-label="{{ __('chat.send') }}">{{ icon('send', 'size-5') }}</button>
             </form>
             <p class="form-error mt-1" data-chat-error @error('body') @else hidden @enderror>@error('body'){{ $message }}@enderror</p>

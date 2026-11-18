@@ -20,6 +20,13 @@ return [
     'blocked_by_you' => 'You blocked this chat.',
     'blocked_by_them' => 'This chat was blocked.',
     'new' => 'New',
+    'offer' => [
+        'button' => 'Make an offer',
+        'label' => 'Your price (USD)',
+        'continue' => 'Write the offer',
+        'note' => 'The chat opens with your offer written in. You still tap Send.',
+        'text' => 'Hello, I would like to offer :amount for this. Is that OK for you?',
+    ],
     'quick' => [
         'title' => 'Ask the seller',
         'available' => 'Is it still available?',

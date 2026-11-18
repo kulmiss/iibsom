@@ -42,6 +42,16 @@ export function initChat() {
         }
     };
 
+    // The message box grows with the text (up to its max height), so a written-in offer is readable.
+    const box = form?.querySelector('textarea');
+    const grow = () => {
+        if (!box) return;
+        box.style.height = 'auto';
+        box.style.height = `${box.scrollHeight + 2}px`;
+    };
+    box?.addEventListener('input', grow);
+    grow();
+
     form?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const text = form.querySelector('textarea');
@@ -58,6 +68,7 @@ export function initChat() {
             }
             error.hidden = true;
             text.value = '';
+            grow();
             add(data.message);
             toBottom();
         } catch {

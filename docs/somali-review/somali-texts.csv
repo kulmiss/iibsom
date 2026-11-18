@@ -227,6 +227,7 @@ ads.browse.nothing_title,"No ads match","Xayeysiis ku habboon lama helin","needs
 ads.browse.nothing_text,"Try fewer filters or other words.","Isku day shaandheyn yar ama erayo kale.","needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/index.blade.php",browse-index.png
 ads.browse.from,From,"Laga bilaabo","needs native review","app/Http/Controllers/BrowseController.php | resources/views/browse/_filters.blade.php",
 ads.browse.to,To,Ilaa,"needs native review","app/Http/Controllers/BrowseController.php | resources/views/browse/_filters.blade.php",
+ads.page.views,"{1} 1 view|[2,*] :count views","{1} 1 jeer la daawaday|[2,*] :count jeer la daawaday","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.posted,"Posted :when","La dhigay :when","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.details,Details,Faahfaahin,"needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.description,Description,Sharaxaad,"needs native review",resources/views/ads/show.blade.php,ads-show.png
@@ -386,6 +387,11 @@ chat.block_confirm,"Block this chat? Neither of you can send more messages.","Ma
 chat.blocked_by_you,"You blocked this chat.","Adiga ayaa xannibay sheekadan.","needs native review",resources/views/chat/show.blade.php,
 chat.blocked_by_them,"This chat was blocked.","Sheekadan waa la xannibay.","needs native review",resources/views/chat/show.blade.php,
 chat.new,New,Cusub,"needs native review","resources/views/chat/index.blade.php | resources/views/partials/unread-badge.blade.php",home.png
+chat.offer.button,"Make an offer","Qiime soo jeedi","needs native review",resources/views/ads/show.blade.php,ads-show.png
+chat.offer.label,"Your price (USD)","Qiimahaaga (USD)","needs native review","app/Http/Controllers/Account/ChatController.php | resources/views/ads/show.blade.php",ads-show.png
+chat.offer.continue,"Write the offer","Qor dalabka","needs native review",resources/views/ads/show.blade.php,ads-show.png
+chat.offer.note,"The chat opens with your offer written in. You still tap Send.","Wada-hadalku wuxuu ku furmayaa dalabkaaga oo qoran. Adigaa weli riixaya Dir.","needs native review",resources/views/ads/show.blade.php,ads-show.png
+chat.offer.text,"Hello, I would like to offer :amount for this. Is that OK for you?","Salaan, waxaan doonayaa inaan ku bixiyo :amount. Ma kuu fiican tahay?","needs native review",app/Http/Controllers/Account/ChatController.php,
 chat.quick.title,"Ask the seller","Weydii iibiyaha","needs native review","app/Http/Controllers/Account/ChatController.php | resources/views/ads/show.blade.php",ads-show.png
 chat.quick.available,"Is it still available?","Weli ma la heli karaa?","needs native review","app/Http/Controllers/Account/ChatController.php | resources/views/ads/show.blade.php",ads-show.png
 chat.quick.price,"What is your last price?","Waa imisa qiimahaaga ugu dambeeya?","needs native review","app/Http/Controllers/Account/ChatController.php | resources/views/ads/show.blade.php",ads-show.png
@@ -773,6 +779,14 @@ help.your-account.body,"- **Sign in:** tap **Sign in** and choose your Google ac
 - **Lambarkaaga taleefanka:** iibsadayaashu waxay ku arkaan xayeysiisyadaada markay riixaan **Muuji lambarka**.
 - **Luqadda:** riix **English** ama **Soomaali** xagga sare ee bog kasta.
 - **Tirtir akoonkaaga:** noo soo qor, akoonkaaga iyo xayeysiisyadaada ayaan tirtiri doonnaa. Iimaylkayagu wuxuu ku qoran yahay xagga hoose ee [bogga Caawimaadda](:help_url).","needs native review","Help page /help/your-account",
+"catalogue.Body type","Body type","Nooca jirka","needs native review","Category, field and place names (starter list; admin can change them)",
+catalogue.Saloon,Saloon,Saloon,"needs native review","Category, field and place names (starter list; admin can change them)",
+catalogue.Hatchback,Hatchback,Hatchback,"needs native review","Category, field and place names (starter list; admin can change them)",
+catalogue.SUV,SUV,SUV,"needs native review","Category, field and place names (starter list; admin can change them)",
+catalogue.Pickup,Pickup,Bikab,"needs native review","Category, field and place names (starter list; admin can change them)",
+catalogue.Van,Van,Faan,"needs native review","Category, field and place names (starter list; admin can change them)",
+"catalogue.Station wagon","Station wagon",Istaanshan,"needs native review","Category, field and place names (starter list; admin can change them)",
+catalogue.Coupe,Coupe,Kuube,"needs native review","Category, field and place names (starter list; admin can change them)",
 catalogue.Colour,Colour,Midabka,"needs native review","Category, field and place names (starter list; admin can change them)",
 catalogue.White,White,Caddaan,"needs native review","Category, field and place names (starter list; admin can change them)",
 catalogue.Black,Black,Madow,"needs native review","Category, field and place names (starter list; admin can change them)",

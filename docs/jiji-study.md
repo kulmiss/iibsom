@@ -87,7 +87,7 @@ Decision: **BUILD** (this round), **HAVE** (iibsom already has it), **LATER** (m
 | Chat | Ad page | Contact | yes (switch) | 8 | – | HAVE |
 | Quick message templates | Ad page | One-tap questions | yes (PR 55) | 7 | – | HAVE |
 | Make an offer | Ad page | Send a price you would pay | no | 7 | S | **BUILD** (PR 65, through chat) |
-| Request a call back | Ad page | Leave your number, seller calls you | no | 6 | M | **BUILD** (PR 65, needs sign-in; seller gets it in notifications) |
+| Request a call back | Ad page | Leave your number, seller calls you | no | 6 | M | **BUILD** (PR 66, needs sign-in; seller gets it in notifications) |
 | Safety tips | Ad page | Avoid scams | yes | 10 | – | HAVE |
 | Report abuse | Ad page | Report | yes (also guests) | 9 | – | HAVE |
 | Share | Ad page | WhatsApp, copy link | yes | 8 | – | HAVE |

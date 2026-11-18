@@ -82,14 +82,14 @@ class CatalogTest extends TestCase
     {
         $fields = Category::where('slug', 'cars')->first()->allFields()->pluck('key')->all();
 
-        $this->assertSame(['brand', 'model', 'year', 'mileage', 'fuel', 'transmission', 'colour'], $fields); // colour: PR 52
+        $this->assertSame(['brand', 'model', 'year', 'mileage', 'fuel', 'transmission', 'colour', 'body_type'], $fields); // colour: PR 52, body type: PR 65
     }
 
     public function test_houses_land_and_phones_have_their_fields(): void
     {
         $this->assertSame(['bedrooms', 'bathrooms', 'size', 'furnished'], Category::where('slug', 'houses-for-rent')->first()->allFields()->pluck('key')->all());
         $this->assertSame(['size'], Category::where('slug', 'land')->first()->allFields()->pluck('key')->all());
-        $this->assertSame(['brand', 'storage'], Category::where('slug', 'mobile-phones')->first()->allFields()->pluck('key')->all());
+        $this->assertSame(['brand', 'storage', 'ram'], Category::where('slug', 'mobile-phones')->first()->allFields()->pluck('key')->all());
     }
 
     public function test_select_field_options_have_labels(): void

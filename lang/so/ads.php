@@ -149,6 +149,7 @@ return [
     ],
 
     'page' => [
+        'views' => '{1} 1 jeer la daawaday|[2,*] :count jeer la daawaday',
         'posted' => 'La dhigay :when',
         'details' => 'Faahfaahin',
         'description' => 'Sharaxaad',

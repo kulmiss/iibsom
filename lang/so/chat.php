@@ -20,6 +20,13 @@ return [
     'blocked_by_you' => 'Adiga ayaa xannibay sheekadan.',
     'blocked_by_them' => 'Sheekadan waa la xannibay.',
     'new' => 'Cusub',
+    'offer' => [
+        'button' => 'Qiime soo jeedi',
+        'label' => 'Qiimahaaga (USD)',
+        'continue' => 'Qor dalabka',
+        'note' => 'Wada-hadalku wuxuu ku furmayaa dalabkaaga oo qoran. Adigaa weli riixaya Dir.',
+        'text' => 'Salaan, waxaan doonayaa inaan ku bixiyo :amount. Ma kuu fiican tahay?',
+    ],
     'quick' => [
         'title' => 'Weydii iibiyaha',
         'available' => 'Weli ma la heli karaa?',

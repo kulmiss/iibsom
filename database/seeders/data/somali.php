@@ -8,6 +8,9 @@
 
 return [
     // Categories
+    // Jiji round (PR 65): car body type
+    'Body type' => 'Nooca jirka', 'Saloon' => 'Saloon', 'Hatchback' => 'Hatchback', 'SUV' => 'SUV', 'Pickup' => 'Bikab',
+    'Van' => 'Faan', 'Station wagon' => 'Istaanshan', 'Coupe' => 'Kuube',
     // Round 2 (PR 52): car colours
     'Colour' => 'Midabka', 'White' => 'Caddaan', 'Black' => 'Madow', 'Silver' => 'Silfar', 'Grey' => 'Cawl', 'Blue' => 'Buluug', 'Red' => 'Casaan', 'Green' => 'Cagaar', 'Brown' => 'Bunni',
     // Round 2 (PR 50): fuller category tree

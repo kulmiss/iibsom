@@ -40,6 +40,14 @@ class ChatController extends Controller
         abort_unless($ad->isLive() && ! $ad->user->isBanned(), 404);
         abort_if($ad->user_id === $user->id, 403);
 
+        // Make an offer (switch "chat.offers"): check the price before anything is created.
+        $offer = null;
+        if (feature('chat.offers') && $request->has('offer')) {
+            $offer = (int) $request->validate(
+                ['offer' => ['required', 'integer', 'min:1', 'max:99999999']], [], ['offer' => __('chat.offer.label')],
+            )['offer'];
+        }
+
         $conversation = Conversation::firstOrCreate(
             ['ad_id' => $ad->id, 'buyer_id' => $user->id],
             ['seller_id' => $ad->user_id],
@@ -48,7 +56,9 @@ class ChatController extends Controller
         // Quick question (switch "chat.quick_replies"): put the words in the box; the buyer still taps Send.
         $quick = (string) $request->input('quick');
         $params = ['conversation' => $conversation->id];
-        if (feature('chat.quick_replies') && in_array($quick, self::QUICK, true)) {
+        if ($offer !== null) {
+            $params['offer'] = $offer;
+        } elseif (feature('chat.quick_replies') && in_array($quick, self::QUICK, true)) {
             $params['say'] = $quick;
         }
 
@@ -70,13 +80,24 @@ class ChatController extends Controller
             'other' => $conversation->other($user),
             'messages' => $conversation->messages()->latest('id')->limit(100)->get()->reverse()->values(),
             'user' => $user,
-            'draft' => feature('chat.quick_replies') && in_array($request->query('say'), self::QUICK, true)
-                ? __('chat.quick.'.$request->query('say')) : '',
+            'draft' => $this->draft($request),
             // Seller ratings (Phase 3): only the buyer, only after the seller answered.
             'canRate' => feature('seller_ratings') && SellerReview::canRate($conversation, $user),
             'myReview' => feature('seller_ratings') && $conversation->buyer_id === $user->id
                 ? SellerReview::where('conversation_id', $conversation->id)->first() : null,
         ]);
+    }
+
+    /** Words already in the message box: an offer or a quick question (never sent by itself). */
+    private function draft(Request $request): string
+    {
+        $offer = $request->query('offer');
+        if (feature('chat.offers') && is_string($offer) && preg_match('/^[1-9]\d{0,7}$/', $offer)) {
+            return __('chat.offer.text', ['amount' => '$'.number_format((int) $offer)]);
+        }
+        $say = $request->query('say');
+
+        return feature('chat.quick_replies') && in_array($say, self::QUICK, true) ? __('chat.quick.'.$say) : '';
     }
 
     public function send(Request $request, Conversation $conversation): RedirectResponse|JsonResponse

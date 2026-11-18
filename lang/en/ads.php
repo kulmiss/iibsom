@@ -147,6 +147,7 @@ return [
     ],
 
     'page' => [
+        'views' => '{1} 1 view|[2,*] :count views',
         'posted' => 'Posted :when',
         'details' => 'Details',
         'description' => 'Description',
