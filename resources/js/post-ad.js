@@ -161,6 +161,7 @@ function initPhotos(form, t) {
 
     return {
         ids: () => photos.filter((p) => p.id).map((p) => p.id),
+        cover: () => photos.find((p) => p.preview && p.state !== 'failed')?.preview || null,
         restore: (ids) => {
             photos = ids.map((id) => ({ key: String(id), id, preview: null, state: 'done' }));
             render();
@@ -304,4 +305,61 @@ if (form) {
     if (existing.length) photos.load(existing);
     if (form.dataset.draftKey) initDraft(form, photos); // new ads only; edits start from the saved ad
     initPriceHint(form); // after the draft is back, so the guide fits the restored brand
+    initPreview(form, photos); // (a function declaration below, so it is ready here)
+}
+
+// Live card preview (switch "post.preview"): title, price, first photo and place, as buyers will see them.
+function initPreview(form, photos) {
+    const box = document.querySelector('[data-preview]');
+    if (!box) return;
+    box.hidden = false;
+    const name = box.querySelector('[data-preview-name]');
+    const price = box.querySelector('[data-preview-price]');
+    const place = box.querySelector('[data-preview-place]');
+    const img = box.querySelector('[data-preview-photo]');
+    const none = box.querySelector('[data-preview-nophoto]');
+    const label = (select) => (select && select.value ? select.options[select.selectedIndex]?.text.trim() : '');
+    const update = () => {
+        const title = form.querySelector('[name=title]')?.value.trim();
+        name.textContent = title || name.dataset.empty;
+        const amount = Number(form.querySelector('[name=price]')?.value || 0);
+        const nego = form.querySelector('[name=price_negotiable][type=checkbox]')?.checked;
+        const money = amount > 0 ? `$${amount.toLocaleString('en-US')}` : '';
+        price.textContent = money && nego ? `${money} · ${price.dataset.negotiable}` : money || price.dataset.negotiable;
+        place.textContent = [label(form.querySelector('[data-city-select]')), label(form.querySelector('[data-area-select]'))].filter(Boolean).join(', ');
+        const cover = photos.cover();
+        img.classList.toggle('hidden', !cover);
+        none.classList.toggle('hidden', !!cover);
+        if (cover && img.src !== cover) img.src = cover;
+    };
+    form.addEventListener('input', update);
+    form.addEventListener('change', update);
+    form.addEventListener('photos-changed', update);
+    update();
+}
+
+// Category search on step 1 (switch "post.category_search"): English and Somali names.
+const catSearch = document.querySelector('[data-cat-search]');
+if (catSearch) {
+    document.querySelector('[data-cat-search-box]').hidden = false;
+    const groups = [...document.querySelectorAll('[data-cat-group]')];
+    const none = document.querySelector('[data-cat-none]');
+    const opened = new Map(groups.map((g) => [g, g.open]));
+    catSearch.addEventListener('input', () => {
+        const words = catSearch.value.toLowerCase().trim().split(/\s+/).filter(Boolean);
+        let any = false;
+        groups.forEach((g) => {
+            const groupHit = words.length > 0 && words.every((w) => g.dataset.names.includes(w));
+            let shown = 0;
+            g.querySelectorAll('[data-cat-item]').forEach((li) => {
+                const hit = !words.length || groupHit || words.every((w) => li.dataset.names.includes(w));
+                li.hidden = !hit;
+                if (hit) shown += 1;
+            });
+            g.hidden = shown === 0;
+            g.open = words.length ? shown > 0 : opened.get(g);
+            any ||= shown > 0;
+        });
+        none.classList.toggle('hidden', any);
+    });
 }

@@ -33,6 +33,11 @@ return [
     'ads.read_more' => ['group' => 'Ads', 'default' => true, 'label' => 'Long descriptions: "Read more"', 'description' => 'Long ad texts show the first lines and a "Read more" button (the full text is in the page for Google and without JavaScript).'],
     'ads.more_from_seller' => ['group' => 'Ads', 'default' => true, 'label' => '"More from this seller"', 'description' => 'Up to 6 other live ads of the same seller under the ad.'],
     'ads.recently_viewed' => ['group' => 'Ads', 'default' => true, 'label' => 'Recently viewed on ad pages', 'description' => 'Under the ad, the ads this person looked at before (kept only in their browser, like on the home page). Needs "Recommended for you".'],
+    'post.steps' => ['group' => 'Ads', 'default' => true, 'label' => 'Post an ad: steps at the top', 'description' => 'Category → Details → Done, so sellers see where they are.'],
+    'post.category_search' => ['group' => 'Ads', 'default' => true, 'label' => 'Post an ad: search the categories', 'description' => 'A search box above the categories (English and Somali names) that shows only the matching ones. Without JavaScript the full list shows.'],
+    'post.tips' => ['group' => 'Ads', 'default' => true, 'label' => 'Post an ad: tips', 'description' => 'A short, closable box with 4 tips for an ad that sells (photos, title, price, honest description).'],
+    'post.preview' => ['group' => 'Ads', 'default' => true, 'label' => 'Post an ad: live card preview', 'description' => 'Above the Post button: the ad card as buyers will see it, changing while the seller types (title, price, first photo, place).'],
+    'post.done_plus' => ['group' => 'Ads', 'default' => true, 'label' => 'After posting: share + move to top', 'description' => 'The thank-you page shows Share buttons (only when the ad is live), a link to the ad, and how the free "Move to top" works.'],
     'ads.similar' => ['group' => 'Ads', 'default' => true, 'label' => 'Similar ads', 'description' => 'Show similar ads on the ad page.'],
 
     'ads.edit_changes' => ['group' => 'Ads', 'default' => true, 'label' => 'Show what sellers changed', 'description' => 'An ad edited after approval shows "Edited" in the queue, with the old and new text side by side.'],

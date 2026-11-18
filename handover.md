@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-18 (PR 77)_
+_Last updated: 2026-11-18 (PR 78)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -40,6 +40,7 @@ _Last updated: 2026-11-18 (PR 77)_
 - **PR 75 (rich home):** `App\Support\Home\HomeSections` (popular searches, places, facts, featured, trusted sellers; 10-minute cache keyed by the page-cache version), `partials/home-more.blade.php`, install card in `resources/js/pwa.js`. 7 new switches (`home.hero_plus`, `home.places`, `home.how_it_works`, `home.trust_strip`, `home.featured`, `home.trusted_sellers`, `pwa.install_prompt`).
 - **PR 76 (rich ad page):** `resources/js/ad-page.js` (shared `reveal()` for the number, contact bar, thumbnails, full-screen viewer `[data-viewer]`, read more), `AdPageController` (`fromSeller`, `following`, `FIELD_ICONS`), for-you.js `data-exclude`. 5 switches: `ads.gallery_plus`, `ads.sticky_contact`, `ads.read_more`, `ads.more_from_seller`, `ads.recently_viewed`.
 - **PR 77 (category + search):** `browse/_quick-bar.blade.php`, `Landing::priceRange()`, `fallback` + `intro` in `BrowseController::results()`, drop-down closing in `filters.js`. Switches `search.quick_bar`, `search.rich_empty`, `seo.intro`.
+- **PR 78 (post an ad):** `ads/_post-steps.blade.php`, category search + `initPreview()` in `resources/js/post-ad.js` (also loaded on the choose page), share on the done page via `copy-text.js` (`[data-share] [data-copy-link]`). Switches `post.steps`, `post.category_search`, `post.tips`, `post.preview`, `post.done_plus`.
 
 ## How to run
 See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example .env && docker compose up -d --build`, then open http://localhost:8095.

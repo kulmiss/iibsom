@@ -104,6 +104,7 @@ The same rows run automatically in a real browser (see "Automatic run" below).
 | J47 | Quick filters | Open Cars on a computer; Sort → Cheapest; Price → type a max → Show ads; Condition → Used; then on a phone | Each choice keeps the others (look at the address); one drop-down open at a time, Escape closes; on a phone only Sort is on the bar | `search.quick_bar` |
 | J48 | Helpful no results | Cars → New + Price from 90,000 | "Try without one of these" buttons (each drops one) and "Latest in Cars" | `search.rich_empty` |
 | J49 | Category intro | Open Cars (no filters), EN + SO | One short line: how many ads, lowest–highest price; gone when a filter is used | `seo.intro` |
+| J50 | Post an ad, nicer | Post → type "taleefan" / "car" in the search; pick Cars; read the tips; type a title and price, tick Negotiable, add a photo; post | Steps show where you are; the search shows only matching categories; the preview card changes as you type; the Post button never covers a field; the thank-you page explains Move to top, and Share shows only when the ad is live | `post.*` |
 
 ## Automatic run
 

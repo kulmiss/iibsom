@@ -1,11 +1,11 @@
 # Progress — Drugs + visitor side (2026-11-18)
 
-📍 Now: Step 7 of 10 — PR 78: post an ad
-📊 Progress: ▓▓▓▓▓▓░░░░ 60% done / 40% left
-✅ Just finished: PR 77 — quick filters, helpful no results, category intro
-⏭️ Next: PR 78 — post an ad
+📍 Now: Step 8 of 10 — PR 79: account, seller page, safety page
+📊 Progress: ▓▓▓▓▓▓▓░░░ 70% done / 30% left
+✅ Just finished: PR 78 — post an ad: steps, category search, tips, live preview, share
+⏭️ Next: PR 79 — account dashboard, seller page, How we keep you safe
 ⚠️ Waiting for the owner: nothing (merge at the end)
-⏱️ Time left (estimate): several hours (4 PRs)
+⏱️ Time left (estimate): a few hours (3 PRs)
 
 ## Steps (this job)
 - [x] 1. PR 72 + 73 — no drugs in ads and in chat
@@ -14,7 +14,7 @@
 - [x] 4. PR 75 — home: promise, popular searches, cities, how it works, trust, recently viewed, install
 - [x] 5. PR 76 — ad page: sticky contact bar, thumbnails, key details, more from seller
 - [x] 6. PR 77 — category + search: quick filters, sort, rich empty results, intro text
-- [ ] 7. PR 78 — post an ad: progress, tips, live preview, share on success
+- [x] 7. PR 78 — post an ad: progress, tips, live preview, share on success
 - [ ] 8. PR 79 — account dashboard, seller page, "How we keep you safe", demo data
 - [ ] 9. PR 80 — speed, accessibility, full re-run from a clean start
 - [ ] 10. Final report

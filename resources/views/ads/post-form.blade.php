@@ -15,12 +15,26 @@
                 <p class="mt-2 rounded-lg bg-accent-400/20 px-3 py-2 text-sm">{{ __('ads.mine.edit_note') }}</p>
             @endfeature
         @else
-            <p class="text-sm font-medium text-brand-700">{{ __('ads.post.step', ['step' => 2]) }}</p>
+            @include('ads._post-steps', ['current' => 2])
+            @unless (feature('post.steps'))
+                <p class="text-sm font-medium text-brand-700">{{ __('ads.post.step', ['step' => 2]) }}</p>
+            @endunless
             <div class="flex items-center gap-2">
                 <h1 class="text-2xl font-bold">{{ $category->label }}</h1>
                 <a href="{{ lroute('post') }}" class="text-sm font-medium text-brand-700 underline">{{ __('ads.post.change_category') }}</a>
             </div>
         @endif
+
+        @feature('post.tips')
+            <details class="mt-4 rounded-2xl bg-brand-50 ring-1 ring-brand-200" data-post-tips {{ $ad ? "" : "open" }}>
+                <summary class="flex cursor-pointer list-none items-center gap-2 px-4 py-3 font-semibold text-brand-900 [&::-webkit-details-marker]:hidden">{{ icon('lightbulb', 'size-5 text-brand-700') }} {{ __('ads.post.tips_title') }} {{ icon('chevron-down', 'ms-auto size-4') }}</summary>
+                <ul class="space-y-2 px-4 pb-4 text-sm text-stone-700">
+                    @foreach ([['camera', __('ads.post.tip_1')], ['pencil', __('ads.post.tip_2')], ['tag', __('ads.post.tip_3')], ['shield-check', __('ads.post.tip_4')]] as [$tipIcon, $tip])
+                        <li class="flex gap-2">{{ icon($tipIcon, 'mt-0.5 size-4 shrink-0 text-brand-700') }}<span>{{ $tip }}</span></li>
+                    @endforeach
+                </ul>
+            </details>
+        @endfeature
 
         <p data-draft-restored class="mt-3 hidden rounded-lg bg-accent-400/20 px-3 py-2 text-sm">
             {{ __('ads.post.draft_restored') }}
@@ -176,7 +190,27 @@
                 </div>
             </fieldset>
 
-            <div class="sticky bottom-16 z-10 -mx-4 bg-stone-50/95 px-4 py-3 backdrop-blur lg:bottom-0">
+            @feature('post.preview')
+                {{-- Live preview of the card (filled by post-ad.js; hidden without JavaScript). --}}
+                <section class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-stone-200" data-preview hidden aria-labelledby="preview-title">
+                    <h2 id="preview-title" class="font-semibold">{{ __('ads.post.preview_title') }}</h2>
+                    <p class="text-sm text-stone-600">{{ __('ads.post.preview_note') }}</p>
+                    <div class="mt-3 w-48 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-stone-200" aria-hidden="true">
+                        <div class="relative aspect-[4/3] bg-stone-100">
+                            <img alt="" class="hidden size-full object-cover" data-preview-photo>
+                            <span class="flex size-full flex-col items-center justify-center gap-1.5 bg-gradient-to-br from-brand-50 to-stone-100 text-brand-300" data-preview-nophoto>{{ icon($category->icon ?? 'tag', 'size-10') }}<span class="text-xs font-medium text-stone-500">{{ __('ads.page.no_photo') }}</span></span>
+                        </div>
+                        <div class="flex flex-col gap-0.5 p-2.5">
+                            <p class="font-bold text-brand-800" data-preview-price data-negotiable="{{ __('ads.page.negotiable') }}">{{ __('ads.page.negotiable') }}</p>
+                            <p class="line-clamp-2 min-h-[2lh] text-sm leading-snug" data-preview-name data-empty="{{ __('ads.post.preview_title_empty') }}">{{ __('ads.post.preview_title_empty') }}</p>
+                            <p class="pt-1 text-xs text-stone-500" data-preview-place></p>
+                        </div>
+                    </div>
+                </section>
+            @endfeature
+
+            {{-- Not sticky any more (PR 78): on phones it covered the fields being typed in. --}}
+            <div class="pt-1" data-post-submit>
                 <button type="submit" class="btn-sell w-full py-3 text-base">{{ $ad ? __('ads.mine.save') : __('ads.post.submit') }}</button>
                 <p data-draft-status class="mt-1 hidden text-center text-xs text-stone-500">{{ __('ads.post.draft_saved') }}</p>
             </div>

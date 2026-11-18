@@ -121,11 +121,36 @@ ads.post.submit,"Post my ad","Dhig xayeysiiskayga","needs native review",resourc
 ads.post.draft_saved,"Draft saved on this phone","Qabyada waxaa lagu keydiyey taleefankan","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
 ads.post.draft_restored,"We brought back what you typed last time.","Waxaan soo celinnay wixii aad qortay markii hore.","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
 ads.post.clear_draft,"Start again","Dib u bilow","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
+ads.post.steps_label,Steps,Tallaabooyinka,"needs native review",resources/views/ads/_post-steps.blade.php,
+ads.post.step_category,Category,Qaybta,"needs native review",resources/views/ads/_post-steps.blade.php,
+ads.post.step_details,Details,Faahfaahinta,"needs native review",resources/views/ads/_post-steps.blade.php,
+ads.post.step_done,Done,Dhammaad,"needs native review",resources/views/ads/_post-steps.blade.php,
+ads.post.search_category,"Search a category, e.g. phone, car, house","Raadi qayb, tusaale: taleefan, baabuur, guri","needs native review",resources/views/ads/post-choose.blade.php,ads-post-choose.png
+ads.post.no_category,"No category with that name. Try another word.","Qayb magacaas leh lama helin. Isku day eray kale.","needs native review",resources/views/ads/post-choose.blade.php,ads-post-choose.png
+ads.post.tips_title,"Tips for an ad that sells","Talooyin xayeysiis iibsada","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
+ads.post.tip_1,"Add 3 or more clear photos in daylight. The first photo is the one buyers see in lists.","Ku dar 3 sawir ama ka badan oo cad oo iftiinka maalinta lagu qaaday. Sawirka koowaad ayaa iibsadayaashu ku arkaan liisaska.","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
+ads.post.tip_2,"Write what it is in the title: brand, model, size or year.","Cinwaanka ku qor waxa uu yahay: nooca, moodalka, cabbirka ama sannadka.","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
+ads.post.tip_3,"Give a fair price. The price guide below shows what similar ads ask.","Dhig qiime macquul ah. Hagaha qiimaha ee hoose wuxuu muujinayaa waxa xayeysiisyada la midka ahi weydiinayaan.","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
+ads.post.tip_4,"Be honest in the description: say what is good and what is not. It saves time for you and the buyer.","Sharraxaadda ku noqo daacad: sheeg waxa fiican iyo waxa aan fiicnayn. Waqti ayay adiga iyo iibsadahaba idiin badbaadinaysaa.","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
+ads.post.preview_title,"How buyers will see your ad","Sida iibsadayaashu u arki doonaan xayeysiiskaaga","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
+ads.post.preview_note,"This is the card in lists and search results.","Kani waa kaarka ka muuqda liisaska iyo natiijooyinka raadinta.","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
+ads.post.preview_title_empty,"Your title",Cinwaankaaga,"needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
 ads.done.title,"Thank you! Your ad was sent","Mahadsanid! Xayeysiiskaaga waa la diray","needs native review",resources/views/ads/post-done.blade.php,
 ads.done.pending,"Our team checks every ad to keep iibsom safe. Your ad will be live soon, usually within a few hours.","Kooxdayadu waxay hubisaa xayeysiis kasta si iibsom u ahaado meel ammaan ah. Xayeysiiskaagu dhowaan ayuu soo bixi doonaa, inta badan saacado gudahood.","needs native review",resources/views/ads/post-done.blade.php,
 ads.done.live,"Your ad is live now.","Xayeysiiskaagu hadda waa muuqdaa.","needs native review",resources/views/ads/post-done.blade.php,
 ads.done.post_another,"Post another ad","Dhig xayeysiis kale","needs native review",resources/views/ads/post-done.blade.php,
 ads.done.home,"Back to home","Ku noqo bogga hore","needs native review",resources/views/ads/post-done.blade.php,
+ads.done.view_ad,"See your ad","Eeg xayeysiiskaaga","needs native review",resources/views/ads/post-done.blade.php,
+ads.done.share_title,"Share your ad","La wadaag xayeysiiskaaga","needs native review",resources/views/ads/post-done.blade.php,
+ads.done.share_text,"Send it to friends and groups. More people see it, it sells faster.","U dir saaxiibbada iyo kooxaha. Marka dad badani arkaan, si dhakhso ah ayuu u iibsamaa.","needs native review",resources/views/ads/post-done.blade.php,
+ads.done.share_later,"You can share your ad as soon as it is live. We tell you in the bell.","Waxaad la wadaagi kartaa xayeysiiskaaga marka uu shaqeeyo. Waxaan kugu ogeysiin doonnaa gambaleelka.","needs native review",resources/views/ads/post-done.blade.php,
+ads.done.copy_link,"Copy link","Koobi link-ga","needs native review",resources/views/ads/post-done.blade.php,
+ads.done.copied,"Link copied","Link-ga waa la koobiyey","needs native review",resources/views/ads/post-done.blade.php,
+ads.done.whatsapp,WhatsApp,WhatsApp,"needs native review",resources/views/ads/post-done.blade.php,
+ads.done.facebook,Facebook,Facebook,"needs native review",resources/views/ads/post-done.blade.php,
+ads.done.bump_title,"Move to top for free","Kor u qaad bilaash","needs native review",resources/views/ads/post-done.blade.php,
+ads.done.bump_text,"Every 7 days you can move your ad to the top of the list again, free. Find the button in My ads.","7-dii maalmoodba mar waxaad xayeysiiskaaga kor ugu qaadi kartaa liiska, bilaash. Badhanka ka hel Xayeysiisyadayda.","needs native review",resources/views/ads/post-done.blade.php,
+ads.done.my_ads,"Go to My ads","Tag Xayeysiisyadayda","needs native review",resources/views/ads/post-done.blade.php,
 ads.price_hint.title,"Price guide","Hagaha qiimaha","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
 ads.price_hint.range,"Most :what ads are $:low – $:high","Inta badan xayeysiisyada :what waa $:low – $:high","needs native review",app/Http/Controllers/Ads/PriceHintController.php,
 ads.price_hint.detail,"Middle price $:middle, from :count ads in the last 6 months. You choose your own price.","Qiimaha dhexe $:middle, laga soo qaaday :count xayeysiis 6dii bilood ee la soo dhaafay. Qiimahaaga adigaa go'aansanaya.","needs native review",app/Http/Controllers/Ads/PriceHintController.php,
@@ -272,8 +297,8 @@ ads.page.similar,"Similar ads","Xayeysiisyo la mid ah","needs native review",res
 ads.page.not_live,"Only you can see this ad. Status: :status","Adiga oo keliya ayaa arki kara xayeysiiskan. Xaaladda: :status","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.sold,"This item is sold.","Alaabtan waa la iibiyey.","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.photo,"Photo :n of :total","Sawirka :n ee :total","needs native review",resources/views/ads/show.blade.php,ads-show.png
-ads.page.no_photo,"No photo","Sawir ma leh","needs native review","resources/views/ads/_card.blade.php | resources/views/ads/show.blade.php","browse-index.png | ads-show.png"
-ads.page.negotiable,Negotiable,"Waa laga wada hadli karaa","needs native review","resources/views/ads/_card.blade.php | resources/views/ads/show.blade.php","browse-index.png | ads-show.png"
+ads.page.no_photo,"No photo","Sawir ma leh","needs native review","resources/views/ads/_card.blade.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","browse-index.png | ads-post-form.png | ads-show.png"
+ads.page.negotiable,Negotiable,"Waa laga wada hadli karaa","needs native review","resources/views/ads/_card.blade.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","browse-index.png | ads-post-form.png | ads-show.png"
 ads.page.all_photos,"All photos","Dhammaan sawirrada","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.read_more,"Read more","Akhri wax badan","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.read_less,"Show less","Muuji wax yar","needs native review",resources/views/ads/show.blade.php,ads-show.png

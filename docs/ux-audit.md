@@ -14,7 +14,7 @@ Scores are out of 10: **Look / Ease / Trust**. "After" is filled in when the PR 
 | Ad cards | Rows do not line up (one- vs two-line titles, optional New/Used line) | Same height and same lines in every card; nicer "no photo" look | 6 / 7 / 6 | 8 / 8 / 7 | 74 |
 | Ad page | On phones the contact buttons come after the long description; no thumbnails; plain share | Sticky price + contact bar on phones, thumbnails + full-screen swipe/zoom, key-details icons, "read more", "more from this seller", recently viewed | 6 / 6 / 6 | 8 / 9 / 8 | 76 |
 | Seller page | Plain list of ads | Ratings with reviews, contact, filters on the seller's ads, cover | 5 / 6 / 5 | | 79 |
-| Post an ad | On phones the sticky "Post" button covers fields; no progress or tips beside the form | Step progress, tips, price help, live card preview, share on success | 6 / 6 / 6 | | 78 |
+| Post an ad | On phones the sticky "Post" button covers fields; no progress or tips beside the form | Step progress, tips, price help, live card preview, share on success | 6 / 6 / 6 | 8 / 9 / 8 | 78 |
 | My ads | Many stacked buttons; "Free move to top again on…" looks like a button but is only information; "+POST AN AD" in capitals unlike all other buttons | Tidy actions, a calm info line, one button style | 5 / 6 / 7 | | 74, 79 |
 | My account | Plain list of links | Small dashboard: stats, saved, searches, following, chats | 5 / 6 / 6 | | 79 |
 | Saved / searches / following (empty) | Plain dashed box | Friendly drawing + one action | 4 / 5 / 6 | 8 / 8 / 7 | 74 |
@@ -56,6 +56,9 @@ kept by the QA scripts and can be made again with `audit/capture.py`.
 | 76 | Full-screen photos | ![](ux-audit/after/ad-viewer-phone.webp) |
 | 77 | Category: intro, quick filters (price open) | ![](ux-audit/after/category-quick-pc.webp) |
 | 77 | No results with "try without" + latest (SO, dark) | ![](ux-audit/after/no-results-so-dark-phone.webp) |
+| 78 | Post: category search (SO) | ![](ux-audit/after/post-choose-so-phone.webp) |
+| 78 | Post: steps, tips, live preview (EN, dark) | ![](ux-audit/after/post-form-en-dark-phone.webp) |
+| 78 | After posting: share + move to top (SO, dark) | ![](ux-audit/after/post-done-so-dark-phone.webp) |
 
 ## Plan (one small PR each, stacked)
 
