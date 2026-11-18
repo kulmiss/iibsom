@@ -1,4 +1,5 @@
 import { initLanguageSwitch } from './language-switch';
+import { initCardSave } from './card-save';
 import { initCategoryMenu } from './category-menu';
 import { initChat } from './chat';
 import { initCopyText } from './copy-text';
@@ -10,9 +11,11 @@ import { initForYou } from './for-you';
 import { initGuestReport } from './guest-report';
 import { initPwa } from './pwa';
 import { initSearchSuggest } from './search-suggest';
+import { initShowMore } from './show-more';
 import { initTour } from './tour';
 
 initLanguageSwitch();
+initCardSave();
 initCategoryMenu();
 initChat();
 initCopyText();
@@ -24,6 +27,7 @@ initForYou();
 initGuestReport();
 initPwa();
 initSearchSuggest();
+initShowMore();
 initTour();
 
 // After a successful post, drop the drafts saved on this phone.

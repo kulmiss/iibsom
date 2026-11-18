@@ -61,6 +61,12 @@ The same rows run automatically in a real browser (see "Automatic run" below).
 | J4 | Header search | Any page except home, on a computer and on a phone | Computer: box in the header. Phone: magnifier opens the box under the header. On a category page the box says "Search in Cars" | `site.header_search` |
 | J5 | Switches | Turn OFF `search.suggestions`, then `site.header_search` | First: the boxes still search, no list. Second: no search in the header | – |
 | J6 | New words | Approve a new ad "Suzuki Every van", wait until the next night (or run `php artisan iibsom:search-terms`), type "suz" | "suzuki" is offered; a word that is only in a waiting or rejected ad is never offered | `search.suggestions` |
+| J7 | Save on cards | Saved ads ON. Signed out: tap the round Save button on a card | Sign-in page opens | `ads.card_save` + `favourites` |
+| J8 | Save on cards | Signed in: tap Save on a card, reload, then open Account → Saved ads | Button turns blue and stays blue after reload; the ad is in Saved ads; tap again = removed | `ads.card_save` + `favourites` |
+| J9 | Cards | Open Cars; switch to the list view (☰) | Cards show "Used"/"New"; list view shows the first words of the description | `ads.card_details` |
+| J10 | Show more | Open All ads (more than 24 ads), scroll down, tap "Show more ads" | 24 more ads appear under the others; no page reload; the button goes away on the last page | `lists.show_more` |
+| J11 | Popular now | Turn ON Ad statistics; open the home page | "Popular now" row with up to 8 most viewed ads of the last 30 days, above "Latest ads" | `home.popular_now` + `ad_stats` |
+| J12 | Switches | Turn OFF each of the 4 switches above | That part disappears; lists still have page numbers | – |
 
 ## Automatic run
 

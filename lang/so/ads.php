@@ -90,6 +90,9 @@ return [
 
     'browse' => [
         'all_ads' => 'Dhammaan xayeysiisyada',
+        'show_more' => 'Tus xayeysiisyo kale',
+        'loading' => 'Waa la soo rarayaa…',
+        'loaded' => '{1} 1 xayeysiis oo kale ayaa la tusay|[2,*] :count xayeysiis oo kale ayaa la tusay',
         'show_results' => '{0} Natiijo ma jirto|{1} Tus 1 natiijo|[2,*] Tus :count natiijo',
         'posted' => 'La dhigay',
         'posted_any' => 'Wakhti kasta',

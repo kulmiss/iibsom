@@ -7,6 +7,7 @@
 @php($cities = $catalog->cities())
 @php($popular = $catalog->popularCategories(8))
 @php($latest = \App\Search\DatabaseAdSearch::publicQuery()->with(['category:id,slug,icon,parent_id', 'city:id,name,slug', 'cover'])->withPhotoCount()->latest('published_at')->limit(12)->get())
+@php($popularNow = \App\Support\Ads\PopularNow::ads())
 @php($banners = feature('site.banners') ? \App\Models\Banner::forHome() : [])
 
 @section('content')
@@ -167,6 +168,19 @@
                     <p class="mt-2 text-xs text-stone-500">{{ __('site.home.history_note') }}</p>
                 </div>
             @endfeature
+
+            {{-- Popular now: most viewed ads of the last 30 days (needs Ad statistics) --}}
+            @if ($popularNow->isNotEmpty())
+                <section class="mt-8" aria-labelledby="popular-now">
+                    <h2 id="popular-now" class="flex items-center gap-2 text-lg font-semibold">{{ icon('flame', 'size-5 text-orange-600') }} {{ __('site.home.popular_now') }}</h2>
+                    <p class="text-sm text-stone-600">{{ __('site.home.popular_now_note') }}</p>
+                    <div class="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
+                        @foreach ($popularNow as $ad)
+                            @include('ads._card', ['ad' => $ad])
+                        @endforeach
+                    </div>
+                </section>
+            @endif
 
             {{-- Latest ads --}}
             <h2 id="trending" class="mt-8 scroll-mt-20 text-lg font-semibold">{{ __('site.home.trending_ads') }}</h2>

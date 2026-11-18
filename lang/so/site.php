@@ -37,6 +37,8 @@ return [
         'categories' => 'Qaybaha',
         'popular_categories' => 'Qaybaha ugu badan',
         'trending_ads' => 'Xayeysiisyadii ugu dambeeyey',
+        'popular_now' => 'Hadda caan ah',
+        'popular_now_note' => 'Kuwa ugu badan ee la daawaday 30kii maalmood ee u dambeeyay',
         'for_you' => 'Adiga laguu soo jeediyey',
         'recently_viewed' => 'Wixii aad dhowaan eegtay',
         'clear_history' => 'Tirtir taariikhdayda',

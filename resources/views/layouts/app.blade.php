@@ -20,6 +20,15 @@
     @if (count($locales->enabled()) > 1)
         <link rel="alternate" hreflang="x-default" href="{{ $locales->urlFor($locales->default()) }}">
     @endif
+    @if (feature('favourites') && feature('ads.card_save'))
+        {{-- For the Save buttons on ad cards (card-save.js). Guests: empty (their pages are cached and shared). --}}
+        @auth
+            <meta name="card-save" content="{{ auth()->user()->favourites()->pluck('ads.id')->implode(',') }}" data-url="{{ lroute('favourite.toggle', ['ad' => 0]) }}" data-token="{{ csrf_token() }}">
+        @else
+            @php($signIn = feature('login.google') || \App\Http\Controllers\Auth\TestSignInController::available())
+            <meta name="card-save" content=""@if ($signIn) data-login="{{ lroute('login') }}"@endif>
+        @endauth
+    @endif
     @stack('head')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('scripts')

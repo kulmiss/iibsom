@@ -88,6 +88,9 @@ return [
 
     'browse' => [
         'all_ads' => 'All ads',
+        'show_more' => 'Show more ads',
+        'loading' => 'Loading…',
+        'loaded' => '{1} 1 more ad shown|[2,*] :count more ads shown',
         'show_results' => '{0} No results|{1} Show 1 result|[2,*] Show :count results',
         'posted' => 'Posted',
         'posted_any' => 'Any time',

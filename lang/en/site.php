@@ -35,6 +35,8 @@ return [
         'categories' => 'Categories',
         'popular_categories' => 'Popular categories',
         'trending_ads' => 'Latest ads',
+        'popular_now' => 'Popular now',
+        'popular_now_note' => 'Most viewed in the last 30 days',
         'for_you' => 'Recommended for you',
         'recently_viewed' => 'Recently viewed',
         'clear_history' => 'Clear my history',

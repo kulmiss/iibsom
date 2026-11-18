@@ -19,6 +19,7 @@ use Carbon\CarbonImmutable;
 use Faker\Factory;
 use Faker\Generator;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use PragmaRX\Google2FA\Google2FA;
@@ -101,6 +102,7 @@ class DemoSeeder extends Seeder
 
         $this->reports($made, $users, $moderator);
         $this->history($made, $moderator, $support, $users);
+        $this->stats($made);
 
         AdSnapshot::backfill(); // approved demo ads get their "approved version" (for the Edited badge)
         app(FeatureManager::class)->set('site.demo_data', true);
@@ -474,6 +476,43 @@ class DemoSeeder extends Seeder
         }
         foreach (array_chunk($rows, 200) as $chunk) {
             AdminActivity::insert($chunk);
+        }
+    }
+
+    /**
+     * Daily views and contact taps for the last 30 days (for "Ad statistics", "Popular" and "Popular now").
+     * About one ad in ten is a hot one with 100+ views. The ads' `views` totals match the daily rows.
+     *
+     * @param  list<Ad>  $ads
+     */
+    private function stats(array $ads): void
+    {
+        $rows = [];
+        foreach ($ads as $ad) {
+            if (! $ad->published_at) {
+                continue;
+            }
+            $hot = mt_rand(1, 10) === 1;
+            $from = CarbonImmutable::parse($ad->published_at)->max($this->now->subDays(29))->startOfDay();
+            $until = $ad->sold_at ? CarbonImmutable::parse($ad->sold_at) : ($ad->expires_at ? CarbonImmutable::parse($ad->expires_at)->min($this->now) : $this->now);
+            $total = 0;
+            for ($day = $from; $day->lessThanOrEqualTo($until); $day = $day->addDay()) {
+                $views = $hot ? mt_rand(4, 25) : mt_rand(0, 4);
+                if ($views === 0) {
+                    continue;
+                }
+                $total += $views;
+                $rows[] = [
+                    'ad_id' => $ad->id, 'day' => $day->setTimezone('Africa/Mogadishu')->toDateString(), 'views' => $views,
+                    'phone' => mt_rand(0, intdiv($views, 3)), 'whatsapp' => mt_rand(0, intdiv($views, 4)), 'call' => mt_rand(0, intdiv($views, 6)),
+                ];
+            }
+            if ($total > 0) {
+                $ad->forceFill(['views' => $total])->saveQuietly();
+            }
+        }
+        foreach (array_chunk($rows, 500) as $chunk) {
+            DB::table('ad_stats')->insertOrIgnore($chunk);
         }
     }
 }

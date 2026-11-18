@@ -87,6 +87,12 @@ class DemoDataTest extends TestCase
         $this->assertArrayHasKey('brand', $car->fields);
         $this->assertArrayHasKey('year', $car->fields);
 
+        // Views for "Ad statistics", "Popular" and "Popular now" (PR 64): totals match the daily rows.
+        $this->assertGreaterThanOrEqual(10, Ad::where('views', '>=', config('iibsom.popular_views'))->count());
+        $this->assertSame((int) DB::table('ad_stats')->sum('views'), (int) Ad::sum('views'));
+        $this->assertSame(0, (int) DB::table('ad_stats')->join('ads', 'ads.id', '=', 'ad_stats.ad_id')->whereNull('ads.published_at')->count());
+        $this->assertSame(0, (int) DB::table('ad_stats')->where('day', '<', now('Africa/Mogadishu')->subDays(30)->toDateString())->count());
+
         $this->assertTrue(feature('site.demo_data'));
     }
 

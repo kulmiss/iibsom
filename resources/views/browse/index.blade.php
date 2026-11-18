@@ -163,7 +163,15 @@
                             @include('ads._card', ['ad' => $ad])
                         @endforeach
                     </div>
-                    <div class="mt-6">{{ $results->onEachSide(1)->links() }}</div>
+                    <div class="mt-6" data-pages>{{ $results->onEachSide(1)->links() }}</div>
+                    @if (feature('lists.show_more') && $results->hasMorePages())
+                        {{-- show-more.js shows this and hides the page links (they stay for Google and without JavaScript). --}}
+                        <div class="mt-6 text-center" data-show-more hidden>
+                            <button type="button" class="btn-primary w-full sm:w-auto sm:px-10" data-text="{{ __('ads.browse.show_more') }}" data-loading="{{ __('ads.browse.loading') }}"
+                                    data-loaded-one="{{ trans_choice('ads.browse.loaded', 1) }}" data-loaded="{{ trans_choice('ads.browse.loaded', 2, ['count' => ':count']) }}">{{ __('ads.browse.show_more') }}</button>
+                            <span class="sr-only" aria-live="polite"></span>
+                        </div>
+                    @endif
                 @endif
             </div>
         </div>
