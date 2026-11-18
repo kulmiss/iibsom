@@ -1,11 +1,11 @@
 # Progress — Drugs + visitor side (2026-11-18)
 
-📍 Now: Step 9 of 10 — PR 80: speed, accessibility, full re-run
-📊 Progress: ▓▓▓▓▓▓▓▓░░ 80% done / 20% left
-✅ Just finished: PR 79 — account dashboard, seller page filters, How we keep you safe
-⏭️ Next: PR 80 — Lighthouse, accessibility, full re-run from a clean start
+📍 Now: Step 9 of 10 — PR 80: full re-run from a clean start
+📊 Progress: ▓▓▓▓▓▓▓▓▓░ 90% done / 10% left
+✅ Just finished: Lighthouse 100/100/100/100 on 8 phone pages; axe 0 problems (25 pages, light + dark, EN + SO)
+⏭️ Next: 43 rows + J1–J38 + 6 journeys from a clean start, then the report
 ⚠️ Waiting for the owner: nothing (merge at the end)
-⏱️ Time left (estimate): a few hours (1 PR + report)
+⏱️ Time left (estimate): about 1–2 hours
 
 ## Steps (this job)
 - [x] 1. PR 72 + 73 — no drugs in ads and in chat

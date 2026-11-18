@@ -68,7 +68,7 @@
 
                 <ul data-photo-list class="mt-3 grid grid-cols-3 gap-2 sm:grid-cols-4" aria-live="polite"></ul>
 
-                <label class="mt-3 flex cursor-pointer items-center justify-center gap-2 rounded-xl border-2 border-dashed border-brand-200 bg-brand-50 px-4 py-4 font-semibold text-brand-700 hover:bg-brand-50/60">
+                <label class="mt-3 flex cursor-pointer items-center justify-center gap-2 rounded-xl border-2 border-dashed border-brand-200 bg-brand-50 px-4 py-4 font-semibold text-brand-800 hover:bg-brand-50/60">
                     {{ icon('camera', 'size-5') }} {{ __('ads.form.add_photos') }}
                     <input type="file" accept="image/jpeg,image/png,image/webp" multiple class="sr-only" data-photo-input>
                 </label>

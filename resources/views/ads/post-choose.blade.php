@@ -25,7 +25,7 @@
 
         @feature('post.category_search')
             {{-- Shown by post-ad.js; without JavaScript the full list below is enough. --}}
-            <div class="relative mt-5" data-cat-search-box hidden>
+            <div class="relative mt-5 hidden [.js_&]:block" data-cat-search-box>
                 <label for="cat-search" class="sr-only">{{ __('ads.post.search_category') }}</label>
                 <span class="pointer-events-none absolute inset-y-0 start-3 flex items-center text-stone-400">{{ icon('search', 'size-5') }}</span>
                 <input id="cat-search" type="search" autocomplete="off" class="form-input ps-10" placeholder="{{ __('ads.post.search_category') }}" data-cat-search>

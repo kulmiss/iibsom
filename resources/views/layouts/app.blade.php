@@ -7,6 +7,9 @@
     <title>@yield('title', __('site.home.title')) · {{ config('app.name') }}</title>
     <meta name="description" content="@yield('description', __('site.meta_description'))">
     <meta name="theme-color" content="#1f6fd1">
+    {{-- "js" on <html> before the page draws: parts that only work with JavaScript take their place at once
+         (no jump when the script runs, PR 80). --}}
+    <script nonce="{{ Vite::cspNonce() }}">document.documentElement.classList.add('js')</script>
     @if (feature('site.dark_mode'))
         {{-- Light/dark chosen in the footer: applied before the page draws (no flash). --}}
         <script nonce="{{ Vite::cspNonce() }}">(function(){var t;try{t=localStorage.getItem('iibsom-theme')}catch(e){}if(t!=='light'&&t!=='dark')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t})()</script>

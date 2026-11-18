@@ -74,14 +74,14 @@
         @else
             <div class="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
                 @foreach ($ads as $ad)
-                    @include('ads._card', ['ad' => $ad])
+                    @include('ads._card', ['ad' => $ad, 'eager' => $loop->index < 2])
                 @endforeach
             </div>
             <div class="mt-6">{{ $ads->links() }}</div>
         @endif
         @if ($plus && feature('site.safety_box'))
             <p class="mt-6 flex items-start gap-2 rounded-xl bg-brand-50 p-3 text-sm text-stone-700 ring-1 ring-brand-200">{{ icon('shield-check', 'size-5 shrink-0 text-brand-700') }}
-                <span>{{ __('ads.page.safety_1') }} {{ __('ads.page.safety_2') }} <a href="{{ lroute('page', ['slug' => 'safety']) }}" class="font-medium text-brand-700 underline">{{ __('ads.page.safety_more') }}</a></span></p>
+                <span>{{ __('ads.page.safety_1') }} {{ __('ads.page.safety_2') }} <a href="{{ lroute('page', ['slug' => 'safety']) }}" class="font-medium text-brand-800 underline">{{ __('ads.page.safety_more') }}</a></span></p>
         @endif
     </section>
 @endsection

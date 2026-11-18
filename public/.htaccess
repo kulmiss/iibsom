@@ -43,3 +43,8 @@
         Header set Cache-Control "public, max-age=31536000, immutable"
     </If>
 </IfModule>
+# Smaller pages on shared hosting (PR 80): compress text files when the host has mod_deflate.
+# Pages shrink about 5–10 times (a 250 KB page arrives as ~25 KB), which matters most on slow phones.
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/css application/javascript text/javascript application/json application/manifest+json image/svg+xml
+</IfModule>

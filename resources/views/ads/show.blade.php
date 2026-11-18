@@ -88,7 +88,7 @@
                                         @endif
                                         <img src="{{ $photo->url('medium') }}" srcset="{{ $photo->url('medium') }} 900w, {{ $photo->url('large') }} 1600w" sizes="(min-width: 1024px) 720px, 100vw"
                                              alt="{{ $ad->title }} – {{ __('ads.page.photo', ['n' => $loop->iteration, 'total' => $photos->count()]) }}"
-                                             class="size-full object-contain" @if ($loop->first) fetchpriority="high" @else loading="lazy" @endif decoding="async" width="{{ $photo->width ?: 900 }}" height="{{ $photo->height ?: 675 }}">
+                                             class="size-full object-contain" @if ($loop->first) fetchpriority="high" @else loading="lazy" fetchpriority="low" decoding="async" @endif width="{{ $photo->width ?: 900 }}" height="{{ $photo->height ?: 675 }}">
                                     </picture>
                                     <span class="absolute bottom-2 right-2 rounded bg-black/60 px-2 py-0.5 text-xs text-white" aria-hidden="true">{{ $loop->iteration }}/{{ $photos->count() }}</span>
                                 </button>
@@ -101,7 +101,7 @@
                                     <li class="shrink-0">
                                         <a href="{{ $photo->url('large') }}" data-thumb="{{ $loop->index }}" @if ($loop->first) aria-current="true" @endif
                                            class="block size-16 overflow-hidden rounded-lg ring-2 ring-transparent aria-[current=true]:ring-brand-600 sm:size-20">
-                                            <img src="{{ $photo->url('thumb') }}" alt="{{ __('ads.page.photo', ['n' => $loop->iteration, 'total' => $photos->count()]) }}" loading="lazy" decoding="async" width="80" height="80" class="size-full object-cover">
+                                            <img src="{{ $photo->url('thumb') }}" alt="{{ __('ads.page.photo', ['n' => $loop->iteration, 'total' => $photos->count()]) }}" loading="lazy" fetchpriority="low" decoding="async" width="80" height="80" class="size-full object-cover">
                                         </a>
                                     </li>
                                 @endforeach

@@ -66,7 +66,7 @@ class PostAdRichTest extends TestCase
     {
         $html = $this->actingAs($this->seller)->get('/post')->assertOk()->getContent();
 
-        $this->assertStringContainsString('data-cat-search-box hidden', $html); // shown by the script
+        $this->assertStringContainsString('hidden [.js_&]:block" data-cat-search-box', $html); // only with JavaScript, no jump
         $this->assertMatchesRegularExpression('/data-cat-item data-names="[^"]*cars[^"]*baabuur/', $html);
         $this->assertStringContainsString(__('ads.post.no_category'), $html);
 

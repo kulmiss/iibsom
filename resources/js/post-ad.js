@@ -341,7 +341,6 @@ function initPreview(form, photos) {
 // Category search on step 1 (switch "post.category_search"): English and Somali names.
 const catSearch = document.querySelector('[data-cat-search]');
 if (catSearch) {
-    document.querySelector('[data-cat-search-box]').hidden = false;
     const groups = [...document.querySelectorAll('[data-cat-group]')];
     const none = document.querySelector('[data-cat-none]');
     const opened = new Map(groups.map((g) => [g, g.open]));

@@ -31,7 +31,7 @@
                 <div class="mt-3 rounded-2xl bg-brand-50 p-4 text-start ring-1 ring-brand-200" data-done-bump>
                     <h2 class="flex items-center gap-2 font-semibold">{{ icon('arrow-up-circle', 'size-5 text-brand-700') }} {{ __('ads.done.bump_title') }}</h2>
                     <p class="mt-1 text-sm text-stone-700">{{ __('ads.done.bump_text') }}</p>
-                    <a href="{{ lroute('account.ads') }}" class="mt-2 inline-block text-sm font-medium text-brand-700 underline">{{ __('ads.done.my_ads') }}</a>
+                    <a href="{{ lroute('account.ads') }}" class="mt-2 inline-block text-sm font-medium text-brand-800 underline">{{ __('ads.done.my_ads') }}</a>
                 </div>
             @endfeature
         @endfeature

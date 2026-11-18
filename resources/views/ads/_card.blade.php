@@ -25,7 +25,9 @@
                 @if ($avif = $cover->url('thumb', 'avif'))
                     <source type="image/avif" srcset="{{ $avif }}">
                 @endif
-                <img src="{{ $cover->url('thumb') }}" alt="{{ $ad->title }}" loading="lazy" decoding="async"
+                {{-- $eager: the first cards of a list are on screen at once (often the biggest thing = LCP), so they load
+                     straight away; the rest wait until they are scrolled near. --}}
+                <img src="{{ $cover->url('thumb') }}" alt="{{ $ad->title }}" @if ($eager ?? false) fetchpriority="high" @else loading="lazy" decoding="async" @endif
                      width="400" height="300" class="size-full object-cover">
             </picture>
         @else

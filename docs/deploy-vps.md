@@ -60,6 +60,9 @@ server {
     index index.php;
     client_max_body_size 16M;
     access_log off;   # privacy: no visitor IPs in logs
+    # Smaller pages on slow phones (HTML is always compressed when gzip is on).
+    gzip on;
+    gzip_types text/css application/javascript application/json image/svg+xml text/plain application/manifest+json;
 
     location / { try_files $uri $uri/ /index.php?$query_string; }
     location ~ \.php$ {

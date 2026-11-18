@@ -196,7 +196,7 @@
                 @else
                     <div class="group/results grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4 data-[view=list]:grid-cols-1" data-results data-view="grid">
                         @foreach ($results as $ad)
-                            @include('ads._card', ['ad' => $ad])
+                            @include('ads._card', ['ad' => $ad, 'eager' => $loop->index < 2 && $results->currentPage() === 1])
                         @endforeach
                     </div>
                     <div class="mt-6" data-pages>{{ $results->onEachSide(1)->links() }}</div>

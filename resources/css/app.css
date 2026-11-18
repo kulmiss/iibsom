@@ -13,7 +13,7 @@
     --color-brand-200: #bcd6f6;
     --color-brand-300: #8ab8f2;
     --color-brand-600: #2a7be0;
-    --color-brand-700: #1f6fd1;
+    --color-brand-700: #1d6bca; /* PR 80: a touch darker so blue text passes contrast on light boxes */
     --color-brand-800: #1a5bab;
     --color-brand-900: #14467f;
     --color-brand-950: #0c2c52;
@@ -143,7 +143,7 @@
     .bg-white\/95 { background-color: color-mix(in oklab, var(--surface) 95%, transparent); }
     .bg-white\/90 { background-color: color-mix(in oklab, var(--surface) 90%, transparent); }
 }
-:root[data-theme='dark'] .text-brand-700, :root[data-theme='dark'] .text-brand-800, :root[data-theme='dark'] .text-brand-900 { color: #8ab8f2; }
+:root[data-theme='dark'] :is(.text-brand-700, .text-brand-800, .text-brand-900, .prose-iibsom a) { color: #8ab8f2; }
 :root[data-theme='dark'] .text-red-700, :root[data-theme='dark'] .text-red-600 { color: #fca5a5; }
 :root[data-theme='dark'] .text-emerald-600, :root[data-theme='dark'] .text-green-700 { color: #6ee7b7; }
 :root[data-theme='dark'] .text-orange-600, :root[data-theme='dark'] .text-orange-700 { color: #fdba74; }
@@ -165,3 +165,8 @@
     --color-brand-200: #bcd6f6;
     --color-brand-300: #8ab8f2;
 }
+
+/* Yellow buttons and badges keep dark text in dark mode too (PR 80: the Sell button text was unreadable). */
+:root[data-theme='dark'] :is(.btn-sell, .bg-accent-400, .bg-accent-500, .bg-amber-400) { color: #1c1917; }
+/* Dark badges that carry white text stay dark. */
+:root[data-theme='dark'] .bg-sky-900 { background-color: #0c4a6e; }
