@@ -13,12 +13,25 @@ Xayeysiis kasta waan hubinnaa ka hor inta uusan soo bixin. Raac xeerarkan, xayey
 ## Lama oggola
 
 - Hub, xabbad iyo wax kasta oo loogu talagalay in dadka lagu dhibaateeyo.
-- Maandooriye, khamri, daawooyin u baahan warqad dhakhtar.
+- Khamri.
 - Alaab la xaday, summado been ah ama la koobiyeeyey, dukumentiyo been ah, kaarar aqoonsi ama baasaboorro.
 - Xayawaanka sharcigu ilaaliyo iyo xayawaanka duurjoogta ah.
 - Wax anshax-xumo ah, ama wax caayaya qof, qabiil ama diin.
 - Shaqooyin ama "ganacsi" kaa doonaya inaad marka hore lacag bixiso.
 - Xiriiriyeyaal bogag kale, iyo in iibsadaha laga codsado inuu lacag bixiyo intuusan arag alaabta.
+
+## Lama oggola: daroogo
+
+iibsom ma oggola daroogo nooc kasta ha ahaatee. Daroogadu waxay dhibaato u keentaa dadka iyo qoysaska, iibinteeduna waxay jebin kartaa sharciga. Waxaa ka mid ah:
+
+- **Qaad** (jaad, miraa), cagaar ama qalalan.
+- **Maandooriye** sida heroin, cocaine iyo opium.
+- **Xashiish** (cannabis, marijuana) nooc kasta.
+- **Daawooyinka u baahan warqad dhakhtar** (tusaale tramadol, codeine, diazepam) haddii aadan ahayn farmashiye ruqsad haysta.
+- **Qalabka daroogada** sida tuubooyinka, bong iyo waraaqaha la duubo.
+- Wax kasta oo la mid ah, magac kasta ha lagu sheego.
+
+Xayeysiisyada leh ereyadan waa la diidaa marka la dhigayo ama la beddelayo. Haddii aan hadhow helno xayeysiis noocaas ah, waan ka saaraynaa bogga. Ka warbixi xayeysiis kasta oo noocan ah: **Ka warbixi xayeysiiskan → Daroogo**.
 
 ## Sababta xayeysiis loo diido
 

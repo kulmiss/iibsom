@@ -34,6 +34,7 @@ return [
     'ads.my_ads' => ['group' => 'Ads', 'default' => true, 'label' => 'My Ads page', 'description' => 'Sellers see their ads and can edit, mark sold, renew and delete them.'],
 
     // Safety and spam
+    'safety.no_drugs' => ['group' => 'Safety', 'default' => true, 'label' => 'No drugs', 'description' => 'Ads (new and edited) with drug words are refused: khat, cannabis, narcotics, prescription medicines, paraphernalia. The word list is in Settings → General. Also adds "Drugs" to the report reasons and the "Drugs" filter in Ads.'],
     'safety.bad_words' => ['group' => 'Safety', 'default' => true, 'label' => 'Bad word filter', 'description' => 'Ads with words from the list in Settings are refused.'],
     'safety.block_links' => ['group' => 'Safety', 'default' => true, 'label' => 'No web links in ads', 'description' => 'Ads with web links (often scams) are refused.'],
     'safety.honeypot' => ['group' => 'Safety', 'default' => true, 'label' => 'Bot trap', 'description' => 'A hidden field catches robots that fill every box.'],

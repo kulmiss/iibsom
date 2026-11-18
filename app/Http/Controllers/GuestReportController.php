@@ -49,7 +49,7 @@ class GuestReportController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'reason' => ['required', Rule::in(Report::REASONS)],
+            'reason' => ['required', Rule::in(Report::reasons())],
             'details' => ['nullable', 'string', 'max:500'],
             'contact' => ['nullable', 'string', 'max:120', 'regex:/^([0-9 +\-()]{6,20}|[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+)$/'],
         ]);

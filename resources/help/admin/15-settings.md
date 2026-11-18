@@ -5,6 +5,7 @@
 - **Ad rules:** days before ads end, ads per seller per day, photos per ad.
 - **Languages ON:** English is always ON. Turn Somali ON when the translation is checked.
 - **Bad words:** ads with these words are refused. Add Somali words too.
+- **Drug words:** new and edited ads with these words are refused ("Drugs are not allowed on iibsom"). Whole words only, so "chat" and "Qatar" are fine. Do not add normal Somali words such as "qaad" (take) or "jaad" (kind). After a change, run `php artisan iibsom:drugs:check` to send matching live ads back for checking.
 - **Weekly summary email:** last week's numbers every Monday morning. **Send me a test now** checks that email works.
 - **Help email for customers:** shown on the Help page and as **Contact us** in the footer.
 - **Footer:** tick the links to show (About, Terms, Privacy, Cookie info, Copyright, Contact us, Safety tips, Help centre, Popular categories and cities) and paste the links of iibsom's social pages (Facebook, Instagram, TikTok, YouTube, Telegram, WhatsApp). Empty = hidden. Only https links on the network's own site are accepted. The switch **Big footer** (Switches → Site) turns the whole footer on or off.

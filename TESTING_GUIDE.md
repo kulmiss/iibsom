@@ -87,6 +87,10 @@ The same rows run automatically in a real browser (see "Automatic run" below).
 | J30 | Help | Help → "Posting rules" and "How to buy on iibsom"; also in Somali | Both articles open; a not-approved ad in My ads has "Read our posting rules" | `help.posting_rules`, `help.how_to_buy` |
 | J31 | Contact | Footer → Contact us; send once with a too short message, then a real one | First: red box, what you typed is still there. Then: "Thank you…" | `site.contact_form` |
 | J32 | Contact (admin) | /admin as Support → Messages → "Answer by email", then Done | Your email program opens to the customer; the message moves to Done (Moderators do not see Messages) | `site.contact_form` |
+| J33 | No drugs | Post an ad with "Fresh khat" in the title (also try Somali "qaadka"); then edit a live ad and add "tramadol" | Refused: "Drugs are not allowed on iibsom…" (Somali: "Daroogo laguma oggola…"). "Iska qaad" or "weed killer" are fine | `safety.no_drugs` |
+| J34 | No drugs | Open an ad → Report this ad | "Drugs (khat, cannabis, pills…)" is a reason | `safety.no_drugs` |
+| J35 | No drugs (admin) | Settings → General → Drug words: add a word, Save; Ads → filter "Drugs" | The new word is refused when posting; the filter shows drug-checked and drug-reported ads with a red badge | `safety.no_drugs` |
+| J36 | No drugs (old ads) | `php artisan iibsom:drugs:check --dry-run`, then without `--dry-run` | Lists matching live ads; then they wait for approval with the Drugs mark (nothing deleted). Approve = mark goes away | `safety.no_drugs` |
 
 ## Automatic run
 

@@ -42,15 +42,55 @@ class SpamGuard
             if (feature('safety.bad_words') && self::badWord($text) !== null) {
                 throw ValidationException::withMessages([$field => __('ads.safety.bad_words')]);
             }
+
+            if (feature('safety.no_drugs') && ($word = self::drugWord($text)) !== null) {
+                Log::channel('security')->info('ad.drugs_refused', ['field' => $field, 'word' => $word]);
+                throw ValidationException::withMessages([$field => __('ads.safety.drugs')]);
+            }
         }
     }
+
+    /**
+     * Normal phrases that contain a word from the drug list ("weed killer" is a garden product).
+     * Taken out of the text before the drug check.
+     */
+    public const DRUG_ALLOW = ['weed killer', 'weedkiller', 'weed eater', 'weed trimmer', 'weed cutter', 'weed wacker', 'weed whacker',
+        'weed control', 'weed barrier', 'weed mat', 'weed spray', 'weed remover', 'weed puller', 'weed burner'];
 
     /** The first bad word found, or null. Whole words only ("class" is fine, "ass" is not). */
     public static function badWord(string $text): ?string
     {
-        $clean = self::normalise($text);
+        return self::firstWord($text, self::words());
+    }
 
-        foreach (self::words() as $word) {
+    /**
+     * The first drug word found (switch "safety.no_drugs", list in Settings → General), or null.
+     * Whole words only: "chat", "Qatar", "seaweed", "takeaway" and "hashtag" are fine.
+     */
+    public static function drugWord(string $text): ?string
+    {
+        $clean = self::normalise($text);
+        foreach (self::DRUG_ALLOW as $phrase) {
+            $clean = (string) preg_replace('/(?<![\p{L}\p{N}])'.preg_replace('/\s+/', '\\s+', preg_quote($phrase, '/')).'(?![\p{L}\p{N}])/u', ' ', $clean);
+        }
+
+        return self::firstWord($clean, self::drugWords(), false);
+    }
+
+    /** @return list<string> */
+    public static function drugWords(): array
+    {
+        $words = setting('safety.drug_words') ?? [];
+
+        return array_values(array_filter(array_map('trim', is_array($words) ? $words : explode("\n", (string) $words))));
+    }
+
+    /** @param  list<string>  $words */
+    private static function firstWord(string $text, array $words, bool $normalise = true): ?string
+    {
+        $clean = $normalise ? self::normalise($text) : $text;
+
+        foreach ($words as $word) {
             $word = self::normalise($word);
             if ($word === '') {
                 continue;

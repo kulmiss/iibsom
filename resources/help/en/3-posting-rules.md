@@ -13,12 +13,25 @@ We check every ad before it goes live. Follow these rules and your ad goes live 
 ## Not allowed
 
 - Weapons, bullets and anything made to hurt people.
-- Drugs, alcohol, medicines that need a doctor's paper.
+- Alcohol.
 - Stolen things, fake or copied brands, fake documents, ID cards or passports.
 - Animals that are protected by law, and wild animals.
 - Adult content, or anything that insults a person, clan or religion.
 - Jobs or "business offers" that ask you to pay first.
 - Links to other websites, and asking buyers to pay before they see the item.
+
+## Not allowed: drugs
+
+iibsom does not allow any drugs. Drugs harm people and families, and selling them can break the law. This includes:
+
+- **Khat** (qaad, jaad, miraa), fresh or dry.
+- **Narcotics** such as heroin, cocaine and opium.
+- **Cannabis** (weed, marijuana, hashish) in any form.
+- **Prescription medicines** (for example tramadol, codeine, diazepam) unless you are a licensed pharmacy.
+- **Drug tools** such as pipes, bongs and rolling papers.
+- Anything similar, under any other name.
+
+Ads with these words are refused when you post or edit them. If we find such an ad later, we take it off the site. Report any ad like this with **Report this ad → Drugs**.
 
 ## Why an ad is not approved
 

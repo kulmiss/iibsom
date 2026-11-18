@@ -271,6 +271,7 @@ ads.page.negotiable,Negotiable,"Waa laga wada hadli karaa","needs native review"
 ads.safety.bot,"Something went wrong. Please try again.","Wax baa khaldamay. Fadlan mar kale isku day.","needs native review",app/Support/Safety/SpamGuard.php,
 ads.safety.links,"Please remove web links. Buyers contact you by phone or WhatsApp.","Fadlan ka saar linkiyada internetka. Iibsadayaashu waxay kula soo xiriiraan taleefan ama WhatsApp.","needs native review",app/Support/Safety/SpamGuard.php,
 ads.safety.bad_words,"Please remove rude or unsafe words from your ad.","Fadlan xayeysiiskaaga ka saar erayada xun ama aan ammaanka ahayn.","needs native review",app/Support/Safety/SpamGuard.php,
+ads.safety.drugs,"Drugs are not allowed on iibsom (khat, cannabis, narcotics, medicines that need a doctor, and anything similar). Please remove them. See the posting rules in Help.","Daroogo laguma oggola iibsom (qaad, xashiish, maandooriye, daawooyin u baahan dhakhtar iyo wax la mid ah). Fadlan ka saar. Eeg xeerarka dhigista xayeysiiska ee Caawimaadda.","needs native review",app/Support/Safety/SpamGuard.php,
 ads.close.sold_here,"Sold on iibsom","Waxaa lagu iibiyey iibsom","needs native review","app/Http/Controllers/Admin/AdController.php | resources/views/account/my-ads.blade.php",account-my-ads.png
 ads.close.sold_elsewhere,"Sold somewhere else","Meel kale ayaa lagu iibiyey","needs native review","app/Http/Controllers/Admin/AdController.php | resources/views/account/my-ads.blade.php",account-my-ads.png
 ads.close.not_selling,"Not selling any more","Mar dambe ma iibinayo","needs native review","app/Http/Controllers/Admin/AdController.php | resources/views/account/my-ads.blade.php",account-my-ads.png
@@ -472,6 +473,7 @@ notify.price_drop,"Cheaper: :from → :to","Qiime jaban: :from → :to","needs n
 pagination.previous,"&laquo; Previous","&laquo; Hore","needs native review","Next / Previous page buttons under lists",
 pagination.next,"Next &raquo;","Xiga &raquo;","needs native review","Next / Previous page buttons under lists",
 reports.reason.scam,"Scam or fraud","Khiyaano ama musuqmaasuq","needs native review","app/Http/Controllers/Admin/ReportController.php | resources/views/ads/show.blade.php",ads-show.png
+reports.reason.drugs,"Drugs (khat, cannabis, pills…)","Daroogo (qaad, xashiish, kiniin…)","needs native review","app/Http/Controllers/Admin/ReportController.php | resources/views/ads/show.blade.php",ads-show.png
 reports.reason.wrong_category,"Wrong category","Qayb khaldan","needs native review","app/Http/Controllers/Admin/ReportController.php | resources/views/ads/show.blade.php",ads-show.png
 reports.reason.sold,"Already sold","Horay ayaa loo iibiyey","needs native review","app/Http/Controllers/Admin/ReportController.php | resources/views/ads/show.blade.php",ads-show.png
 reports.reason.offensive,"Offensive or not allowed","Aflagaado ama aan la oggolayn","needs native review","app/Http/Controllers/Admin/ReportController.php | resources/views/ads/show.blade.php",ads-show.png
@@ -835,12 +837,25 @@ help.posting-rules.body,"We check every ad before it goes live. Follow these rul
 ## Not allowed
 
 - Weapons, bullets and anything made to hurt people.
-- Drugs, alcohol, medicines that need a doctor's paper.
+- Alcohol.
 - Stolen things, fake or copied brands, fake documents, ID cards or passports.
 - Animals that are protected by law, and wild animals.
 - Adult content, or anything that insults a person, clan or religion.
 - Jobs or ""business offers"" that ask you to pay first.
 - Links to other websites, and asking buyers to pay before they see the item.
+
+## Not allowed: drugs
+
+iibsom does not allow any drugs. Drugs harm people and families, and selling them can break the law. This includes:
+
+- **Khat** (qaad, jaad, miraa), fresh or dry.
+- **Narcotics** such as heroin, cocaine and opium.
+- **Cannabis** (weed, marijuana, hashish) in any form.
+- **Prescription medicines** (for example tramadol, codeine, diazepam) unless you are a licensed pharmacy.
+- **Drug tools** such as pipes, bongs and rolling papers.
+- Anything similar, under any other name.
+
+Ads with these words are refused when you post or edit them. If we find such an ad later, we take it off the site. Report any ad like this with **Report this ad → Drugs**.
 
 ## Why an ad is not approved
 
@@ -862,12 +877,25 @@ Open **My ads** to see the reason, fix the ad and save it. We check it again. Br
 ## Lama oggola
 
 - Hub, xabbad iyo wax kasta oo loogu talagalay in dadka lagu dhibaateeyo.
-- Maandooriye, khamri, daawooyin u baahan warqad dhakhtar.
+- Khamri.
 - Alaab la xaday, summado been ah ama la koobiyeeyey, dukumentiyo been ah, kaarar aqoonsi ama baasaboorro.
 - Xayawaanka sharcigu ilaaliyo iyo xayawaanka duurjoogta ah.
 - Wax anshax-xumo ah, ama wax caayaya qof, qabiil ama diin.
 - Shaqooyin ama ""ganacsi"" kaa doonaya inaad marka hore lacag bixiso.
 - Xiriiriyeyaal bogag kale, iyo in iibsadaha laga codsado inuu lacag bixiyo intuusan arag alaabta.
+
+## Lama oggola: daroogo
+
+iibsom ma oggola daroogo nooc kasta ha ahaatee. Daroogadu waxay dhibaato u keentaa dadka iyo qoysaska, iibinteeduna waxay jebin kartaa sharciga. Waxaa ka mid ah:
+
+- **Qaad** (jaad, miraa), cagaar ama qalalan.
+- **Maandooriye** sida heroin, cocaine iyo opium.
+- **Xashiish** (cannabis, marijuana) nooc kasta.
+- **Daawooyinka u baahan warqad dhakhtar** (tusaale tramadol, codeine, diazepam) haddii aadan ahayn farmashiye ruqsad haysta.
+- **Qalabka daroogada** sida tuubooyinka, bong iyo waraaqaha la duubo.
+- Wax kasta oo la mid ah, magac kasta ha lagu sheego.
+
+Xayeysiisyada leh ereyadan waa la diidaa marka la dhigayo ama la beddelayo. Haddii aan hadhow helno xayeysiis noocaas ah, waan ka saaraynaa bogga. Ka warbixi xayeysiis kasta oo noocan ah: **Ka warbixi xayeysiiskan → Daroogo**.
 
 ## Sababta xayeysiis loo diido
 

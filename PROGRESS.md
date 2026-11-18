@@ -1,10 +1,10 @@
 # Progress — Jiji round (2026-11-18)
 
-📍 Now: Done — all 12 steps
+📍 Now: Done — PR 72 (no drugs) opened
 📊 Progress: ▓▓▓▓▓▓▓▓▓▓ 100% done
-✅ Just finished: final report sent; checklist Sheet updated (rows 25, 39 + J1–J32)
-⏭️ Next: the owner merges PR 71 (brings PRs 56–71)
-⚠️ Waiting for the owner: merge PR 71; make the repo private; decide about khat in the posting rules
+✅ Just finished: PR 72 — khat and all drugs banned (rules, word check, report reason, admin filter + word list, check command)
+⏭️ Next: the owner merges PR 72 (brings PRs 56–72)
+⚠️ Waiting for the owner: merge PR 72; run `php artisan iibsom:drugs:check` once after deploy; make the repo private
 ⏱️ Time left (estimate): none
 
 ## Steps

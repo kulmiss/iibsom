@@ -22,6 +22,8 @@ final class Moderation
         $firstTime = $ad->published_at === null;
 
         $ad->forceFill([
+            'flag' => null, // staff checked it (PR 72)
+            'flag_word' => null,
             'status' => AdStatus::Live,
             'rejection_reason' => null,
             'published_at' => $ad->published_at ?? now(),

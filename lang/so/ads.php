@@ -196,6 +196,7 @@ return [
         'bot' => 'Wax baa khaldamay. Fadlan mar kale isku day.',
         'links' => 'Fadlan ka saar linkiyada internetka. Iibsadayaashu waxay kula soo xiriiraan taleefan ama WhatsApp.',
         'bad_words' => 'Fadlan xayeysiiskaaga ka saar erayada xun ama aan ammaanka ahayn.',
+        'drugs' => 'Daroogo laguma oggola iibsom (qaad, xashiish, maandooriye, daawooyin u baahan dhakhtar iyo wax la mid ah). Fadlan ka saar. Eeg xeerarka dhigista xayeysiiska ee Caawimaadda.',
     ],
 
     'close' => [

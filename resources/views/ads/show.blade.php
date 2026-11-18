@@ -284,7 +284,7 @@
                                     @csrf
                                     <fieldset>
                                         <legend class="form-label">{{ __('ads.page.report_reason') }}</legend>
-                                        @foreach (\App\Models\Report::REASONS as $reason)
+                                        @foreach (\App\Models\Report::reasons() as $reason)
                                             <label class="flex items-center gap-2 py-0.5 text-sm"><input type="radio" name="reason" value="{{ $reason }}" required class="size-4"> {{ __('reports.reason.'.$reason) }}</label>
                                         @endforeach
                                     </fieldset>
@@ -309,7 +309,7 @@
                                     <form method="post" action="{{ lroute('ad.report_guest', ['ad' => $ad->id]) }}" class="mt-3 space-y-3" data-guest-report="{{ lroute('ad.report_token') }}">
                                         <fieldset>
                                             <legend class="form-label">{{ __('ads.page.report_reason') }}</legend>
-                                            @foreach (\App\Models\Report::REASONS as $reason)
+                                            @foreach (\App\Models\Report::reasons() as $reason)
                                                 <label class="flex items-center gap-2 py-0.5 text-sm"><input type="radio" name="reason" value="{{ $reason }}" required class="size-4"> {{ __('reports.reason.'.$reason) }}</label>
                                             @endforeach
                                         </fieldset>

@@ -194,6 +194,7 @@ return [
         'bot' => 'Something went wrong. Please try again.',
         'links' => 'Please remove web links. Buyers contact you by phone or WhatsApp.',
         'bad_words' => 'Please remove rude or unsafe words from your ad.',
+        'drugs' => 'Drugs are not allowed on iibsom (khat, cannabis, narcotics, medicines that need a doctor, and anything similar). Please remove them. See the posting rules in Help.',
     ],
 
     'close' => [

@@ -85,6 +85,12 @@ export function AdSheet({ adId, onOpenChange }: { adId: number | null; onOpenCha
                 </p>
               )}
 
+              {ad.flag && (
+                <p className='rounded-md border border-destructive/40 bg-destructive/10 p-3 text-sm'>
+                  <span className='font-medium'>Sent back for checking:</span> {ad.flag}. Approve it if it is fine (a normal word), or reject it.
+                </p>
+              )}
+
               {ad.closed_reason && (
                 <p className='rounded-md border bg-muted/40 p-3 text-sm'>
                   <span className='font-medium'>Closed by the seller:</span> {ad.closed_reason}

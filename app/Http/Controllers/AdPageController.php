@@ -72,7 +72,7 @@ class AdPageController extends Controller
         abort_if($ad->user_id === $this->authUser($request)->id, 403);
 
         $data = $request->validate([
-            'reason' => ['required', Rule::in(Report::REASONS)],
+            'reason' => ['required', Rule::in(Report::reasons())],
             'details' => ['nullable', 'string', 'max:500'],
             'website' => ['prohibited'], // honeypot: real people never fill this hidden field
         ]);

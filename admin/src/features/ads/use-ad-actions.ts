@@ -57,4 +57,4 @@ export function useAdActions() {
   }
 }
 
-export const REJECT_PRESETS = ['Photos are not clear or not real', 'Wrong category', 'Price is missing or not real', 'Not allowed on iibsom', 'Duplicate ad', 'Contact details in the text']
+export const REJECT_PRESETS = ['Photos are not clear or not real', 'Wrong category', 'Price is missing or not real', 'Not allowed on iibsom', 'Drugs are not allowed', 'Duplicate ad', 'Contact details in the text']

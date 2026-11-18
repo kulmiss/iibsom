@@ -25,6 +25,7 @@ class AdController extends Controller
         $request->validate([
             'search' => ['nullable', 'string', 'max:100'],
             'status' => ['nullable', 'string', 'max:100'],
+            'flag' => ['nullable', 'in:drugs'],
             'category' => ['nullable', 'string', 'max:200'],
             'sort' => ['nullable', Rule::in(['created_at', 'price', 'title'])],
             'dir' => ['nullable', Rule::in(['asc', 'desc'])],
@@ -38,6 +39,9 @@ class AdController extends Controller
             ->with(['user:id,name,phone,banned_at', 'category:id,name,parent_id', 'city:id,name', 'photos' => fn ($q) => $q->where('status', 'ready')])
             ->when(! feature('site.demo_data'), fn ($q) => $q->where('is_demo', false))
             ->when($statuses, fn ($q) => $q->whereIn('status', $statuses))
+            // "Drugs" (PR 72): sent back by the drug check, or reported as drugs and not handled yet.
+            ->when($request->flag === 'drugs', fn ($q) => $q->where(fn ($w) => $w->where('flag', 'drugs')
+                ->orWhereHas('reports', fn ($r) => $r->where('reason', 'drugs')->where('status', 'waiting'))))
             ->when($request->category, fn ($q, $c) => $q->whereIn('category_id', array_map('intval', explode(',', $c))))
             ->when($request->user_id, fn ($q, $u) => $q->where('user_id', $u))
             ->when($request->search, function ($q, $s) {
@@ -202,6 +206,7 @@ class AdController extends Controller
             'status_label' => $ad->status->label(),
             'rejection_reason' => $ad->rejection_reason,
             'closed_reason' => $ad->closed_reason ? __('ads.close.'.$ad->closed_reason, [], 'en') : null,
+            'flag' => $ad->flag === 'drugs' ? 'Drug check: “'.$ad->flag_word.'”' : null,
             'price' => $ad->priceLabel(),
             'category' => $ad->category->label,
             'category_id' => $ad->category_id,
