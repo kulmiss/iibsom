@@ -11,7 +11,12 @@ import { BlockedPhones } from './components/blocked-phones'
 import { UserSheet } from './components/user-sheet'
 import { type UserRow } from './types'
 
-const STATE = (u: UserRow) => (u.banned ? <Badge variant='destructive'>Banned</Badge> : u.profile_complete ? <Badge variant='outline'>Active</Badge> : <Badge variant='secondary'>Profile not finished</Badge>)
+const STATE = (u: UserRow) => (
+  <>
+    {u.banned ? <Badge variant='destructive'>Banned</Badge> : u.profile_complete ? <Badge variant='outline'>Active</Badge> : <Badge variant='secondary'>Profile not finished</Badge>}{' '}
+    {u.flag && <Badge variant='destructive' title={u.flag}>Drugs</Badge>}
+  </>
+)
 
 const columns: ColumnDef<UserRow>[] = [
   {
@@ -51,7 +56,7 @@ export function Users() {
             url='/users'
             queryKey='users'
             columns={columns}
-            filters={[{ columnId: 'state', title: 'State', options: [{ value: 'active', label: 'Active' }, { value: 'incomplete', label: 'Profile not finished' }, { value: 'banned', label: 'Banned' }] }]}
+            filters={[{ columnId: 'state', title: 'State', options: [{ value: 'active', label: 'Active' }, { value: 'incomplete', label: 'Profile not finished' }, { value: 'banned', label: 'Banned' }, { value: 'drugs', label: 'Drugs (chat)' }] }]}
             searchPlaceholder='Name, email, phone or #id…'
             csvName='users'
             rowId={(r) => String(r.id)}

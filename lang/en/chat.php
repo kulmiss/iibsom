@@ -13,6 +13,7 @@ return [
     'empty' => 'Write a message first.',
     'blocked' => 'This chat is blocked. No more messages can be sent.',
     'unavailable' => 'This person can no longer receive messages.',
+    'drugs' => 'Sorry, this message was not sent. Talking about drugs (khat, cannabis, pills and similar) is not allowed on iibsom. Please write about the item only.',
     'not_allowed' => 'Your message has words that are not allowed. Please change it.',
     'block' => 'Block',
     'unblock' => 'Unblock',

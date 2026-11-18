@@ -9,4 +9,4 @@ Every ad on the site: live, waiting, rejected, sold and ended.
 
 ## Drugs
 
-Drugs (khat, cannabis, narcotics, prescription medicines, drug tools) are not allowed. Filter **Drugs** shows the ads sent back for checking by the drug check (red **Drugs** badge; the panel names the word) and ads reported as drugs. If it is a false alarm (a normal word), **Approve** it: the mark goes away. Otherwise **Reject** with "Drugs are not allowed".
+Drugs (khat, cannabis, narcotics, prescription medicines, drug tools) are not allowed. Filter **Drugs** shows the ads sent back for checking by the drug check (red **Drugs** badge; the panel names the word) and ads reported as drugs. It also shows the ads of people whose **chat message** was blocked for drug words (see Users → State → "Drugs (chat)": the word, how many times, and **Clear mark** after you checked). If it is a false alarm (a normal word), **Approve** it: the mark goes away. Otherwise **Reject** with "Drugs are not allowed".

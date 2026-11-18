@@ -77,6 +77,7 @@ Route::prefix('admin/api')->group(function () {
         Route::get('/users/{user}', [UserController::class, 'show'])->middleware('admin.can:users.view');
         Route::post('/users/{user}/ban', [UserController::class, 'ban'])->middleware('admin.can:users.ban');
         Route::post('/users/{user}/unban', [UserController::class, 'unban'])->middleware('admin.can:users.ban');
+        Route::post('/users/{user}/clear-flag', [UserController::class, 'clearFlag'])->middleware('admin.can:users.ban');
         // Paid boosts (Phase 2): receipt payments + ledger.
         Route::middleware(['feature:boosts', 'admin.can:payments.manage'])->group(function () {
             Route::get('/payments', [PaymentController::class, 'index']);

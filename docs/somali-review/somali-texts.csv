@@ -404,6 +404,7 @@ chat.send,Send,Dir,"needs native review","resources/views/chat/show.blade.php | 
 chat.empty,"Write a message first.","Marka hore qor fariin.","needs native review",app/Http/Controllers/Account/ChatController.php,
 chat.blocked,"This chat is blocked. No more messages can be sent.","Sheekadan waa la xannibay. Fariimo kale lama diri karo.","needs native review",app/Http/Controllers/Account/ChatController.php,
 chat.unavailable,"This person can no longer receive messages.","Qofkan hadda fariimo ma heli karo.","needs native review",app/Http/Controllers/Account/ChatController.php,
+chat.drugs,"Sorry, this message was not sent. Talking about drugs (khat, cannabis, pills and similar) is not allowed on iibsom. Please write about the item only.","Waan ka xunnahay, fariintan lama dirin. Ka hadalka daroogada (qaad, xashiish, kiniin iyo wax la mid ah) laguma oggola iibsom. Fadlan ka qor alaabta oo keliya.","needs native review",app/Http/Controllers/Account/ChatController.php,
 chat.not_allowed,"Your message has words that are not allowed. Please change it.","Fariintaadu waxay leedahay erayo aan la oggolayn. Fadlan beddel.","needs native review",app/Http/Controllers/Account/ChatController.php,
 chat.block,Block,Xannib,"needs native review","resources/views/chat/show.blade.php | routes/web.php",
 chat.unblock,Unblock,"Ka qaad xannibaadda","needs native review",resources/views/chat/show.blade.php,

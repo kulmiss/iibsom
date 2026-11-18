@@ -36,12 +36,14 @@ class AdController extends Controller
         $statuses = array_intersect(explode(',', (string) $request->status), array_column(AdStatus::cases(), 'value'));
 
         $page = Ad::query()
-            ->with(['user:id,name,phone,banned_at', 'category:id,name,parent_id', 'city:id,name', 'photos' => fn ($q) => $q->where('status', 'ready')])
+            ->with(['user:id,name,phone,banned_at,flag,flag_word', 'category:id,name,parent_id', 'city:id,name', 'photos' => fn ($q) => $q->where('status', 'ready')])
             ->when(! feature('site.demo_data'), fn ($q) => $q->where('is_demo', false))
             ->when($statuses, fn ($q) => $q->whereIn('status', $statuses))
             // "Drugs" (PR 72): sent back by the drug check, or reported as drugs and not handled yet.
+            // PR 73: also the ads of people whose chat message was blocked by the drug check.
             ->when($request->flag === 'drugs', fn ($q) => $q->where(fn ($w) => $w->where('flag', 'drugs')
-                ->orWhereHas('reports', fn ($r) => $r->where('reason', 'drugs')->where('status', 'waiting'))))
+                ->orWhereHas('reports', fn ($r) => $r->where('reason', 'drugs')->where('status', 'waiting'))
+                ->orWhereHas('user', fn ($u) => $u->where('flag', 'drugs'))))
             ->when($request->category, fn ($q, $c) => $q->whereIn('category_id', array_map('intval', explode(',', $c))))
             ->when($request->user_id, fn ($q, $u) => $q->where('user_id', $u))
             ->when($request->search, function ($q, $s) {
@@ -206,7 +208,11 @@ class AdController extends Controller
             'status_label' => $ad->status->label(),
             'rejection_reason' => $ad->rejection_reason,
             'closed_reason' => $ad->closed_reason ? __('ads.close.'.$ad->closed_reason, [], 'en') : null,
-            'flag' => $ad->flag === 'drugs' ? 'Drug check: “'.$ad->flag_word.'”' : null,
+            'flag' => match (true) {
+                $ad->flag === 'drugs' => 'Drug check: “'.$ad->flag_word.'”',
+                $ad->user->flag === 'drugs' => 'Seller wrote drug words in chat: “'.$ad->user->flag_word.'”',
+                default => null,
+            },
             'price' => $ad->priceLabel(),
             'category' => $ad->category->label,
             'category_id' => $ad->category_id,

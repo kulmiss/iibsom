@@ -13,6 +13,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 /**
@@ -108,6 +109,17 @@ class ChatController extends Controller
         $data = $request->validate(['body' => ['required', 'string', 'max:'.Message::MAX_LENGTH]], [], ['body' => __('chat.message')]);
         $body = trim(str_replace("\r\n", "\n", $data['body']));
 
+        // Drugs (PR 73, switch "safety.no_drugs"): blocked with a kind note; the sender is marked for staff review.
+        if ($body !== '' && feature('safety.no_drugs') && ($word = SpamGuard::drugWord($body)) !== null) {
+            DB::table('users')->where('id', $user->id)->update([
+                'flag' => 'drugs', 'flag_word' => mb_substr($word, 0, 60), 'flagged_at' => now(),
+                'flag_count' => DB::raw('LEAST(flag_count + 1, 65535)'),
+            ]);
+            Log::channel('security')->info('chat.drugs_blocked', ['user_id' => $user->id, 'conversation' => $conversation->id, 'word' => $word]);
+
+            return $this->refused($request, __('chat.drugs'));
+        }
+
         $problem = match (true) {
             $body === '' => __('chat.empty'),
             $conversation->blocked_by !== null => __('chat.blocked'),
@@ -116,9 +128,7 @@ class ChatController extends Controller
             default => null,
         };
         if ($problem !== null) {
-            return $request->expectsJson()
-                ? response()->json(['message' => $problem], 422)
-                : back()->withInput()->withErrors(['body' => $problem]);
+            return $this->refused($request, $problem);
         }
 
         $message = DB::transaction(function () use ($conversation, $user, $body) {
@@ -135,6 +145,24 @@ class ChatController extends Controller
         return $request->expectsJson()
             ? response()->json(['message' => $this->row($message, $user)], 201)
             : redirect(lroute('chat.show', ['conversation' => $conversation->id]).'#m'.$message->id);
+    }
+
+    /**
+     * A message that is not sent. The chat page (fetch with X-Requested-With) gets 200 + ok:false, so the browser
+     * console stays clean; other JSON callers get 422; without JavaScript the form comes back with the note.
+     */
+    /** @param  string|array<mixed>  $note  a translated text (__() is typed as string|array) */
+    private function refused(Request $request, string|array $note): RedirectResponse|JsonResponse
+    {
+        $note = is_string($note) ? $note : '';
+
+        if ($request->ajax() && $request->expectsJson()) {
+            return response()->json(['ok' => false, 'message' => $note]);
+        }
+
+        return $request->expectsJson()
+            ? response()->json(['message' => $note], 422)
+            : back()->withInput()->withErrors(['body' => $note]);
     }
 
     /** New messages after a given id (the page asks every few seconds while it is open). */

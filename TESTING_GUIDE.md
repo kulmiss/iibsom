@@ -91,6 +91,8 @@ The same rows run automatically in a real browser (see "Automatic run" below).
 | J34 | No drugs | Open an ad → Report this ad | "Drugs (khat, cannabis, pills…)" is a reason | `safety.no_drugs` |
 | J35 | No drugs (admin) | Settings → General → Drug words: add a word, Save; Ads → filter "Drugs" | The new word is refused when posting; the filter shows drug-checked and drug-reported ads with a red badge | `safety.no_drugs` |
 | J36 | No drugs (old ads) | `php artisan iibsom:drugs:check --dry-run`, then without `--dry-run` | Lists matching live ads; then they wait for approval with the Drugs mark (nothing deleted). Approve = mark goes away | `safety.no_drugs` |
+| J37 | Chat drugs | Chat ON: in a chat write "Do you have fresh khat?" (Somali: "Ma haysaa qaadka cusub?"), Send; then "Can we chat tomorrow?" | First: not sent, kind note above the box, your text stays. Second: sent. "Iska qaad", "Qatar" are fine | `safety.no_drugs` + `chat` |
+| J38 | Chat drugs (admin) | Admin → Users → State → "Drugs (chat)"; open the person; "Clear mark" | The sender has a red Drugs badge and the word; their ads show under Ads → Drugs; Clear mark removes it (Support cannot) | `safety.no_drugs` |
 
 ## Automatic run
 

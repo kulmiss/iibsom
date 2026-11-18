@@ -1,10 +1,10 @@
 # Progress — Jiji round (2026-11-18)
 
-📍 Now: Done — PR 72 (no drugs) opened
+📍 Now: Job 1 done — PR 73 (drug check in chat); next Job 2 audit
 📊 Progress: ▓▓▓▓▓▓▓▓▓▓ 100% done
-✅ Just finished: PR 72 — khat and all drugs banned (rules, word check, report reason, admin filter + word list, check command)
-⏭️ Next: the owner merges PR 72 (brings PRs 56–72)
-⚠️ Waiting for the owner: merge PR 72; run `php artisan iibsom:drugs:check` once after deploy; make the repo private
+✅ Just finished: PR 73 — chat drug check, sender marked for review, admin "Drugs (chat)" filter
+⏭️ Next: Job 2 step 1 — honest audit of every visitor page (docs/ux-audit.md)
+⚠️ Waiting for the owner: nothing (merge at the end)
 ⏱️ Time left (estimate): none
 
 ## Steps

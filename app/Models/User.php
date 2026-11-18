@@ -39,6 +39,7 @@ class User extends Authenticatable
             'two_factor_confirmed_at' => 'datetime',
             'is_demo' => 'boolean',
             'notify_settings' => 'array',
+            'flagged_at' => 'datetime',
         ];
     }
 

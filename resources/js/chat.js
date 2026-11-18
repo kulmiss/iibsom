@@ -61,7 +61,7 @@ export function initChat() {
         try {
             const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json', 'X-Requested-With': 'XMLHttpRequest' }, credentials: 'same-origin' });
             const data = await res.json().catch(() => ({}));
-            if (!res.ok) {
+            if (!res.ok || data.ok === false) {
                 error.textContent = data.message || data.errors?.body?.[0] || '';
                 error.hidden = !error.textContent;
                 return;

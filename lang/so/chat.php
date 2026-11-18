@@ -13,6 +13,7 @@ return [
     'empty' => 'Marka hore qor fariin.',
     'blocked' => 'Sheekadan waa la xannibay. Fariimo kale lama diri karo.',
     'unavailable' => 'Qofkan hadda fariimo ma heli karo.',
+    'drugs' => 'Waan ka xunnahay, fariintan lama dirin. Ka hadalka daroogada (qaad, xashiish, kiniin iyo wax la mid ah) laguma oggola iibsom. Fadlan ka qor alaabta oo keliya.',
     'not_allowed' => 'Fariintaadu waxay leedahay erayo aan la oggolayn. Fadlan beddel.',
     'block' => 'Xannib',
     'unblock' => 'Ka qaad xannibaadda',

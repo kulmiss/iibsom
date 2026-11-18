@@ -44,6 +44,7 @@ class UserController extends Controller
             ->when(in_array('banned', $states, true), fn ($q) => $q->whereNotNull('banned_at'))
             ->when(in_array('active', $states, true), fn ($q) => $q->whereNull('banned_at')->whereNotNull('profile_completed_at'))
             ->when(in_array('incomplete', $states, true), fn ($q) => $q->whereNull('profile_completed_at'))
+            ->when(in_array('drugs', $states, true), fn ($q) => $q->where('flag', 'drugs')) // PR 73: drug words in chat
             ->orderBy($request->sort ?? 'created_at', $request->dir ?? 'desc')
             ->orderByDesc('id')
             ->paginate($request->integer('per_page', 20));
@@ -108,6 +109,16 @@ class UserController extends Controller
         return response()->json($this->row($user->refresh()->loadCount('ads')));
     }
 
+    /** Staff looked at it: remove the drug mark (the person stays as they are). */
+    public function clearFlag(User $user): JsonResponse
+    {
+        abort_if($user->isStaff(), 404);
+        $user->forceFill(['flag' => null, 'flag_word' => null, 'flag_count' => 0, 'flagged_at' => null])->save();
+        Activity::log('user.flag_cleared', "Cleared the drug mark of {$user->name} (#{$user->id})", $user);
+
+        return response()->json($this->row($user->refresh()->loadCount('ads')));
+    }
+
     /** @return array<string, mixed> */
     private function row(User $u): array
     {
@@ -126,6 +137,9 @@ class UserController extends Controller
             'last_login_at' => $u->last_login_at?->toIso8601String(),
             'is_demo' => $u->is_demo,
             'verified' => $u->verified_at !== null && feature('verified_badge'),
+            'flag' => $u->flag === 'drugs'
+                ? "Drug words in chat: “{$u->flag_word}” ({$u->flag_count}×, last ".($u->flagged_at?->format('j M Y H:i') ?? '?').')'
+                : null,
         ];
     }
 }

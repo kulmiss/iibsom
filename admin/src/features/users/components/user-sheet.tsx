@@ -34,6 +34,14 @@ export function UserSheet({ userId, onOpenChange }: { userId: number | null; onO
     qc.invalidateQueries({ queryKey: ['ads'] })
     qc.invalidateQueries({ queryKey: ['blocked-phones'] })
   }
+  const clearFlag = useMutation({
+    mutationFn: () => api.post(`/users/${userId}/clear-flag`),
+    onSuccess: () => {
+      toast.success('Drug mark removed.')
+      refresh()
+    },
+    onError: (e) => toast.error(apiErrorMessage(e)),
+  })
   const ban = useMutation({
     mutationFn: (reason: string) => api.post(`/users/${userId}/ban`, { reason, block_phone: blockPhone, hide_ads: hideAds }),
     onSuccess: () => {
@@ -66,7 +74,7 @@ export function UserSheet({ userId, onOpenChange }: { userId: number | null; onO
       <SheetContent className='flex w-full flex-col gap-0 p-0 sm:max-w-3xl'>
         <SheetHeader className='border-b'>
           <SheetTitle className='flex items-center gap-2 pe-6'>
-            {user?.name ?? 'User'} {user?.banned && <Badge variant='destructive'>Banned</Badge>} {user?.verified && <Badge>Verified</Badge>} {user?.is_demo && <Badge variant='secondary'>Demo</Badge>}
+            {user?.name ?? 'User'} {user?.banned && <Badge variant='destructive'>Banned</Badge>} {user?.flag && <Badge variant='destructive'>Drugs</Badge>} {user?.verified && <Badge>Verified</Badge>} {user?.is_demo && <Badge variant='secondary'>Demo</Badge>}
           </SheetTitle>
           <SheetDescription>{user ? `#${user.id} · ${user.email}` : ''}</SheetDescription>
         </SheetHeader>
@@ -90,6 +98,18 @@ export function UserSheet({ userId, onOpenChange }: { userId: number | null; onO
               </dl>
               {user.phone_blocked && <p className='rounded-md bg-destructive/10 p-3 text-sm'>This phone number is blocked.</p>}
               {user.banned && <p className='rounded-md bg-destructive/10 p-3 text-sm'>Ban reason: {user.ban_reason}</p>}
+              {user.flag && (
+                <div className='flex flex-wrap items-center justify-between gap-2 rounded-md border border-destructive/40 bg-destructive/10 p-3 text-sm'>
+                  <p className='min-w-0 break-words'>
+                    {user.flag}. The message was not sent. Look at their ads and chats, then ban or clear the mark.
+                  </p>
+                  {can('users.ban') && (
+                    <Button size='sm' variant='outline' disabled={clearFlag.isPending} onClick={() => clearFlag.mutate()}>
+                      Clear mark
+                    </Button>
+                  )}
+                </div>
+              )}
               <div>
                 <p className='mb-2 font-medium'>Their ads</p>
                 <AdsTable userId={user.id} />
