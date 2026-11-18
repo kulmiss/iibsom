@@ -37,6 +37,7 @@
                         <p class="text-sm font-bold text-brand-800">{{ $ad->priceLabel() }}</p>
                         <p class="text-xs text-stone-500">
                             {{ $ad->status->label() }}
+                            @if ($ad->closed_reason && in_array($ad->closed_reason, \App\Http\Controllers\Account\MyAdsController::CLOSE_REASONS, true)) · {{ __('ads.mine.closed_as', ['reason' => __('ads.close.'.$ad->closed_reason)]) }}@endif
                             @if ($ad->status === \App\Enums\AdStatus::Sold && $ad->sold_at) · {{ __('ads.mine.sold_on', ['date' => mdate($ad->sold_at)]) }}
                             @elseif ($ad->expires_at && $ad->expires_at->isPast()) · {{ __('ads.mine.ended_on', ['date' => mdate($ad->expires_at)]) }}
                             @elseif ($ad->expires_at) · {{ __('ads.mine.ends', ['date' => mdate($ad->expires_at)]) }}
@@ -67,7 +68,33 @@
                             @if ($ad->status !== \App\Enums\AdStatus::Sold)
                                 <a href="{{ lroute('account.ads.edit', ['ad' => $ad->id]) }}" class="btn-chip">{{ icon('pencil', 'size-3.5') }} {{ __('ads.mine.edit') }}</a>
                             @endif
-                            @if ($ad->isLive())
+                            @if ($ad->isLive() && feature('ads.free_bump'))
+                                @if (\App\Http\Controllers\Account\MyAdsController::canBump($ad))
+                                    <form method="post" action="{{ lroute('account.ads.bump', ['ad' => $ad->id]) }}">
+                                        @csrf
+                                        <button class="btn-chip bg-brand-700 text-white ring-brand-700">{{ icon('arrow-up-circle', 'size-3.5') }} {{ __('ads.mine.bump') }}</button>
+                                    </form>
+                                @else
+                                    <span class="btn-chip cursor-default text-stone-500" title="{{ __('ads.mine.bump') }}">{{ icon('arrow-up-circle', 'size-3.5') }} {{ __('ads.mine.bump_next', ['date' => mdate(\App\Http\Controllers\Account\MyAdsController::nextBump($ad))]) }}</span>
+                                @endif
+                            @endif
+                            @if ($ad->isLive() && feature('ads.close_reason'))
+                                <details class="w-full" data-close-ad>
+                                    <summary class="btn-chip inline-flex cursor-pointer list-none [&::-webkit-details-marker]:hidden">{{ icon('check', 'size-3.5') }} {{ __('ads.mine.close_button') }}</summary>
+                                    <form method="post" action="{{ lroute('account.ads.close', ['ad' => $ad->id]) }}" class="mt-2 rounded-xl bg-stone-50 p-3 ring-1 ring-stone-200">
+                                        @csrf
+                                        <fieldset>
+                                            <legend class="text-sm font-semibold">{{ __('ads.mine.close_reason') }}</legend>
+                                            @foreach (\App\Http\Controllers\Account\MyAdsController::CLOSE_REASONS as $reason)
+                                                <label class="mt-1.5 flex items-center gap-2 text-sm">
+                                                    <input type="radio" name="reason" value="{{ $reason }}" required class="size-4 text-brand-700"> {{ __('ads.close.'.$reason) }}
+                                                </label>
+                                            @endforeach
+                                        </fieldset>
+                                        <button type="submit" class="btn-primary mt-3">{{ __('ads.mine.close_confirm') }}</button>
+                                    </form>
+                                </details>
+                            @elseif ($ad->isLive())
                                 <form method="post" action="{{ lroute('account.ads.sold', ['ad' => $ad->id]) }}" data-confirm="{{ __('ads.mine.mark_sold_confirm') }}">
                                     @csrf
                                     <button class="btn-chip">{{ icon('check', 'size-3.5') }} {{ __('ads.mine.mark_sold') }}</button>

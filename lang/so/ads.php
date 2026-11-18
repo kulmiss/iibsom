@@ -198,7 +198,23 @@ return [
         'bad_words' => 'Fadlan xayeysiiskaaga ka saar erayada xun ama aan ammaanka ahayn.',
     ],
 
+    'close' => [
+        'sold_here' => 'Waxaa lagu iibiyey iibsom',
+        'sold_elsewhere' => 'Meel kale ayaa lagu iibiyey',
+        'not_selling' => 'Mar dambe ma iibinayo',
+        'other' => 'Sabab kale',
+    ],
+
     'mine' => [
+        'close_button' => 'Xir xayeysiiska',
+        'close_reason' => 'Maxaad u xiraysaa?',
+        'close_confirm' => 'Xir xayeysiiska',
+        'closed' => 'Xayeysiiska waa la xiray. Hadhow waad cusboonaysiin kartaa "Dhammaaday".',
+        'closed_as' => 'La xiray: :reason',
+        'bump' => 'Kor u qaad',
+        'bumped' => 'Waa la sameeyey. Xayeysiiskaagu mar kale wuxuu ku jiraa liisaska korkooda.',
+        'bump_wait' => 'Xayeysiiskan mar kale waad kor u qaadi kartaa :date.',
+        'bump_next' => 'Kor u qaadid bilaash ah mar kale :date',
         'title' => 'Xayeysiisyadayda',
         'empty' => 'Halkan weli xayeysiis ma jiro.',
         'post_first' => 'Dhig xayeysiis',

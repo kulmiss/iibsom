@@ -271,6 +271,19 @@ ads.page.negotiable,Negotiable,"Waa laga wada hadli karaa","needs native review"
 ads.safety.bot,"Something went wrong. Please try again.","Wax baa khaldamay. Fadlan mar kale isku day.","needs native review",app/Support/Safety/SpamGuard.php,
 ads.safety.links,"Please remove web links. Buyers contact you by phone or WhatsApp.","Fadlan ka saar linkiyada internetka. Iibsadayaashu waxay kula soo xiriiraan taleefan ama WhatsApp.","needs native review",app/Support/Safety/SpamGuard.php,
 ads.safety.bad_words,"Please remove rude or unsafe words from your ad.","Fadlan xayeysiiskaaga ka saar erayada xun ama aan ammaanka ahayn.","needs native review",app/Support/Safety/SpamGuard.php,
+ads.close.sold_here,"Sold on iibsom","Waxaa lagu iibiyey iibsom","needs native review","app/Http/Controllers/Admin/AdController.php | resources/views/account/my-ads.blade.php",account-my-ads.png
+ads.close.sold_elsewhere,"Sold somewhere else","Meel kale ayaa lagu iibiyey","needs native review","app/Http/Controllers/Admin/AdController.php | resources/views/account/my-ads.blade.php",account-my-ads.png
+ads.close.not_selling,"Not selling any more","Mar dambe ma iibinayo","needs native review","app/Http/Controllers/Admin/AdController.php | resources/views/account/my-ads.blade.php",account-my-ads.png
+ads.close.other,"Other reason","Sabab kale","needs native review","app/Http/Controllers/Admin/AdController.php | resources/views/account/my-ads.blade.php",account-my-ads.png
+ads.mine.close_button,"Close ad","Xir xayeysiiska","needs native review",resources/views/account/my-ads.blade.php,account-my-ads.png
+ads.mine.close_reason,"Why are you closing it?","Maxaad u xiraysaa?","needs native review","app/Http/Controllers/Account/MyAdsController.php | resources/views/account/my-ads.blade.php",account-my-ads.png
+ads.mine.close_confirm,"Close ad","Xir xayeysiiska","needs native review",resources/views/account/my-ads.blade.php,account-my-ads.png
+ads.mine.closed,"Ad closed. You can renew it later from ""Ended"".","Xayeysiiska waa la xiray. Hadhow waad cusboonaysiin kartaa ""Dhammaaday"".","needs native review",app/Http/Controllers/Account/MyAdsController.php,
+ads.mine.closed_as,"Closed: :reason","La xiray: :reason","needs native review",resources/views/account/my-ads.blade.php,account-my-ads.png
+ads.mine.bump,"Move to top","Kor u qaad","needs native review",resources/views/account/my-ads.blade.php,account-my-ads.png
+ads.mine.bumped,"Done. Your ad is at the top of the lists again.","Waa la sameeyey. Xayeysiiskaagu mar kale wuxuu ku jiraa liisaska korkooda.","needs native review",app/Http/Controllers/Account/MyAdsController.php,
+ads.mine.bump_wait,"You can move this ad up again on :date.","Xayeysiiskan mar kale waad kor u qaadi kartaa :date.","needs native review",app/Http/Controllers/Account/MyAdsController.php,
+ads.mine.bump_next,"Free move to top again on :date","Kor u qaadid bilaash ah mar kale :date","needs native review",resources/views/account/my-ads.blade.php,account-my-ads.png
 ads.mine.title,"My ads",Xayeysiisyadayda,"needs native review",resources/views/account/my-ads.blade.php,account-my-ads.png
 ads.mine.empty,"No ads here yet.","Halkan weli xayeysiis ma jiro.","needs native review",resources/views/account/my-ads.blade.php,account-my-ads.png
 ads.mine.post_first,"Post an ad","Dhig xayeysiis","needs native review",resources/views/account/my-ads.blade.php,account-my-ads.png

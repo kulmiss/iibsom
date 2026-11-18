@@ -201,6 +201,7 @@ class AdController extends Controller
             'status' => $ad->status->value,
             'status_label' => $ad->status->label(),
             'rejection_reason' => $ad->rejection_reason,
+            'closed_reason' => $ad->closed_reason ? __('ads.close.'.$ad->closed_reason, [], 'en') : null,
             'price' => $ad->priceLabel(),
             'category' => $ad->category->label,
             'category_id' => $ad->category_id,

@@ -196,7 +196,23 @@ return [
         'bad_words' => 'Please remove rude or unsafe words from your ad.',
     ],
 
+    'close' => [
+        'sold_here' => 'Sold on iibsom',
+        'sold_elsewhere' => 'Sold somewhere else',
+        'not_selling' => 'Not selling any more',
+        'other' => 'Other reason',
+    ],
+
     'mine' => [
+        'close_button' => 'Close ad',
+        'close_reason' => 'Why are you closing it?',
+        'close_confirm' => 'Close ad',
+        'closed' => 'Ad closed. You can renew it later from "Ended".',
+        'closed_as' => 'Closed: :reason',
+        'bump' => 'Move to top',
+        'bumped' => 'Done. Your ad is at the top of the lists again.',
+        'bump_wait' => 'You can move this ad up again on :date.',
+        'bump_next' => 'Free move to top again on :date',
         'title' => 'My ads',
         'empty' => 'No ads here yet.',
         'post_first' => 'Post an ad',

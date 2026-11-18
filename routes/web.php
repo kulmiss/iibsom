@@ -89,6 +89,8 @@ $publicRoutes = function () use ($stateless) {
                 Route::get('/{ad}/edit', [MyAdsController::class, 'edit'])->whereNumber('ad')->name('.edit');
                 Route::put('/{ad}', [MyAdsController::class, 'update'])->whereNumber('ad')->middleware('throttle:20,1')->name('.update');
                 Route::post('/{ad}/sold', [MyAdsController::class, 'sold'])->whereNumber('ad')->middleware('throttle:30,1')->name('.sold');
+                Route::post('/{ad}/close', [MyAdsController::class, 'close'])->whereNumber('ad')->middleware(['feature:ads.close_reason', 'throttle:30,1'])->name('.close');
+                Route::post('/{ad}/bump', [MyAdsController::class, 'bump'])->whereNumber('ad')->middleware(['feature:ads.free_bump', 'throttle:30,1'])->name('.bump');
                 Route::post('/{ad}/renew', [MyAdsController::class, 'renew'])->whereNumber('ad')->middleware('throttle:30,1')->name('.renew');
                 Route::delete('/{ad}', [MyAdsController::class, 'destroy'])->whereNumber('ad')->middleware('throttle:30,1')->name('.destroy');
             });

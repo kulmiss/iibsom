@@ -85,6 +85,12 @@ export function AdSheet({ adId, onOpenChange }: { adId: number | null; onOpenCha
                 </p>
               )}
 
+              {ad.closed_reason && (
+                <p className='rounded-md border bg-muted/40 p-3 text-sm'>
+                  <span className='font-medium'>Closed by the seller:</span> {ad.closed_reason}
+                </p>
+              )}
+
               {ad.fields.length > 0 && (
                 <dl className='grid grid-cols-2 gap-x-4 gap-y-2 text-sm'>
                   {ad.fields.map((f) => (

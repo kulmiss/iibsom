@@ -81,6 +81,9 @@ The same rows run automatically in a real browser (see "Automatic run" below).
 | J24 | Follow | Signed in: seller page → Follow; Account → Sellers I follow | Button says Following; the seller is in the list; Stop following removes it | `sellers.follow` |
 | J25 | Follow | While following, the seller posts a new ad and staff approve it | Your bell: "<seller>, whom you follow, has a new ad…" | `sellers.follow` + `notifications` |
 | J26 | Saved searches | Saved searches ON: Rename a search; tap "Pause alerts" | New name shows; "Alerts paused" and no email/bell for it until "Turn alerts on" | `saved_searches.manage` |
+| J27 | Close ad | My ads → Close ad → pick "Sold somewhere else" → Close ad | Ad is Sold; "Ended" tab shows "Closed: Sold somewhere else"; admin ad panel shows the reason | `ads.close_reason` |
+| J28 | Close ad | Close another with "Not selling any more", then Renew it | It ends at once (not on the site); Renew puts it back | `ads.close_reason` |
+| J29 | Move to top | A live ad older than 7 days: tap "Move to top"; tap again | It is first in its category list; the second time you see the date it is possible again | `ads.free_bump` |
 
 ## Automatic run
 
