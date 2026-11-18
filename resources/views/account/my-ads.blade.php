@@ -54,6 +54,9 @@
                             <p class="mt-1 rounded-lg bg-red-50 px-2 py-1 text-xs text-red-800">
                                 @if ($ad->rejection_reason){{ __('ads.mine.rejected_reason', ['reason' => $ad->rejection_reason]) }}<br>@endif
                                 {{ __('ads.mine.rejected_help') }}
+                                @if (feature('help.posting_rules') && feature('help.centre'))
+                                    <a href="{{ lroute('help.show', ['article' => 'posting-rules']) }}" class="font-semibold underline">{{ __('ads.mine.posting_rules') }}</a>
+                                @endif
                             </p>
                         @endif
 

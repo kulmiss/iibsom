@@ -205,6 +205,7 @@ class AuthController extends Controller
             'diaspora' => feature('diaspora'),
             'shops' => feature('shops'),
             'boosts' => feature('boosts'),
+            'contact_form' => feature('site.contact_form'),
             'setup_needed' => feature('admin.setup_wizard') && $user->hasPermission('settings.manage') && ! SetupController::completed(),
         ];
     }

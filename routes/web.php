@@ -23,6 +23,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\TestSignInController;
 use App\Http\Controllers\BannerClickController;
 use App\Http\Controllers\BrowseController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ForYouController;
 use App\Http\Controllers\GuestReportController;
 use App\Http\Controllers\HelpController;
@@ -172,6 +173,11 @@ $publicRoutes = function () use ($stateless) {
     Route::post('/ads/{ad}/report-guest', [GuestReportController::class, 'store'])->whereNumber('ad')
         ->middleware(['feature:ads.reports', 'feature:ads.guest_reports', 'throttle:5,10'])
         ->withoutMiddleware($stateless)->name('ad.report_guest');
+    // Contact form (PR 69): the page is cached for guests; sending is stateless like guest reports.
+    Route::get('/contact', [ContactController::class, 'show'])->middleware('feature:site.contact_form')->name('contact');
+    Route::post('/contact', [ContactController::class, 'store'])
+        ->middleware(['feature:site.contact_form', 'throttle:6,10'])
+        ->withoutMiddleware($stateless)->name('contact.send');
     // A fresh time stamp for that form when it opens (the page itself may come from the page cache).
     Route::get('/report-token', [GuestReportController::class, 'token'])
         ->middleware(['feature:ads.reports', 'feature:ads.guest_reports', 'throttle:30,1'])

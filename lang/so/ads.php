@@ -236,6 +236,7 @@ return [
         'sold_on' => 'La iibiyey :date',
         'rejected_reason' => 'Sababta: :reason',
         'rejected_help' => 'Sax xayeysiiska oo keydi. Mar kale ayaan hubin doonnaa.',
+        'posting_rules' => 'Akhri xeerarka dhigista xayeysiiska',
         'saved' => 'Isbeddeladaada waa la keydiyey.',
         'saved_pending' => 'Waa la keydiyey. Kooxdayadu waxay hubisaa isbeddelada ka hor inta aysan muuqan.',
         'marked_sold' => 'Waxaa lagu calaamadeeyey in la iibiyey. Hambalyo!',

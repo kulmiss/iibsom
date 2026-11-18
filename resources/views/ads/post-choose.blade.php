@@ -7,6 +7,9 @@
         <p class="text-sm font-medium text-brand-700">{{ __('ads.post.step', ['step' => 1]) }}</p>
         <h1 class="text-2xl font-bold">{{ __('ads.post.choose') }}</h1>
         <p class="mt-1 text-stone-600">{{ __('ads.post.choose_help') }}</p>
+        @if (feature('help.posting_rules') && feature('help.centre'))
+            <p class="mt-2 text-sm"><a href="{{ lroute('help.show', ['article' => 'posting-rules']) }}" class="inline-flex items-center gap-1 font-medium text-brand-700 underline">{{ icon('shield-check', 'size-4') }} {{ __('ads.mine.posting_rules') }}</a></p>
+        @endif
         @if (feature('help.how_to_sell') && feature('help.centre'))
             <p class="mt-2 text-sm"><a href="{{ lroute('help.show', ['article' => 'how-to-sell']) }}" class="inline-flex items-center gap-1 font-medium text-brand-700 underline">{{ icon('lightbulb', 'size-4') }} {{ __('ads.post.how_to_sell') }}</a></p>
         @endif

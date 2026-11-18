@@ -7,7 +7,7 @@ type BaseNavItem = {
   /** Hidden unless the staff member has this permission. */
   permission?: string
   /** Hidden while this feature switch is OFF. */
-  feature?: 'guide' | 'verified_badge' | 'seller_ratings' | 'shops' | 'boosts'
+  feature?: 'guide' | 'verified_badge' | 'seller_ratings' | 'shops' | 'boosts' | 'contact_form'
 }
 
 type NavLink = BaseNavItem & {

@@ -252,7 +252,7 @@ ads.page.report_send,"Send report","Dir warbixinta","needs native review",resour
 ads.page.report_contact,"Your phone or email (optional)","Taleefankaaga ama iimaylkaaga (ikhtiyaari)","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.report_contact_help,"Only if you want our team to answer you. Only staff see it.","Kaliya haddii aad rabto in kooxdayadu kuu jawaabaan. Shaqaalaha kaliya ayaa arka.","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.report_guest_error,"Please choose a reason. A phone number or email must look right.","Fadlan dooro sabab. Lambarka taleefanka ama iimaylku waa inuu sax yahay.","needs native review",resources/views/ads/show.blade.php,ads-show.png
-ads.page.report_sum,"To stop robots: what is :a + :b?","Si loo joojiyo robots: imisa waa :a + :b?","needs native review","app/Http/Controllers/GuestReportController.php | resources/views/ads/show.blade.php",ads-show.png
+ads.page.report_sum,"To stop robots: what is :a + :b?","Si loo joojiyo robots: imisa waa :a + :b?","needs native review","app/Http/Controllers/GuestReportController.php | resources/views/ads/show.blade.php | resources/views/contact.blade.php",ads-show.png
 ads.page.report_guest_privacy,"We don't keep your IP address or put a cookie on your phone for this.","Uma haynno cinwaankaaga IP mana dhigno cookie taleefankaaga tan awgeed.","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.report_thanks,"Thank you. Our team will check this ad.","Mahadsanid. Kooxdayadu way hubin doontaa xayeysiiskan.","needs native review","app/Http/Controllers/AdPageController.php | resources/views/ads/show.blade.php",ads-show.png
 ads.page.report_sign_in,"Sign in to report","Gal si aad u warbixiso","needs native review",resources/views/ads/show.blade.php,ads-show.png
@@ -303,6 +303,7 @@ ads.mine.ended_on,"Ended :date","Wuxuu dhacay :date","needs native review",resou
 ads.mine.sold_on,"Sold :date","La iibiyey :date","needs native review",resources/views/account/my-ads.blade.php,account-my-ads.png
 ads.mine.rejected_reason,"Why: :reason","Sababta: :reason","needs native review",resources/views/account/my-ads.blade.php,account-my-ads.png
 ads.mine.rejected_help,"Fix the ad and save it. We will check it again.","Sax xayeysiiska oo keydi. Mar kale ayaan hubin doonnaa.","needs native review",resources/views/account/my-ads.blade.php,account-my-ads.png
+ads.mine.posting_rules,"Read our posting rules","Akhri xeerarka dhigista xayeysiiska","needs native review","resources/views/account/my-ads.blade.php | resources/views/ads/post-choose.blade.php","account-my-ads.png | ads-post-choose.png"
 ads.mine.saved,"Your changes are saved.","Isbeddeladaada waa la keydiyey.","needs native review",app/Http/Controllers/Account/MyAdsController.php,
 ads.mine.saved_pending,"Saved. Our team checks the changes before they go live.","Waa la keydiyey. Kooxdayadu waxay hubisaa isbeddelada ka hor inta aysan muuqan.","needs native review",app/Http/Controllers/Account/MyAdsController.php,
 ads.mine.marked_sold,"Marked as sold. Congratulations!","Waxaa lagu calaamadeeyey in la iibiyey. Hambalyo!","needs native review",app/Http/Controllers/Account/MyAdsController.php,
@@ -528,6 +529,25 @@ site.home.no_ads_title,"No ads yet","Weli xayeysiis ma jiro","needs native revie
 site.home.no_ads_text,"Be the first to post an ad. It is free and takes less than a minute.","Noqo qofka ugu horreeya ee xayeysiis dhiga. Waa bilaash, wax ka yar hal daqiiqo ayuu qaataa.","needs native review",resources/views/home.blade.php,home.png
 site.page_updated,"Last updated: :date","Markii ugu dambeysay ee la cusbooneysiiyey: :date","needs native review",resources/views/pages/show.blade.php,pages-safety.png
 site.ads_count,"{0} No ads yet|{1} :count ad|[2,*] :count ads","{0} Weli xayeysiis ma jiro|{1} :count xayeysiis|[2,*] :count xayeysiis","needs native review",resources/views/home.blade.php,home.png
+site.contact.title,"Contact us","Nala soo xiriir","needs native review",resources/views/contact.blade.php,
+site.contact.intro,"A question, a problem or an idea? Write to us. We answer by email, usually within 2 working days.","Su'aal, dhibaato ama fikrad ma qabtaa? Noo qor. Iimayl ayaan ku jawaabnaa, inta badan 2 maalmood oo shaqo gudahood.","needs native review",resources/views/contact.blade.php,
+site.contact.help_first,"Many answers are already in the","Jawaabo badan ayaa horey ugu jira","needs native review",resources/views/contact.blade.php,
+site.contact.help_link,"Help centre","Xarunta caawimaadda","needs native review",resources/views/contact.blade.php,
+site.contact.name,"Your name",Magacaaga,"needs native review",resources/views/contact.blade.php,
+site.contact.email,"Your email",Iimaylkaaga,"needs native review",resources/views/contact.blade.php,
+site.contact.email_help,"We send our answer here.","Jawaabtayada halkan ayaan u diraynaa.","needs native review",resources/views/contact.blade.php,
+site.contact.topic,About,"Ku saabsan","needs native review",resources/views/contact.blade.php,
+site.contact.topics.ad,"An ad (mine or someone else's)","Xayeysiis (kayga ama mid kale)","needs native review","app/Http/Controllers/Admin/ContactMessageController.php | resources/views/contact.blade.php",
+site.contact.topics.account,"My account or signing in","Akoonkayga ama galitaanka","needs native review","app/Http/Controllers/Admin/ContactMessageController.php | resources/views/contact.blade.php",
+site.contact.topics.problem,"Something does not work","Wax aan shaqeynayn","needs native review","app/Http/Controllers/Admin/ContactMessageController.php | resources/views/contact.blade.php",
+site.contact.topics.business,"Business, shops or advertising","Ganacsi, dukaamo ama xayeysiin","needs native review","app/Http/Controllers/Admin/ContactMessageController.php | resources/views/contact.blade.php",
+site.contact.topics.other,"Something else","Wax kale","needs native review","app/Http/Controllers/Admin/ContactMessageController.php | resources/views/contact.blade.php",
+site.contact.message,"Your message",Fariintaada,"needs native review",resources/views/contact.blade.php,
+site.contact.send,Send,Dir,"needs native review",resources/views/contact.blade.php,
+site.contact.thanks,"Thank you. We got your message and will answer by email.","Mahadsanid. Fariintaada waan helnay, iimayl ayaan kugu soo jawaabi doonnaa.","needs native review",resources/views/contact.blade.php,
+site.contact.fix,"Please check the boxes marked in red.","Fadlan hubi sanduuqyada casaanka lagu calaamadeeyey.","needs native review",resources/views/contact.blade.php,
+site.contact.sum_wrong,"That answer is not right. Please try again.","Jawaabtaasi ma saxna. Fadlan isku day mar kale.","needs native review",app/Http/Controllers/ContactController.php,
+site.contact.privacy,"We keep your message for 180 days to answer it. We do not keep your IP address.","Fariintaada waxaan hayn doonnaa 180 maalmood si aan ugu jawaabno. Ciwaanka IP-gaaga ma hayno.","needs native review",resources/views/contact.blade.php,
 site.search.open,Search,Raadi,"needs native review",resources/views/partials/header-search.blade.php,home.png
 site.search.in_category,"Search in :category","Ka raadi :category","needs native review",resources/views/partials/header-search.blade.php,home.png
 site.search.recent,"Your recent searches","Raadintaadii ugu dambeysay","needs native review",resources/views/partials/header.blade.php,home.png
@@ -801,6 +821,62 @@ When you change a live ad, it is checked again before the new version shows.","X
 - **Waa la diiday:** fur **Xayeysiisyadayda** si aad u aragto sababta. Sax xayeysiiska oo kaydi. Mar kale ayaan hubin doonnaa.
 
 Markaad beddesho xayeysiis shaqaynaya, mar kale ayaa la hubiyaa ka hor inta nuqulka cusub uusan muuqan.","needs native review","Help page /help/ad-checking",
+help.posting-rules.title,"Posting rules","Xeerarka dhigista xayeysiiska","needs native review","Help page /help/posting-rules",help-index.png
+help.posting-rules.body,"We check every ad before it goes live. Follow these rules and your ad goes live faster.
+
+## Every ad must
+
+- Be a **real item or service** that you have now, in Somalia.
+- Have **your own photos** of the item. No photos from the internet.
+- Be in the **right category** and the right city.
+- Have a **real price** in US dollars (or tick ""Negotiable"").
+- Be **one ad for one item**. Do not post the same thing again: renew or move the old ad up instead.
+
+## Not allowed
+
+- Weapons, bullets and anything made to hurt people.
+- Drugs, alcohol, medicines that need a doctor's paper.
+- Stolen things, fake or copied brands, fake documents, ID cards or passports.
+- Animals that are protected by law, and wild animals.
+- Adult content, or anything that insults a person, clan or religion.
+- Jobs or ""business offers"" that ask you to pay first.
+- Links to other websites, and asking buyers to pay before they see the item.
+
+## Why an ad is not approved
+
+- **Photos are not clear or not real:** add your own clear photos in daylight.
+- **Wrong category:** choose the category that fits best.
+- **Price is missing or not real:** write the real price.
+- **Duplicate ad:** you already have the same ad. Use that one.
+
+Open **My ads** to see the reason, fix the ad and save it. We check it again. Breaking the rules many times can block your account.","Xayeysiis kasta waan hubinnaa ka hor inta uusan soo bixin. Raac xeerarkan, xayeysiiskaagu si dhakhso ah ayuu u soo baxayaa.
+
+## Xayeysiis kasta waa inuu
+
+- Ahaadaa **alaab ama adeeg dhab ah** oo aad hadda haysato, Soomaaliya gudaheeda.
+- Lahaadaa **sawirro adiga aad qaaday** oo alaabta ah. Sawirro internetka laga soo qaaday ma aha.
+- Ku jiraa **qaybta saxda ah** iyo magaalada saxda ah.
+- Lahaadaa **qiime dhab ah** oo doollar ah (ama calaamadee ""Waa laga wada hadli karaa"").
+- Ahaadaa **xayeysiis keliya oo hal alaab ah**. Mar kale ha dhigin isla wixii: cusboonaysii ama kor u qaad kii hore.
+
+## Lama oggola
+
+- Hub, xabbad iyo wax kasta oo loogu talagalay in dadka lagu dhibaateeyo.
+- Maandooriye, khamri, daawooyin u baahan warqad dhakhtar.
+- Alaab la xaday, summado been ah ama la koobiyeeyey, dukumentiyo been ah, kaarar aqoonsi ama baasaboorro.
+- Xayawaanka sharcigu ilaaliyo iyo xayawaanka duurjoogta ah.
+- Wax anshax-xumo ah, ama wax caayaya qof, qabiil ama diin.
+- Shaqooyin ama ""ganacsi"" kaa doonaya inaad marka hore lacag bixiso.
+- Xiriiriyeyaal bogag kale, iyo in iibsadaha laga codsado inuu lacag bixiyo intuusan arag alaabta.
+
+## Sababta xayeysiis loo diido
+
+- **Sawirradu ma cadda ama ma aha kuwo dhab ah:** ku dar sawirro adiga aad qaaday oo cad, maalin cad.
+- **Qayb khaldan:** dooro qaybta sida fiican ugu habboon.
+- **Qiimaha ma jiro ama ma aha mid dhab ah:** qor qiimaha dhabta ah.
+- **Xayeysiis labanlaaban:** horey ayaad u haysataa isla xayeysiiskaas. Isticmaal kaas.
+
+Fur **Xayeysiisyadayda** si aad u aragto sababta, sax xayeysiiska oo kaydi. Mar kale ayaan hubinaynaa. Haddii xeerarka marar badan la jebiyo, akoonkaaga waa la xiri karaa.","needs native review","Help page /help/posting-rules",
 help.my-ads.title,"Edit, sold, renew or delete","Wax ka beddel, la iibiyey, cusbooneysii ama tirtir","needs native review","Help page /help/my-ads",help-index.png
 help.my-ads.body,"Open **Account** → **My ads**.
 
@@ -827,6 +903,22 @@ Read all our [safety tips](:safety_url).","- Ku kulma meel dadweyne oo mashquul 
 - Qiime aad uga hooseeya sida caadiga ah waa calaamad digniin ah.
 
 Akhri dhammaan [talooyinkayaga ammaanka](:safety_url).","needs native review","Help page /help/buy-safely",
+help.how-to-buy.title,"How to buy on iibsom","Sida wax looga iibsado iibsom","needs native review","Help page /help/how-to-buy",help-index.png
+help.how-to-buy.body,"1. **Find it.** Search, or open a category and use the filters (price, city, condition). Save a search to hear about new ads.
+2. **Look closely.** Read the whole ad and look at every photo. Check the seller: how long they are on iibsom and their stars.
+3. **Ask.** Tap **Show number** to call or WhatsApp, or use the chat if it is on. Ask about anything that is not clear. You can also make an offer.
+4. **Meet and check.** Meet in a busy, public place in daylight. See the item and check that it works before you pay.
+5. **Pay safely.** Pay only when you have the item. Never send money first (EVC Plus, Zaad, Sahal, eDahab) for something you have not seen.
+6. **Something wrong?** Tap **Report this ad**. We check every report.
+
+Read more: [Buy safely](:safety_url).","1. **Hel.** Raadi, ama fur qayb oo isticmaal shaandheynta (qiimaha, magaalada, xaaladda). Kaydi raadin si aad u ogaato xayeysiisyada cusub.
+2. **Si fiican u eeg.** Akhri xayeysiiska oo dhan oo eeg sawir kasta. Hubi iibiyaha: muddada uu joogo iibsom iyo xiddigihiisa.
+3. **Weydii.** Riix **Muuji lambarka** si aad u wacdo ama WhatsApp ugu dirto, ama isticmaal sheekaysiga haddii uu shaqeynayo. Weydii wax kasta oo aan cadayn. Waxaad sidoo kale soo jeedin kartaa qiime.
+4. **Kulan oo hubi.** Ku kulma meel mashquul ah oo dadweyne, maalin cad. Arag alaabta oo hubi inay shaqeyso intaadan lacag bixin.
+5. **Si ammaan ah u bixi.** Lacagta bixi oo keliya marka alaabtu gacantaada ku jirto. Weligaa lacag ha dirin marka hore (EVC Plus, Zaad, Sahal, eDahab) wax aadan arag.
+6. **Wax khaldan ma jiraan?** Riix **Ka warbixi xayeysiiskan**. Warbixin kasta waan hubinnaa.
+
+Wax badan akhri: [Si ammaan ah wax u iibso](:safety_url).","needs native review","Help page /help/how-to-buy",
 help.report-an-ad.title,"Report a bad ad","Ka warbixi xayeysiis xun","needs native review","Help page /help/report-an-ad",help-index.png
 help.report-an-ad.body,"See a scam, a wrong category or something that is not allowed?
 

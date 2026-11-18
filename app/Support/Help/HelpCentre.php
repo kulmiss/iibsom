@@ -61,6 +61,12 @@ class HelpCentre
         if (! feature('help.how_to_sell')) {
             unset($files['how-to-sell']); // switch "help.how_to_sell"
         }
+        if (! feature('help.posting_rules')) {
+            unset($files['posting-rules']); // switch "help.posting_rules" (PR 69)
+        }
+        if (! feature('help.how_to_buy')) {
+            unset($files['how-to-buy']); // switch "help.how_to_buy" (PR 69)
+        }
 
         return $files;
     }

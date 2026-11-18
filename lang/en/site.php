@@ -53,6 +53,30 @@ return [
 
     'ads_count' => '{0} No ads yet|{1} :count ad|[2,*] :count ads',
 
+    'contact' => [
+        'title' => 'Contact us',
+        'intro' => 'A question, a problem or an idea? Write to us. We answer by email, usually within 2 working days.',
+        'help_first' => 'Many answers are already in the',
+        'help_link' => 'Help centre',
+        'name' => 'Your name',
+        'email' => 'Your email',
+        'email_help' => 'We send our answer here.',
+        'topic' => 'About',
+        'topics' => [
+            'ad' => 'An ad (mine or someone else\'s)',
+            'account' => 'My account or signing in',
+            'problem' => 'Something does not work',
+            'business' => 'Business, shops or advertising',
+            'other' => 'Something else',
+        ],
+        'message' => 'Your message',
+        'send' => 'Send',
+        'thanks' => 'Thank you. We got your message and will answer by email.',
+        'fix' => 'Please check the boxes marked in red.',
+        'sum_wrong' => 'That answer is not right. Please try again.',
+        'privacy' => 'We keep your message for 180 days to answer it. We do not keep your IP address.',
+    ],
+
     'search' => [
         'open' => 'Search',
         'in_category' => 'Search in :category',

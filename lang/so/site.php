@@ -55,6 +55,30 @@ return [
 
     'ads_count' => '{0} Weli xayeysiis ma jiro|{1} :count xayeysiis|[2,*] :count xayeysiis',
 
+    'contact' => [
+        'title' => 'Nala soo xiriir',
+        'intro' => 'Su\'aal, dhibaato ama fikrad ma qabtaa? Noo qor. Iimayl ayaan ku jawaabnaa, inta badan 2 maalmood oo shaqo gudahood.',
+        'help_first' => 'Jawaabo badan ayaa horey ugu jira',
+        'help_link' => 'Xarunta caawimaadda',
+        'name' => 'Magacaaga',
+        'email' => 'Iimaylkaaga',
+        'email_help' => 'Jawaabtayada halkan ayaan u diraynaa.',
+        'topic' => 'Ku saabsan',
+        'topics' => [
+            'ad' => 'Xayeysiis (kayga ama mid kale)',
+            'account' => 'Akoonkayga ama galitaanka',
+            'problem' => 'Wax aan shaqeynayn',
+            'business' => 'Ganacsi, dukaamo ama xayeysiin',
+            'other' => 'Wax kale',
+        ],
+        'message' => 'Fariintaada',
+        'send' => 'Dir',
+        'thanks' => 'Mahadsanid. Fariintaada waan helnay, iimayl ayaan kugu soo jawaabi doonnaa.',
+        'fix' => 'Fadlan hubi sanduuqyada casaanka lagu calaamadeeyey.',
+        'sum_wrong' => 'Jawaabtaasi ma saxna. Fadlan isku day mar kale.',
+        'privacy' => 'Fariintaada waxaan hayn doonnaa 180 maalmood si aan ugu jawaabno. Ciwaanka IP-gaaga ma hayno.',
+    ],
+
     'search' => [
         'open' => 'Raadi',
         'in_category' => 'Ka raadi :category',

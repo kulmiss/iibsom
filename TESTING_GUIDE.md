@@ -84,6 +84,9 @@ The same rows run automatically in a real browser (see "Automatic run" below).
 | J27 | Close ad | My ads → Close ad → pick "Sold somewhere else" → Close ad | Ad is Sold; "Ended" tab shows "Closed: Sold somewhere else"; admin ad panel shows the reason | `ads.close_reason` |
 | J28 | Close ad | Close another with "Not selling any more", then Renew it | It ends at once (not on the site); Renew puts it back | `ads.close_reason` |
 | J29 | Move to top | A live ad older than 7 days: tap "Move to top"; tap again | It is first in its category list; the second time you see the date it is possible again | `ads.free_bump` |
+| J30 | Help | Help → "Posting rules" and "How to buy on iibsom"; also in Somali | Both articles open; a not-approved ad in My ads has "Read our posting rules" | `help.posting_rules`, `help.how_to_buy` |
+| J31 | Contact | Footer → Contact us; send once with a too short message, then a real one | First: red box, what you typed is still there. Then: "Thank you…" | `site.contact_form` |
+| J32 | Contact (admin) | /admin as Support → Messages → "Answer by email", then Done | Your email program opens to the customer; the message moves to Done (Moderators do not see Messages) | `site.contact_form` |
 
 ## Automatic run
 
