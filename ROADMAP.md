@@ -27,6 +27,10 @@ Google sign-in, post an ad, browse + search, ad page, My Ads, safety (reports, a
 - More regions (other countries) via region switches
 
 ## Ideas
+- New demo photos that match every demo ad (free licence), so fewer cards show "No photo" (PR 79: the workspace could not download new photos).
+- Touch-drag to reorder photos on phones (PR 78 kept the ‹ › buttons).
+- An "updated on" date on ad pages (needs a separate edit date).
+- One SVG sprite for icons, to make big pages (home) smaller before compression.
 - Footer "Our apps" column (App Store / Google Play badges) once there is a phone app.
 - Dark mode for the public site (the admin has one); the footer is already dark.
 - Brand pages are the slowest list (≈60 ms at 100k ads) because the brand sits in each ad's JSON fields: a generated column + index would make them ≈20 ms (only needed with many more ads).

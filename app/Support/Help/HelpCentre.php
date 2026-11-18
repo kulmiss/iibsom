@@ -67,6 +67,9 @@ class HelpCentre
         if (! feature('help.how_to_buy')) {
             unset($files['how-to-buy']); // switch "help.how_to_buy" (PR 69)
         }
+        if (! feature('help.how_we_keep_safe')) {
+            unset($files['how-we-keep-you-safe']); // switch "help.how_we_keep_safe" (PR 79)
+        }
 
         return $files;
     }
@@ -80,6 +83,9 @@ class HelpCentre
             ':renew_days' => (string) setting('ads.renew_days_before'),
             ':safety_url' => lroute('page', ['slug' => 'safety']),
             ':help_url' => lroute('help'),
+            // Said only while it is true (PR 79): every new and changed ad waits for a person.
+            ':checked_line' => feature('ads.approval') && ! feature('ads.trusted_sellers')
+                ? __('site.safe_help.checked_all') : __('site.safe_help.checked_some'),
         ]);
     }
 }

@@ -90,6 +90,12 @@ return [
 
     'ads_count' => '{0} No ads yet|{1} :count ad|[2,*] :count ads',
 
+    // Help article "How we keep you safe" (PR 79): the first line, true for the current switches.
+    'safe_help' => [
+        'checked_all' => 'People check every ad.** Our team checks every new and changed ad before it goes live.',
+        'checked_some' => 'People check ads.** Our team checks new ads, reports and anything that looks wrong.',
+    ],
+
     'theme' => ['label' => 'Light or dark', 'auto' => 'Auto', 'light' => 'Light', 'dark' => 'Dark'],
 
     'contact' => [
@@ -132,6 +138,7 @@ return [
         'privacy' => 'Privacy',
         'help' => 'Help',
         'safety' => 'Safety tips',
+        'keep_safe' => 'How we keep you safe',
         'rights' => 'All rights reserved.',
         'col_about' => 'About',
         'col_support' => 'Support',

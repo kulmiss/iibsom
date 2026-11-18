@@ -33,6 +33,17 @@ return [
         'saved' => 'Your profile is saved.',
     ],
 
+    'dash' => [
+        'title' => 'Your numbers',
+        'live' => 'Live ads',
+        'waiting' => 'Waiting for a check',
+        'views' => 'Views (30 days)',
+        'contacts' => 'Calls and WhatsApp (30 days)',
+        'unread' => 'Unread messages',
+        'saved' => 'Saved ads',
+        'followers' => 'Followers',
+    ],
+
     'account' => [
         'title' => 'My account',
         'edit_profile' => 'Edit profile',

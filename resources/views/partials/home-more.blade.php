@@ -113,9 +113,11 @@
         <p class="mt-4 flex gap-2 rounded-xl bg-white p-3 text-sm text-stone-700 ring-1 ring-brand-100">
             {{ icon('shield-check', 'size-5 shrink-0 text-emerald-600') }}
             <span>{{ __('site.home.safety_promise') }}
-                @feature('site.safety_box')
+                @if (feature('help.centre') && feature('help.how_we_keep_safe'))
+                    <a href="{{ lroute('help.show', ['article' => 'how-we-keep-you-safe']) }}" class="font-medium text-brand-700 underline">{{ __('site.footer.keep_safe') }}</a>
+                @elseif (feature('site.safety_box'))
                     <a href="{{ lroute('page', ['slug' => 'safety']) }}" class="font-medium text-brand-700 underline">{{ __('site.home.safety_tips') }}</a>
-                @endfeature
+                @endif
             </span>
         </p>
     </section>

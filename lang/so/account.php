@@ -35,6 +35,17 @@ return [
         'saved' => 'Akoonkaaga waa la keydiyey.',
     ],
 
+    'dash' => [
+        'title' => 'Tirooyinkaaga',
+        'live' => 'Xayeysiisyo shaqeynaya',
+        'waiting' => 'Sugaya hubin',
+        'views' => 'Daawasho (30 maalmood)',
+        'contacts' => 'Wicitaan iyo WhatsApp (30 maalmood)',
+        'unread' => 'Fariimo aan la akhrin',
+        'saved' => 'Xayeysiisyo la kaydiyey',
+        'followers' => 'La-socdayaal',
+    ],
+
     'account' => [
         'title' => 'Akoonkayga',
         'edit_profile' => 'Wax ka beddel akoonka',

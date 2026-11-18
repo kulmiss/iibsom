@@ -105,6 +105,9 @@ The same rows run automatically in a real browser (see "Automatic run" below).
 | J48 | Helpful no results | Cars → New + Price from 90,000 | "Try without one of these" buttons (each drops one) and "Latest in Cars" | `search.rich_empty` |
 | J49 | Category intro | Open Cars (no filters), EN + SO | One short line: how many ads, lowest–highest price; gone when a filter is used | `seo.intro` |
 | J50 | Post an ad, nicer | Post → type "taleefan" / "car" in the search; pick Cars; read the tips; type a title and price, tick Negotiable, add a photo; post | Steps show where you are; the search shows only matching categories; the preview card changes as you type; the Post button never covers a field; the thank-you page explains Move to top, and Share shows only when the ad is live | `post.*` |
+| J51 | My account dashboard | Sign in as a seller with ads; open My account (EN + SO) | Live / waiting ads, views and calls of 30 days, unread messages, saved, followers — each opens its page; Post an ad button | `account.dashboard` |
+| J52 | Seller page | Open a seller with ads in 2+ categories; tap a category chip; Cheapest; Most expensive | Cover band; only that category's ads; order changes; the header still says all their ads | `sellers.page_plus` |
+| J53 | How we keep you safe | Footer → Support → How we keep you safe (EN + SO) | The article opens; the home safety promise links to it | `help.how_we_keep_safe` |
 
 ## Automatic run
 

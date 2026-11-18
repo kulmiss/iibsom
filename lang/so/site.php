@@ -92,6 +92,12 @@ return [
 
     'ads_count' => '{0} Weli xayeysiis ma jiro|{1} :count xayeysiis|[2,*] :count xayeysiis',
 
+    // Help article "How we keep you safe" (PR 79): the first line, true for the current switches.
+    'safe_help' => [
+        'checked_all' => 'Dad ayaa hubiya xayeysiis kasta.** Kooxdayadu waxay hubisaa xayeysiis kasta oo cusub ama la beddelay ka hor inta uusan muuqan.',
+        'checked_some' => 'Dad ayaa hubiya xayeysiisyada.** Kooxdayadu waxay hubisaa xayeysiisyada cusub, warbixinnada iyo wax kasta oo u eg mid khaldan.',
+    ],
+
     'theme' => ['label' => 'Iftiin ama mugdi', 'auto' => 'Toos', 'light' => 'Iftiin', 'dark' => 'Mugdi'],
 
     'contact' => [
@@ -134,6 +140,7 @@ return [
         'privacy' => 'Qarsoodiga',
         'help' => 'Caawimaad',
         'safety' => 'Talooyin ammaan',
+        'keep_safe' => 'Sida aan kuu ilaalino',
         'rights' => 'Xuquuqda oo dhan way dhowran tahay.',
         'col_about' => 'Nagu saabsan',
         'col_support' => 'Caawimaad',

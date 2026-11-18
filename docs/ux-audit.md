@@ -13,10 +13,10 @@ Scores are out of 10: **Look / Ease / Trust**. "After" is filled in when the PR 
 | Search (no results) | Plain dashed box with two lines | Drawing, "Clear filters", "Post an ad", popular in this category | 4 / 4 / 5 | 8 / 8 / 7 | 74, 77 |
 | Ad cards | Rows do not line up (one- vs two-line titles, optional New/Used line) | Same height and same lines in every card; nicer "no photo" look | 6 / 7 / 6 | 8 / 8 / 7 | 74 |
 | Ad page | On phones the contact buttons come after the long description; no thumbnails; plain share | Sticky price + contact bar on phones, thumbnails + full-screen swipe/zoom, key-details icons, "read more", "more from this seller", recently viewed | 6 / 6 / 6 | 8 / 9 / 8 | 76 |
-| Seller page | Plain list of ads | Ratings with reviews, contact, filters on the seller's ads, cover | 5 / 6 / 5 | | 79 |
+| Seller page | Plain list of ads | Ratings with reviews, contact, filters on the seller's ads, cover | 5 / 6 / 5 | 8 / 8 / 8 | 79 |
 | Post an ad | On phones the sticky "Post" button covers fields; no progress or tips beside the form | Step progress, tips, price help, live card preview, share on success | 6 / 6 / 6 | 8 / 9 / 8 | 78 |
-| My ads | Many stacked buttons; "Free move to top again on…" looks like a button but is only information; "+POST AN AD" in capitals unlike all other buttons | Tidy actions, a calm info line, one button style | 5 / 6 / 7 | | 74, 79 |
-| My account | Plain list of links | Small dashboard: stats, saved, searches, following, chats | 5 / 6 / 6 | | 79 |
+| My ads | Many stacked buttons; "Free move to top again on…" looks like a button but is only information; "+POST AN AD" in capitals unlike all other buttons | Tidy actions, a calm info line, one button style | 5 / 6 / 7 | 8 / 8 / 8 | 74, 79 |
+| My account | Plain list of links | Small dashboard: stats, saved, searches, following, chats | 5 / 6 / 6 | 8 / 9 / 8 | 79 |
 | Saved / searches / following (empty) | Plain dashed box | Friendly drawing + one action | 4 / 5 / 6 | 8 / 8 / 7 | 74 |
 | 404 and error pages | Plain text and one button | Drawing, a search box, way home; error pages also in dark | 4 / 5 / 5 | 8 / 8 / 7 | 74 |
 | Whole site | No dark mode; buttons in two styles (capitals and normal) | Dark mode that follows the phone + a switch; one button style; one focus ring; grey loading cards | 6 / 7 / 6 | 8 / 8 / 7 | 74 |
@@ -59,6 +59,9 @@ kept by the QA scripts and can be made again with `audit/capture.py`.
 | 78 | Post: category search (SO) | ![](ux-audit/after/post-choose-so-phone.webp) |
 | 78 | Post: steps, tips, live preview (EN, dark) | ![](ux-audit/after/post-form-en-dark-phone.webp) |
 | 78 | After posting: share + move to top (SO, dark) | ![](ux-audit/after/post-done-so-dark-phone.webp) |
+| 79 | My account dashboard (SO) | ![](ux-audit/after/account-so-phone.webp) |
+| 79 | Seller page (EN, dark) | ![](ux-audit/after/seller-en-dark-phone.webp) |
+| 79 | How we keep you safe (SO) | ![](ux-audit/after/keep-safe-so-phone.webp) |
 
 ## Plan (one small PR each, stacked)
 
