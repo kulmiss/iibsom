@@ -85,8 +85,8 @@
                         </ul>
                     </nav>
                 @elseif ($category->parent_id !== null && count($subRows) > 1)
-                    <nav class="-mx-4 mt-3 overflow-x-auto px-4 pb-1" aria-label="{{ __('ads.browse.more_in', ['category' => translated($mainRow['name'])]) }}">
-                        <ul class="flex gap-2">
+                    <nav class="-mx-4 mt-3 overflow-x-auto px-4 pb-1 lg:mx-0 lg:overflow-visible lg:px-0" aria-label="{{ __('ads.browse.more_in', ['category' => translated($mainRow['name'])]) }}">
+                        <ul class="flex gap-2 lg:flex-wrap">
                             <li class="shrink-0"><a href="{{ lroute('browse.category', array_filter(['category' => $mainRow['slug'], 'city' => $city?->slug])) }}" class="btn-chip">{{ __('ads.browse.all_in', ['category' => translated($mainRow['name'])]) }}</a></li>
                             @foreach ($subRows as $sub)
                                 <li class="shrink-0">
@@ -107,8 +107,8 @@
 
         {{-- Links Google (and people) can follow: popular brands here, the same category in other cities. --}}
         @if ($brandLinks)
-            <nav class="-mx-4 mt-3 overflow-x-auto px-4" aria-label="{{ __('ads.browse.popular_brands') }}">
-                <ul class="flex gap-2">
+            <nav class="-mx-4 mt-3 overflow-x-auto px-4 lg:mx-0 lg:overflow-visible lg:px-0" aria-label="{{ __('ads.browse.popular_brands') }}">
+                <ul class="flex gap-2 lg:flex-wrap">
                     @foreach ($brandLinks as $b)
                         <li class="shrink-0"><a href="{{ lroute('browse.brand', ['category' => $category->slug, 'city' => $city->slug, 'brand' => $b['value']]) }}" class="btn-chip">{{ $b['label'] }} <span class="text-stone-500">{{ $b['count'] }}</span></a></li>
                     @endforeach
@@ -153,10 +153,14 @@
                 @endif
 
                 @if ($results->isEmpty())
-                    <div class="rounded-xl border border-dashed border-stone-300 bg-white p-10 text-center">
-                        <p class="font-semibold">{{ __('ads.browse.nothing_title') }}</p>
-                        <p class="mt-1 text-sm text-stone-600">{{ __('ads.browse.nothing_text') }}</p>
-                    </div>
+                    <x-empty-state icon="search" :title="__('ads.browse.nothing_title')" :text="__('ads.browse.nothing_text')">
+                        @if (request()->except('page') !== [])
+                            <a href="{{ url()->current() }}" class="btn-primary">{{ __('ads.browse.clear') }}</a>
+                        @endif
+                        @feature('ads.posting')
+                            <a href="{{ lroute('post') }}" class="btn-chip">{{ icon('plus', 'size-4') }} {{ __('site.nav.post_ad') }}</a>
+                        @endfeature
+                    </x-empty-state>
                 @else
                     <div class="group/results grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4 data-[view=list]:grid-cols-1" data-results data-view="grid">
                         @foreach ($results as $ad)

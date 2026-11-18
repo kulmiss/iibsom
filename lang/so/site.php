@@ -13,6 +13,7 @@ return [
         'post_ad' => 'Dhig xayeysiis',
         'sell' => 'iibi', // lowercase: a capital I looks like l
         'saved' => 'Xayeysiisyada la keydiyey',
+        'saved_short' => 'Kaydsan', // bottom bar on phones: one short word
         'messages' => 'Fariimaha',
         'alerts' => 'Ogeysiisyo',
         'my_account' => 'Akoonkayga',
@@ -54,6 +55,8 @@ return [
     'page_updated' => 'Markii ugu dambeysay ee la cusbooneysiiyey: :date',
 
     'ads_count' => '{0} Weli xayeysiis ma jiro|{1} :count xayeysiis|[2,*] :count xayeysiis',
+
+    'theme' => ['label' => 'Iftiin ama mugdi', 'auto' => 'Toos', 'light' => 'Iftiin', 'dark' => 'Mugdi'],
 
     'contact' => [
         'title' => 'Nala soo xiriir',

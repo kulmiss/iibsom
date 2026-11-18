@@ -49,7 +49,7 @@ class LayoutTest extends TestCase
         $html = $this->get('/')->getContent();
         $bar = substr($html, strpos($html, 'aria-label="Bottom"'));
 
-        $this->assertStringContainsString('>Saved ads<', $bar);
+        $this->assertStringContainsString('>Saved<', $bar);
         $this->assertStringNotContainsString('>Profile<', $bar);
     }
 

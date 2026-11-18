@@ -93,6 +93,9 @@ The same rows run automatically in a real browser (see "Automatic run" below).
 | J36 | No drugs (old ads) | `php artisan iibsom:drugs:check --dry-run`, then without `--dry-run` | Lists matching live ads; then they wait for approval with the Drugs mark (nothing deleted). Approve = mark goes away | `safety.no_drugs` |
 | J37 | Chat drugs | Chat ON: in a chat write "Do you have fresh khat?" (Somali: "Ma haysaa qaadka cusub?"), Send; then "Can we chat tomorrow?" | First: not sent, kind note above the box, your text stays. Second: sent. "Iska qaad", "Qatar" are fine | `safety.no_drugs` + `chat` |
 | J38 | Chat drugs (admin) | Admin → Users → State → "Drugs (chat)"; open the person; "Clear mark" | The sender has a red Drugs badge and the word; their ads show under Ads → Drugs; Clear mark removes it (Support cannot) | `safety.no_drugs` |
+| J39 | Dark mode | Phone set to dark (or footer → Dark); open home, a category, an ad, Post an ad, My ads, Contact, a wrong address | Everything dark and easy to read (no white boxes, footer text readable); Auto follows the phone; Light keeps it light after reload | `site.dark_mode` |
+| J40 | Empty states | Search for `zzqqxx`; open Saved ads / Saved searches / Sellers I follow with none; My ads with no ads | A small drawing, one line of help and one action (Clear filters / Post an ad / All ads) | — |
+| J41 | Friendly 404 | Open `/no-such-page` in English and Somali | Drawing, search box that works, Back to home | — |
 
 ## Automatic run
 

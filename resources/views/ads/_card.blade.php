@@ -29,12 +29,13 @@
                      width="400" height="300" class="size-full object-cover">
             </picture>
         @else
-            <span class="flex size-full items-center justify-center text-stone-400">{{ icon($ad->category->icon ?? 'tag', 'size-10') }}</span>
+            {{-- No photo: a calm tinted box with the category icon, so the grid still looks tidy. --}}
+            <span class="flex size-full flex-col items-center justify-center gap-1.5 bg-gradient-to-br from-brand-50 to-stone-100 text-brand-300" data-no-photo>{{ icon($ad->category->icon ?? 'tag', 'size-10') }}<span class="text-xs font-medium text-stone-500">{{ __('ads.page.no_photo') }}</span></span>
         @endif
     </div>
     <div class="flex min-w-0 flex-1 flex-col gap-0.5 p-2.5">
         <p class="font-bold text-brand-800">{{ $ad->priceLabel() ?: __('ads.page.negotiable') }}</p>
-        <p class="line-clamp-2 text-sm leading-snug group-hover:underline">{{ $ad->title }}</p>
+        <p class="line-clamp-2 min-h-[2lh] text-sm leading-snug group-hover:underline group-data-[view=list]/results:min-h-0" data-card-title>{{ $ad->title }}</p>
         @if ($details && in_array($ad->condition, ['new', 'used'], true))
             <p class="text-xs font-medium text-stone-600">{{ __('ads.form.'.$ad->condition) }}</p>
         @endif

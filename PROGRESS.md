@@ -1,13 +1,25 @@
-# Progress — Jiji round (2026-11-18)
+# Progress — Drugs + visitor side (2026-11-18)
 
-📍 Now: Job 1 done — PR 73 (drug check in chat); next Job 2 audit
-📊 Progress: ▓▓▓▓▓▓▓▓▓▓ 100% done
-✅ Just finished: PR 73 — chat drug check, sender marked for review, admin "Drugs (chat)" filter
-⏭️ Next: Job 2 step 1 — honest audit of every visitor page (docs/ux-audit.md)
+📍 Now: Step 3 of 10 — PR 74: audit + design system
+📊 Progress: ▓▓▓░░░░░░░ 30% done / 70% left
+✅ Just finished: audit (docs/ux-audit.md), dark mode, one button style, tidy cards, empty states, friendly 404
+⏭️ Next: PR 75 — rich home page
 ⚠️ Waiting for the owner: nothing (merge at the end)
-⏱️ Time left (estimate): none
+⏱️ Time left (estimate): many hours (7 PRs)
 
-## Steps
+## Steps (this job)
+- [x] 1. PR 72 + 73 — no drugs in ads and in chat
+- [x] 2. Honest audit of every visitor page (docs/ux-audit.md)
+- [x] 3. PR 74 — design system: dark mode, buttons, cards, empty states, 404
+- [ ] 4. PR 75 — home: promise, popular searches, cities, how it works, trust, recently viewed, install
+- [ ] 5. PR 76 — ad page: sticky contact bar, thumbnails, key details, more from seller
+- [ ] 6. PR 77 — category + search: quick filters, sort, rich empty results, intro text
+- [ ] 7. PR 78 — post an ad: progress, tips, live preview, share on success
+- [ ] 8. PR 79 — account dashboard, seller page, "How we keep you safe", demo data
+- [ ] 9. PR 80 — speed, accessibility, full re-run from a clean start
+- [ ] 10. Final report
+
+## Earlier round (Jiji)
 - [x] 1. Jiji study table (docs/jiji-study.md: 137 features, 27 to build)
 - [x] 2. PR 63 — search suggestions, recent searches, search in the header
 - [x] 3. PR 64 — Save on cards, New/Used + list text, Show more, Popular now, demo views

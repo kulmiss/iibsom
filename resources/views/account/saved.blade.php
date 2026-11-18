@@ -7,10 +7,9 @@
         <h1 class="text-2xl font-bold">{{ __('ads.saved.title') }}</h1>
 
         @if ($ads->isEmpty())
-            <div class="mt-6 rounded-xl border border-dashed border-stone-300 bg-white p-8 text-center text-stone-600">
-                {{ icon('bookmark', 'mx-auto size-8 text-stone-400') }}
-                <p class="mt-2">{{ __('ads.saved.empty') }}</p>
-            </div>
+            <x-empty-state class="mt-6" icon="bookmark" :title="__('ads.saved.empty')">
+                <a href="{{ lroute('home') }}" class="btn-primary">{{ __('ads.browse.all_ads') }}</a>
+            </x-empty-state>
         @else
             <div class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
                 @foreach ($ads as $ad)

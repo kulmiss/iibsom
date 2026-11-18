@@ -8,10 +8,9 @@
         <p class="mt-1 text-stone-600">{{ __('ads.searches.intro') }}</p>
 
         @if ($searches->isEmpty())
-            <div class="mt-6 rounded-xl border border-dashed border-stone-300 bg-white p-8 text-center text-stone-600">
-                {{ icon('bell', 'mx-auto size-8 text-stone-400') }}
-                <p class="mt-2">{{ __('ads.searches.empty') }}</p>
-            </div>
+            <x-empty-state class="mt-6" icon="bell" :title="__('ads.searches.empty')">
+                <a href="{{ lroute('home') }}" class="btn-primary">{{ __('ads.browse.all_ads') }}</a>
+            </x-empty-state>
         @else
             <ul class="mt-6 divide-y divide-stone-100 overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-stone-200">
                 @foreach ($searches as $search)

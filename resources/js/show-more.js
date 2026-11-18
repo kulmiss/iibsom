@@ -25,6 +25,15 @@ function bind() {
             const url = link.href;
             button.disabled = true;
             button.textContent = button.dataset.loading;
+            // Grey placeholder cards while the next page loads (same size as real cards, so nothing jumps).
+            const ghosts = Array.from({ length: 4 }, () => {
+                const g = document.createElement('div');
+                g.className = 'skeleton-card';
+                g.setAttribute('aria-hidden', 'true');
+                g.dataset.skeleton = '';
+                return g;
+            });
+            list.append(...ghosts);
             try {
                 const res = await fetch(url, { headers: { Accept: 'text/html' }, credentials: 'same-origin' });
                 if (!res.ok) throw new Error(String(res.status));
@@ -45,6 +54,7 @@ function bind() {
                 window.location.assign(url); // fall back to the normal next page
                 return;
             } finally {
+                ghosts.forEach((g) => g.remove());
                 button.disabled = false;
                 button.textContent = button.dataset.text;
             }

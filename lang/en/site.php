@@ -11,6 +11,7 @@ return [
         'post_ad' => 'Post an ad',
         'sell' => 'Sell',
         'saved' => 'Saved ads',
+        'saved_short' => 'Saved', // bottom bar on phones: one short word
         'messages' => 'Messages',
         'alerts' => 'Alerts',
         'my_account' => 'My account',
@@ -52,6 +53,8 @@ return [
     'page_updated' => 'Last updated: :date',
 
     'ads_count' => '{0} No ads yet|{1} :count ad|[2,*] :count ads',
+
+    'theme' => ['label' => 'Light or dark', 'auto' => 'Auto', 'light' => 'Light', 'dark' => 'Dark'],
 
     'contact' => [
         'title' => 'Contact us',

@@ -90,6 +90,7 @@
                             @endforeach
                         </nav>
                     @endif
+                    @include('partials.theme-switch')
                     <p>© {{ now()->year }} {{ \Illuminate\Support\Str::lower(config('app.name')) }}. {{ __('site.footer.rights') }}</p>
                 </div>
             </div>

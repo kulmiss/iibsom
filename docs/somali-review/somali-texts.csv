@@ -170,7 +170,7 @@ ads.photos.move_left,"Move left","U dhaqaaji bidix","needs native review",resour
 ads.photos.move_right,"Move right","U dhaqaaji midig","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
 ads.photos.cover,Cover,"Kan hore","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
 ads.photos.limit,"You can add up to :max photos.","Waxaad ku dari kartaa ilaa :max sawir.","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
-ads.browse.all_ads,"All ads","Dhammaan xayeysiisyada","needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/index.blade.php | resources/views/home.blade.php","browse-index.png | home.png"
+ads.browse.all_ads,"All ads","Dhammaan xayeysiisyada","needs native review","resources/views/account/following.blade.php | resources/views/account/saved.blade.php | resources/views/account/searches.blade.php | resources/views/browse/_filters.blade.php | resources/views/browse/index.blade.php | resources/views/home.blade.php","browse-index.png | home.png"
 ads.browse.show_more,"Show more ads","Tus xayeysiisyo kale","needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/index.blade.php",browse-index.png
 ads.browse.loading,Loading…,"Waa la soo rarayaa…","needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/index.blade.php",browse-index.png
 ads.browse.loaded,"{1} 1 more ad shown|[2,*] :count more ads shown","{1} 1 xayeysiis oo kale ayaa la tusay|[2,*] :count xayeysiis oo kale ayaa la tusay","needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/index.blade.php",browse-index.png
@@ -206,7 +206,7 @@ ads.browse.in_city,"in :city","gudaha :city","needs native review","resources/vi
 ads.browse.search_for,"Results for “:q”","Natiijooyinka “:q”","needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/index.blade.php",browse-index.png
 ads.browse.filters,Filters,Shaandheyn,"needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/index.blade.php",browse-index.png
 ads.browse.apply,"Show ads","Muuji xayeysiisyada","needs native review",resources/views/browse/_filters.blade.php,
-ads.browse.clear,"Clear filters","Tirtir shaandheynta","needs native review",resources/views/browse/_filters.blade.php,
+ads.browse.clear,"Clear filters","Tirtir shaandheynta","needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/index.blade.php",browse-index.png
 ads.browse.category,Category,Qaybta,"needs native review",resources/views/browse/_filters.blade.php,
 ads.browse.all_categories,"All categories","Qaybaha oo dhan","needs native review",resources/views/browse/_filters.blade.php,
 ads.browse.city,City,Magaalada,"needs native review",resources/views/browse/_filters.blade.php,
@@ -266,7 +266,7 @@ ads.page.similar,"Similar ads","Xayeysiisyo la mid ah","needs native review",res
 ads.page.not_live,"Only you can see this ad. Status: :status","Adiga oo keliya ayaa arki kara xayeysiiskan. Xaaladda: :status","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.sold,"This item is sold.","Alaabtan waa la iibiyey.","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.photo,"Photo :n of :total","Sawirka :n ee :total","needs native review",resources/views/ads/show.blade.php,ads-show.png
-ads.page.no_photo,"No photo","Sawir ma leh","needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.page.no_photo,"No photo","Sawir ma leh","needs native review","resources/views/ads/_card.blade.php | resources/views/ads/show.blade.php","browse-index.png | ads-show.png"
 ads.page.negotiable,Negotiable,"Waa laga wada hadli karaa","needs native review","resources/views/ads/_card.blade.php | resources/views/ads/show.blade.php","browse-index.png | ads-show.png"
 ads.safety.bot,"Something went wrong. Please try again.","Wax baa khaldamay. Fadlan mar kale isku day.","needs native review",app/Support/Safety/SpamGuard.php,
 ads.safety.links,"Please remove web links. Buyers contact you by phone or WhatsApp.","Fadlan ka saar linkiyada internetka. Iibsadayaashu waxay kula soo xiriiraan taleefan ama WhatsApp.","needs native review",app/Support/Safety/SpamGuard.php,
@@ -498,9 +498,10 @@ sellers.see_ads,"See ads","Arag xayeysiisyada","needs native review",resources/v
 sellers.unfollow,"Stop following","Jooji la socodka","needs native review",resources/views/account/following.blade.php,
 site.meta_description,"Buy and sell cars, houses, land, phones, livestock, services and jobs in Somalia. Free and easy.","Ka iibso oo iibi baabuur, guryo, dhul, taleefanno, xoolo, adeegyo iyo shaqooyin Soomaaliya. Bilaash oo fudud.","needs native review",resources/views/layouts/app.blade.php,home.png
 site.nav.home,Home,"Bogga hore","needs native review","resources/views/ads/show.blade.php | resources/views/partials/bottom-nav.blade.php | resources/views/partials/header.blade.php","ads-show.png | home.png"
-site.nav.post_ad,"Post an ad","Dhig xayeysiis","needs native review",resources/views/home.blade.php,home.png
+site.nav.post_ad,"Post an ad","Dhig xayeysiis","needs native review","resources/views/account/my-ads.blade.php | resources/views/browse/index.blade.php | resources/views/home.blade.php","account-my-ads.png | browse-index.png | home.png"
 site.nav.sell,Sell,iibi,"needs native review","resources/views/partials/bottom-nav.blade.php | resources/views/partials/header.blade.php",home.png
-site.nav.saved,"Saved ads","Xayeysiisyada la keydiyey","needs native review","resources/views/partials/bottom-nav.blade.php | resources/views/partials/header.blade.php",home.png
+site.nav.saved,"Saved ads","Xayeysiisyada la keydiyey","needs native review",resources/views/partials/header.blade.php,home.png
+site.nav.saved_short,Saved,Kaydsan,"needs native review",resources/views/partials/bottom-nav.blade.php,home.png
 site.nav.messages,Messages,Fariimaha,"needs native review","resources/views/partials/bottom-nav.blade.php | resources/views/partials/header.blade.php",home.png
 site.nav.alerts,Alerts,Ogeysiisyo,"needs native review",resources/views/partials/header.blade.php,home.png
 site.nav.my_account,"My account",Akoonkayga,"needs native review",resources/views/partials/header.blade.php,home.png
@@ -511,7 +512,7 @@ site.nav.skip_to_content,"Skip to content","U gudub nuxurka","needs native revie
 site.social.line,":price · :city · :category",":price · :city · :category","needs native review",app/Support/Social/SocialPosts.php,
 site.home.title,"Buy and sell in Somalia","Ka iibso oo iibi Soomaaliya","needs native review","resources/views/home.blade.php | resources/views/layouts/app.blade.php",home.png
 site.home.heading,"What are you looking for?","Maxaad raadinaysaa?","needs native review",resources/views/home.blade.php,home.png
-site.home.search_placeholder,"I am looking for...","Waxaan raadinayaa...","needs native review","resources/views/home.blade.php | resources/views/partials/header-search.blade.php",home.png
+site.home.search_placeholder,"I am looking for...","Waxaan raadinayaa...","needs native review","resources/views/errors/404.blade.php | resources/views/home.blade.php | resources/views/partials/header-search.blade.php","errors-404.png | home.png"
 site.home.search_button,Search,Raadi,"needs native review","resources/views/browse/_filters.blade.php | resources/views/home.blade.php | resources/views/partials/header-search.blade.php",home.png
 site.home.location_label,Location,Goobta,"needs native review",resources/views/home.blade.php,home.png
 site.home.all_somalia,"All Somalia","Soomaaliya oo dhan","needs native review",resources/views/home.blade.php,home.png
@@ -532,6 +533,10 @@ site.home.no_ads_title,"No ads yet","Weli xayeysiis ma jiro","needs native revie
 site.home.no_ads_text,"Be the first to post an ad. It is free and takes less than a minute.","Noqo qofka ugu horreeya ee xayeysiis dhiga. Waa bilaash, wax ka yar hal daqiiqo ayuu qaataa.","needs native review",resources/views/home.blade.php,home.png
 site.page_updated,"Last updated: :date","Markii ugu dambeysay ee la cusbooneysiiyey: :date","needs native review",resources/views/pages/show.blade.php,pages-safety.png
 site.ads_count,"{0} No ads yet|{1} :count ad|[2,*] :count ads","{0} Weli xayeysiis ma jiro|{1} :count xayeysiis|[2,*] :count xayeysiis","needs native review",resources/views/home.blade.php,home.png
+site.theme.label,"Light or dark","Iftiin ama mugdi","needs native review",resources/views/partials/theme-switch.blade.php,home.png
+site.theme.auto,Auto,Toos,"needs native review",resources/views/partials/theme-switch.blade.php,home.png
+site.theme.light,Light,Iftiin,"needs native review",resources/views/partials/theme-switch.blade.php,home.png
+site.theme.dark,Dark,Mugdi,"needs native review",resources/views/partials/theme-switch.blade.php,home.png
 site.contact.title,"Contact us","Nala soo xiriir","needs native review",resources/views/contact.blade.php,
 site.contact.intro,"A question, a problem or an idea? Write to us. We answer by email, usually within 2 working days.","Su'aal, dhibaato ama fikrad ma qabtaa? Noo qor. Iimayl ayaan ku jawaabnaa, inta badan 2 maalmood oo shaqo gudahood.","needs native review",resources/views/contact.blade.php,
 site.contact.help_first,"Many answers are already in the","Jawaabo badan ayaa horey ugu jira","needs native review",resources/views/contact.blade.php,

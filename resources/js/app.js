@@ -12,6 +12,7 @@ import { initGuestReport } from './guest-report';
 import { initPwa } from './pwa';
 import { initSearchSuggest } from './search-suggest';
 import { initShowMore } from './show-more';
+import { initTheme } from './theme';
 import { initTour } from './tour';
 
 initLanguageSwitch();
@@ -28,6 +29,7 @@ initGuestReport();
 initPwa();
 initSearchSuggest();
 initShowMore();
+initTheme();
 initTour();
 
 // After a successful post, drop the drafts saved on this phone.

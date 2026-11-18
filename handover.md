@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-18 (PR 73)_
+_Last updated: 2026-11-18 (PR 74)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -36,6 +36,7 @@ _Last updated: 2026-11-18 (PR 73)_
 - Which switch does what, and what to turn on first: **docs/features.md**.
 - Nothing is deployed yet.
 - Owner runs locally with **Laragon** on Windows (see docs/local-setup.md → A).
+- **PR 74 (visitor side: audit + design system):** docs/ux-audit.md (scores + screenshots), dark mode (`site.dark_mode`; `resources/js/theme.js`, head script sets `<html data-theme>`; dark colours in one block of `resources/css/app.css`: use normal classes, `bg-white` = `var(--surface)`), `<x-empty-state>` component, friendly 404, card title lines + no-photo box, `.skeleton-card`, one focus ring, Sell button in normal case.
 
 ## How to run
 See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example .env && docker compose up -d --build`, then open http://localhost:8095.

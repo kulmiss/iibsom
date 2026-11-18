@@ -4,10 +4,10 @@
 
 @section('content')
     <section class="mx-auto max-w-3xl px-4 py-6">
-        <div class="flex items-center justify-between gap-3">
-            <h1 class="text-2xl font-bold">{{ __('ads.mine.title') }}</h1>
+        <div class="flex flex-wrap items-center justify-between gap-3">
+            <h1 class="min-w-0 text-2xl font-bold">{{ __('ads.mine.title') }}</h1>
             @feature('ads.posting')
-                <a href="{{ lroute('post') }}" class="btn-sell">{{ icon('plus', 'size-4') }} {{ __('ads.mine.post_first') }}</a>
+                <a href="{{ lroute('post') }}" class="btn-sell shrink-0">{{ icon('plus', 'size-4') }} {{ __('ads.mine.post_first') }}</a>
             @endfeature
         </div>
 
@@ -29,7 +29,7 @@
                         @if ($cover)
                             <img src="{{ $cover->url('thumb') }}" alt="" loading="lazy" class="size-full object-cover" width="96" height="96">
                         @else
-                            <span class="flex size-full items-center justify-center text-stone-400">{{ icon($ad->category->icon ?? 'tag', 'size-8') }}</span>
+                            <span class="flex size-full items-center justify-center bg-gradient-to-br from-brand-50 to-stone-100 text-brand-300">{{ icon($ad->category->icon ?? 'tag', 'size-8') }}</span>
                         @endif
                     </div>
                     <div class="min-w-0 flex-1">
@@ -78,11 +78,11 @@
                                         <button class="btn-chip bg-brand-700 text-white ring-brand-700">{{ icon('arrow-up-circle', 'size-3.5') }} {{ __('ads.mine.bump') }}</button>
                                     </form>
                                 @else
-                                    <span class="btn-chip cursor-default text-stone-500" title="{{ __('ads.mine.bump') }}">{{ icon('arrow-up-circle', 'size-3.5') }} {{ __('ads.mine.bump_next', ['date' => mdate(\App\Http\Controllers\Account\MyAdsController::nextBump($ad))]) }}</span>
+                                    <p class="order-last flex basis-full items-center gap-1 text-xs text-stone-500" data-bump-next>{{ icon('arrow-up-circle', 'size-3.5') }} {{ __('ads.mine.bump_next', ['date' => mdate(\App\Http\Controllers\Account\MyAdsController::nextBump($ad))]) }}</p>
                                 @endif
                             @endif
                             @if ($ad->isLive() && feature('ads.close_reason'))
-                                <details class="w-full" data-close-ad>
+                                <details class="open:basis-full" data-close-ad>
                                     <summary class="btn-chip inline-flex cursor-pointer list-none [&::-webkit-details-marker]:hidden">{{ icon('check', 'size-3.5') }} {{ __('ads.mine.close_button') }}</summary>
                                     <form method="post" action="{{ lroute('account.ads.close', ['ad' => $ad->id]) }}" class="mt-2 rounded-xl bg-stone-50 p-3 ring-1 ring-stone-200">
                                         @csrf
@@ -117,7 +117,11 @@
                     </div>
                 </li>
             @empty
-                <li class="rounded-2xl bg-white p-8 text-center text-stone-600 ring-1 ring-stone-200">{{ __('ads.mine.empty') }}</li>
+                <x-empty-state tag="li" icon="megaphone" :title="__('ads.mine.empty')">
+                    @if (feature('ads.posting'))
+                        <a href="{{ lroute('post') }}" class="btn-sell">{{ __('site.nav.post_ad') }}</a>
+                    @endif
+                </x-empty-state>
             @endforelse
         </ul>
 

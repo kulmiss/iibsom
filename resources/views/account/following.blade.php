@@ -7,10 +7,9 @@
         <h1 class="text-2xl font-bold">{{ __('sellers.my_following') }}</h1>
 
         @if ($sellers->isEmpty())
-            <div class="mt-6 rounded-xl border border-dashed border-stone-300 bg-white p-8 text-center text-stone-600">
-                {{ icon('user-plus', 'mx-auto size-8 text-stone-400') }}
-                <p class="mt-2">{{ __('sellers.my_following_empty') }}</p>
-            </div>
+            <x-empty-state class="mt-6" icon="user-plus" :title="__('sellers.my_following_empty')">
+                <a href="{{ lroute('home') }}" class="btn-primary">{{ __('ads.browse.all_ads') }}</a>
+            </x-empty-state>
         @else
             <ul class="mt-4 divide-y divide-stone-100 overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-stone-200">
                 @foreach ($sellers as $seller)

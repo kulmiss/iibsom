@@ -17,14 +17,14 @@
         : lroute('search', array_filter(['q' => $q, 'city' => $slug]));
     $countUrl = ! feature('search.more_filters') ? '' : lroute('browse.count', array_filter(['category' => $category?->slug, 'city' => $city?->slug, 'brand' => $brand['value'] ?? null]));
 @endphp
-<section id="filters" class="hidden target:fixed target:inset-0 target:z-50 target:flex target:flex-col target:bg-white lg:static lg:block lg:bg-transparent" aria-label="{{ __('ads.browse.filters') }}">
+<section id="filters" class="hidden target:fixed target:inset-0 target:z-50 target:flex target:flex-col target:bg-(--surface) lg:static lg:block lg:bg-transparent" aria-label="{{ __('ads.browse.filters') }}">
     {{-- Phone sheet header --}}
     <div class="flex items-center justify-between border-b border-stone-200 px-4 py-3 lg:hidden">
         <p class="text-lg font-semibold">{{ __('ads.browse.filters') }}</p>
         <a href="#results" class="flex size-10 items-center justify-center rounded-full hover:bg-stone-100" aria-label="{{ __('ads.browse.close') }}">{{ icon('x', 'size-5') }}</a>
     </div>
 
-    <form method="get" action="{{ $action }}" class="min-h-0 flex-1 scroll-pb-32 space-y-5 overflow-y-auto p-4 lg:overflow-visible lg:rounded-xl lg:bg-white lg:shadow-sm lg:ring-1 lg:ring-stone-200" data-filter-form data-count-url="{{ $countUrl }}">
+    <form method="get" action="{{ $action }}" class="min-h-0 flex-1 scroll-pb-32 space-y-5 overflow-y-auto p-4 lg:overflow-visible lg:rounded-xl lg:bg-(--surface) lg:shadow-sm lg:ring-1 lg:ring-stone-200" data-filter-form data-count-url="{{ $countUrl }}">
         @if (!$category)
             <input type="hidden" name="q" value="{{ $q ?? '' }}">
             @if ($city)<input type="hidden" name="city" value="{{ $city->slug }}">@endif
