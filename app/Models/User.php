@@ -38,6 +38,7 @@ class User extends Authenticatable
             'two_factor_recovery_codes' => 'encrypted:array',
             'two_factor_confirmed_at' => 'datetime',
             'is_demo' => 'boolean',
+            'notify_settings' => 'array',
         ];
     }
 
@@ -93,7 +94,13 @@ class User extends Authenticatable
      */
     public function favourites(): BelongsToMany
     {
-        return $this->belongsToMany(Ad::class, 'favourites')->withTimestamps();
+        return $this->belongsToMany(Ad::class, 'favourites')->withTimestamps()->withPivot('price_when_saved');
+    }
+
+    /** @return HasMany<InboxItem, $this> */
+    public function inboxItems(): HasMany
+    {
+        return $this->hasMany(InboxItem::class);
     }
 
     /** @return HasMany<SavedSearch, $this> */

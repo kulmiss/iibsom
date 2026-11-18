@@ -71,6 +71,12 @@ The same rows run automatically in a real browser (see "Automatic run" below).
 | J14 | Phones | Post a mobile phone and pick RAM | RAM shows on the ad and as a filter | – |
 | J15 | Views | Ad statistics ON; open an ad that has views | "123 views" next to the date, for everyone | `ads.public_views` + `ad_stats` |
 | J16 | Make an offer | Chat ON, signed in as a buyer: ad page → "Make an offer" → type 4500 → "Write the offer" | Chat opens with "Hello, I would like to offer $4,500…" in the box; nothing is sent until you tap Send | `chat.offers` + `chat` |
+| J17 | Bell | Post an ad as a customer; in the admin approve it; back on the site look at the bell | Red 1 on the bell; the list says "Your ad … is approved and live"; the number goes away after opening | `notifications` |
+| J18 | Bell | Reject another ad with a reason | "Your ad … was not approved: <reason>" | `notifications` |
+| J19 | Settings | Account → Notifications → "Choose what you get": untick "My ad is approved", Save; approve another ad | No new line in the bell for it | `notifications` |
+| J20 | Price drop | Saved ads ON. Buyer saves an ad; seller lowers the price; staff approve the change | Buyer's bell: "Price dropped…"; Saved ads shows "Cheaper: $X → $Y" | `favourites.price_drop` |
+| J21 | Call back | Signed in as a buyer: ad page → "Request a call from the seller"; then try again | "Done. The seller has your number…"; the seller's bell shows your name and number (tap = call) and an email (MAIL_MAILER=log: storage/logs); the second try says you already asked | `contact.call_back` |
+| J22 | Switch | Turn OFF `notifications` | The bell goes back to saved searches (if ON); /account/notifications answers 404 | – |
 
 ## Automatic run
 

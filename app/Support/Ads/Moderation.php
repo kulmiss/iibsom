@@ -6,6 +6,7 @@ use App\Enums\AdStatus;
 use App\Models\Ad;
 use App\Models\User;
 use App\Support\Admin\Activity;
+use App\Support\Notify\Inbox;
 use InvalidArgumentException;
 
 /** Approve / reject ads (used by the admin, one by one or in bulk). */
@@ -16,6 +17,8 @@ final class Moderation
         if (! in_array($ad->status, [AdStatus::Pending, AdStatus::Rejected], true)) {
             throw new InvalidArgumentException('Only ads waiting for approval (or rejected) can be approved.');
         }
+
+        $before = is_array($ad->approved_snapshot) ? ($ad->approved_snapshot['price'] ?? null) : null;
 
         $ad->forceFill([
             'status' => AdStatus::Live,
@@ -28,6 +31,12 @@ final class Moderation
         ])->save();
 
         Activity::log('ad.approved', "Approved ad #{$ad->id} “{$ad->title}”", $ad);
+
+        // Notifications (PR 66): tell the seller; people who saved it hear about a lower price.
+        Inbox::add($ad->user, 'ad_approved', $ad, ['title' => $ad->title]);
+        if ($before !== null && $ad->price !== null) {
+            Inbox::priceDrop($ad, (int) $before, (int) $ad->price);
+        }
     }
 
     public static function reject(Ad $ad, User $by, string $reason): void
@@ -38,6 +47,8 @@ final class Moderation
             'reviewed_by' => $by->id,
             'reviewed_at' => now(),
         ])->save();
+
+        Inbox::add($ad->user, 'ad_rejected', $ad, ['title' => $ad->title, 'reason' => $ad->rejection_reason]);
 
         Activity::log('ad.rejected', "Rejected ad #{$ad->id} “{$ad->title}”: {$reason}", $ad, ['reason' => $reason]);
     }

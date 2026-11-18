@@ -70,10 +70,17 @@
                     </a>
                 </li>
             @endfeature
+            @feature('notifications')
+                <li>
+                    <a href="{{ lroute('notifications') }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50">
+                        {{ icon('bell', 'size-5 text-brand-700') }}<span class="flex-1">{{ __('notify.title') }}</span>{{ icon('chevron-right', 'size-4 text-stone-400') }}
+                    </a>
+                </li>
+            @endfeature
             @feature('saved_searches')
                 <li>
                     <a href="{{ lroute('searches') }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50">
-                        {{ icon('bell', 'size-5 text-brand-700') }}<span class="flex-1">{{ __('account.account.searches') }}</span>{{ icon('chevron-right', 'size-4 text-stone-400') }}
+                        {{ icon(feature('notifications') ? 'search' : 'bell', 'size-5 text-brand-700') }}<span class="flex-1">{{ __('account.account.searches') }}</span>{{ icon('chevron-right', 'size-4 text-stone-400') }}
                     </a>
                 </li>
             @endfeature

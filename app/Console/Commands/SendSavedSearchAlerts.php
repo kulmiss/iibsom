@@ -6,6 +6,7 @@ use App\Mail\SavedSearchAlertMail;
 use App\Models\SavedSearch;
 use App\Search\AdSearch;
 use App\Search\SearchCriteria;
+use App\Support\Notify\Inbox;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -50,9 +51,19 @@ class SendSavedSearchAlerts extends Command
                     continue;
                 }
 
+                // The bell (PR 66) and/or the email, as the person chose in Account → Notifications.
+                $bell = fn () => Inbox::add($saved->user, 'saved_search', null, ['search' => $saved->id, 'label' => $saved->label, 'count' => $page->total()]);
+                if (! Inbox::wants($saved->user, 'saved_search', 'email')) {
+                    $bell();
+                    $saved->forceFill(['checked_until' => $startedAt])->save();
+
+                    continue;
+                }
+
                 try {
                     Mail::to($saved->user->email)->send(new SavedSearchAlertMail($saved, collect($page->items()), $page->total()));
                     $saved->forceFill(['checked_until' => $startedAt, 'last_sent_at' => now()])->save();
+                    $bell(); // only once the email went (a failed one is tried again tomorrow)
                     $sent++;
                 } catch (Throwable $e) {
                     $failed++; // checked_until stays: tomorrow tries again

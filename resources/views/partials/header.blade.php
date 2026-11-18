@@ -28,9 +28,12 @@
             @feature('chat')
                 <a href="{{ lroute('chat') }}" class="icon-btn relative hidden lg:flex" title="{{ __('site.nav.messages') }}">{{ icon('message-circle') }}<span class="sr-only">{{ __('site.nav.messages') }}</span>@if (($chatUnread ?? 0) > 0)@include('partials.unread-badge', ['count' => $chatUnread, 'ring' => 'ring-brand-700', 'position' => 'end-0 top-0', 'dot' => 'bg-accent-400', 'dotRing' => 'ring-2 ring-brand-700', 'dotPosition' => 'end-1 top-1'])@endif</a>
             @endfeature
-            @feature('saved_searches')
+            @if (auth()->check() && feature('notifications'))
+                {{-- Notifications bell (PR 66); saved searches are reached from the account page and the list. --}}
+                <a href="{{ lroute('notifications') }}" class="icon-btn relative" title="{{ __('notify.bell') }}">{{ icon('bell') }}<span class="sr-only">{{ __('notify.bell') }}</span>@if (($bellUnread ?? 0) > 0)@include('partials.unread-badge', ['count' => $bellUnread, 'label' => trans_choice('notify.unread', $bellUnread, ['count' => $bellUnread]), 'ring' => 'ring-brand-700', 'position' => 'end-0 top-0', 'dot' => 'bg-accent-400', 'dotRing' => 'ring-2 ring-brand-700', 'dotPosition' => 'end-1 top-1'])@endif</a>
+            @elseif (feature('saved_searches'))
                 <a href="{{ lroute('searches') }}" class="icon-btn" title="{{ __('site.nav.alerts') }}">{{ icon('bell') }}<span class="sr-only">{{ __('site.nav.alerts') }}</span></a>
-            @endfeature
+            @endif
 
             @auth
                 @if (feature('site.header_icons') && feature('ads.my_ads'))

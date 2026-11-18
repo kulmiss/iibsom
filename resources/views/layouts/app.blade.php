@@ -37,6 +37,7 @@
     <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:m-2 focus:rounded focus:bg-white focus:px-3 focus:py-2">{{ __('site.nav.skip_to_content') }}</a>
 
     @php($chatUnread = feature('chat') && auth()->check() ? \App\Models\Conversation::unreadCount(auth()->user()) : 0)
+    @php($bellUnread = feature('notifications') && auth()->check() ? \App\Support\Notify\Inbox::unread(auth()->user()) : 0)
     @include('partials.header')
 
     <main id="main" class="flex-1" data-page>

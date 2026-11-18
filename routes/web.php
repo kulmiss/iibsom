@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\Account\ApiTokenController;
 use App\Http\Controllers\Account\BoostController;
+use App\Http\Controllers\Account\CallBackController;
 use App\Http\Controllers\Account\ChatController;
 use App\Http\Controllers\Account\FavouriteController;
 use App\Http\Controllers\Account\MyAdsController;
+use App\Http\Controllers\Account\NotificationController;
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\Account\ReviewController;
 use App\Http\Controllers\Account\SavedSearchController;
@@ -126,6 +128,14 @@ $publicRoutes = function () use ($stateless) {
             Route::middleware('feature:verified_badge')->group(function () {
                 Route::get('/account/verify', [VerificationController::class, 'show'])->name('verify');
                 Route::post('/account/verify', [VerificationController::class, 'store'])->middleware('throttle:5,60')->name('verify.store');
+            });
+
+            // Notifications bell (PR 66) and "Ask the seller to call me".
+            Route::middleware('feature:notifications')->group(function () {
+                Route::get('/account/notifications', [NotificationController::class, 'index'])->name('notifications');
+                Route::get('/account/notifications/settings', [NotificationController::class, 'settings'])->name('notifications.settings');
+                Route::post('/account/notifications/settings', [NotificationController::class, 'save'])->middleware('throttle:20,1')->name('notifications.settings.save');
+                Route::post('/ads/{ad}/call-back', [CallBackController::class, 'store'])->whereNumber('ad')->middleware(['feature:contact.call_back', 'throttle:5,1'])->name('call_back');
             });
 
             // Favourites (Phase 2): saved ads.

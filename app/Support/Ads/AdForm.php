@@ -9,6 +9,7 @@ use App\Models\BlockedPhone;
 use App\Models\Category;
 use App\Models\User;
 use App\Support\Catalog;
+use App\Support\Notify\Inbox;
 use App\Support\Safety\SpamGuard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -117,7 +118,9 @@ class AdForm
     /** @param  array<string, mixed>  $data  from validate() */
     public function update(Ad $ad, Category $category, array $data): Ad
     {
-        return DB::transaction(function () use ($ad, $category, $data) {
+        $oldPrice = $ad->status === AdStatus::Live ? $ad->getOriginal('price') : null;
+
+        $ad = DB::transaction(function () use ($ad, $category, $data) {
             $this->fill($ad, $category, $data);
 
             if (feature('ads.approval')) {
@@ -132,6 +135,14 @@ class AdForm
 
             return $ad;
         });
+
+        // Approval OFF: the new price is live at once, so people who saved the ad hear about a drop now
+        // (with approval ON this happens when staff approve the change; see Moderation::approve).
+        if ($oldPrice !== null && $ad->price !== null && $ad->isLive()) {
+            Inbox::priceDrop($ad, (int) $oldPrice, (int) $ad->price);
+        }
+
+        return $ad;
     }
 
     public function publish(Ad $ad): void

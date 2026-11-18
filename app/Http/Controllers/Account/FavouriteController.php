@@ -44,7 +44,7 @@ class FavouriteController extends Controller
                     ? response()->json(['message' => $message], 422)
                     : back()->with('status', $message);
             }
-            $user->favourites()->attach($ad->id);
+            $user->favourites()->attach($ad->id, ['price_when_saved' => $ad->price]);
         }
 
         $message = __($saved ? 'ads.saved.removed' : 'ads.saved.added');

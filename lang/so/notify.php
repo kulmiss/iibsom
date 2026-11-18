@@ -1,0 +1,41 @@
+<?php
+
+return [
+    'title' => 'Ogeysiisyada',
+    'bell' => 'Ogeysiisyada',
+    'unread' => '{1} 1 ogeysiis cusub|[2,*] :count ogeysiis oo cusub',
+    'empty' => 'Weli waxba ma jiraan. Halkan ayaan kugu ogeysiin doonnaa marka xayeysiiskaaga la oggolaado, xayeysiis aad kaydisay qiimihiisu dhaco, xayeysiisyo cusub ay la mid noqdaan raadintaada la kaydiyey, ama iibsade uu kaa codsado inaad wacdo.',
+    'new' => 'Cusub',
+    'settings_link' => 'Dooro waxaad heleyso',
+    'text' => [
+        'ad_approved' => 'Xayeysiiskaaga “:title” waa la oggolaaday waana shaqeynayaa.',
+        'ad_rejected' => 'Xayeysiiskaaga “:title” lama oggolaan: :reason',
+        'saved_search' => '{1} 1 xayeysiis cusub oo ku habboon raadintaada “:label”.|[2,*] :count xayeysiis oo cusub oo ku habboon raadintaada “:label”.',
+        'price_drop' => 'Qiimaha ayaa dhacay: “:title” hadda waa :to (wuxuu ahaa :from).',
+        'call_back' => ':name ayaa kaa codsanaya inaad ka wacdo :phone oo ku saabsan “:title”.',
+    ],
+    'settings' => [
+        'title' => 'Ogeysiisyada',
+        'intro' => 'Dooro waxaad doonayso inaad ka maqasho. Isbeddelku hadda ayuu bilaabanayaa.',
+        'bell' => 'Gambaleelka iibsom',
+        'email' => 'Iimayl ahaan',
+        'bell_ad_approved' => 'Xayeysiiskayga waa la oggolaaday',
+        'bell_ad_rejected' => 'Xayeysiiskayga lama oggolaan (sababta)',
+        'bell_saved_search' => 'Xayeysiisyo cusub oo ku habboon raadintayda',
+        'bell_price_drop' => 'Xayeysiis aan kaydiyey qiimihiisu dhaco',
+        'bell_call_back' => 'Iibsade ayaa iga codsada inaan wacdo',
+        'email_saved_search' => 'Xayeysiisyo cusub oo ku habboon raadintayda (maalintii mar)',
+        'email_call_back' => 'Iibsade ayaa iga codsada inaan wacdo',
+        'save' => 'Kaydi',
+        'saved' => 'Waa la kaydiyey. Waxaad heleysaa oo keliya waxa la calaamadeeyey.',
+    ],
+    'call_back' => [
+        'button' => 'Ka codso iibiyaha inuu i soo waco',
+        'note' => 'Magacaaga iyo lambarkaaga (:phone) waxaan u diraynaa iibiyahan oo keliya.',
+        'sent' => 'Waa la diray. Iibiyaha wuxuu haystaa lambarkaaga (:phone) wuuna kuu soo wici karaa.',
+        'already' => 'Maanta horey ayaad u codsatay iibiyahan. Fadlan sug wicitaanka.',
+        'too_many' => 'Maanta waxaad codsatay 10 iibiye. Fadlan isku day berri.',
+        'sign_in' => 'Gal si aad uga codsato iibiyaha inuu ku soo waco',
+    ],
+    'price_drop' => 'Qiime jaban: :from → :to',
+];
