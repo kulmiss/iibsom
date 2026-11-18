@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-18 (PR 76)_
+_Last updated: 2026-11-18 (PR 77)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -39,6 +39,7 @@ _Last updated: 2026-11-18 (PR 76)_
 - **PR 74 (visitor side: audit + design system):** docs/ux-audit.md (scores + screenshots), dark mode (`site.dark_mode`; `resources/js/theme.js`, head script sets `<html data-theme>`; dark colours in one block of `resources/css/app.css`: use normal classes, `bg-white` = `var(--surface)`), `<x-empty-state>` component, friendly 404, card title lines + no-photo box, `.skeleton-card`, one focus ring, Sell button in normal case.
 - **PR 75 (rich home):** `App\Support\Home\HomeSections` (popular searches, places, facts, featured, trusted sellers; 10-minute cache keyed by the page-cache version), `partials/home-more.blade.php`, install card in `resources/js/pwa.js`. 7 new switches (`home.hero_plus`, `home.places`, `home.how_it_works`, `home.trust_strip`, `home.featured`, `home.trusted_sellers`, `pwa.install_prompt`).
 - **PR 76 (rich ad page):** `resources/js/ad-page.js` (shared `reveal()` for the number, contact bar, thumbnails, full-screen viewer `[data-viewer]`, read more), `AdPageController` (`fromSeller`, `following`, `FIELD_ICONS`), for-you.js `data-exclude`. 5 switches: `ads.gallery_plus`, `ads.sticky_contact`, `ads.read_more`, `ads.more_from_seller`, `ads.recently_viewed`.
+- **PR 77 (category + search):** `browse/_quick-bar.blade.php`, `Landing::priceRange()`, `fallback` + `intro` in `BrowseController::results()`, drop-down closing in `filters.js`. Switches `search.quick_bar`, `search.rich_empty`, `seo.intro`.
 
 ## How to run
 See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example .env && docker compose up -d --build`, then open http://localhost:8095.

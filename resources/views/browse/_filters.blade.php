@@ -28,6 +28,9 @@
         @if (!$category)
             <input type="hidden" name="q" value="{{ $q ?? '' }}">
             @if ($city)<input type="hidden" name="city" value="{{ $city->slug }}">@endif
+        @elseif (feature('site.header_search'))
+            {{-- The header already has "Search in Cars" (PR 77: no second search box here). --}}
+            <input type="hidden" name="q" value="{{ $q ?? '' }}">
         @else
             <div>
                 <label for="fq" class="form-label">{{ __('site.home.search_button') }}</label>
@@ -153,7 +156,7 @@
             </div>
         @endforeach
 
-        <div>
+        <div @class(['lg:hidden' => feature('search.quick_bar')]) data-panel-sort>
             <label for="fsort" class="form-label">{{ __('ads.browse.sort') }}</label>
             <select id="fsort" name="sort" class="form-input">
                 @foreach (array_merge(['newest', 'cheapest', 'expensive'], feature('ad_stats') && feature('search.more_filters') ? ['popular'] : []) as $s)

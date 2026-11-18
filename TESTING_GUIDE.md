@@ -101,6 +101,9 @@ The same rows run automatically in a real browser (see "Automatic run" below).
 | J44 | Ad photos | Open an ad with 3+ photos; tap a small picture; tap the big photo; swipe / arrow keys; close | Jumps to that photo; full screen shows "2 / 5", swipes, pinch zoom works on a phone; closing stays on that photo | `ads.gallery_plus` |
 | J45 | Phone contact bar | On a phone open someone else's ad; scroll down; tap Call, then WhatsApp | Price + buttons stay above the bottom bar; Call shows the number and opens the phone app; WhatsApp opens WhatsApp; not on your own ad | `ads.sticky_contact` |
 | J46 | More on the ad page | Long description; seller with other ads; look at 2–3 ads then open another | "Read more" opens the full text; "More from <seller>" shows only their other live ads; "Recently viewed" lists the earlier ads, not this one | `ads.read_more`, `ads.more_from_seller`, `ads.recently_viewed` |
+| J47 | Quick filters | Open Cars on a computer; Sort → Cheapest; Price → type a max → Show ads; Condition → Used; then on a phone | Each choice keeps the others (look at the address); one drop-down open at a time, Escape closes; on a phone only Sort is on the bar | `search.quick_bar` |
+| J48 | Helpful no results | Cars → New + Price from 90,000 | "Try without one of these" buttons (each drops one) and "Latest in Cars" | `search.rich_empty` |
+| J49 | Category intro | Open Cars (no filters), EN + SO | One short line: how many ads, lowest–highest price; gone when a filter is used | `seo.intro` |
 
 ## Automatic run
 

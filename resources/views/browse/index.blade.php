@@ -58,6 +58,14 @@
                         {{ trans_choice('ads.browse.results', $results->total(), ['count' => number_format($results->total())]) }}
                     @endif
                 </p>
+                @if ($intro)
+                    {{-- Short, true intro (switch "seo.intro"): numbers from the live ads of this page. --}}
+                    <p class="mt-1 max-w-2xl text-sm text-stone-600" data-intro>
+                        {{ trans_choice('ads.browse.intro_count', $results->total(), ['what' => $category->label, 'where' => $city?->label ?? __('ads.browse.somalia'), 'count' => number_format($results->total())]) }}
+                        {{ $intro['min'] === $intro['max'] ? __('ads.browse.intro_price_one', ['price' => '$'.number_format($intro['min'])]) : __('ads.browse.intro_price', ['min' => '$'.number_format($intro['min']), 'max' => '$'.number_format($intro['max'])]) }}
+                        {{ __('ads.browse.intro_contact') }}
+                    </p>
+                @endif
             </div>
             @feature('saved_searches')
                 @include('browse._save-search')
@@ -130,13 +138,16 @@
                 {{-- Toolbar: Filters (phones), the filters in use, grid or list --}}
                 <div class="mb-3 flex flex-wrap items-center gap-2">
                     <a href="#filters" class="btn-chip lg:hidden">{{ icon('sliders-horizontal', 'size-4') }} {{ __('ads.browse.filters') }}@if ($active) <span class="rounded-full bg-brand-700 px-1.5 text-xs text-white">{{ count($active) }}</span>@endif</a>
+                    @feature('search.quick_bar')
+                        @include('browse._quick-bar')
+                    @endfeature
                     @if ($active)
-                        <ul class="flex flex-wrap gap-2" aria-label="{{ __('ads.browse.active_filters') }}">
+                        <ul class="flex flex-wrap gap-2 {{ feature('search.quick_bar') ? 'order-last basis-full' : '' }}" aria-label="{{ __('ads.browse.active_filters') }}">
                             @foreach ($active as $chip)
                                 <li><a href="{{ $chip['url'] }}" class="btn-chip !bg-brand-50 !ring-brand-200" aria-label="{{ __('ads.browse.remove_filter', ['filter' => $chip['label']]) }}">{{ $chip['label'] }} {{ icon('x', 'size-3.5') }}</a></li>
                             @endforeach
                         </ul>
-                        <a href="{{ $action }}" class="text-sm font-medium text-brand-700 underline">{{ __('ads.browse.clear_all') }}</a>
+                        <a href="{{ $action }}" class="text-sm font-medium text-brand-700 underline {{ feature('search.quick_bar') ? 'order-last' : '' }}">{{ __('ads.browse.clear_all') }}</a>
                     @endif
                     <div class="ms-auto flex gap-1" data-view-toggle>
                         <button type="button" class="flex size-9 items-center justify-center rounded-lg text-stone-600 hover:bg-stone-100 aria-pressed:bg-brand-50 aria-pressed:text-brand-700" data-view="grid" aria-pressed="true" title="{{ __('ads.browse.view_grid') }}">{{ icon('layout-grid', 'size-5') }}<span class="sr-only">{{ __('ads.browse.view_grid') }}</span></button>
@@ -154,6 +165,17 @@
 
                 @if ($results->isEmpty())
                     <x-empty-state icon="search" :title="__('ads.browse.nothing_title')" :text="__('ads.browse.nothing_text')">
+                        @if (feature('search.rich_empty') && count($active) > 1)
+                            {{-- Try with one filter less: each chip drops just that one. --}}
+                            <div class="w-full">
+                                <p class="text-sm font-medium text-stone-700">{{ __('ads.browse.try_without') }}</p>
+                                <ul class="mt-2 flex flex-wrap justify-center gap-2" data-try-without>
+                                    @foreach ($active as $chip)
+                                        <li><a href="{{ $chip['url'] }}" class="btn-chip text-sm">{{ icon('x', 'size-3.5') }} {{ $chip['label'] }}</a></li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         @if (request()->except('page') !== [])
                             <a href="{{ url()->current() }}" class="btn-primary">{{ __('ads.browse.clear') }}</a>
                         @endif
@@ -161,6 +183,16 @@
                             <a href="{{ lroute('post') }}" class="btn-chip">{{ icon('plus', 'size-4') }} {{ __('site.nav.post_ad') }}</a>
                         @endfeature
                     </x-empty-state>
+                    @if ($fallback->isNotEmpty())
+                        <section class="mt-6" data-fallback>
+                            <h2 class="text-lg font-semibold">{{ $category ? __('ads.browse.latest_in', ['category' => $category->label]) : __('site.home.trending_ads') }}</h2>
+                            <div class="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
+                                @foreach ($fallback as $ad)
+                                    @include('ads._card', ['ad' => $ad])
+                                @endforeach
+                            </div>
+                        </section>
+                    @endif
                 @else
                     <div class="group/results grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4 data-[view=list]:grid-cols-1" data-results data-view="grid">
                         @foreach ($results as $ad)

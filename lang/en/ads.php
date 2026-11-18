@@ -144,6 +144,12 @@ return [
         'nothing_text' => 'Try fewer filters or other words.',
         'from' => 'From',
         'to' => 'To',
+        'intro_count' => '{1} :what in :where: 1 ad right now.|[2,*] :what in :where: :count ads right now.',
+        'intro_price' => 'Prices from :min to :max.',
+        'intro_price_one' => 'Price: :price.',
+        'intro_contact' => 'Call, WhatsApp or chat with sellers directly. Posting your own ad is free.',
+        'try_without' => 'Try without one of these:',
+        'latest_in' => 'Latest in :category',
     ],
 
     'page' => [

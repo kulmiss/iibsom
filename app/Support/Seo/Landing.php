@@ -73,4 +73,24 @@ final class Landing
 
         return array_values(array_filter($cities, fn (array $c) => $c['id'] !== $current?->id));
     }
+
+    /**
+     * Lowest and highest asking price of the live ads in these categories (and city), for the short intro
+     * text on category pages (PR 77). Ads without a price are left out; null when no ad has a price.
+     *
+     * @param  list<int>|null  $categoryIds
+     * @return array{min: int, max: int, priced: int}|null
+     */
+    public static function priceRange(?array $categoryIds, ?int $cityId): ?array
+    {
+        $row = DatabaseAdSearch::publicQuery()
+            ->when($categoryIds, fn ($q) => $q->whereIn('category_id', $categoryIds))
+            ->when($cityId, fn ($q) => $q->where('city_id', $cityId))
+            ->whereNotNull('price')->where('price', '>', 0)
+            ->toBase()->selectRaw('MIN(price) as lo, MAX(price) as hi, COUNT(*) as n')->first();
+
+        $n = (int) ($row->n ?? 0);
+
+        return $n > 0 ? ['min' => (int) ($row->lo ?? 0), 'max' => (int) ($row->hi ?? 0), 'priced' => $n] : null;
+    }
 }

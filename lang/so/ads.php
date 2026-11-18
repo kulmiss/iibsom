@@ -146,6 +146,12 @@ return [
         'nothing_text' => 'Isku day shaandheyn yar ama erayo kale.',
         'from' => 'Laga bilaabo',
         'to' => 'Ilaa',
+        'intro_count' => '{1} :what gudaha :where: hadda 1 xayeysiis.|[2,*] :what gudaha :where: hadda :count xayeysiis.',
+        'intro_price' => 'Qiimayaashu waxay u dhexeeyaan :min ilaa :max.',
+        'intro_price_one' => 'Qiimaha: :price.',
+        'intro_contact' => 'Si toos ah ula xiriir iibiyeyaasha: wac, WhatsApp ama fariin u dir. Dhigista xayeysiiskaagu waa bilaash.',
+        'try_without' => 'Isku day adigoo ka saaraya mid ka mid ah:',
+        'latest_in' => 'Kuwii ugu dambeeyay ee :category',
     ],
 
     'page' => [
