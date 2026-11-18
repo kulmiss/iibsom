@@ -21,7 +21,7 @@
         <div class="mx-auto max-w-3xl px-4 pb-7 pt-6 text-center sm:pb-16 sm:pt-14">
             <h1 class="text-xl font-bold sm:text-3xl">{{ __('site.home.heading') }}</h1>
             @feature('home.hero_plus')
-                <p class="mt-1.5 text-sm text-brand-100 sm:text-base" data-home-promise>{{ __('site.home.promise') }}</p>
+                <p class="mt-1.5 text-sm text-white sm:text-base" data-home-promise>{{ __('site.home.promise') }}</p>
             @endfeature
 
             <form class="mt-5 flex gap-2" role="search" action="{{ lroute('search') }}" method="get" data-search-form>
@@ -52,9 +52,9 @@
                 @if ($popularSearches)
                     {{-- Words from live ad titles only (made at night), never what visitors typed. --}}
                     <nav class="-mx-4 mt-3 flex items-center gap-2 overflow-x-auto px-4 pb-1 text-sm sm:mx-0 sm:flex-wrap sm:justify-center sm:overflow-visible sm:px-0" aria-label="{{ __('site.home.popular_searches') }}" data-popular-searches>
-                        <span class="shrink-0 text-brand-100">{{ __('site.home.popular_searches') }}</span>
+                        <span class="shrink-0 text-white">{{ __('site.home.popular_searches') }}</span>
                         @foreach ($popularSearches as $term)
-                            <a href="{{ lroute('search', ['q' => $term]) }}" class="shrink-0 rounded-full bg-white/15 px-3 py-1 font-medium text-white hover:bg-white/25">{{ $term }}</a>
+                            <a href="{{ lroute('search', ['q' => $term]) }}" class="shrink-0 rounded-full bg-brand-800 px-3 py-1 font-medium text-white ring-1 ring-white/30 hover:bg-brand-900">{{ $term }}</a>
                         @endforeach
                     </nav>
                 @endif

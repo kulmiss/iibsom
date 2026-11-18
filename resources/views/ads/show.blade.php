@@ -133,10 +133,10 @@
                         <h2 class="mt-5 font-semibold">{{ __('ads.page.details') }}</h2>
                         <dl class="mt-2 grid grid-cols-2 gap-x-4 gap-y-3 text-sm sm:grid-cols-3" data-details>
                             @if ($ad->condition)
-                                <div class="flex gap-2.5"><span class="flex size-9 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700" aria-hidden="true">{{ icon('tag', 'size-4') }}</span><div class="min-w-0"><dt class="text-stone-500">{{ __('ads.form.condition') }}</dt><dd class="font-medium break-words">{{ __('ads.form.'.$ad->condition) }}</dd></div></div>
+                                <div class="relative min-h-9 ps-11"><dt class="text-stone-500"><span class="absolute start-0 top-0 flex size-9 items-center justify-center rounded-lg bg-brand-50 text-brand-700" aria-hidden="true">{{ icon('tag', 'size-4') }}</span>{{ __('ads.form.condition') }}</dt><dd class="font-medium break-words">{{ __('ads.form.'.$ad->condition) }}</dd></div>
                             @endif
                             @foreach ($fieldRows as $row)
-                                <div class="flex gap-2.5"><span class="flex size-9 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700" aria-hidden="true">{{ icon($row['icon'], 'size-4') }}</span><div class="min-w-0"><dt class="text-stone-500">{{ $row['label'] }}</dt><dd class="font-medium break-words">{{ $row['value'] }}</dd></div></div>
+                                <div class="relative min-h-9 ps-11"><dt class="text-stone-500"><span class="absolute start-0 top-0 flex size-9 items-center justify-center rounded-lg bg-brand-50 text-brand-700" aria-hidden="true">{{ icon($row['icon'], 'size-4') }}</span>{{ $row['label'] }}</dt><dd class="font-medium break-words">{{ $row['value'] }}</dd></div>
                             @endforeach
                         </dl>
                     @endif
@@ -413,7 +413,7 @@
                     <a href="#contact" class="flex items-center gap-1 rounded-lg bg-brand-700 px-3 py-2 text-sm font-semibold text-white" data-bar="call">{{ icon('phone', 'size-4') }}<span class="max-[400px]:sr-only">{{ __('ads.page.call') }}</span></a>
                 @endif
                 @if ($phoneOk && feature('contact.whatsapp'))
-                    <a href="#contact" class="flex items-center gap-1 rounded-lg bg-[#1f9d55] px-3 py-2 text-sm font-semibold text-white" data-bar="whatsapp">{{ icon('social-whatsapp', 'size-4') }}<span class="max-[400px]:sr-only">{{ __('ads.page.whatsapp') }}</span></a>
+                    <a href="#contact" class="flex items-center gap-1 rounded-lg bg-[#15803d] px-3 py-2 text-sm font-semibold text-white" data-bar="whatsapp">{{ icon('social-whatsapp', 'size-4') }}<span class="max-[400px]:sr-only">{{ __('ads.page.whatsapp') }}</span></a>
                 @endif
                 @feature('chat')
                     <a href="#contact" class="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-semibold text-brand-800 ring-1 ring-brand-200" data-bar="chat">{{ icon('message-circle', 'size-4') }}<span class="max-[400px]:sr-only">{{ __('ads.page.bar_chat') }}</span></a>
