@@ -31,7 +31,7 @@ The same rows run automatically in a real browser (see "Automatic run" below).
 | 22 | Footer | Open every footer link (About, Terms, Privacy, Cookie info, Copyright, Safety tips, Help, popular links) | Each page opens in English and Somali | `site.new_footer` |
 | 23 | Footer | Admin → Settings → General → Footer: add a Facebook link, untick Terms, Save | Facebook icon appears in the footer, Terms link is gone | `site.new_footer` |
 | 24 | Footer | Try a bad link like http://facebook.com/x or https://facebook.com.evil.com/x | Error message; not saved | `site.new_footer` |
-| 25 | Footer | Empty "Help email for customers" in Settings, save; then fill it again | "Contact us" shows only while the email is filled in | `site.new_footer` |
+| 25 | Footer | Turn OFF the "Contact form" switch. Empty "Help email for customers" in Settings, save; then fill it again. Turn the switch ON again | Switch OFF: "Contact us" (an email link) shows only while the email is filled in. Switch ON: "Contact us" always opens the contact form | `site.new_footer` + `site.contact_form` |
 | 26 | Seller badges | Open an ad of a seller who joined more than 1 month ago | "N months/years on iibsom" under the seller name (nothing for newer sellers) | `sellers.badges` |
 | 27 | Seller badges | With chat ON, the seller answers 3 different buyers within an hour each | "Replies fast" under the seller name (can take up to 6 hours to show) | `sellers.badges + chat` |
 | 28 | Ad cards | Look at ads with 2 or more photos in a list | Camera icon with the photo count | `ads.card_badges` |
@@ -45,7 +45,7 @@ The same rows run automatically in a real browser (see "Automatic run" below).
 | 36 | Watermark | Turn ON "Mark on photos", post an ad with a new photo, wait 1 minute (schedule:work must run), then turn it OFF | Big photo has a small "iibsom" in the corner; list picture is clean | `photos.watermark` |
 | 37 | Main flow | Signed out: on the sign-in page use the yellow "Test sign-in" box (your own computer only) with a new email, fill "Almost done", then post an ad with 2 photos | Ad waits for checking; photos are ready within a minute (schedule:work running) | `login.test_accounts` |
 | 38 | Main flow | Admin → Ads → Waiting: Approve it | Ad is live on the site and in search | – |
-| 39 | Main flow | In My ads: Renew (shows near the end date), then Mark as sold | End date moves; status becomes Sold | – |
+| 39 | Main flow | In My ads: Renew (shows near the end date), then Close ad → "Sold on iibsom" → Close ad | End date moves; status becomes Sold and "Closed: Sold on iibsom" shows | – |
 | 40 | Roles | Sign in to /admin as the demo moderator and the demo support account (password + 2FA) | Only their own menus; Settings opens their own part (Appearance / 2FA), not the site settings | – |
 | 41 | All screens | Open the main pages (home, categories, search, ad, help, pages, sign-in, account, post) on phone widths 360, 390, 414 (F12 → phone icon) and on a computer | No sideways scrolling, nothing cut off, no errors | – |
 | 42 | All screens | Set your phone/computer to dark mode and repeat row 41 | Pages still readable (the site stays light) | – |

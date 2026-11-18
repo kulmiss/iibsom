@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Mail\CallBackMail;
 use App\Models\Ad;
 use App\Models\InboxItem;
+use App\Models\User;
 use App\Support\Notify\Inbox;
 use App\Support\Phone\SomaliPhone;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Throwable;
@@ -32,6 +34,21 @@ class CallBackController extends Controller
         abort_if(blank($buyer->phone), 403); // a finished profile always has one
 
         $back = redirect($ad->url()); // the message shows at the top of the page
+
+        // One request per buyer at a time, so two quick taps cannot pass the "once a day" check together.
+        $lock = Cache::lock('call-back:'.$buyer->id, 10);
+        if (! $lock->get()) {
+            return $back->with('status', __('notify.call_back.already'));
+        }
+        try {
+            return $this->send($ad, $buyer, $seller, $back);
+        } finally {
+            $lock->release();
+        }
+    }
+
+    private function send(Ad $ad, User $buyer, User $seller, RedirectResponse $back): RedirectResponse
+    {
         $mine = InboxItem::where('kind', 'call_back')->where('created_at', '>=', now()->subDay())->where('data->buyer', $buyer->id);
         if ((clone $mine)->where('ad_id', $ad->id)->exists()) {
             return $back->with('status', __('notify.call_back.already'));

@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 /**
@@ -39,7 +40,8 @@ class FollowController extends Controller
 
                 return $request->expectsJson() ? response()->json(['message' => $message], 422) : back()->with('status', $message);
             }
-            $user->following()->attach($seller->id, ['created_at' => now()]);
+            // insertOrIgnore: two quick taps at the same moment follow once, not an error.
+            DB::table('follows')->insertOrIgnore(['follower_id' => $user->id, 'seller_id' => $seller->id, 'created_at' => now()]);
         }
 
         $message = __($following ? 'sellers.unfollowed' : 'sellers.followed', ['name' => $seller->name]);
