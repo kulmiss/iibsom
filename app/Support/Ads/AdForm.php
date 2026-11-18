@@ -96,7 +96,7 @@ class AdForm
         $user = $request->user();
         abort_unless($user instanceof User, 401);
 
-        return DB::transaction(function () use ($user, $category, $data) {
+        $ad = DB::transaction(function () use ($user, $category, $data) {
             $ad = new Ad(['category_id' => $category->id]);
             $ad->user_id = $user->id;
             $this->fill($ad, $category, $data);
@@ -109,6 +109,11 @@ class AdForm
 
             return $ad;
         });
+
+        // Approval OFF: the ad is live at once, so followers of the seller hear about it now (PR 67).
+        Inbox::followedAd($ad);
+
+        return $ad;
     }
 
     /**

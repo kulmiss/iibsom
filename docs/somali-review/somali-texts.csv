@@ -232,7 +232,7 @@ ads.page.posted,"Posted :when","La dhigay :when","needs native review",resources
 ads.page.details,Details,Faahfaahin,"needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.description,Description,Sharaxaad,"needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.seller,Seller,Iibiyaha,"needs native review",resources/views/ads/show.blade.php,ads-show.png
-ads.page.member_since,"Member since :date","Xubin tan iyo :date","needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.page.member_since,"Member since :date","Xubin tan iyo :date","needs native review","resources/views/ads/show.blade.php | resources/views/sellers/show.blade.php",ads-show.png
 ads.page.contact_tip,"Meet in a busy public place and see the item first. Never send money before.","Ku kulma meel dadweyne oo mashquul ah oo marka hore arag alaabta. Weligaa lacag hore ha u dirin.","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.contact_tip_more,"Safety tips","Talooyin ammaan","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.seller_ads,"{1} 1 ad live|[2,*] :count ads live","{1} 1 xayeysiis oo muuqda|[2,*] :count xayeysiis oo muuqda","needs native review","resources/views/ads/show.blade.php | resources/views/sellers/reviews.blade.php",ads-show.png
@@ -310,6 +310,15 @@ ads.saved.empty,"No saved ads yet. Tap Save on an ad to keep it here.","Weli xay
 ads.saved.gone,"No longer available","Hadda lama heli karo","needs native review",resources/views/account/saved.blade.php,
 ads.saved.sign_in,"Sign in to save ads","Gal si aad xayeysiisyo u kaydiso","needs native review",resources/views/ads/_save-button.blade.php,
 ads.searches.title,"Saved searches","Raadintayada la kaydiyey","needs native review",resources/views/account/searches.blade.php,
+ads.searches.name,Name,Magaca,"needs native review","app/Http/Controllers/Account/SavedSearchController.php | resources/views/account/searches.blade.php",
+ads.searches.rename,Rename,"Magac beddel","needs native review",resources/views/account/searches.blade.php,
+ads.searches.save_name,"Save name","Kaydi magaca","needs native review",resources/views/account/searches.blade.php,
+ads.searches.renamed,"Name saved.","Magaca waa la kaydiyey.","needs native review",app/Http/Controllers/Account/SavedSearchController.php,
+ads.searches.mute,"Pause alerts","Jooji ogeysiisyada","needs native review",resources/views/account/searches.blade.php,
+ads.searches.unmute,"Turn alerts on","Daar ogeysiisyada","needs native review",resources/views/account/searches.blade.php,
+ads.searches.muted,"Alerts paused","Ogeysiisyadu way joogsadeen","needs native review",resources/views/account/searches.blade.php,
+ads.searches.muted_done,"Alerts paused. The search stays here; turn alerts on again any time.","Ogeysiisyada waa la joojiyey. Raadintu halkan ayay joogtaa; mar kasta dib u daar.","needs native review",app/Http/Controllers/Account/SavedSearchController.php,
+ads.searches.unmuted_done,"Alerts are on again.","Ogeysiisyada mar kale waa la daaray.","needs native review",app/Http/Controllers/Account/SavedSearchController.php,
 ads.searches.save,"Save this search","Kaydi raadintan","needs native review",resources/views/browse/_save-search.blade.php,
 ads.searches.sign_in,"Sign in to save this search","Gal si aad raadintan u kaydiso","needs native review",resources/views/browse/_save-search.blade.php,
 ads.searches.intro,"We email you once a day when new ads match one of these searches.","Maalintii hal mar ayaan kuu soo diraynaa iimayl marka xayeysiisyo cusub ay la mid noqdaan raadintan mid ka mid ah.","needs native review",resources/views/account/searches.blade.php,
@@ -362,12 +371,12 @@ ads.boost.status_approved,Approved,"Waa la oggolaaday","needs native review",res
 ads.boost.status_rejected,"Not approved: :reason","Lama oggolaan: :reason","needs native review",resources/views/account/payments.blade.php,
 ads.boost.test,Test,Tijaabo,"needs native review",resources/views/account/payments.blade.php,
 ads.boost.boosted_until,":level until :date",":level ilaa :date","needs native review",resources/views/account/boost.blade.php,
-ads.badges.years,"{1} 1 year on iibsom|[2,*] :count years on iibsom","{1} 1 sano ku jira iibsom|[2,*] :count sano ku jira iibsom","needs native review",resources/views/ads/show.blade.php,ads-show.png
-ads.badges.months,"{1} 1 month on iibsom|[2,*] :count months on iibsom","{1} 1 bil ku jira iibsom|[2,*] :count bilood ku jira iibsom","needs native review",resources/views/ads/show.blade.php,ads-show.png
-ads.badges.fast,"Replies fast","Si dhakhso ah ayuu u jawaabaa","needs native review",resources/views/ads/show.blade.php,ads-show.png
-ads.badges.fast_hint,"Usually answers buyers within an hour","Badanaa wuxuu iibsadayaasha ugu jawaabaa saacad gudaheed","needs native review",resources/views/ads/show.blade.php,ads-show.png
-ads.badges.photos,"{1} 1 photo|[2,*] :count photos","{1} 1 sawir|[2,*] :count sawir","needs native review","resources/views/ads/_card.blade.php | resources/views/ads/show.blade.php","browse-index.png | ads-show.png"
-ads.badges.popular,Popular,"Caan ah","needs native review","resources/views/ads/_card.blade.php | resources/views/ads/show.blade.php","browse-index.png | ads-show.png"
+ads.badges.years,"{1} 1 year on iibsom|[2,*] :count years on iibsom","{1} 1 sano ku jira iibsom|[2,*] :count sano ku jira iibsom","needs native review","resources/views/ads/show.blade.php | resources/views/sellers/show.blade.php",ads-show.png
+ads.badges.months,"{1} 1 month on iibsom|[2,*] :count months on iibsom","{1} 1 bil ku jira iibsom|[2,*] :count bilood ku jira iibsom","needs native review","resources/views/ads/show.blade.php | resources/views/sellers/show.blade.php",ads-show.png
+ads.badges.fast,"Replies fast","Si dhakhso ah ayuu u jawaabaa","needs native review","resources/views/ads/show.blade.php | resources/views/sellers/show.blade.php",ads-show.png
+ads.badges.fast_hint,"Usually answers buyers within an hour","Badanaa wuxuu iibsadayaasha ugu jawaabaa saacad gudaheed","needs native review","resources/views/ads/show.blade.php | resources/views/sellers/show.blade.php",ads-show.png
+ads.badges.photos,"{1} 1 photo|[2,*] :count photos","{1} 1 sawir|[2,*] :count sawir","needs native review","resources/views/ads/_card.blade.php | resources/views/ads/show.blade.php | resources/views/sellers/show.blade.php","browse-index.png | ads-show.png"
+ads.badges.popular,Popular,"Caan ah","needs native review","resources/views/ads/_card.blade.php | resources/views/ads/show.blade.php | resources/views/sellers/show.blade.php","browse-index.png | ads-show.png"
 chat.title,Messages,Fariimaha,"needs native review","resources/views/chat/index.blade.php | resources/views/chat/show.blade.php",
 chat.start,"Chat with seller","La sheekayso iibiyaha","needs native review","resources/views/ads/show.blade.php | routes/web.php",ads-show.png
 chat.sign_in,"Sign in to chat with the seller","Gal si aad ula sheekaysato iibiyaha","needs native review",resources/views/ads/show.blade.php,ads-show.png
@@ -424,6 +433,7 @@ notify.text.ad_rejected,"Your ad “:title” was not approved: :reason","Xayeys
 notify.text.saved_search,"{1} 1 new ad for your saved search “:label”.|[2,*] :count new ads for your saved search “:label”.","{1} 1 xayeysiis cusub oo ku habboon raadintaada “:label”.|[2,*] :count xayeysiis oo cusub oo ku habboon raadintaada “:label”.","needs native review",app/Support/Notify/Inbox.php,
 notify.text.price_drop,"Price dropped: “:title” is now :to (was :from).","Qiimaha ayaa dhacay: “:title” hadda waa :to (wuxuu ahaa :from).","needs native review",app/Support/Notify/Inbox.php,
 notify.text.call_back,":name asks you to call :phone about “:title”.",":name ayaa kaa codsanaya inaad ka wacdo :phone oo ku saabsan “:title”.","needs native review",app/Support/Notify/Inbox.php,
+notify.text.followed_ad,":seller, whom you follow, has a new ad: “:title”.",":seller, oo aad la socoto, wuxuu leeyahay xayeysiis cusub: “:title”.","needs native review",app/Support/Notify/Inbox.php,
 notify.settings.title,Notifications,Ogeysiisyada,"needs native review",resources/views/account/notifications/settings.blade.php,
 notify.settings.intro,"Choose what you want to hear about. Changes count from now.","Dooro waxaad doonayso inaad ka maqasho. Isbeddelku hadda ayuu bilaabanayaa.","needs native review",resources/views/account/notifications/settings.blade.php,
 notify.settings.bell,"In the bell on iibsom","Gambaleelka iibsom","needs native review",resources/views/account/notifications/settings.blade.php,
@@ -433,6 +443,7 @@ notify.settings.bell_ad_rejected,"My ad is not approved (with the reason)","Xaye
 notify.settings.bell_saved_search,"New ads for my saved searches","Xayeysiisyo cusub oo ku habboon raadintayda","needs native review",resources/views/account/notifications/settings.blade.php,
 notify.settings.bell_price_drop,"A saved ad gets cheaper","Xayeysiis aan kaydiyey qiimihiisu dhaco","needs native review",resources/views/account/notifications/settings.blade.php,
 notify.settings.bell_call_back,"A buyer asks me to call","Iibsade ayaa iga codsada inaan wacdo","needs native review",resources/views/account/notifications/settings.blade.php,
+notify.settings.bell_followed_ad,"A seller I follow posts a new ad","Iibiye aan la socdo ayaa dhiga xayeysiis cusub","needs native review",resources/views/account/notifications/settings.blade.php,
 notify.settings.email_saved_search,"New ads for my saved searches (once a day)","Xayeysiisyo cusub oo ku habboon raadintayda (maalintii mar)","needs native review",resources/views/account/notifications/settings.blade.php,
 notify.settings.email_call_back,"A buyer asks me to call","Iibsade ayaa iga codsada inaan wacdo","needs native review",resources/views/account/notifications/settings.blade.php,
 notify.settings.save,Save,Kaydi,"needs native review",resources/views/account/notifications/settings.blade.php,
@@ -451,6 +462,23 @@ reports.reason.wrong_category,"Wrong category","Qayb khaldan","needs native revi
 reports.reason.sold,"Already sold","Horay ayaa loo iibiyey","needs native review","app/Http/Controllers/Admin/ReportController.php | resources/views/ads/show.blade.php",ads-show.png
 reports.reason.offensive,"Offensive or not allowed","Aflagaado ama aan la oggolayn","needs native review","app/Http/Controllers/Admin/ReportController.php | resources/views/ads/show.blade.php",ads-show.png
 reports.reason.other,"Something else","Wax kale","needs native review","app/Http/Controllers/Admin/ReportController.php | resources/views/ads/show.blade.php",ads-show.png
+sellers.title,"Ads by :name","Xayeysiisyada :name","needs native review",resources/views/sellers/show.blade.php,
+sellers.all_ads,"All ads by this seller","Dhammaan xayeysiisyada iibiyahan","needs native review",resources/views/sellers/show.blade.php,
+sellers.live_ads,"{0} No ads right now|{1} 1 ad|[2,*] :count ads","{0} Hadda xayeysiis ma jiro|{1} 1 xayeysiis|[2,*] :count xayeysiis","needs native review",resources/views/sellers/show.blade.php,
+sellers.none,"This seller has no live ads right now.","Iibiyahan hadda ma laha xayeysiis shaqeynaya.","needs native review",resources/views/sellers/show.blade.php,
+sellers.follow,Follow,"La soco","needs native review","app/Http/Controllers/Account/FollowController.php | app/Http/Controllers/SellerPageController.php | app/Models/User.php | app/Support/Notify/Inbox.php | config/features.php | resources/views/account/index.blade.php | resources/views/account/notifications/settings.blade.php | resources/views/sellers/_follow-button.blade.php",account-index.png
+sellers.following,Following,"Waad la socotaa","needs native review",resources/views/sellers/_follow-button.blade.php,
+sellers.follow_label,"Follow :name: get their new ads in your notifications","La soco :name: xayeysiisyadiisa cusub waxay imaanayaan ogeysiisyadaada","needs native review",resources/views/sellers/_follow-button.blade.php,
+sellers.unfollow_label,"Stop following :name","Jooji la socodka :name","needs native review",resources/views/sellers/_follow-button.blade.php,
+sellers.followers,"{1} 1 follower|[2,*] :count followers","{1} 1 qof oo la socda|[2,*] :count qof oo la socda","needs native review",resources/views/sellers/show.blade.php,
+sellers.followed,"You follow :name. Their new ads will come to your notifications.","Waxaad la socotaa :name. Xayeysiisyadiisa cusub waxay imaanayaan ogeysiisyadaada.","needs native review",app/Http/Controllers/Account/FollowController.php,
+sellers.unfollowed,"You no longer follow :name.","Mar dambe lama socotid :name.","needs native review",app/Http/Controllers/Account/FollowController.php,
+sellers.follow_full,"You can follow up to :max sellers. Stop following one first.","Waxaad la socon kartaa ilaa :max iibiye. Marka hore mid jooji.","needs native review",app/Http/Controllers/Account/FollowController.php,
+sellers.sign_in,"Sign in to follow this seller","Gal si aad ula socoto iibiyahan","needs native review",resources/views/sellers/_follow-button.blade.php,
+sellers.my_following,"Sellers I follow","Iibiyeyaasha aan la socdo","needs native review","resources/views/account/following.blade.php | resources/views/account/index.blade.php",account-index.png
+sellers.my_following_empty,"You do not follow anyone yet. Open a seller from an ad and tap ""Follow"".","Weli cidna lama socotid. Ka fur iibiye xayeysiis oo riix ""La soco"".","needs native review",resources/views/account/following.blade.php,
+sellers.see_ads,"See ads","Arag xayeysiisyada","needs native review",resources/views/account/following.blade.php,
+sellers.unfollow,"Stop following","Jooji la socodka","needs native review",resources/views/account/following.blade.php,
 site.meta_description,"Buy and sell cars, houses, land, phones, livestock, services and jobs in Somalia. Free and easy.","Ka iibso oo iibi baabuur, guryo, dhul, taleefanno, xoolo, adeegyo iyo shaqooyin Soomaaliya. Bilaash oo fudud.","needs native review",resources/views/layouts/app.blade.php,home.png
 site.nav.home,Home,"Bogga hore","needs native review","resources/views/ads/show.blade.php | resources/views/partials/bottom-nav.blade.php | resources/views/partials/header.blade.php","ads-show.png | home.png"
 site.nav.post_ad,"Post an ad","Dhig xayeysiis","needs native review",resources/views/home.blade.php,home.png

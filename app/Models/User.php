@@ -97,6 +97,16 @@ class User extends Authenticatable
         return $this->belongsToMany(Ad::class, 'favourites')->withTimestamps()->withPivot('price_when_saved');
     }
 
+    /**
+     * Sellers this person follows (switch "sellers.follow").
+     *
+     * @return BelongsToMany<User, $this>
+     */
+    public function following(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'follows', 'follower_id', 'seller_id')->withPivot('created_at');
+    }
+
     /** @return HasMany<InboxItem, $this> */
     public function inboxItems(): HasMany
     {

@@ -77,6 +77,13 @@
                     </a>
                 </li>
             @endfeature
+            @if (feature('sellers.page') && feature('sellers.follow'))
+                <li>
+                    <a href="{{ lroute('following') }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50">
+                        {{ icon('user-check', 'size-5 text-brand-700') }}<span class="flex-1">{{ __('sellers.my_following') }}</span>{{ icon('chevron-right', 'size-4 text-stone-400') }}
+                    </a>
+                </li>
+            @endif
             @feature('saved_searches')
                 <li>
                     <a href="{{ lroute('searches') }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50">

@@ -145,7 +145,11 @@
                                 @endif
                             </p>
                             <p class="text-xs text-stone-500">{{ $ad->user->city?->label }} · {{ __('ads.page.member_since', ['date' => mdate($ad->user->created_at, 'M Y')]) }}</p>
-                            <p class="text-xs text-stone-500">{{ trans_choice('ads.page.seller_ads', max(1, $sellerLiveAds), ['count' => $sellerLiveAds]) }}</p>
+                            @if (feature('sellers.page'))
+                                <a href="{{ lroute('seller.show', ['user' => $ad->user_id]) }}" class="text-xs font-medium text-brand-700 hover:underline" data-seller-link>{{ trans_choice('ads.page.seller_ads', max(1, $sellerLiveAds), ['count' => $sellerLiveAds]) }} →</a>
+                            @else
+                                <p class="text-xs text-stone-500">{{ trans_choice('ads.page.seller_ads', max(1, $sellerLiveAds), ['count' => $sellerLiveAds]) }}</p>
+                            @endif
                             @feature('sellers.badges')
                                 @php($tenure = \App\Support\Users\SellerBadges::tenure($ad->user))
                                 @php($fast = \App\Support\Users\SellerBadges::repliesFast($ad->user))
@@ -229,7 +233,7 @@
                                             <label for="offer" class="text-sm font-medium">{{ __('chat.offer.label') }}</label>
                                             <div class="mt-1 flex gap-2">
                                                 <input id="offer" name="offer" type="number" inputmode="numeric" min="1" max="99999999" step="1" required value="{{ old('offer') }}"
-                                                       class="min-w-0 flex-1 rounded-lg border-stone-300 text-base" @if ($errors->has('offer')) aria-invalid="true" aria-describedby="offer-error" @endif>
+                                                       class="form-input min-w-0 flex-1" @if ($errors->has('offer')) aria-invalid="true" aria-describedby="offer-error" @endif>
                                                 <button type="submit" class="btn-primary shrink-0">{{ __('chat.offer.continue') }}</button>
                                             </div>
                                             @error('offer')<p id="offer-error" class="mt-1 text-sm text-red-700">{{ $message }}</p>@enderror

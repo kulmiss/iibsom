@@ -18,6 +18,7 @@
                         @continue ($key === 'bell.price_drop' && ! (feature('favourites') && feature('favourites.price_drop')))
                         @continue (in_array($key, ['bell.call_back', 'email.call_back'], true) && ! feature('contact.call_back'))
                         @continue (in_array($key, ['bell.saved_search', 'email.saved_search'], true) && ! feature('saved_searches'))
+                        @continue ($key === 'bell.followed_ad' && ! (feature('sellers.page') && feature('sellers.follow')))
                         <input type="hidden" name="shown[]" value="{{ $key }}">
                         <label class="flex items-start gap-3 py-2">
                             <input type="checkbox" name="on[]" value="{{ $key }}" @checked($on) class="mt-0.5 size-5 rounded border-stone-300 text-brand-700">

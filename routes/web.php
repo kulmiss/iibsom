@@ -5,6 +5,7 @@ use App\Http\Controllers\Account\BoostController;
 use App\Http\Controllers\Account\CallBackController;
 use App\Http\Controllers\Account\ChatController;
 use App\Http\Controllers\Account\FavouriteController;
+use App\Http\Controllers\Account\FollowController;
 use App\Http\Controllers\Account\MyAdsController;
 use App\Http\Controllers\Account\NotificationController;
 use App\Http\Controllers\Account\ProfileController;
@@ -27,6 +28,7 @@ use App\Http\Controllers\GuestReportController;
 use App\Http\Controllers\HelpController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\SearchSuggestController;
+use App\Http\Controllers\SellerPageController;
 use App\Http\Controllers\SellerReviewsController;
 use App\Http\Controllers\ShopPageController;
 use App\Http\Controllers\SitemapController;
@@ -138,6 +140,12 @@ $publicRoutes = function () use ($stateless) {
                 Route::post('/ads/{ad}/call-back', [CallBackController::class, 'store'])->whereNumber('ad')->middleware(['feature:contact.call_back', 'throttle:5,1'])->name('call_back');
             });
 
+            // Follow a seller (PR 67).
+            Route::middleware('feature:sellers.follow')->group(function () {
+                Route::get('/account/following', [FollowController::class, 'index'])->name('following');
+                Route::post('/follow/{seller}', [FollowController::class, 'toggle'])->whereNumber('seller')->middleware('throttle:30,1')->name('follow.toggle');
+            });
+
             // Favourites (Phase 2): saved ads.
             Route::middleware('feature:favourites')->group(function () {
                 Route::get('/account/saved', [FavouriteController::class, 'index'])->name('saved');
@@ -148,6 +156,7 @@ $publicRoutes = function () use ($stateless) {
             Route::middleware('feature:saved_searches')->group(function () {
                 Route::get('/account/searches', [SavedSearchController::class, 'index'])->name('searches');
                 Route::post('/account/searches', [SavedSearchController::class, 'store'])->middleware('throttle:20,1')->name('searches.store');
+                Route::patch('/account/searches/{search}', [SavedSearchController::class, 'update'])->whereNumber('search')->middleware(['feature:saved_searches.manage', 'throttle:30,1'])->name('searches.update');
                 Route::delete('/account/searches/{search}', [SavedSearchController::class, 'destroy'])->whereNumber('search')->middleware('throttle:30,1')->name('searches.destroy');
             });
 
@@ -183,6 +192,9 @@ $publicRoutes = function () use ($stateless) {
 
     // Business shop pages (Phase 2): public only while an admin has the shop active.
     Route::get('/shop/{shop}', [ShopPageController::class, 'show'])->where('shop', '[a-z0-9]+(-[a-z0-9]+)*')->middleware('feature:shops')->name('shop.show');
+
+    // Public seller page (PR 67): every seller's live ads.
+    Route::get('/seller/{user}', [SellerPageController::class, 'show'])->whereNumber('user')->middleware('feature:sellers.page')->name('seller.show');
 
     // Seller ratings (Phase 3): public list of a seller's stars.
     Route::get('/seller/{user}/reviews', [SellerReviewsController::class, 'show'])->whereNumber('user')->middleware('feature:seller_ratings')->name('seller.reviews');

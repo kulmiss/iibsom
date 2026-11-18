@@ -13,6 +13,7 @@ return [
         'saved_search' => '{1} 1 new ad for your saved search “:label”.|[2,*] :count new ads for your saved search “:label”.',
         'price_drop' => 'Price dropped: “:title” is now :to (was :from).',
         'call_back' => ':name asks you to call :phone about “:title”.',
+        'followed_ad' => ':seller, whom you follow, has a new ad: “:title”.',
     ],
     'settings' => [
         'title' => 'Notifications',
@@ -24,6 +25,7 @@ return [
         'bell_saved_search' => 'New ads for my saved searches',
         'bell_price_drop' => 'A saved ad gets cheaper',
         'bell_call_back' => 'A buyer asks me to call',
+        'bell_followed_ad' => 'A seller I follow posts a new ad',
         'email_saved_search' => 'New ads for my saved searches (once a day)',
         'email_call_back' => 'A buyer asks me to call',
         'save' => 'Save',

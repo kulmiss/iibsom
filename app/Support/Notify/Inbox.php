@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 final class Inbox
 {
     /** Bell kinds. */
-    public const KINDS = ['ad_approved', 'ad_rejected', 'saved_search', 'price_drop', 'call_back'];
+    public const KINDS = ['ad_approved', 'ad_rejected', 'saved_search', 'price_drop', 'call_back', 'followed_ad'];
 
     /** Emails people can turn off ("saved_search" is the daily alert that already existed). */
     public const EMAILS = ['saved_search', 'call_back'];
@@ -83,6 +83,29 @@ final class Inbox
             });
     }
 
+    /** A followed seller has a new live ad (first time live only): tell their followers who want to know. */
+    public static function followedAd(Ad $ad): void
+    {
+        if (! feature('notifications') || ! feature('sellers.follow') || ! $ad->isLive() || $ad->is_demo) {
+            return;
+        }
+        $seller = $ad->user;
+        DB::table('follows')->where('seller_id', $ad->user_id)->orderBy('follower_id')
+            ->chunk(500, function ($rows) use ($ad, $seller) {
+                $users = User::whereIn('id', $rows->pluck('follower_id'))->whereNull('banned_at')->get(['id', 'notify_settings', 'banned_at']);
+                $insert = [];
+                foreach ($users as $user) {
+                    if (self::wants($user, 'followed_ad')) {
+                        $insert[] = ['user_id' => $user->id, 'kind' => 'followed_ad', 'ad_id' => $ad->id, 'created_at' => now(),
+                            'data' => json_encode(['title' => $ad->title, 'seller' => $seller->name])];
+                    }
+                }
+                if ($insert) {
+                    DB::table('inbox_items')->insert($insert);
+                }
+            });
+    }
+
     /** Text of one item in the current language (escaped by Blade when shown). */
     public static function text(InboxItem $item): string
     {
@@ -94,6 +117,7 @@ final class Inbox
             'ad_rejected' => __('notify.text.ad_rejected', ['title' => $d['title'] ?? '', 'reason' => $d['reason'] ?? '']),
             'saved_search' => trans_choice('notify.text.saved_search', (int) ($d['count'] ?? 1), ['count' => (int) ($d['count'] ?? 1), 'label' => $d['label'] ?? '']),
             'price_drop' => __('notify.text.price_drop', ['title' => $d['title'] ?? '', 'from' => $money($d['from'] ?? 0), 'to' => $money($d['to'] ?? 0)]),
+            'followed_ad' => __('notify.text.followed_ad', ['seller' => $d['seller'] ?? '', 'title' => $d['title'] ?? '']),
             'call_back' => __('notify.text.call_back', ['name' => $d['name'] ?? '', 'phone' => $d['phone'] ?? '', 'title' => $d['title'] ?? '']),
             default => '',
         };
@@ -105,7 +129,7 @@ final class Inbox
         $ad = $item->ad;
 
         return match ($item->kind) {
-            'ad_approved', 'price_drop' => $ad?->isLive() ? $ad->url() : null,
+            'ad_approved', 'price_drop', 'followed_ad' => $ad?->isLive() ? $ad->url() : null,
             'ad_rejected' => feature('ads.my_ads') ? lroute('account.ads') : null,
             'saved_search' => feature('saved_searches') ? lroute('searches') : null,
             'call_back' => isset($item->data['phone']) ? 'tel:'.preg_replace('/[^\d+]/', '', (string) $item->data['phone']) : null,
@@ -121,6 +145,7 @@ final class Inbox
             'saved_search' => 'search',
             'price_drop' => 'trending-down',
             'call_back' => 'phone-call',
+            'followed_ad' => 'user-check',
             default => 'bell',
         };
     }

@@ -77,6 +77,10 @@ The same rows run automatically in a real browser (see "Automatic run" below).
 | J20 | Price drop | Saved ads ON. Buyer saves an ad; seller lowers the price; staff approve the change | Buyer's bell: "Price dropped…"; Saved ads shows "Cheaper: $X → $Y" | `favourites.price_drop` |
 | J21 | Call back | Signed in as a buyer: ad page → "Request a call from the seller"; then try again | "Done. The seller has your number…"; the seller's bell shows your name and number (tap = call) and an email (MAIL_MAILER=log: storage/logs); the second try says you already asked | `contact.call_back` |
 | J22 | Switch | Turn OFF `notifications` | The bell goes back to saved searches (if ON); /account/notifications answers 404 | – |
+| J23 | Seller page | Ad page → seller box → "N ads →" | Page with the seller's name, city, badges and all their live ads (no phone, no email) | `sellers.page` |
+| J24 | Follow | Signed in: seller page → Follow; Account → Sellers I follow | Button says Following; the seller is in the list; Stop following removes it | `sellers.follow` |
+| J25 | Follow | While following, the seller posts a new ad and staff approve it | Your bell: "<seller>, whom you follow, has a new ad…" | `sellers.follow` + `notifications` |
+| J26 | Saved searches | Saved searches ON: Rename a search; tap "Pause alerts" | New name shows; "Alerts paused" and no email/bell for it until "Turn alerts on" | `saved_searches.manage` |
 
 ## Automatic run
 

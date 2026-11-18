@@ -92,6 +92,27 @@ class SavedSearchController extends Controller
         return back()->with('status', __('ads.searches.saved'));
     }
 
+    /** Rename or mute (switch "saved_searches.manage"). */
+    public function update(Request $request, SavedSearch $search): RedirectResponse
+    {
+        abort_unless($search->user_id === $this->authUser($request)->id, 404);
+        $data = $request->validate([
+            'label' => ['sometimes', 'required', 'string', 'max:80'],
+            'muted' => ['sometimes', 'boolean'],
+        ], [], ['label' => __('ads.searches.name')]);
+
+        if (isset($data['label'])) {
+            $search->label = trim(strip_tags($data['label'])) ?: $search->label;
+        }
+        if (array_key_exists('muted', $data)) {
+            $search->muted = (bool) $data['muted'];
+        }
+        $search->save();
+
+        return redirect(lroute('searches'))->with('status', __(array_key_exists('muted', $data)
+            ? ($search->muted ? 'ads.searches.muted_done' : 'ads.searches.unmuted_done') : 'ads.searches.renamed'));
+    }
+
     public function destroy(Request $request, SavedSearch $search): RedirectResponse
     {
         abort_unless($search->user_id === $this->authUser($request)->id, 404);

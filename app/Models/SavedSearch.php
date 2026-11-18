@@ -23,6 +23,7 @@ class SavedSearch extends Model
     protected function casts(): array
     {
         return [
+            'muted' => 'boolean',
             'criteria' => 'array',
             'checked_until' => 'datetime',
             'last_sent_at' => 'datetime',

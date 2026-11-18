@@ -13,6 +13,7 @@ return [
         'saved_search' => '{1} 1 xayeysiis cusub oo ku habboon raadintaada “:label”.|[2,*] :count xayeysiis oo cusub oo ku habboon raadintaada “:label”.',
         'price_drop' => 'Qiimaha ayaa dhacay: “:title” hadda waa :to (wuxuu ahaa :from).',
         'call_back' => ':name ayaa kaa codsanaya inaad ka wacdo :phone oo ku saabsan “:title”.',
+        'followed_ad' => ':seller, oo aad la socoto, wuxuu leeyahay xayeysiis cusub: “:title”.',
     ],
     'settings' => [
         'title' => 'Ogeysiisyada',
@@ -24,6 +25,7 @@ return [
         'bell_saved_search' => 'Xayeysiisyo cusub oo ku habboon raadintayda',
         'bell_price_drop' => 'Xayeysiis aan kaydiyey qiimihiisu dhaco',
         'bell_call_back' => 'Iibsade ayaa iga codsada inaan wacdo',
+        'bell_followed_ad' => 'Iibiye aan la socdo ayaa dhiga xayeysiis cusub',
         'email_saved_search' => 'Xayeysiisyo cusub oo ku habboon raadintayda (maalintii mar)',
         'email_call_back' => 'Iibsade ayaa iga codsada inaan wacdo',
         'save' => 'Kaydi',

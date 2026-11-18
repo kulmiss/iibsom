@@ -34,7 +34,7 @@ class SendSavedSearchAlerts extends Command
         $sent = 0;
         $failed = 0;
         $startedAt = now(); // ads published after this wait for tomorrow's run
-        SavedSearch::query()->with('user')->orderBy('id')->chunkById(200, function ($searches) use ($search, $startedAt, &$sent, &$failed) {
+        SavedSearch::query()->where('muted', false)->with('user')->orderBy('id')->chunkById(200, function ($searches) use ($search, $startedAt, &$sent, &$failed) {
             foreach ($searches as $saved) {
                 if ($saved->user->isBanned() || ! $saved->user->email) {
                     continue;

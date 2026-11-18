@@ -19,6 +19,7 @@ final class Moderation
         }
 
         $before = is_array($ad->approved_snapshot) ? ($ad->approved_snapshot['price'] ?? null) : null;
+        $firstTime = $ad->published_at === null;
 
         $ad->forceFill([
             'status' => AdStatus::Live,
@@ -36,6 +37,9 @@ final class Moderation
         Inbox::add($ad->user, 'ad_approved', $ad, ['title' => $ad->title]);
         if ($before !== null && $ad->price !== null) {
             Inbox::priceDrop($ad, (int) $before, (int) $ad->price);
+        }
+        if ($firstTime) {
+            Inbox::followedAd($ad); // followers hear about new ads, not about edits
         }
     }
 

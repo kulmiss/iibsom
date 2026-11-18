@@ -244,6 +244,15 @@ return [
 
     'searches' => [
         'title' => 'Saved searches',
+        'name' => 'Name',
+        'rename' => 'Rename',
+        'save_name' => 'Save name',
+        'renamed' => 'Name saved.',
+        'mute' => 'Pause alerts',
+        'unmute' => 'Turn alerts on',
+        'muted' => 'Alerts paused',
+        'muted_done' => 'Alerts paused. The search stays here; turn alerts on again any time.',
+        'unmuted_done' => 'Alerts are on again.',
         'save' => 'Save this search',
         'sign_in' => 'Sign in to save this search',
         'intro' => 'We email you once a day when new ads match one of these searches.',

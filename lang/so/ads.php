@@ -245,6 +245,15 @@ return [
     ],
 
     'searches' => [
+        'name' => 'Magaca',
+        'rename' => 'Magac beddel',
+        'save_name' => 'Kaydi magaca',
+        'renamed' => 'Magaca waa la kaydiyey.',
+        'mute' => 'Jooji ogeysiisyada',
+        'unmute' => 'Daar ogeysiisyada',
+        'muted' => 'Ogeysiisyadu way joogsadeen',
+        'muted_done' => 'Ogeysiisyada waa la joojiyey. Raadintu halkan ayay joogtaa; mar kasta dib u daar.',
+        'unmuted_done' => 'Ogeysiisyada mar kale waa la daaray.',
         'title' => 'Raadintayada la kaydiyey',
         'save' => 'Kaydi raadintan',
         'sign_in' => 'Gal si aad raadintan u kaydiso',
