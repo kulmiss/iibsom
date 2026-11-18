@@ -188,6 +188,15 @@ return [
         'photo' => 'Photo :n of :total',
         'no_photo' => 'No photo',
         'negotiable' => 'Negotiable',
+        'all_photos' => 'All photos',
+        'read_more' => 'Read more',
+        'read_less' => 'Show less',
+        'more_from_seller' => 'More from :name',
+        'bar_chat' => 'Chat',
+        'bar_offer' => 'Offer',
+        'photo_prev' => 'Previous photo',
+        'photo_next' => 'Next photo',
+        'close' => 'Close',
     ],
 
     'safety' => [

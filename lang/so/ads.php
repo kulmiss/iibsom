@@ -190,6 +190,15 @@ return [
         'photo' => 'Sawirka :n ee :total',
         'no_photo' => 'Sawir ma leh',
         'negotiable' => 'Waa laga wada hadli karaa',
+        'all_photos' => 'Dhammaan sawirrada',
+        'read_more' => 'Akhri wax badan',
+        'read_less' => 'Muuji wax yar',
+        'more_from_seller' => 'Xayeysiisyo kale oo :name',
+        'bar_chat' => 'Fariin',
+        'bar_offer' => 'Dalab',
+        'photo_prev' => 'Sawirkii hore',
+        'photo_next' => 'Sawirka xiga',
+        'close' => 'Xir',
     ],
 
     'safety' => [

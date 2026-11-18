@@ -44,7 +44,8 @@ async function fill() {
 
     const params = new URLSearchParams();
     cats.forEach((c) => params.append('c[]', c));
-    h.ads.slice(0, 12).forEach((a) => params.append('v[]', String(a)));
+    const skip = Number(box.dataset.exclude || 0); // the ad page leaves out the ad you are looking at
+    h.ads.filter((a) => a !== skip).slice(0, 12).forEach((a) => params.append('v[]', String(a)));
 
     try {
         const res = await fetch(`${box.dataset.url}?${params}`, { headers: { Accept: 'application/json' }, credentials: 'omit' });

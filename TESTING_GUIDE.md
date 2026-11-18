@@ -98,6 +98,9 @@ The same rows run automatically in a real browser (see "Automatic run" below).
 | J41 | Friendly 404 | Open `/no-such-page` in English and Somali | Drawing, search box that works, Back to home | — |
 | J42 | Rich home | Open the home page as a guest, phone and computer, EN + SO, light + dark | Promise line, popular searches (tap one: results), "Post an ad free", popular places with counts (tap: that district's ads), How it works, Why people use iibsom with true numbers, safety promise | `home.*` |
 | J43 | Install card | On an Android phone in Chrome open the home page | A small "Add iibsom to your phone" card; Add opens the phone's install; Not now hides it (stays hidden after reload) | `pwa.install_prompt` |
+| J44 | Ad photos | Open an ad with 3+ photos; tap a small picture; tap the big photo; swipe / arrow keys; close | Jumps to that photo; full screen shows "2 / 5", swipes, pinch zoom works on a phone; closing stays on that photo | `ads.gallery_plus` |
+| J45 | Phone contact bar | On a phone open someone else's ad; scroll down; tap Call, then WhatsApp | Price + buttons stay above the bottom bar; Call shows the number and opens the phone app; WhatsApp opens WhatsApp; not on your own ad | `ads.sticky_contact` |
+| J46 | More on the ad page | Long description; seller with other ads; look at 2–3 ads then open another | "Read more" opens the full text; "More from <seller>" shows only their other live ads; "Recently viewed" lists the earlier ads, not this one | `ads.read_more`, `ads.more_from_seller`, `ads.recently_viewed` |
 
 ## Automatic run
 

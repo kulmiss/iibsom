@@ -268,6 +268,15 @@ ads.page.sold,"This item is sold.","Alaabtan waa la iibiyey.","needs native revi
 ads.page.photo,"Photo :n of :total","Sawirka :n ee :total","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.no_photo,"No photo","Sawir ma leh","needs native review","resources/views/ads/_card.blade.php | resources/views/ads/show.blade.php","browse-index.png | ads-show.png"
 ads.page.negotiable,Negotiable,"Waa laga wada hadli karaa","needs native review","resources/views/ads/_card.blade.php | resources/views/ads/show.blade.php","browse-index.png | ads-show.png"
+ads.page.all_photos,"All photos","Dhammaan sawirrada","needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.page.read_more,"Read more","Akhri wax badan","needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.page.read_less,"Show less","Muuji wax yar","needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.page.more_from_seller,"More from :name","Xayeysiisyo kale oo :name","needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.page.bar_chat,Chat,Fariin,"needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.page.bar_offer,Offer,Dalab,"needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.page.photo_prev,"Previous photo","Sawirkii hore","needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.page.photo_next,"Next photo","Sawirka xiga","needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.page.close,Close,Xir,"needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.safety.bot,"Something went wrong. Please try again.","Wax baa khaldamay. Fadlan mar kale isku day.","needs native review",app/Support/Safety/SpamGuard.php,
 ads.safety.links,"Please remove web links. Buyers contact you by phone or WhatsApp.","Fadlan ka saar linkiyada internetka. Iibsadayaashu waxay kula soo xiriiraan taleefan ama WhatsApp.","needs native review",app/Support/Safety/SpamGuard.php,
 ads.safety.bad_words,"Please remove rude or unsafe words from your ad.","Fadlan xayeysiiskaaga ka saar erayada xun ama aan ammaanka ahayn.","needs native review",app/Support/Safety/SpamGuard.php,
@@ -483,7 +492,7 @@ sellers.title,"Ads by :name","Xayeysiisyada :name","needs native review",resourc
 sellers.all_ads,"All ads by this seller","Dhammaan xayeysiisyada iibiyahan","needs native review",resources/views/sellers/show.blade.php,
 sellers.live_ads,"{0} No ads right now|{1} 1 ad|[2,*] :count ads","{0} Hadda xayeysiis ma jiro|{1} 1 xayeysiis|[2,*] :count xayeysiis","needs native review",resources/views/sellers/show.blade.php,
 sellers.none,"This seller has no live ads right now.","Iibiyahan hadda ma laha xayeysiis shaqeynaya.","needs native review",resources/views/sellers/show.blade.php,
-sellers.follow,Follow,"La soco","needs native review","app/Http/Controllers/Account/FollowController.php | app/Http/Controllers/SellerPageController.php | app/Models/User.php | app/Support/Notify/Inbox.php | config/features.php | resources/views/account/index.blade.php | resources/views/account/notifications/settings.blade.php | resources/views/sellers/_follow-button.blade.php",account-index.png
+sellers.follow,Follow,"La soco","needs native review","app/Http/Controllers/Account/FollowController.php | app/Http/Controllers/AdPageController.php | app/Http/Controllers/SellerPageController.php | app/Models/User.php | app/Support/Notify/Inbox.php | config/features.php | resources/views/account/index.blade.php | resources/views/account/notifications/settings.blade.php | resources/views/sellers/_follow-button.blade.php",account-index.png
 sellers.following,Following,"Waad la socotaa","needs native review",resources/views/sellers/_follow-button.blade.php,
 sellers.follow_label,"Follow :name: get their new ads in your notifications","La soco :name: xayeysiisyadiisa cusub waxay imaanayaan ogeysiisyadaada","needs native review",resources/views/sellers/_follow-button.blade.php,
 sellers.unfollow_label,"Stop following :name","Jooji la socodka :name","needs native review",resources/views/sellers/_follow-button.blade.php,
@@ -522,7 +531,7 @@ site.home.trending_ads,"Latest ads","Xayeysiisyadii ugu dambeeyey","needs native
 site.home.popular_now,"Popular now","Hadda caan ah","needs native review",resources/views/home.blade.php,home.png
 site.home.popular_now_note,"Most viewed in the last 30 days","Kuwa ugu badan ee la daawaday 30kii maalmood ee u dambeeyay","needs native review",resources/views/home.blade.php,home.png
 site.home.for_you,"Recommended for you","Adiga laguu soo jeediyey","needs native review",resources/views/home.blade.php,home.png
-site.home.recently_viewed,"Recently viewed","Wixii aad dhowaan eegtay","needs native review",resources/views/home.blade.php,home.png
+site.home.recently_viewed,"Recently viewed","Wixii aad dhowaan eegtay","needs native review","resources/views/ads/show.blade.php | resources/views/home.blade.php","ads-show.png | home.png"
 site.home.clear_history,"Clear my history","Tirtir taariikhdayda","needs native review",resources/views/home.blade.php,home.png
 site.home.history_note,"Based on what you looked at. This list is kept only on this device.","Waxay ku salaysan tahay wixii aad eegtay. Liiskan waxa uu ku jiraa qalabkan oo keliya.","needs native review",resources/views/home.blade.php,home.png
 site.home.how_to_sell,"How to sell","Sida loo iibiyo","needs native review","resources/views/home.blade.php | resources/views/partials/home-more.blade.php",home.png

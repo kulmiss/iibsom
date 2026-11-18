@@ -28,6 +28,11 @@ return [
     'ads.expiry' => ['group' => 'Ads', 'default' => true, 'label' => 'Ads expire', 'description' => 'Ads end after the number of days in Settings and can be renewed.'],
     'ads.reports' => ['group' => 'Ads', 'default' => true, 'label' => 'Report an ad', 'description' => 'Signed-in users can report bad ads.'],
     'ads.guest_reports' => ['group' => 'Ads', 'default' => true, 'label' => 'Report an ad without signing in', 'description' => 'Visitors who are not signed in can report an ad too (reason, short note, phone or email if they want an answer). Bots are stopped without keeping anyone\'s IP; the same report again counts +1; at most 20 guest reports per ad per day. Needs "Report an ad" ON.'],
+    'ads.gallery_plus' => ['group' => 'Ads', 'default' => true, 'label' => 'Ad photos: small pictures + full screen', 'description' => 'Under the main photo a row of small pictures to jump to any photo; tapping a photo opens all photos full screen (swipe, pinch to zoom, arrow keys).'],
+    'ads.sticky_contact' => ['group' => 'Ads', 'default' => true, 'label' => 'Contact bar on phones', 'description' => 'On phones the price and Call / WhatsApp / Chat / Offer stay at the bottom of the ad page while people read. The number is still shown only after a tap (and counted the same way).'],
+    'ads.read_more' => ['group' => 'Ads', 'default' => true, 'label' => 'Long descriptions: "Read more"', 'description' => 'Long ad texts show the first lines and a "Read more" button (the full text is in the page for Google and without JavaScript).'],
+    'ads.more_from_seller' => ['group' => 'Ads', 'default' => true, 'label' => '"More from this seller"', 'description' => 'Up to 6 other live ads of the same seller under the ad.'],
+    'ads.recently_viewed' => ['group' => 'Ads', 'default' => true, 'label' => 'Recently viewed on ad pages', 'description' => 'Under the ad, the ads this person looked at before (kept only in their browser, like on the home page). Needs "Recommended for you".'],
     'ads.similar' => ['group' => 'Ads', 'default' => true, 'label' => 'Similar ads', 'description' => 'Show similar ads on the ad page.'],
 
     'ads.edit_changes' => ['group' => 'Ads', 'default' => true, 'label' => 'Show what sellers changed', 'description' => 'An ad edited after approval shows "Edited" in the queue, with the old and new text side by side.'],

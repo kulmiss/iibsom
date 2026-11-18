@@ -12,7 +12,7 @@ Scores are out of 10: **Look / Ease / Trust**. "After" is filled in when the PR 
 | Category | Long sidebar of selects; sort is at the bottom; sub-category chips cut off on computer ("Boats"); the sidebar search repeats the header search | Quick filters on top (price, condition, city), sort next to grid/list, short intro text, rich empty results | 6 / 6 / 6 | | 74, 77 |
 | Search (no results) | Plain dashed box with two lines | Drawing, "Clear filters", "Post an ad", popular in this category | 4 / 4 / 5 | | 74, 77 |
 | Ad cards | Rows do not line up (one- vs two-line titles, optional New/Used line) | Same height and same lines in every card; nicer "no photo" look | 6 / 7 / 6 | 8 / 8 / 7 | 74 |
-| Ad page | On phones the contact buttons come after the long description; no thumbnails; plain share | Sticky price + contact bar on phones, thumbnails + full-screen swipe/zoom, key-details icons, "read more", "more from this seller", recently viewed | 6 / 6 / 6 | | 76 |
+| Ad page | On phones the contact buttons come after the long description; no thumbnails; plain share | Sticky price + contact bar on phones, thumbnails + full-screen swipe/zoom, key-details icons, "read more", "more from this seller", recently viewed | 6 / 6 / 6 | 8 / 9 / 8 | 76 |
 | Seller page | Plain list of ads | Ratings with reviews, contact, filters on the seller's ads, cover | 5 / 6 / 5 | | 79 |
 | Post an ad | On phones the sticky "Post" button covers fields; no progress or tips beside the form | Step progress, tips, price help, live card preview, share on success | 6 / 6 / 6 | | 78 |
 | My ads | Many stacked buttons; "Free move to top again on…" looks like a button but is only information; "+POST AN AD" in capitals unlike all other buttons | Tidy actions, a calm info line, one button style | 5 / 6 / 7 | | 74, 79 |
@@ -51,6 +51,9 @@ kept by the QA scripts and can be made again with `audit/capture.py`.
 | 74 | My ads, Somali, 360 px | ![](ux-audit/after/my-ads-so-phone.webp) |
 | 75 | Home, phone (EN, light) | ![](ux-audit/after/home-en-phone.webp) |
 | 75 | Home, computer (SO, dark) | ![](ux-audit/after/home-so-dark-pc.webp) |
+| 76 | Ad page, phone (SO): details with pictures, contact bar | ![](ux-audit/after/ad-so-phone.webp) |
+| 76 | Ad page, computer (EN, dark): small pictures, more from seller | ![](ux-audit/after/ad-en-dark-pc.webp) |
+| 76 | Full-screen photos | ![](ux-audit/after/ad-viewer-phone.webp) |
 
 ## Plan (one small PR each, stacked)
 
