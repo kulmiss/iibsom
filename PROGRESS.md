@@ -1,11 +1,11 @@
 # Progress — Jiji round (2026-11-18)
 
-📍 Now: Step 12 of 12 — final report
-📊 Progress: ▓▓▓▓▓▓▓▓▓▓ 95% done / 5% left (by amount of work)
-✅ Just finished: speed check at 100k ads (before → after) and Lighthouse; one index added for "Popular now" (PR 71)
-⏭️ Next: final report with screenshots and the updated checklist
-⚠️ Waiting for the owner: nothing (merge only at the end; repo still public)
-⏱️ Time left (estimate): about 20 minutes
+📍 Now: Done — all 12 steps
+📊 Progress: ▓▓▓▓▓▓▓▓▓▓ 100% done
+✅ Just finished: final report sent; checklist Sheet updated (rows 25, 39 + J1–J32)
+⏭️ Next: the owner merges PR 71 (brings PRs 56–71)
+⚠️ Waiting for the owner: merge PR 71; make the repo private; decide about khat in the posting rules
+⏱️ Time left (estimate): none
 
 ## Steps
 - [x] 1. Jiji study table (docs/jiji-study.md: 137 features, 27 to build)
@@ -19,4 +19,4 @@
 - [x] 9. End-to-end journeys (buyer, seller, shop seller, moderator, support, Super Admin) + clean re-run of every test case
 - [x] 10. Speed check at 100k ads (before → after)
 - [x] 11. Security check (IDOR, XSS, uploads, rate limits, races, chat abuse)
-- [ ] 12. Final report
+- [x] 12. Final report
