@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-18 (PR 62)_
+_Last updated: 2026-11-18 (PR 63)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -31,6 +31,8 @@ _Last updated: 2026-11-18 (PR 62)_
 - **PRs 31–38 (Part B, Phase 2, all OFF):** favourites, saved searches, ad stats, verified badge, shop pages, paid boosts (test mode, ledger), banner ads, chat.
 - **PRs 39–43 (Part C, Phase 3, all OFF):** write API + keys, price guide, seller ratings, auto-post, help for buyers abroad.
 - **PRs 44–47 (Part D):** bug hunt (Somalia-time dates), security audit (SECURITY_REPORT.md), load test 100k ads (docs/load-test.md), docs.
+- **PRs 56–62 (checklist run):** 43 checks run in a real browser, 6 bugs fixed (saved-search filters, guest-report time stamp, friendly error pages, phone grid/list, staff Settings, local test sign-in), admin build tools dev-only, one-line home panel.
+- **PRs 63–68 (Jiji round, docs/jiji-study.md):** PR 63 search suggestions (`search.suggestions`), recent searches (on the phone only), search in the header of every page (`site.header_search`). Terms table `search_terms` rebuilt nightly by `iibsom:search-terms` and by demo reset/delete.
 - Which switch does what, and what to turn on first: **docs/features.md**.
 - Nothing is deployed yet.
 - Owner runs locally with **Laragon** on Windows (see docs/local-setup.md → A).

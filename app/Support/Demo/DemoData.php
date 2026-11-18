@@ -9,6 +9,7 @@ use App\Models\Report;
 use App\Models\User;
 use App\Support\Ads\AdCounters;
 use App\Support\Files\PrivateFiles;
+use App\Support\Search\SearchTerms;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -81,6 +82,7 @@ class DemoData
         }
 
         AdCounters::refreshAll();
+        SearchTerms::rebuild(); // no suggestions for words of ads that are gone
 
         return $counts;
     }

@@ -2,10 +2,13 @@
 
 namespace Tests\Feature\Admin;
 
+use App\Models\Ad;
+use App\Models\Category;
 use App\Models\City;
 use App\Models\Region;
 use App\Support\Catalog;
 use App\Support\Features\FeatureManager;
+use Illuminate\Support\Facades\DB;
 
 class SetupWizardTest extends AdminTestCase
 {
@@ -108,5 +111,20 @@ class SetupWizardTest extends AdminTestCase
 
         $this->getJson('/admin/api/me')->assertJsonPath('user.setup_needed', false);
         $this->getJson('/admin/api/setup')->assertNotFound();
+    }
+
+    public function test_choosing_demo_data_recounts_and_updates_search_words(): void
+    {
+        $this->asStaff();
+        $cars = Category::where('slug', 'cars')->firstOrFail();
+        $demo = Ad::factory()->live()->create(['category_id' => $cars->id, 'title' => 'Demo Zanzibar boat']);
+        $demo->forceFill(['is_demo' => true])->save();
+        $mogadishu = City::where('slug', 'mogadishu')->firstOrFail();
+
+        $this->postJson('/admin/api/setup', ['demo_data' => true] + $this->answers([$mogadishu->id]))->assertOk();
+
+        $this->assertTrue(feature('site.demo_data'));
+        $this->assertSame(1, $cars->fresh()->ads_count);
+        $this->assertTrue(DB::table('search_terms')->where('term', 'zanzibar')->exists());
     }
 }

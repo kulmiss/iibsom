@@ -24,6 +24,7 @@ use App\Http\Controllers\ForYouController;
 use App\Http\Controllers\GuestReportController;
 use App\Http\Controllers\HelpController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\SearchSuggestController;
 use App\Http\Controllers\SellerReviewsController;
 use App\Http\Controllers\ShopPageController;
 use App\Http\Controllers\SitemapController;
@@ -160,6 +161,9 @@ $publicRoutes = function () use ($stateless) {
         ->withoutMiddleware($stateless)->name('ad.contact');
 
     Route::get('/search', [BrowseController::class, 'search'])->name('search');
+    // Suggestions while typing (PR 63): stateless JSON, cached.
+    Route::get('/search-suggest', SearchSuggestController::class)->middleware(['feature:search.suggestions', 'throttle:60,1'])
+        ->withoutMiddleware($stateless)->name('search.suggest');
     // "Show 120 results" on the phone filter sheet (JSON; no session or cookie for guests).
     Route::get('/browse-count', [BrowseController::class, 'count'])->middleware(['feature:search.more_filters', 'throttle:120,1'])
         ->withoutMiddleware($stateless)->name('browse.count');

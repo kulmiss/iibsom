@@ -9,6 +9,7 @@ import { initFooter } from './footer';
 import { initForYou } from './for-you';
 import { initGuestReport } from './guest-report';
 import { initPwa } from './pwa';
+import { initSearchSuggest } from './search-suggest';
 import { initTour } from './tour';
 
 initLanguageSwitch();
@@ -22,6 +23,7 @@ initFooter();
 initForYou();
 initGuestReport();
 initPwa();
+initSearchSuggest();
 initTour();
 
 // After a successful post, drop the drafts saved on this phone.

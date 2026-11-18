@@ -51,6 +51,17 @@ The same rows run automatically in a real browser (see "Automatic run" below).
 | 42 | All screens | Set your phone/computer to dark mode and repeat row 41 | Pages still readable (the site stays light) | – |
 | 43 | Offline | Turn off the internet (or stop php artisan serve), open a new page; then turn it on and press Try again | "You are offline" page in your language; Try again brings the page back | – |
 
+## Jiji round (PRs 63–68)
+
+| # | Area | What to do | What you should see | Switch |
+|---|---|---|---|---|
+| J1 | Search suggestions | Home: type "to" in the search box | A list: matching categories (with "Category") and words like "toyota"; the typed part is bold | `search.suggestions` |
+| J2 | Search suggestions | Open Cars, type "toy" in the top search (phone: tap the magnifier first) | First row "toy in Cars"; Up/Down moves, Enter opens; Escape closes the list | `search.suggestions` + `site.header_search` |
+| J3 | Recent searches | Search for something, go back to home, tap the empty search box; then tap Clear | "Your recent searches" with your search; Clear empties it (kept on this phone only) | `search.suggestions` |
+| J4 | Header search | Any page except home, on a computer and on a phone | Computer: box in the header. Phone: magnifier opens the box under the header. On a category page the box says "Search in Cars" | `site.header_search` |
+| J5 | Switches | Turn OFF `search.suggestions`, then `site.header_search` | First: the boxes still search, no list. Second: no search in the header | – |
+| J6 | New words | Approve a new ad "Suzuki Every van", wait until the next night (or run `php artisan iibsom:search-terms`), type "suz" | "suzuki" is offered; a word that is only in a waiting or rejected ad is never offered | `search.suggestions` |
+
 ## Automatic run
 
 A Playwright script ran all 43 rows on 2026-11-18 (EN + SO, 360/390/414 + desktop, light + dark), and checked every page for console errors, failed requests, PHP warnings, slow pages (> 1.5 s), sideways scrolling, cut-off text and untranslated texts. Results and bugs found: DECISIONS.md (2026-11-18, PR 56–60).

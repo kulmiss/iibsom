@@ -51,6 +51,16 @@ return [
 
     'ads_count' => '{0} No ads yet|{1} :count ad|[2,*] :count ads',
 
+    'search' => [
+        'open' => 'Search',
+        'in_category' => 'Search in :category',
+        'recent' => 'Your recent searches',
+        'clear_recent' => 'Clear',
+        'in_scope' => ':text in :category',
+        'category' => 'Category',
+        'count' => '{0} No suggestions|{1} :count suggestion|[2,*] :count suggestions',
+    ],
+
     'footer' => [
         'about' => 'About us',
         'terms' => 'Terms',

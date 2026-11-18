@@ -28,6 +28,8 @@ if (config('iibsom.hosting') === 'shared') {
 }
 
 // Live ads past their end date become "expired" (sellers can renew them).
+// Search suggestions: words from live ad titles (PR 63).
+Schedule::command('iibsom:search-terms')->name('search-terms')->dailyAt('03:50')->withoutOverlapping();
 Schedule::command('iibsom:ads:expire')->name('expire-ads')->hourly()->withoutOverlapping();
 
 // Weekly numbers to the owner: Monday 07:00 Mogadishu time (the command never sends a week twice).

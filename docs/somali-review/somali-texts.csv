@@ -426,8 +426,8 @@ site.nav.skip_to_content,"Skip to content","U gudub nuxurka","needs native revie
 site.social.line,":price · :city · :category",":price · :city · :category","needs native review",app/Support/Social/SocialPosts.php,
 site.home.title,"Buy and sell in Somalia","Ka iibso oo iibi Soomaaliya","needs native review","resources/views/home.blade.php | resources/views/layouts/app.blade.php",home.png
 site.home.heading,"What are you looking for?","Maxaad raadinaysaa?","needs native review",resources/views/home.blade.php,home.png
-site.home.search_placeholder,"I am looking for...","Waxaan raadinayaa...","needs native review",resources/views/home.blade.php,home.png
-site.home.search_button,Search,Raadi,"needs native review","resources/views/browse/_filters.blade.php | resources/views/home.blade.php",home.png
+site.home.search_placeholder,"I am looking for...","Waxaan raadinayaa...","needs native review","resources/views/home.blade.php | resources/views/partials/header-search.blade.php",home.png
+site.home.search_button,Search,Raadi,"needs native review","resources/views/browse/_filters.blade.php | resources/views/home.blade.php | resources/views/partials/header-search.blade.php",home.png
 site.home.location_label,Location,Goobta,"needs native review",resources/views/home.blade.php,home.png
 site.home.all_somalia,"All Somalia","Soomaaliya oo dhan","needs native review",resources/views/home.blade.php,home.png
 site.home.categories,Categories,Qaybaha,"needs native review",resources/views/home.blade.php,home.png
@@ -445,6 +445,13 @@ site.home.no_ads_title,"No ads yet","Weli xayeysiis ma jiro","needs native revie
 site.home.no_ads_text,"Be the first to post an ad. It is free and takes less than a minute.","Noqo qofka ugu horreeya ee xayeysiis dhiga. Waa bilaash, wax ka yar hal daqiiqo ayuu qaataa.","needs native review",resources/views/home.blade.php,home.png
 site.page_updated,"Last updated: :date","Markii ugu dambeysay ee la cusbooneysiiyey: :date","needs native review",resources/views/pages/show.blade.php,pages-safety.png
 site.ads_count,"{0} No ads yet|{1} :count ad|[2,*] :count ads","{0} Weli xayeysiis ma jiro|{1} :count xayeysiis|[2,*] :count xayeysiis","needs native review",resources/views/home.blade.php,home.png
+site.search.open,Search,Raadi,"needs native review",resources/views/partials/header-search.blade.php,home.png
+site.search.in_category,"Search in :category","Ka raadi :category","needs native review",resources/views/partials/header-search.blade.php,home.png
+site.search.recent,"Your recent searches","Raadintaadii ugu dambeysay","needs native review",resources/views/partials/header.blade.php,home.png
+site.search.clear_recent,Clear,Tirtir,"needs native review",resources/views/partials/header.blade.php,home.png
+site.search.in_scope,":text in :category",":text gudaha :category","needs native review",app/Http/Controllers/SearchSuggestController.php,
+site.search.category,Category,Qayb,"needs native review",resources/views/partials/header.blade.php,home.png
+site.search.count,"{0} No suggestions|{1} :count suggestion|[2,*] :count suggestions","{0} Talo ma jirto|{1} :count talo|[2,*] :count talo","needs native review",resources/views/partials/header.blade.php,home.png
 site.footer.about,"About us","Nagu saabsan","needs native review",resources/views/partials/footer.blade.php,home.png
 site.footer.terms,Terms,Shuruudaha,"needs native review",resources/views/partials/footer.blade.php,home.png
 site.footer.privacy,Privacy,Qarsoodiga,"needs native review",resources/views/partials/footer.blade.php,home.png

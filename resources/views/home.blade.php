@@ -15,7 +15,7 @@
         <div class="mx-auto max-w-3xl px-4 pb-7 pt-6 text-center sm:pb-16 sm:pt-14">
             <h1 class="text-xl font-bold sm:text-3xl">{{ __('site.home.heading') }}</h1>
 
-            <form class="mt-5 flex gap-2" role="search" action="{{ lroute('search') }}" method="get">
+            <form class="mt-5 flex gap-2" role="search" action="{{ lroute('search') }}" method="get" data-search-form>
                 {{-- Picker only when there is a choice (2+ live cities). --}}
                 @if (count($cities) > 1)
                     <label for="city" class="sr-only">{{ __('site.home.location_label') }}</label>
@@ -29,7 +29,8 @@
 
                 <div class="relative flex-1">
                     <label for="q" class="sr-only">{{ __('site.home.search_placeholder') }}</label>
-                    <input id="q" name="q" type="search" placeholder="{{ __('site.home.search_placeholder') }}"
+                    <input id="q" name="q" type="search" autocomplete="off" placeholder="{{ __('site.home.search_placeholder') }}"
+                           @feature('search.suggestions') data-suggest="{{ lroute('search.suggest') }}" @endfeature
                            class="w-full rounded-lg border-0 bg-white py-3 pl-3 pr-11 sm:pl-4 text-stone-900 placeholder:text-stone-500 focus:ring-2 focus:ring-accent-400">
                     <button type="submit" class="absolute inset-y-0 right-0 flex w-12 items-center justify-center text-stone-500 hover:text-brand-700">
                         {{ icon('search') }}

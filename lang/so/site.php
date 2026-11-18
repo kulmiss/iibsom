@@ -53,6 +53,16 @@ return [
 
     'ads_count' => '{0} Weli xayeysiis ma jiro|{1} :count xayeysiis|[2,*] :count xayeysiis',
 
+    'search' => [
+        'open' => 'Raadi',
+        'in_category' => 'Ka raadi :category',
+        'recent' => 'Raadintaadii ugu dambeysay',
+        'clear_recent' => 'Tirtir',
+        'in_scope' => ':text gudaha :category',
+        'category' => 'Qayb',
+        'count' => '{0} Talo ma jirto|{1} :count talo|[2,*] :count talo',
+    ],
+
     'footer' => [
         'about' => 'Nagu saabsan',
         'terms' => 'Shuruudaha',
