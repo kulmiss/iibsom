@@ -525,14 +525,50 @@ site.home.for_you,"Recommended for you","Adiga laguu soo jeediyey","needs native
 site.home.recently_viewed,"Recently viewed","Wixii aad dhowaan eegtay","needs native review",resources/views/home.blade.php,home.png
 site.home.clear_history,"Clear my history","Tirtir taariikhdayda","needs native review",resources/views/home.blade.php,home.png
 site.home.history_note,"Based on what you looked at. This list is kept only on this device.","Waxay ku salaysan tahay wixii aad eegtay. Liiskan waxa uu ku jiraa qalabkan oo keliya.","needs native review",resources/views/home.blade.php,home.png
-site.home.how_to_sell,"How to sell","Sida loo iibiyo","needs native review",resources/views/home.blade.php,home.png
+site.home.how_to_sell,"How to sell","Sida loo iibiyo","needs native review","resources/views/home.blade.php | resources/views/partials/home-more.blade.php",home.png
 site.home.post_ad_tile,"Post ad","Dhig xayeysiis","needs native review",resources/views/home.blade.php,home.png
 site.home.trending,Trending,"Kuwa caanka ah","needs native review",resources/views/home.blade.php,home.png
-site.home.safety_tips,"Stay safe","Ammaan ahaw","needs native review",resources/views/home.blade.php,home.png
+site.home.safety_tips,"Stay safe","Ammaan ahaw","needs native review","resources/views/home.blade.php | resources/views/partials/home-more.blade.php",home.png
 site.home.no_ads_title,"No ads yet","Weli xayeysiis ma jiro","needs native review",resources/views/home.blade.php,home.png
 site.home.no_ads_text,"Be the first to post an ad. It is free and takes less than a minute.","Noqo qofka ugu horreeya ee xayeysiis dhiga. Waa bilaash, wax ka yar hal daqiiqo ayuu qaataa.","needs native review",resources/views/home.blade.php,home.png
+site.home.promise,"Buy and sell anything in Somalia. Free, fast and safe.","Wax walba ku iibso oo ku iibi Soomaaliya. Bilaash, degdeg ah oo ammaan ah.","needs native review",resources/views/home.blade.php,home.png
+site.home.popular_searches,Popular:,"Inta badan la raadiyo:","needs native review",resources/views/home.blade.php,home.png
+site.home.post_free,"Post an ad free","Dhig xayeysiis bilaash ah","needs native review",resources/views/home.blade.php,home.png
+site.home.places_title,"Popular places","Goobaha ugu xayeysiisyada badan","needs native review",resources/views/partials/home-more.blade.php,home.png
+site.home.how_title,"How iibsom works","Sida iibsom u shaqeyso","needs native review",resources/views/partials/home-more.blade.php,home.png
+site.home.how_buy,Buying,Iibsasho,"needs native review",resources/views/partials/home-more.blade.php,home.png
+site.home.how_sell,Selling,Iibin,"needs native review",resources/views/partials/home-more.blade.php,home.png
+site.home.buy_1,"Find it","Hel waxaad rabto","needs native review",resources/views/partials/home-more.blade.php,home.png
+site.home.buy_1_text,"Search or pick a category. Filter by price, place and more.","Raadi ama dooro qayb. Ku shaandhee qiimaha, goobta iyo wax kale.","needs native review",resources/views/partials/home-more.blade.php,home.png
+site.home.buy_2,"Contact the seller","La xiriir iibiyaha","needs native review",resources/views/partials/home-more.blade.php,home.png
+site.home.buy_2_text,"Call, WhatsApp or chat. Ask your questions before you go.","Wac, WhatsApp ama fariin u dir. Weydii su'aalahaaga ka hor intaadan tegin.","needs native review",resources/views/partials/home-more.blade.php,home.png
+site.home.buy_3,"Meet and check","Kulan oo hubi","needs native review",resources/views/partials/home-more.blade.php,home.png
+site.home.buy_3_text,"Meet in a busy public place. Check the item, then pay.","Kula kulan meel dadweyne oo dad badani joogaan. Hubi alaabta, kadibna lacagta bixi.","needs native review",resources/views/partials/home-more.blade.php,home.png
+site.home.sell_1,"Take good photos","Qaad sawirro fiican","needs native review",resources/views/partials/home-more.blade.php,home.png
+site.home.sell_1_text,"Clear photos in daylight sell faster.","Sawirro cad oo iftiinka maalinta lagu qaaday ayaa dhakhso u iibiya.","needs native review",resources/views/partials/home-more.blade.php,home.png
+site.home.sell_2,"Post your ad free","Dhig xayeysiiskaaga bilaash","needs native review",resources/views/partials/home-more.blade.php,home.png
+site.home.sell_2_text,"It takes about a minute.","Qiyaastii hal daqiiqo ayuu qaataa.","needs native review",resources/views/partials/home-more.blade.php,home.png
+site.home.sell_3,"Answer buyers","Ka jawaab iibsadayaasha","needs native review",resources/views/partials/home-more.blade.php,home.png
+site.home.sell_3_text,"Buyers call, WhatsApp or chat with you. Close the ad when it is sold.","Iibsadayaashu way ku wacayaan, WhatsApp ama fariin ayay kuu soo diraan. Xir xayeysiiska marka la iibiyo.","needs native review",resources/views/partials/home-more.blade.php,home.png
+site.home.how_more_buy,"How to buy safely","Sida wax si ammaan ah loo iibsado","needs native review",resources/views/partials/home-more.blade.php,home.png
+site.home.trust_title,"Why people use iibsom","Sababta dadku u isticmaalaan iibsom","needs native review",resources/views/partials/home-more.blade.php,home.png
+site.home.trust_ads,"{1} :count live ad|[2,*] :count live ads","{1} :count xayeysiis oo shaqeynaya|[2,*] :count xayeysiis oo shaqeynaya","needs native review",resources/views/partials/home-more.blade.php,home.png
+site.home.trust_sellers,"{1} :count seller|[2,*] :count sellers","{1} :count iibiye|[2,*] :count iibiye","needs native review",resources/views/partials/home-more.blade.php,home.png
+site.home.trust_checked,"Every ad is checked by a person","Xayeysiis kasta qof ayaa hubiya","needs native review",resources/views/partials/home-more.blade.php,home.png
+site.home.trust_free,"Posting an ad is free","Dhigista xayeysiisku waa bilaash","needs native review",resources/views/partials/home-more.blade.php,home.png
+site.home.trust_report,"A report button on every ad","Xayeysiis kasta wuxuu leeyahay badhan warbixin","needs native review",resources/views/partials/home-more.blade.php,home.png
+site.home.trust_number,"Your number shows only when a buyer taps","Lambarkaagu wuxuu muuqdaa marka iibsade taabto oo keliya","needs native review",resources/views/partials/home-more.blade.php,home.png
+site.home.safety_promise,"iibsom will never call you to ask for a code or money. Never pay before you see the item.","iibsom marnaba kuuma soo wacayso si ay kaaga codsato koodh ama lacag. Ha bixin lacag ka hor intaadan arkin alaabta.","needs native review",resources/views/partials/home-more.blade.php,home.png
+site.home.featured,"Featured ads","Xayeysiisyo la soo xulay","needs native review",resources/views/home.blade.php,home.png
+site.home.trusted_title,"Shops and verified sellers","Dukaamada iyo iibiyeyaasha la xaqiijiyey","needs native review",resources/views/partials/home-more.blade.php,home.png
+site.home.shop,Shop,Dukaan,"needs native review",resources/views/partials/home-more.blade.php,home.png
+site.home.verified,Verified,"La xaqiijiyey","needs native review",resources/views/partials/home-more.blade.php,home.png
+site.home.install_title,"Add iibsom to your phone","Ku dar iibsom taleefankaaga","needs native review",resources/views/partials/home-more.blade.php,home.png
+site.home.install_text,"It opens like an app and uses little data.","Wuxuu u furmaa sida app, xog yarna wuu isticmaalaa.","needs native review",resources/views/partials/home-more.blade.php,home.png
+site.home.install_yes,Add,"Ku dar","needs native review",resources/views/partials/home-more.blade.php,home.png
+site.home.install_no,"Not now","Hadda maya","needs native review",resources/views/partials/home-more.blade.php,home.png
 site.page_updated,"Last updated: :date","Markii ugu dambeysay ee la cusbooneysiiyey: :date","needs native review",resources/views/pages/show.blade.php,pages-safety.png
-site.ads_count,"{0} No ads yet|{1} :count ad|[2,*] :count ads","{0} Weli xayeysiis ma jiro|{1} :count xayeysiis|[2,*] :count xayeysiis","needs native review",resources/views/home.blade.php,home.png
+site.ads_count,"{0} No ads yet|{1} :count ad|[2,*] :count ads","{0} Weli xayeysiis ma jiro|{1} :count xayeysiis|[2,*] :count xayeysiis","needs native review","resources/views/home.blade.php | resources/views/partials/home-more.blade.php",home.png
 site.theme.label,"Light or dark","Iftiin ama mugdi","needs native review",resources/views/partials/theme-switch.blade.php,home.png
 site.theme.auto,Auto,Toos,"needs native review",resources/views/partials/theme-switch.blade.php,home.png
 site.theme.light,Light,Iftiin,"needs native review",resources/views/partials/theme-switch.blade.php,home.png

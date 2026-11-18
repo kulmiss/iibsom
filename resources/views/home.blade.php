@@ -9,12 +9,20 @@
 @php($latest = \App\Search\DatabaseAdSearch::publicQuery()->with(['category:id,slug,icon,parent_id', 'city:id,name,slug', 'cover'])->withPhotoCount()->latest('published_at')->limit(12)->get())
 @php($popularNow = \App\Support\Ads\PopularNow::ads())
 @php($banners = feature('site.banners') ? \App\Models\Banner::forHome() : [])
+@php($popularSearches = \App\Support\Home\HomeSections::popularSearches())
+@php($places = \App\Support\Home\HomeSections::places())
+@php($featured = \App\Support\Home\HomeSections::featured())
+@php($trusted = \App\Support\Home\HomeSections::trustedSellers())
+@php($canPost = feature('ads.posting') && (auth()->check() || feature('login.google')))
 
 @section('content')
     {{-- Big search (inspired by jiji.com, in iibsom colours) --}}
     <section class="rounded-b-3xl bg-brand-700 text-white">
         <div class="mx-auto max-w-3xl px-4 pb-7 pt-6 text-center sm:pb-16 sm:pt-14">
             <h1 class="text-xl font-bold sm:text-3xl">{{ __('site.home.heading') }}</h1>
+            @feature('home.hero_plus')
+                <p class="mt-1.5 text-sm text-brand-100 sm:text-base" data-home-promise>{{ __('site.home.promise') }}</p>
+            @endfeature
 
             <form class="mt-5 flex gap-2" role="search" action="{{ lroute('search') }}" method="get" data-search-form>
                 {{-- Picker only when there is a choice (2+ live cities). --}}
@@ -39,6 +47,21 @@
                     </button>
                 </div>
             </form>
+
+            @feature('home.hero_plus')
+                @if ($popularSearches)
+                    {{-- Words from live ad titles only (made at night), never what visitors typed. --}}
+                    <nav class="-mx-4 mt-3 flex items-center gap-2 overflow-x-auto px-4 pb-1 text-sm sm:mx-0 sm:flex-wrap sm:justify-center sm:overflow-visible sm:px-0" aria-label="{{ __('site.home.popular_searches') }}" data-popular-searches>
+                        <span class="shrink-0 text-brand-100">{{ __('site.home.popular_searches') }}</span>
+                        @foreach ($popularSearches as $term)
+                            <a href="{{ lroute('search', ['q' => $term]) }}" class="shrink-0 rounded-full bg-white/15 px-3 py-1 font-medium text-white hover:bg-white/25">{{ $term }}</a>
+                        @endforeach
+                    </nav>
+                @endif
+                @if ($canPost)
+                    <a href="{{ lroute('post') }}" class="btn-sell mt-4 px-5 py-2.5" data-home-post>{{ icon('plus', 'size-4') }} {{ __('site.home.post_free') }}</a>
+                @endif
+            @endfeature
         </div>
     </section>
 
@@ -169,6 +192,18 @@
                 </div>
             @endfeature
 
+            {{-- Featured (boosted) ads: needs paid boosts; hidden when none --}}
+            @if ($featured->isNotEmpty())
+                <section class="mt-8" aria-labelledby="featured" data-home-featured>
+                    <h2 id="featured" class="flex items-center gap-2 text-lg font-semibold">{{ icon('rocket', 'size-5 text-brand-700') }} {{ __('site.home.featured') }}</h2>
+                    <div class="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
+                        @foreach ($featured as $ad)
+                            @include('ads._card', ['ad' => $ad])
+                        @endforeach
+                    </div>
+                </section>
+            @endif
+
             {{-- Popular now: most viewed ads of the last 30 days (needs Ad statistics) --}}
             @if ($popularNow->isNotEmpty())
                 <section class="mt-8" aria-labelledby="popular-now">
@@ -192,15 +227,14 @@
                 </div>
                 <a href="{{ lroute('search') }}" class="mt-4 inline-block font-medium text-brand-700 underline">{{ __('ads.browse.all_ads') }} →</a>
             @else
-                <div class="mt-3 rounded-xl border border-dashed border-stone-300 bg-white p-8 text-center">
-                    <span class="mx-auto flex size-12 items-center justify-center rounded-full bg-brand-50 text-brand-700">{{ icon('trending-up', 'size-6') }}</span>
-                    <p class="mt-3 font-semibold">{{ __('site.home.no_ads_title') }}</p>
-                    <p class="mt-1 text-sm text-stone-600">{{ __('site.home.no_ads_text') }}</p>
+                <x-empty-state class="mt-3" icon="trending-up" :title="__('site.home.no_ads_title')" :text="__('site.home.no_ads_text')">
                     @feature('ads.posting')
-                        <a href="{{ lroute('post') }}" class="btn-sell mt-4">{{ __('site.nav.post_ad') }}</a>
+                        <a href="{{ lroute('post') }}" class="btn-sell">{{ __('site.nav.post_ad') }}</a>
                     @endfeature
-                </div>
+                </x-empty-state>
             @endif
+
+            @include('partials.home-more')
         </div>
     </div>
 @endsection

@@ -96,6 +96,8 @@ The same rows run automatically in a real browser (see "Automatic run" below).
 | J39 | Dark mode | Phone set to dark (or footer → Dark); open home, a category, an ad, Post an ad, My ads, Contact, a wrong address | Everything dark and easy to read (no white boxes, footer text readable); Auto follows the phone; Light keeps it light after reload | `site.dark_mode` |
 | J40 | Empty states | Search for `zzqqxx`; open Saved ads / Saved searches / Sellers I follow with none; My ads with no ads | A small drawing, one line of help and one action (Clear filters / Post an ad / All ads) | — |
 | J41 | Friendly 404 | Open `/no-such-page` in English and Somali | Drawing, search box that works, Back to home | — |
+| J42 | Rich home | Open the home page as a guest, phone and computer, EN + SO, light + dark | Promise line, popular searches (tap one: results), "Post an ad free", popular places with counts (tap: that district's ads), How it works, Why people use iibsom with true numbers, safety promise | `home.*` |
+| J43 | Install card | On an Android phone in Chrome open the home page | A small "Add iibsom to your phone" card; Add opens the phone's install; Not now hides it (stays hidden after reload) | `pwa.install_prompt` |
 
 ## Automatic run
 

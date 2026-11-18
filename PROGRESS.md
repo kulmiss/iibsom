@@ -1,17 +1,17 @@
 # Progress — Drugs + visitor side (2026-11-18)
 
-📍 Now: Step 3 of 10 — PR 74: audit + design system
-📊 Progress: ▓▓▓░░░░░░░ 30% done / 70% left
-✅ Just finished: audit (docs/ux-audit.md), dark mode, one button style, tidy cards, empty states, friendly 404
-⏭️ Next: PR 75 — rich home page
+📍 Now: Step 5 of 10 — PR 76: ad page
+📊 Progress: ▓▓▓▓░░░░░░ 40% done / 60% left
+✅ Just finished: PR 75 — rich home (promise, popular searches, places, how it works, trust, install card)
+⏭️ Next: PR 76 — ad page
 ⚠️ Waiting for the owner: nothing (merge at the end)
-⏱️ Time left (estimate): many hours (7 PRs)
+⏱️ Time left (estimate): many hours (6 PRs)
 
 ## Steps (this job)
 - [x] 1. PR 72 + 73 — no drugs in ads and in chat
 - [x] 2. Honest audit of every visitor page (docs/ux-audit.md)
 - [x] 3. PR 74 — design system: dark mode, buttons, cards, empty states, 404
-- [ ] 4. PR 75 — home: promise, popular searches, cities, how it works, trust, recently viewed, install
+- [x] 4. PR 75 — home: promise, popular searches, cities, how it works, trust, recently viewed, install
 - [ ] 5. PR 76 — ad page: sticky contact bar, thumbnails, key details, more from seller
 - [ ] 6. PR 77 — category + search: quick filters, sort, rich empty results, intro text
 - [ ] 7. PR 78 — post an ad: progress, tips, live preview, share on success
