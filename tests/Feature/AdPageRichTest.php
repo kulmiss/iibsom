@@ -148,7 +148,22 @@ class AdPageRichTest extends TestCase
     public function test_signed_in_buyers_get_the_offer_button_in_the_bar(): void
     {
         $buyer = User::factory()->completed()->create();
-        $this->actingAs($buyer)->get($this->ad->url())->assertOk()->assertSee('data-bar="offer"', false)->assertSee('id="offer"', false);
+        $html = (string) $this->actingAs($buyer)->get($this->ad->url())->assertOk()->getContent();
+        $this->assertStringContainsString('href="#offer-box" class', $html);
+        $this->assertSame(1, substr_count($html, 'id="offer-box"'));
+    }
+
+    public function test_no_id_is_used_twice_on_the_ad_page(): void
+    {
+        // Found by the full re-run (PR 80): the offer box and its price field were both id="offer".
+        $buyer = User::factory()->completed()->create();
+        foreach (['chat.offers', 'chat.quick_replies', 'notifications', 'contact.call_back'] as $s) {
+            app(FeatureManager::class)->set($s, true);
+        }
+        $html = (string) $this->actingAs($buyer)->get($this->ad->url())->assertOk()->getContent();
+        preg_match_all('/\sid="([^"]+)"/', $html, $m);
+        $twice = array_keys(array_filter(array_count_values($m[1]), fn (int $n) => $n > 1));
+        $this->assertSame([], $twice, 'ids used twice: '.implode(', ', $twice));
     }
 
     public function test_no_contact_bar_on_your_own_ad_on_ended_ads_or_with_the_switch_off(): void

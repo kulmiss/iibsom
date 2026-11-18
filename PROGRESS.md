@@ -1,11 +1,11 @@
 # Progress — Drugs + visitor side (2026-11-18)
 
-📍 Now: Step 9 of 10 — PR 80: full re-run from a clean start
-📊 Progress: ▓▓▓▓▓▓▓▓▓░ 90% done / 10% left
-✅ Just finished: Lighthouse 100/100/100/100 on 8 phone pages; axe 0 problems (25 pages, light + dark, EN + SO)
-⏭️ Next: 43 rows + J1–J38 + 6 journeys from a clean start, then the report
+📍 Now: Step 10 of 10 — final report
+📊 Progress: ▓▓▓▓▓▓▓▓▓▓ 100% done
+✅ Just finished: clean re-run — 43 rows, J1–J38, 6 journeys all pass (1 bug found + fixed: duplicate id on the offer box)
+⏭️ Next: owner review + merge PR #80
 ⚠️ Waiting for the owner: nothing (merge at the end)
-⏱️ Time left (estimate): about 1–2 hours
+⏱️ Time left (estimate): none
 
 ## Steps (this job)
 - [x] 1. PR 72 + 73 — no drugs in ads and in chat
@@ -16,8 +16,8 @@
 - [x] 6. PR 77 — category + search: quick filters, sort, rich empty results, intro text
 - [x] 7. PR 78 — post an ad: progress, tips, live preview, share on success
 - [x] 8. PR 79 — account dashboard, seller page, "How we keep you safe", demo data
-- [ ] 9. PR 80 — speed, accessibility, full re-run from a clean start
-- [ ] 10. Final report
+- [x] 9. PR 80 — speed, accessibility, full re-run from a clean start
+- [x] 10. Final report
 
 ## Earlier round (Jiji)
 - [x] 1. Jiji study table (docs/jiji-study.md: 137 features, 27 to build)

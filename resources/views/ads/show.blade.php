@@ -249,7 +249,7 @@
                                 </form>
                                 @feature('chat.offers')
                                     {{-- Make an offer: the chat opens with the offer written in; the buyer still taps Send. --}}
-                                    <details id="offer" class="mt-2 scroll-mt-20 rounded-lg ring-1 ring-brand-200" data-offer @if ($errors->has('offer')) open @endif>
+                                    <details id="offer-box" class="mt-2 scroll-mt-20 rounded-lg ring-1 ring-brand-200" data-offer @if ($errors->has('offer')) open @endif>
                                         <summary class="flex cursor-pointer list-none items-center justify-center gap-2 px-3 py-3 font-semibold text-brand-800 hover:bg-brand-50 [&::-webkit-details-marker]:hidden">{{ icon('hand-coins', 'size-5') }} {{ __('chat.offer.button') }}</summary>
                                         <form method="post" action="{{ lroute('chat.start', ['ad' => $ad->id]) }}" class="border-t border-brand-100 p-3">
                                             @csrf
@@ -418,7 +418,7 @@
                 @feature('chat')
                     <a href="#contact" class="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-semibold text-brand-800 ring-1 ring-brand-200" data-bar="chat">{{ icon('message-circle', 'size-4') }}<span class="max-[400px]:sr-only">{{ __('ads.page.bar_chat') }}</span></a>
                     @if (feature('chat.offers') && auth()->check())
-                        <a href="#offer" class="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-semibold text-brand-800 ring-1 ring-brand-200" data-bar="offer">{{ icon('hand-coins', 'size-4') }}<span class="max-[400px]:sr-only">{{ __('ads.page.bar_offer') }}</span></a>
+                        <a href="#offer-box" class="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-semibold text-brand-800 ring-1 ring-brand-200" data-bar="offer">{{ icon('hand-coins', 'size-4') }}<span class="max-[400px]:sr-only">{{ __('ads.page.bar_offer') }}</span></a>
                     @endif
                 @endfeature
             </div>
