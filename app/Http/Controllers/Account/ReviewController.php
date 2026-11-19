@@ -34,6 +34,11 @@ class ReviewController extends Controller
                 'buyer_id' => $user->id,
                 'ad_id' => $conversation->ad_id,
             ])->fill(['stars' => (int) $data['stars'], 'comment' => $comment]); // staff hiding stays as it was
+            // A changed rating is a new rating (PR 85): the seller's old answer and the old "Helpful" likes no longer fit it.
+            if ($review->exists && $review->isDirty(['stars', 'comment'])) {
+                $review->forceFill(['reply' => null, 'replied_at' => null, 'likes_count' => 0]);
+                DB::table('review_likes')->where('review_id', $review->id)->delete();
+            }
             $review->save();
             SellerReview::recount($conversation->seller_id);
         });

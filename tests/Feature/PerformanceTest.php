@@ -60,6 +60,7 @@ class PerformanceTest extends TestCase
         $this->assertLessThanOrEqual(10, $this->queries('/search?q=toyota'), 'search');
         $this->assertLessThanOrEqual(14, $this->queries(parse_url($this->ad->url(), PHP_URL_PATH)), 'ad page');
         $this->assertLessThanOrEqual(6, $this->queries('/api/v1/ads'), 'api list');
+        $this->assertLessThanOrEqual(6, $this->queries('/categories'), 'all categories');
     }
 
     /** Phase 2/3 pages with many rows: the count must not grow with the rows (bug hunt D21). */

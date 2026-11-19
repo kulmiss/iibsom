@@ -21,6 +21,12 @@ return [
     'blocked_by_you' => 'Adiga ayaa xannibay sheekadan.',
     'blocked_by_them' => 'Sheekadan waa la xannibay.',
     'new' => 'Cusub',
+    // Sanduuqa fariinta ee bogga xayeysiiska (PR 85)
+    'ad_box' => [
+        'label' => 'U qor :name',
+        'placeholder' => 'Salaan, weli ma la heli karaa?',
+        'send' => 'Dir fariinta',
+    ],
     'offer' => [
         'button' => 'Qiime soo jeedi',
         'label' => 'Qiimahaaga (USD)',

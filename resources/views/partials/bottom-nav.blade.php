@@ -7,7 +7,7 @@
             </a>
         </li>
         @feature('favourites')
-            <li><a href="{{ lroute('saved') }}" class="bottom-nav-item {{ request()->routeIs('saved', 'loc.saved') ? 'text-brand-700' : '' }}">{{ icon('bookmark', 'size-6') }}<span>{{ __('site.nav.saved_short') }}</span></a></li>
+            <li><a href="{{ lroute('saved') }}" class="bottom-nav-item relative {{ request()->routeIs('saved', 'loc.saved') ? 'text-brand-700' : '' }}">{{ icon('bookmark', 'size-6') }}<span>{{ __('site.nav.saved_short') }}</span>@include('partials.saved-count', ['ring' => 'ring-white', 'position' => 'end-1/4 top-0.5'])</a></li>
         @endfeature
         @if (feature('ads.posting') && (auth()->check() || feature('login.google')))
             <li><a href="{{ lroute('post') }}" class="bottom-nav-item">{{ icon('square-plus', 'size-6') }}<span>{{ __('site.nav.sell') }}</span></a></li>

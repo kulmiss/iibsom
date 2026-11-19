@@ -40,7 +40,7 @@ class PopularNow
 
         // Load again through the public query: an ad that ended in the last minutes is left out.
         $ads = DatabaseAdSearch::publicQuery()->whereIn('ads.id', $ids)
-            ->with(['category:id,slug,icon,parent_id', 'city:id,name,slug', 'cover'])->withPhotoCount()->get()
+            ->with(['category:id,slug,icon,parent_id', 'city:id,name,slug', 'cover'])->withPhotoCount()->withSellerStars()->get()
             ->sortBy(fn (Ad $ad) => array_search($ad->id, $ids, true))->values();
 
         return $ads->count() >= self::MIN ? $ads : new Collection;

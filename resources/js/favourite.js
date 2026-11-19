@@ -20,9 +20,17 @@ export function initFavourites() {
                 return;
             }
             const on = data.saved === true;
-            button.setAttribute('aria-pressed', on ? 'true' : 'false');
-            button.setAttribute('aria-label', on ? button.dataset.labelOn : button.dataset.labelOff);
-            form.querySelector('[data-favourite-text]').textContent = on ? button.dataset.textOn : button.dataset.textOff;
+            // Every Save button for this ad (the ad page has one in the phone top bar and one by the title).
+            document.querySelectorAll('form[data-favourite]').forEach((f) => {
+                if (f.action !== form.action) return;
+                const b = f.querySelector('button');
+                if (!b) return;
+                b.setAttribute('aria-pressed', on ? 'true' : 'false');
+                b.setAttribute('aria-label', on ? b.dataset.labelOn : b.dataset.labelOff);
+                const text = f.querySelector('[data-favourite-text]');
+                if (text) text.textContent = on ? b.dataset.textOn : b.dataset.textOff;
+            });
+            document.dispatchEvent(new CustomEvent('favourite:changed', { detail: { saved: on } }));
         } catch {
             form.submit(); // network trouble: fall back to a normal page load
         } finally {

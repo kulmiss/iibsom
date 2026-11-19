@@ -119,7 +119,7 @@ class BrowseController extends Controller
         // Nothing found (PR 77, switch "search.rich_empty"): the newest ads of this category in this place,
         // without the other filters, so the page still offers something real.
         $fallback = $results->isEmpty() && feature('search.rich_empty')
-            ? DatabaseAdSearch::publicQuery()->with(['category', 'city', 'cover'])->withPhotoCount()
+            ? DatabaseAdSearch::publicQuery()->with(['category', 'city', 'cover'])->withPhotoCount()->withSellerStars()
                 ->when($categoryIds, fn ($q) => $q->whereIn('category_id', $categoryIds))
                 ->when($city?->id, fn ($q, $cityId) => $q->where('city_id', $cityId))
                 ->latest('published_at')->limit(8)->get()

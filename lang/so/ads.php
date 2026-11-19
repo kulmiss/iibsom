@@ -57,6 +57,21 @@ return [
         'my_ads' => 'Tag Xayeysiisyadayda',
     ],
 
+    // "Wax kale" bogga xayeysiiska (PR 84)
+    'discover' => [
+        'title' => 'Wax kale ka eeg',
+        'condition' => ':category :condition',
+        'brand' => ':category :brand',
+        'in' => ':category ku yaal :place',
+    ],
+    // Bogga "Dhammaan qaybaha" (PR 84)
+    'finder' => [
+        'title' => 'Dhammaan qaybaha',
+        'tile' => 'Dhammaan',
+        'description' => 'Qayb kasta oo iibsom ku jirta, iyo tirada xayeysiisyada ka shaqeeya mid kasta.',
+        'search' => 'Raadi qayb, tusaale: taleefan, baabuur, guri',
+        'none' => 'Qayb magacaas leh lama helin. Isku day eray kale.',
+    ],
     // Qiimaha caadiga ah ee bogga xayeysiiska (PR 83)
     'market' => [
         'range' => 'Xayeysiisyada :what ee la midka ah badanaa waxay weydiiyaan $:low – $:high',
@@ -75,6 +90,17 @@ return [
     'ratings' => [
         'count' => '{1} :count qiimayn|[2,*] :count qiimaynood',
         'average' => ':rating ka mid ah 5',
+        'seller_stars' => '{1} Iibiyaha waxaa siiyey :rating ka mid ah 5 hal iibsade|[2,*] Iibiyaha waxaa siiyey :rating ka mid ah 5 :count iibsade',
+        'reply_button' => 'Ka jawaab',
+        'reply_label' => 'Jawaabtaada',
+        'reply_help' => 'Hal jawaab oo dadweyne: qof kasta oo fura qiimeyntaada wuu akhrin karaa, lamana beddeli karo.',
+        'reply_send' => 'Dhig jawaabta',
+        'reply_saved' => 'Jawaabtaada waa la dhigay.',
+        'reply_once' => 'Horay ayaad uga jawaabtay qiimeyntan.',
+        'reply_from' => 'Jawaabta :name',
+        'helpful' => 'Waxtar leh',
+        'helpful_sign_in' => 'Gal si aad u calaamadiso in qiimeyntani waxtar leedahay',
+        'helpful_count' => '{1} 1 qof ayaa u arkay waxtar|[2,*] :count qof ayaa u arkay waxtar',
         'title' => 'Qiimaynta :name',
         'from_buyers' => 'Waxaa qoray iibsadayaal la hadlay iibiyahan iibsom dushiisa.',
         'about' => 'Ku saabsan: :title',
@@ -204,6 +230,7 @@ return [
         'whatsapp' => 'WhatsApp',
         'whatsapp_text' => 'Salaan, waxaan iibsom ku arkay xayeysiiskaaga “:title”: :url',
         'share' => 'La wadaag',
+        'back_to' => 'Ku noqo :category',
         'share_whatsapp' => 'WhatsApp',
         'share_facebook' => 'Facebook',
         'copy_link' => 'Koobiyee linkiga',

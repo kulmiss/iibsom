@@ -131,4 +131,6 @@
 
 @push('scripts')
     @vite('resources/js/confirm.js')
+    {{-- This page has its own script: the language switch loads the page fully (PR 84). --}}
+    <meta name="page-script" content="confirm">
 @endpush

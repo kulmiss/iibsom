@@ -4,7 +4,14 @@
         <template id="suggest-text" data-recent="{{ __('site.search.recent') }}" data-clear="{{ __('site.search.clear_recent') }}" data-category="{{ __('site.search.category') }}"
                   data-none="{{ trans_choice('site.search.count', 0) }}" data-one="{{ trans_choice('site.search.count', 1, ['count' => ':count']) }}" data-many="{{ trans_choice('site.search.count', 2, ['count' => ':count']) }}"></template>
     @endfeature
-    <div class="mx-auto flex max-w-6xl items-center gap-2 px-4 py-2.5 sm:gap-3">
+    @php($phoneBar = $__env->hasSection('phone_bar'))
+    @if ($phoneBar)
+        {{-- Phones: a page's own top bar (the ad page: Back, category, Share, Save). Computers keep the normal bar. --}}
+        <div class="flex items-center gap-1 px-2 py-1.5 lg:hidden" data-phone-bar>
+            @yield('phone_bar')
+        </div>
+    @endif
+    <div @class(['mx-auto max-w-6xl items-center gap-2 px-4 py-2.5 sm:gap-3', 'flex' => ! $phoneBar, 'hidden lg:flex' => $phoneBar])>
         <a href="{{ lroute('home') }}" class="text-2xl font-extrabold tracking-tight" aria-label="{{ config('app.name') }} – {{ __('site.nav.home') }}">
             {{-- Lowercase so the first "I" is not read as "l". --}}
             {{ \Illuminate\Support\Str::lower(config('app.name')) }}
@@ -23,7 +30,7 @@
 
             {{-- Phase 2 features: hidden until their switch is ON. --}}
             @feature('favourites')
-                <a href="{{ lroute('saved') }}" class="icon-btn hidden lg:flex" title="{{ __('site.nav.saved') }}">{{ icon('bookmark') }}<span class="sr-only">{{ __('site.nav.saved') }}</span></a>
+                <a href="{{ lroute('saved') }}" class="icon-btn relative hidden lg:flex" title="{{ __('site.nav.saved') }}">{{ icon('bookmark') }}<span class="sr-only">{{ __('site.nav.saved') }}</span>@include('partials.saved-count', ['ring' => 'ring-brand-700', 'position' => 'end-0 top-0'])</a>
             @endfeature
             @feature('chat')
                 <a href="{{ lroute('chat') }}" class="icon-btn relative hidden lg:flex" title="{{ __('site.nav.messages') }}">{{ icon('message-circle') }}<span class="sr-only">{{ __('site.nav.messages') }}</span>@if (($chatUnread ?? 0) > 0)@include('partials.unread-badge', ['count' => $chatUnread, 'ring' => 'ring-brand-700', 'position' => 'end-0 top-0', 'dot' => 'bg-accent-400', 'dotRing' => 'ring-2 ring-brand-700', 'dotPosition' => 'end-1 top-1'])@endif</a>

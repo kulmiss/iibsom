@@ -55,6 +55,21 @@ return [
         'my_ads' => 'Go to My ads',
     ],
 
+    // "Discover more" on the ad page (PR 84)
+    'discover' => [
+        'title' => 'Discover more',
+        'condition' => ':Condition :category',
+        'brand' => ':brand :category',
+        'in' => ':category in :place',
+    ],
+    // "All categories" page (PR 84)
+    'finder' => [
+        'title' => 'All categories',
+        'tile' => 'All',
+        'description' => 'Every category on iibsom, with the number of live ads in each.',
+        'search' => 'Find a category, e.g. phone, car, house',
+        'none' => 'No category with that name. Try another word.',
+    ],
     // Usual price on the ad page (PR 83)
     'market' => [
         'range' => 'Similar :what ads usually ask $:low – $:high',
@@ -73,6 +88,17 @@ return [
     'ratings' => [
         'count' => '{1} :count rating|[2,*] :count ratings',
         'average' => ':rating out of 5',
+        'seller_stars' => '{1} Seller rated :rating out of 5 by 1 buyer|[2,*] Seller rated :rating out of 5 by :count buyers',
+        'reply_button' => 'Answer',
+        'reply_label' => 'Your answer',
+        'reply_help' => 'One public answer: everyone who opens your ratings can read it, and it cannot be changed.',
+        'reply_send' => 'Post answer',
+        'reply_saved' => 'Your answer is posted.',
+        'reply_once' => 'You already answered this rating.',
+        'reply_from' => 'Answer from :name',
+        'helpful' => 'Helpful',
+        'helpful_sign_in' => 'Sign in to mark this rating as helpful',
+        'helpful_count' => '{1} 1 person found this helpful|[2,*] :count people found this helpful',
         'title' => 'Ratings for :name',
         'from_buyers' => 'From buyers who talked with this seller on iibsom.',
         'about' => 'About: :title',
@@ -202,6 +228,7 @@ return [
         'whatsapp' => 'WhatsApp',
         'whatsapp_text' => 'Hello, I saw your ad “:title” on iibsom: :url',
         'share' => 'Share',
+        'back_to' => 'Back to :category',
         'share_whatsapp' => 'WhatsApp',
         'share_facebook' => 'Facebook',
         'copy_link' => 'Copy link',

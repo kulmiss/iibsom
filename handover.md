@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-19 (PR 83)_
+_Last updated: 2026-11-19 (PR 85)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -46,6 +46,8 @@ _Last updated: 2026-11-19 (PR 83)_
 - **PR 81 (report without profile):** the `ad.report` route moved out of the `profile.complete` group in `routes/web.php` (still `auth`). Test: `ReportWithoutProfileTest`.
 - **PR 82 (ad page extras):** `PostAdController::likeThis()` (`?like=`), `url` in `AdPageController::fieldRows()`, mark-sold + details-more in `resources/js/ad-page.js`. Switches `ads.post_like_this`, `ads.field_links`, `ads.mark_unavailable`, `ads.details_more`.
 - **PR 83 (usual price):** `AdPageController::marketPrice()` (uses `PriceHint::for()`, now one query), box under the price in `ads/show.blade.php`, texts `ads.market.*`. Switch `ads.market_price`.
+- **PR 84 (finder, phone ad bar, discover, saved count):** `CategoryFinderController` + `browse/categories.blade.php` + `resources/js/finder.js` (`/categories`, switch `catalog.finder`). Phone ad bar: the ad page fills `@section('phone_bar')`; `partials/header.blade.php` shows it on phones and hides the normal row (`ads.phone_top_bar`); Share = `[data-share-sheet]` in `copy-text.js`; compact Save = `ads/_save-button` with `compact`. `AdPageController::discoverMore()` (`ads.discover_more`). Saved count: `$savedCount` in the layout, `partials/saved-count.blade.php`, `resources/js/saved-count.js` (listens to `favourite:changed`, sent by `favourite.js` and `card-save.js`). **Language switch rule:** a page with its own script must carry `<meta name="page-script" content="…">` (after its `@vite`), so the switch reloads it fully; tested in `PageScriptReloadTest`.
+- **PR 85 (message box, card stars, rating answers + likes):** ad-page box posts `message` to `chat.start`; checks in `ChatController::problem()`, saving in `store()`. Card stars: `Ad::sellerStars()` (rating columns only) + scope `withSellerStars()` next to `withPhotoCount()` in every card list; `_card` shows stars only when the relation is loaded (never lazy). Ratings: migration `review_replies_and_likes` (`seller_reviews.reply/replied_at/likes_count`, table `review_likes` unique per person), `Account\ReviewResponseController` (`review.reply`, `review.like`), `resources/js/review-like.js`, `sellers/reviews.blade.php`; admin list shows answer + likes (`admin/src/features/reviews`). New icon `thumbs-up` (Lucide).
 
 ## How to run
 See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example .env && docker compose up -d --build`, then open http://localhost:8095.

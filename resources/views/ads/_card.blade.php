@@ -45,6 +45,13 @@
             {{-- List view only: the first words of the description. --}}
             <div class="hidden group-data-[view=list]/results:block"><p class="line-clamp-2 text-sm text-stone-600">{{ \Illuminate\Support\Str::limit(preg_replace('/\s+/u', ' ', (string) $ad->description) ?? '', 160) }}</p></div>
         @endif
+        @if (\App\Models\Ad::cardStarsOn() && $ad->relationLoaded('sellerStars') && ($stars = $ad->sellerStars?->rating()) !== null)
+            {{-- Seller stars (PR 85): loaded for the whole list in one query (withSellerStars), never one per card. --}}
+            <p class="flex items-center gap-1 text-xs text-stone-600" data-card-stars>
+                {{ icon('star', 'size-3.5 fill-amber-400 text-amber-500') }}<span aria-hidden="true">{{ number_format($stars, 1) }} ({{ $ad->sellerStars->rating_count }})</span>
+                <span class="sr-only">{{ trans_choice('ads.ratings.seller_stars', $ad->sellerStars->rating_count, ['rating' => number_format($stars, 1), 'count' => $ad->sellerStars->rating_count]) }}</span>
+            </p>
+        @endif
         <p class="mt-auto pt-1 text-xs text-stone-500">{{ $ad->city?->label }} · {{ $ad->published_at?->diffForHumans(short: true) }}</p>
     </div>
 </a>

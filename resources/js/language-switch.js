@@ -20,6 +20,15 @@ export function rememberLang(code) {
 }
 
 async function swapTo(url, code, push = true) {
+    // Pages with their own script (ad page, Post an ad, My ads) are loaded fully: swapping only their parts
+    // would leave buttons like "Show number" without their script (found in PR 84).
+    if (document.querySelector('meta[name="page-script"]')) {
+        rememberLang(code);
+        if (push) location.assign(url);
+        else location.replace(url); // back/forward: the address is already this one
+        return;
+    }
+
     const response = await fetch(url, { headers: { Accept: 'text/html' }, credentials: 'same-origin' });
     if (!response.ok) {
         location.href = url; // fall back to a normal page load
@@ -27,6 +36,14 @@ async function swapTo(url, code, push = true) {
     }
 
     const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
+
+    // The same when the page in the other language has its own script.
+    if (doc.querySelector('meta[name="page-script"]')) {
+        rememberLang(code);
+        if (push) location.assign(url);
+        else location.replace(url);
+        return;
+    }
 
     document.title = doc.title;
     document.documentElement.lang = doc.documentElement.lang;

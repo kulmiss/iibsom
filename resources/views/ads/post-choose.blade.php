@@ -5,6 +5,8 @@
 @if (feature('post.category_search'))
     @push('scripts')
         @vite('resources/js/post-ad.js')
+        {{-- This page has its own script: the language switch loads the page fully (PR 84). --}}
+        <meta name="page-script" content="post-ad">
     @endpush
 @endif
 

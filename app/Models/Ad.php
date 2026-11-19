@@ -105,6 +105,35 @@ class Ad extends Model
     }
 
     /**
+     * The seller's rating, for the stars on ad cards (PR 85, switches "seller_ratings" + "ads.card_stars").
+     * A separate relation with only the rating columns, so it never stands in for the full `user`.
+     *
+     * @return BelongsTo<User, $this>
+     */
+    public function sellerStars(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id')->select(['id', 'rating_count', 'rating_sum']);
+    }
+
+    /**
+     * Loads sellerStars for a list of cards: one query for the whole list, none while the switches are OFF.
+     * Not used on a seller's own page or shop (every card is the same seller; their stars are in the header).
+     *
+     * @param  Builder<Ad>  $query
+     */
+    public function scopeWithSellerStars(Builder $query): void
+    {
+        if (self::cardStarsOn()) {
+            $query->with('sellerStars');
+        }
+    }
+
+    public static function cardStarsOn(): bool
+    {
+        return feature('seller_ratings') && feature('ads.card_stars');
+    }
+
+    /**
      * Adds ready_photos_count (the photo count on ad cards, switch "ads.card_badges"). One small count per ad.
      *
      * @param  Builder<Ad>  $query

@@ -16,6 +16,9 @@ type Review = {
   id: number
   stars: number
   comment: string | null
+  reply: string | null
+  replied_at: string | null
+  likes_count: number
   created_at: string
   hidden_at: string | null
   hidden_reason: string | null
@@ -102,6 +105,15 @@ export function Reviews() {
             </CardHeader>
             <CardContent>
               {r.comment ? <p className='whitespace-pre-line break-words text-sm'>{r.comment}</p> : <p className='text-sm text-muted-foreground'>No comment.</p>}
+              {r.reply && (
+                <div className='mt-3 rounded-md border p-2 text-sm'>
+                  <p className='text-xs font-medium text-muted-foreground'>
+                    Seller's answer{r.replied_at && <> · {format(new Date(r.replied_at), 'd MMM yyyy')}</>}
+                  </p>
+                  <p className='whitespace-pre-line break-words'>{r.reply}</p>
+                </div>
+              )}
+              {r.likes_count > 0 && <p className='mt-2 text-xs text-muted-foreground'>Helpful: {r.likes_count}</p>}
               {r.hidden_reason && <p className='mt-3 rounded-md bg-muted p-2 text-sm'>Hidden: {r.hidden_reason}</p>}
             </CardContent>
             <CardFooter>

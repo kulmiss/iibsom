@@ -16,7 +16,7 @@ class DatabaseAdSearch implements AdSearch
     /** @return LengthAwarePaginator<int, Ad> */
     public function search(array $filters, int $perPage = 24, int $page = 1): LengthAwarePaginator
     {
-        $query = $this->filtered($filters)->with(['category:id,name,slug,icon,parent_id', 'city:id,name,slug', 'cover'])->withPhotoCount();
+        $query = $this->filtered($filters)->with(['category:id,name,slug,icon,parent_id', 'city:id,name,slug', 'cover'])->withPhotoCount()->withSellerStars();
 
         // Paid boosts (switch "boosts") come first in the default order: Diamond, VIP, Top.
         if (($filters['sort'] ?? 'newest') === 'newest' && feature('boosts')) {
