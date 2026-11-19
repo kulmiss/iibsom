@@ -21,6 +21,12 @@ return [
     'blocked_by_you' => 'You blocked this chat.',
     'blocked_by_them' => 'This chat was blocked.',
     'new' => 'New',
+    // Message box on the ad page (PR 85)
+    'ad_box' => [
+        'label' => 'Write to :name',
+        'placeholder' => 'Hello, is this still available?',
+        'send' => 'Send message',
+    ],
     'offer' => [
         'button' => 'Make an offer',
         'label' => 'Your price (USD)',

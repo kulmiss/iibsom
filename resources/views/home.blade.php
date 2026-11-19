@@ -6,7 +6,7 @@
 @php($categories = $catalog->categories())
 @php($cities = $catalog->cities())
 @php($popular = $catalog->popularCategories(8))
-@php($latest = \App\Search\DatabaseAdSearch::publicQuery()->with(['category:id,slug,icon,parent_id', 'city:id,name,slug', 'cover'])->withPhotoCount()->latest('published_at')->limit(12)->get())
+@php($latest = \App\Search\DatabaseAdSearch::publicQuery()->with(['category:id,slug,icon,parent_id', 'city:id,name,slug', 'cover'])->withPhotoCount()->withSellerStars()->latest('published_at')->limit(12)->get())
 @php($popularNow = \App\Support\Ads\PopularNow::ads())
 @php($banners = feature('site.banners') ? \App\Models\Banner::forHome() : [])
 @php($popularSearches = \App\Support\Home\HomeSections::popularSearches())

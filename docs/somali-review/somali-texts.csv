@@ -179,6 +179,17 @@ ads.price_hint.range,"Most :what ads are $:low – $:high","Inta badan xayeysiis
 ads.price_hint.detail,"Middle price $:middle, from :count ads in the last 6 months. You choose your own price.","Qiimaha dhexe $:middle, laga soo qaaday :count xayeysiis 6dii bilood ee la soo dhaafay. Qiimahaaga adigaa go'aansanaya.","needs native review",app/Http/Controllers/Ads/PriceHintController.php,
 ads.ratings.count,"{1} :count rating|[2,*] :count ratings","{1} :count qiimayn|[2,*] :count qiimaynood","needs native review","resources/views/partials/seller-rating.blade.php | resources/views/sellers/reviews.blade.php",home.png
 ads.ratings.average,":rating out of 5",":rating ka mid ah 5","needs native review","resources/views/partials/seller-rating.blade.php | resources/views/sellers/reviews.blade.php",home.png
+ads.ratings.seller_stars,"{1} Seller rated :rating out of 5 by 1 buyer|[2,*] Seller rated :rating out of 5 by :count buyers","{1} Iibiyaha waxaa siiyey :rating ka mid ah 5 hal iibsade|[2,*] Iibiyaha waxaa siiyey :rating ka mid ah 5 :count iibsade","needs native review",resources/views/ads/_card.blade.php,browse-index.png
+ads.ratings.reply_button,Answer,"Ka jawaab","needs native review",resources/views/sellers/reviews.blade.php,
+ads.ratings.reply_label,"Your answer",Jawaabtaada,"needs native review","app/Http/Controllers/Account/ReviewResponseController.php | resources/views/sellers/reviews.blade.php",
+ads.ratings.reply_help,"One public answer: everyone who opens your ratings can read it, and it cannot be changed.","Hal jawaab oo dadweyne: qof kasta oo fura qiimeyntaada wuu akhrin karaa, lamana beddeli karo.","needs native review",resources/views/sellers/reviews.blade.php,
+ads.ratings.reply_send,"Post answer","Dhig jawaabta","needs native review",resources/views/sellers/reviews.blade.php,
+ads.ratings.reply_saved,"Your answer is posted.","Jawaabtaada waa la dhigay.","needs native review",app/Http/Controllers/Account/ReviewResponseController.php,
+ads.ratings.reply_once,"You already answered this rating.","Horay ayaad uga jawaabtay qiimeyntan.","needs native review",app/Http/Controllers/Account/ReviewResponseController.php,
+ads.ratings.reply_from,"Answer from :name","Jawaabta :name","needs native review",resources/views/sellers/reviews.blade.php,
+ads.ratings.helpful,Helpful,"Waxtar leh","needs native review",resources/views/sellers/reviews.blade.php,
+ads.ratings.helpful_sign_in,"Sign in to mark this rating as helpful","Gal si aad u calaamadiso in qiimeyntani waxtar leedahay","needs native review",resources/views/sellers/reviews.blade.php,
+ads.ratings.helpful_count,"{1} 1 person found this helpful|[2,*] :count people found this helpful","{1} 1 qof ayaa u arkay waxtar|[2,*] :count qof ayaa u arkay waxtar","needs native review",resources/views/sellers/reviews.blade.php,
 ads.ratings.title,"Ratings for :name","Qiimaynta :name","needs native review",resources/views/sellers/reviews.blade.php,
 ads.ratings.from_buyers,"From buyers who talked with this seller on iibsom.","Waxaa qoray iibsadayaal la hadlay iibiyahan iibsom dushiisa.","needs native review",resources/views/sellers/reviews.blade.php,
 ads.ratings.about,"About: :title","Ku saabsan: :title","needs native review",resources/views/sellers/reviews.blade.php,
@@ -481,6 +492,9 @@ chat.block_confirm,"Block this chat? Neither of you can send more messages.","Ma
 chat.blocked_by_you,"You blocked this chat.","Adiga ayaa xannibay sheekadan.","needs native review",resources/views/chat/show.blade.php,
 chat.blocked_by_them,"This chat was blocked.","Sheekadan waa la xannibay.","needs native review",resources/views/chat/show.blade.php,
 chat.new,New,Cusub,"needs native review","resources/views/chat/index.blade.php | resources/views/partials/unread-badge.blade.php",home.png
+chat.ad_box.label,"Write to :name","U qor :name","needs native review",resources/views/ads/show.blade.php,ads-show.png
+chat.ad_box.placeholder,"Hello, is this still available?","Salaan, weli ma la heli karaa?","needs native review",resources/views/ads/show.blade.php,ads-show.png
+chat.ad_box.send,"Send message","Dir fariinta","needs native review",resources/views/ads/show.blade.php,ads-show.png
 chat.offer.button,"Make an offer","Qiime soo jeedi","needs native review",resources/views/ads/show.blade.php,ads-show.png
 chat.offer.label,"Your price (USD)","Qiimahaaga (USD)","needs native review","app/Http/Controllers/Account/ChatController.php | resources/views/ads/show.blade.php",ads-show.png
 chat.offer.continue,"Write the offer","Qor dalabka","needs native review",resources/views/ads/show.blade.php,ads-show.png

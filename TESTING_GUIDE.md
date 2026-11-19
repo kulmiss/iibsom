@@ -117,6 +117,9 @@ The same rows run automatically in a real browser (see "Automatic run" below).
 | J60 | Discover more | Open a car ad with brand, condition and district; tap each "Discover more" link | Every link opens a list that has this ad; Somali words in Somali | `ads.discover_more` |
 | J61 | Number on Saved | Saved ads ON, signed in: save an ad from a card and from an ad page; un-save | The number on Saved (top bar on computer, bottom bar on phone) goes up and down at once; 0 = no number | `account.saved_count` |
 | J62 | Language switch on pages with buttons | Ad page → switch language → tap "Show phone number", a photo, "Already sold?"; same on Post an ad and My ads | Page loads in the new language and every button works | (fix) |
+| J63 | Message box on the ad page | Chat ON, signed in as a buyer: open an ad, write "Hello" in "Write to …", Send; then try "fresh khat" | "Hello" is in the chat with the seller; the drug text is not sent, the note shows under the box and the text stays | `chat.ad_box` |
+| J64 | Stars on ad cards | Seller ratings ON; a seller with ratings: open Cars, search, home; then their seller page | "★ 4.5 (2)" on that seller's cards; no stars on the seller's own page | `ads.card_stars` |
+| J65 | Answer and Helpful on ratings | As the seller open My ratings → Answer → Post; as someone else tap Helpful twice; as the buyer change the rating | Answer shows once (no second form); Helpful on/off with the number; after the change the answer and Helpful are gone | `ratings.replies`, `ratings.likes` |
 
 ## Automatic run
 

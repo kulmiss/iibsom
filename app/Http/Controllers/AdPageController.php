@@ -34,7 +34,7 @@ class AdPageController extends Controller
         }
 
         $similar = feature('ads.similar') && $ad->isLive()
-            ? DatabaseAdSearch::publicQuery()->withPhotoCount()->where('category_id', $ad->category_id)->whereKeyNot($ad->id)->latest('published_at')->limit(6)->get()
+            ? DatabaseAdSearch::publicQuery()->withPhotoCount()->withSellerStars()->where('category_id', $ad->category_id)->whereKeyNot($ad->id)->latest('published_at')->limit(6)->get()
             : new EloquentCollection;
 
         // "More from this seller" (PR 76): the seller's other live ads, newest first.

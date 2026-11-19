@@ -280,6 +280,18 @@
                                     @endfeature
                                     <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-lg px-3 py-3 font-semibold text-brand-800 ring-1 ring-brand-200 hover:bg-brand-50">{{ icon('message-circle', 'size-5') }} {{ __('chat.start') }}</button>
                                 </form>
+                                @feature('chat.ad_box')
+                                    {{-- Write to the seller right here (PR 85): sent with the same checks as the chat, then the chat opens. --}}
+                                    <form id="message" method="post" action="{{ lroute('chat.start', ['ad' => $ad->id]) }}" class="mt-3 scroll-mt-20" data-ad-message>
+                                        @csrf
+                                        <label for="ad-message" class="text-sm font-medium">{{ __('chat.ad_box.label', ['name' => $ad->user->name]) }}</label>
+                                        <textarea id="ad-message" name="message" rows="3" required maxlength="{{ \App\Models\Message::MAX_LENGTH }}"
+                                                  class="form-input mt-1" placeholder="{{ __('chat.ad_box.placeholder') }}"
+                                                  @if ($errors->has('message')) aria-invalid="true" aria-describedby="ad-message-error" @endif>{{ old('message') }}</textarea>
+                                        @error('message')<p id="ad-message-error" class="mt-1 text-sm text-red-700" role="alert">{{ $message }}</p>@enderror
+                                        <button type="submit" class="btn-primary mt-2 w-full justify-center">{{ icon('send', 'size-4') }} {{ __('chat.ad_box.send') }}</button>
+                                    </form>
+                                @endfeature
                                 @feature('chat.offers')
                                     {{-- Make an offer: the chat opens with the offer written in; the buyer still taps Send. --}}
                                     <details id="offer-box" class="mt-2 scroll-mt-20 rounded-lg ring-1 ring-brand-200" data-offer @if ($errors->has('offer')) open @endif>

@@ -49,10 +49,29 @@ class ChatController extends Controller
             )['offer'];
         }
 
+        // A message written in the box on the ad page (PR 84/85, switch "chat.ad_box"): the same checks as in the
+        // chat, done BEFORE a conversation is made, so a refused message leaves nothing behind.
+        $body = null;
+        if (feature('chat.ad_box') && $request->has('message')) {
+            $data = $request->validate(['message' => ['required', 'string', 'max:'.Message::MAX_LENGTH]], [], ['message' => __('chat.message')]);
+            $body = trim(str_replace("\r\n", "\n", $data['message']));
+            $existing = Conversation::where('ad_id', $ad->id)->where('buyer_id', $user->id)->first();
+            $problem = $this->problem($user, $body, $existing?->blocked_by !== null, $ad->user, ['ad' => $ad->id]);
+            if ($problem !== null) {
+                return redirect($ad->url().'#message')->withInput()->withErrors(['message' => $problem]);
+            }
+        }
+
         $conversation = Conversation::firstOrCreate(
             ['ad_id' => $ad->id, 'buyer_id' => $user->id],
             ['seller_id' => $ad->user_id],
         );
+
+        if ($body !== null) {
+            $message = $this->store($conversation, $user, $body);
+
+            return redirect(lroute('chat.show', ['conversation' => $conversation->id]).'#m'.$message->id);
+        }
 
         // Quick question (switch "chat.quick_replies"): put the words in the box; the buyer still taps Send.
         $quick = (string) $request->input('quick');
@@ -109,29 +128,51 @@ class ChatController extends Controller
         $data = $request->validate(['body' => ['required', 'string', 'max:'.Message::MAX_LENGTH]], [], ['body' => __('chat.message')]);
         $body = trim(str_replace("\r\n", "\n", $data['body']));
 
-        // Drugs (PR 73, switch "safety.no_drugs"): blocked with a kind note; the sender is marked for staff review.
+        $problem = $this->problem($user, $body, $conversation->blocked_by !== null, $conversation->other($user), ['conversation' => $conversation->id]);
+        if ($problem !== null) {
+            return $this->refused($request, $problem);
+        }
+
+        $message = $this->store($conversation, $user, $body);
+
+        return $request->expectsJson()
+            ? response()->json(['message' => $this->row($message, $user)], 201)
+            : redirect(lroute('chat.show', ['conversation' => $conversation->id]).'#m'.$message->id);
+    }
+
+    /**
+     * Why a message cannot be sent, or null when it can. One place for the chat and the ad-page box.
+     * Drugs (PR 73, switch "safety.no_drugs"): the sender is marked for staff review (never banned automatically).
+     *
+     * @param  array<string, int>  $where  for the security log
+     */
+    private function problem(User $user, string $body, bool $blocked, User $other, array $where): ?string
+    {
         if ($body !== '' && feature('safety.no_drugs') && ($word = SpamGuard::drugWord($body)) !== null) {
             DB::table('users')->where('id', $user->id)->update([
                 'flag' => 'drugs', 'flag_word' => mb_substr($word, 0, 60), 'flagged_at' => now(),
                 'flag_count' => DB::raw('LEAST(flag_count + 1, 65535)'),
             ]);
-            Log::channel('security')->info('chat.drugs_blocked', ['user_id' => $user->id, 'conversation' => $conversation->id, 'word' => $word]);
+            Log::channel('security')->info('chat.drugs_blocked', ['user_id' => $user->id, ...$where, 'word' => $word]);
 
-            return $this->refused($request, __('chat.drugs'));
+            return (string) __('chat.drugs');
         }
 
         $problem = match (true) {
             $body === '' => __('chat.empty'),
-            $conversation->blocked_by !== null => __('chat.blocked'),
-            $conversation->other($user)->isBanned() => __('chat.unavailable'),
+            $blocked => __('chat.blocked'),
+            $other->isBanned() => __('chat.unavailable'),
             SpamGuard::badWord($body) !== null => __('chat.not_allowed'),
             default => null,
         };
-        if ($problem !== null) {
-            return $this->refused($request, $problem);
-        }
 
-        $message = DB::transaction(function () use ($conversation, $user, $body) {
+        return $problem === null ? null : (string) (is_string($problem) ? $problem : '');
+    }
+
+    /** Save a message and move the conversation to the top of both lists (the sender has read it). */
+    private function store(Conversation $conversation, User $user, string $body): Message
+    {
+        return DB::transaction(function () use ($conversation, $user, $body) {
             $message = $conversation->messages()->create(['sender_id' => $user->id, 'body' => $body]);
             $conversation->forceFill([
                 'last_message_at' => $message->created_at,
@@ -141,10 +182,6 @@ class ChatController extends Controller
 
             return $message;
         });
-
-        return $request->expectsJson()
-            ? response()->json(['message' => $this->row($message, $user)], 201)
-            : redirect(lroute('chat.show', ['conversation' => $conversation->id]).'#m'.$message->id);
     }
 
     /**

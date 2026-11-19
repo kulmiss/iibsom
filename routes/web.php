@@ -10,6 +10,7 @@ use App\Http\Controllers\Account\MyAdsController;
 use App\Http\Controllers\Account\NotificationController;
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\Account\ReviewController;
+use App\Http\Controllers\Account\ReviewResponseController;
 use App\Http\Controllers\Account\SavedSearchController;
 use App\Http\Controllers\Account\ShopController;
 use App\Http\Controllers\Account\VerificationController;
@@ -111,6 +112,10 @@ $publicRoutes = function () use ($stateless) {
                 Route::post('/messages/{conversation}/block', [ChatController::class, 'block'])->whereNumber('conversation')->middleware('throttle:10,1')->name('chat.block');
                 Route::post('/messages/{conversation}/review', [ReviewController::class, 'store'])->whereNumber('conversation')->middleware(['feature:seller_ratings', 'throttle:10,1'])->name('chat.review');
             });
+
+            // Seller ratings (PR 85): the seller's one reply, and "Helpful" likes.
+            Route::post('/reviews/{review}/reply', [ReviewResponseController::class, 'reply'])->whereNumber('review')->middleware(['feature:seller_ratings', 'feature:ratings.replies', 'throttle:10,1'])->name('review.reply');
+            Route::post('/reviews/{review}/like', [ReviewResponseController::class, 'like'])->whereNumber('review')->middleware(['feature:seller_ratings', 'feature:ratings.likes', 'throttle:30,1'])->name('review.like');
 
             // Paid boosts (Phase 2): pay by mobile money + receipt; staff approve.
             Route::middleware('feature:boosts')->group(function () {

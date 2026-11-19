@@ -192,7 +192,7 @@ class HomeSections
 
         // Loaded again so an ad whose boost or life ended in the last minutes is left out.
         return DatabaseAdSearch::publicQuery()->whereIn('ads.id', $ids)->where('ads.boosted_until', '>', now())
-            ->with(['category:id,slug,icon,parent_id', 'city:id,name,slug', 'cover'])->withPhotoCount()->get()
+            ->with(['category:id,slug,icon,parent_id', 'city:id,name,slug', 'cover'])->withPhotoCount()->withSellerStars()->get()
             ->sortBy(fn (Ad $ad) => array_search($ad->id, $ids, true))->values();
     }
 

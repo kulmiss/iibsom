@@ -23,7 +23,7 @@ class SellerReview extends Model
 
     protected function casts(): array
     {
-        return ['stars' => 'integer', 'hidden_at' => 'datetime'];
+        return ['stars' => 'integer', 'hidden_at' => 'datetime', 'replied_at' => 'datetime', 'likes_count' => 'integer'];
     }
 
     /** @return BelongsTo<User, $this> */
