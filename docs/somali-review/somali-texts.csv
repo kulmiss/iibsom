@@ -316,6 +316,11 @@ ads.page.bar_offer,Offer,Dalab,"needs native review",resources/views/ads/show.bl
 ads.page.photo_prev,"Previous photo","Sawirkii hore","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.photo_next,"Next photo","Sawirka xiga","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.close,Close,Xir,"needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.page.details_more,"Show all :count details","Muuji dhammaan :count faahfaahin","needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.page.details_less,"Show fewer details","Muuji faahfaahin yar","needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.page.mark_sold,"Already sold? Let us know","Ma la iibiyey? Noo sheeg","needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.page.like_this_text,"Have one like this to sell?","Ma haysaa mid kan oo kale oo aad iibinayso?","needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.page.like_this_button,"Post an ad like this","Dhig xayeysiis kan oo kale","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.safety.bot,"Something went wrong. Please try again.","Wax baa khaldamay. Fadlan mar kale isku day.","needs native review",app/Support/Safety/SpamGuard.php,
 ads.safety.links,"Please remove web links. Buyers contact you by phone or WhatsApp.","Fadlan ka saar linkiyada internetka. Iibsadayaashu waxay kula soo xiriiraan taleefan ama WhatsApp.","needs native review",app/Support/Safety/SpamGuard.php,
 ads.safety.bad_words,"Please remove rude or unsafe words from your ad.","Fadlan xayeysiiskaaga ka saar erayada xun ama aan ammaanka ahayn.","needs native review",app/Support/Safety/SpamGuard.php,

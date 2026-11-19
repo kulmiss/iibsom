@@ -228,6 +228,11 @@ return [
         'photo_prev' => 'Previous photo',
         'photo_next' => 'Next photo',
         'close' => 'Close',
+        'details_more' => 'Show all :count details',
+        'details_less' => 'Show fewer details',
+        'mark_sold' => 'Already sold? Let us know',
+        'like_this_text' => 'Have one like this to sell?',
+        'like_this_button' => 'Post an ad like this',
     ],
 
     'safety' => [

@@ -28,12 +28,13 @@ class PostAdController extends Controller
         return view('ads.post-choose', ['categories' => $this->catalog->categories()]);
     }
 
-    public function create(Category $category): View
+    public function create(Request $request, Category $category): View
     {
         $this->ensurePostable($category);
 
         return view('ads.post-form', [
             'ad' => null,
+            'prefill' => $this->likeThis($request, $category),
             'photos' => [],
             'category' => $category,
             'fields' => $category->allFields(),
@@ -41,6 +42,33 @@ class PostAdController extends Controller
             'areas' => $this->areas(),
             'maxPhotos' => setting('ads.max_photos'),
         ]);
+    }
+
+    /**
+     * "Post an ad like this" (PR 82, switch "ads.post_like_this"): ?like=<live ad of this category> fills in the
+     * condition and the pick-from-a-list details (brand, model, …). Never the title, text, price, photos or contact.
+     *
+     * @return array{condition: ?string, fields: array<string, string>}
+     */
+    private function likeThis(Request $request, Category $category): array
+    {
+        $empty = ['condition' => null, 'fields' => []];
+        if (! feature('ads.post_like_this') || ! $request->filled('like')) {
+            return $empty;
+        }
+        $like = Ad::query()->live()->whereKey($request->integer('like'))->where('category_id', $category->id)->first();
+        if ($like === null) {
+            return $empty;
+        }
+        $fields = [];
+        foreach ($category->allFields() as $field) {
+            $value = $like->fields[$field->key] ?? null;
+            if ($field->type === 'select' && is_scalar($value) && array_key_exists((string) $value, $field->optionList())) {
+                $fields[$field->key] = (string) $value;
+            }
+        }
+
+        return ['condition' => $category->has_condition ? $like->condition : null, 'fields' => $fields];
     }
 
     public function store(Request $request, Category $category, AdForm $form): RedirectResponse

@@ -230,6 +230,11 @@ return [
         'photo_prev' => 'Sawirkii hore',
         'photo_next' => 'Sawirka xiga',
         'close' => 'Xir',
+        'details_more' => 'Muuji dhammaan :count faahfaahin',
+        'details_less' => 'Muuji faahfaahin yar',
+        'mark_sold' => 'Ma la iibiyey? Noo sheeg',
+        'like_this_text' => 'Ma haysaa mid kan oo kale oo aad iibinayso?',
+        'like_this_button' => 'Dhig xayeysiis kan oo kale',
     ],
 
     'safety' => [

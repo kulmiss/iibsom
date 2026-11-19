@@ -40,6 +40,10 @@ return [
     'post.tips' => ['group' => 'Ads', 'default' => true, 'label' => 'Post an ad: tips', 'description' => 'A short, closable box with 4 tips for an ad that sells (photos, title, price, honest description).'],
     'post.preview' => ['group' => 'Ads', 'default' => true, 'label' => 'Post an ad: live card preview', 'description' => 'Above the Post button: the ad card as buyers will see it, changing while the seller types (title, price, first photo, place).'],
     'post.done_plus' => ['group' => 'Ads', 'default' => true, 'label' => 'After posting: share + move to top', 'description' => 'The thank-you page shows Share buttons (only when the ad is live), a link to the ad, and how the free "Move to top" works.'],
+    'ads.post_like_this' => ['group' => 'Ads', 'default' => true, 'label' => '"Post an ad like this"', 'description' => 'On ad pages, a box "Have one like this to sell?" opens Post an ad in the same category with the same brand, model and condition filled in (never the title, text, price or photos).'],
+    'ads.field_links' => ['group' => 'Ads', 'default' => true, 'label' => 'Brand and model are links', 'description' => 'On ad pages, list choices that can be filtered (brand, model, …) are links to all live ads with that choice in the category.'],
+    'ads.mark_unavailable' => ['group' => 'Ads', 'default' => true, 'label' => '"Already sold? Let us know"', 'description' => 'On ad pages, one tap opens the report box with "Already sold" chosen. Uses the normal report (also for guests when that switch is ON).'],
+    'ads.details_more' => ['group' => 'Ads', 'default' => true, 'label' => 'Long details: "Show all details"', 'description' => 'Ads with more than 6 details show the first 6 and a button for the rest. Without JavaScript all show.'],
     'ads.similar' => ['group' => 'Ads', 'default' => true, 'label' => 'Similar ads', 'description' => 'Show similar ads on the ad page.'],
 
     'ads.edit_changes' => ['group' => 'Ads', 'default' => true, 'label' => 'Show what sellers changed', 'description' => 'An ad edited after approval shows "Edited" in the queue, with the old and new text side by side.'],

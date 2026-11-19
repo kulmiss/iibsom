@@ -126,7 +126,7 @@ class AdPageController extends Controller
         'storage' => 'hard-drive', 'quantity' => 'boxes', 'job_type' => 'briefcase',
     ];
 
-    /** @return list<array{label: string, value: string, icon: string}> */
+    /** @return list<array{label: string, value: string, icon: string, url: ?string}> */
     private function fieldRows(Ad $ad): array
     {
         $rows = [];
@@ -145,7 +145,11 @@ class AdPageController extends Controller
             if ($f->key === 'year') {
                 $shown = (string) $value;
             }
-            $rows[] = ['label' => $f->label_text, 'value' => $shown.($f->unit ? ' '.$f->unit : ''), 'icon' => self::FIELD_ICONS[$f->key] ?? 'circle-check'];
+            // Brand, model and other list choices that can be filtered link to all such ads (PR 82, "ads.field_links").
+            $url = feature('ads.field_links') && $f->type === 'select' && $f->filterable && is_scalar($value) && $ad->isLive()
+                ? lroute('browse.category', ['category' => $ad->category->slug]).'?'.http_build_query(['f' => [$f->key => (string) $value]])
+                : null;
+            $rows[] = ['label' => $f->label_text, 'value' => $shown.($f->unit ? ' '.$f->unit : ''), 'icon' => self::FIELD_ICONS[$f->key] ?? 'circle-check', 'url' => $url];
         }
 
         return $rows;
