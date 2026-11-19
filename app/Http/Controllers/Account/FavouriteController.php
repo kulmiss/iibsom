@@ -7,6 +7,7 @@ use App\Models\Ad;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 /**
@@ -44,7 +45,8 @@ class FavouriteController extends Controller
                     ? response()->json(['message' => $message], 422)
                     : back()->with('status', $message);
             }
-            $user->favourites()->attach($ad->id);
+            // insertOrIgnore: two quick taps (or two tabs) at the same moment save it once, not an error.
+            DB::table('favourites')->insertOrIgnore(['user_id' => $user->id, 'ad_id' => $ad->id, 'price_when_saved' => $ad->price, 'created_at' => now(), 'updated_at' => now()]);
         }
 
         $message = __($saved ? 'ads.saved.removed' : 'ads.saved.added');

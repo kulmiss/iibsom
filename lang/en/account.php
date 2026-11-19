@@ -12,6 +12,12 @@ return [
         'failed' => 'Sign-in did not work. Please try again.',
         'unverified' => 'Your Google email is not verified yet. Please verify it with Google and try again.',
         'banned' => 'This account is blocked. If you think this is a mistake, contact us.',
+        'not_set_up' => 'Sign-in with Google is not set up yet on this site.',
+        'test_title' => 'Test sign-in',
+        'test_note' => 'Only on your own computer, for testing. This box never shows on the live site.',
+        'test_email' => 'Any email',
+        'test_button' => 'Sign in or sign up',
+        'test_staff' => 'Staff accounts sign in at /admin.',
     ],
 
     'welcome' => [
@@ -25,6 +31,17 @@ return [
         'title' => 'My profile',
         'submit' => 'Save changes',
         'saved' => 'Your profile is saved.',
+    ],
+
+    'dash' => [
+        'title' => 'Your numbers',
+        'live' => 'Live ads',
+        'waiting' => 'Waiting for a check',
+        'views' => 'Views (30 days)',
+        'contacts' => 'Calls and WhatsApp (30 days)',
+        'unread' => 'Unread messages',
+        'saved' => 'Saved ads',
+        'followers' => 'Followers',
     ],
 
     'account' => [

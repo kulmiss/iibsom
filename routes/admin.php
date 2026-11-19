@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BlockedPhoneController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ContactMessageController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FeatureController;
 use App\Http\Controllers\Admin\GuideController;
@@ -76,6 +77,7 @@ Route::prefix('admin/api')->group(function () {
         Route::get('/users/{user}', [UserController::class, 'show'])->middleware('admin.can:users.view');
         Route::post('/users/{user}/ban', [UserController::class, 'ban'])->middleware('admin.can:users.ban');
         Route::post('/users/{user}/unban', [UserController::class, 'unban'])->middleware('admin.can:users.ban');
+        Route::post('/users/{user}/clear-flag', [UserController::class, 'clearFlag'])->middleware('admin.can:users.ban');
         // Paid boosts (Phase 2): receipt payments + ledger.
         Route::middleware(['feature:boosts', 'admin.can:payments.manage'])->group(function () {
             Route::get('/payments', [PaymentController::class, 'index']);
@@ -89,6 +91,13 @@ Route::prefix('admin/api')->group(function () {
         Route::middleware(['feature:shops', 'admin.can:shops.manage'])->group(function () {
             Route::get('/shops', [ShopController::class, 'index']);
             Route::post('/shops/{shop}/activate', [ShopController::class, 'activate']);
+        });
+
+        // Contact form messages (PR 69).
+        Route::middleware(['feature:site.contact_form', 'admin.can:messages.manage'])->group(function () {
+            Route::get('/messages', [ContactMessageController::class, 'index']);
+            Route::post('/messages/{message}/done', [ContactMessageController::class, 'done']);
+            Route::post('/messages/{message}/reopen', [ContactMessageController::class, 'reopen']);
         });
 
         // Seller ratings (Phase 3): hide ratings that break the rules.

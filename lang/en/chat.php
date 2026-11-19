@@ -13,6 +13,7 @@ return [
     'empty' => 'Write a message first.',
     'blocked' => 'This chat is blocked. No more messages can be sent.',
     'unavailable' => 'This person can no longer receive messages.',
+    'drugs' => 'Sorry, this message was not sent. Talking about drugs (khat, cannabis, pills and similar) is not allowed on iibsom. Please write about the item only.',
     'not_allowed' => 'Your message has words that are not allowed. Please change it.',
     'block' => 'Block',
     'unblock' => 'Unblock',
@@ -20,6 +21,13 @@ return [
     'blocked_by_you' => 'You blocked this chat.',
     'blocked_by_them' => 'This chat was blocked.',
     'new' => 'New',
+    'offer' => [
+        'button' => 'Make an offer',
+        'label' => 'Your price (USD)',
+        'continue' => 'Write the offer',
+        'note' => 'The chat opens with your offer written in. You still tap Send.',
+        'text' => 'Hello, I would like to offer :amount for this. Is that OK for you?',
+    ],
     'quick' => [
         'title' => 'Ask the seller',
         'available' => 'Is it still available?',

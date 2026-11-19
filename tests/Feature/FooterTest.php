@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Page;
+use App\Support\Cache\PageCache;
 use App\Support\Features\FeatureManager;
 use App\Support\Settings\SettingsManager;
 use App\Support\Site\Footer;
@@ -22,6 +23,7 @@ class FooterTest extends TestCase
 
     public function test_big_footer_columns_languages_and_year(): void
     {
+        app(FeatureManager::class)->set('site.contact_form', false); // the help-email link (form: end of this test)
         $html = (string) $this->get('/')->assertOk()->getContent();
         foreach (['data-site-footer', 'data-footer-section', '>About</summary>' => false, 'About us', 'Terms', 'Privacy', 'Cookie info', 'Copyright &amp; problems', 'Safety tips', 'Help centre &amp; FAQ', '© '.now()->year] as $k => $v) {
             $needle = is_string($k) ? $k : $v;
@@ -46,6 +48,12 @@ class FooterTest extends TestCase
 
         app(SettingsManager::class)->set('site.support_email', 'help@iibsom.test');
         $this->get('/so')->assertOk()->assertSee('href="mailto:help@iibsom.test"', false)->assertSee('Nala soo xiriir')->assertSee('Macluumaadka kukiyada');
+
+        // With the contact form ON (PR 69) "Contact us" opens the form, even without a help email.
+        app(FeatureManager::class)->set('site.contact_form', true);
+        app(SettingsManager::class)->set('site.support_email', '');
+        PageCache::bump();
+        $this->get('/')->assertOk()->assertSee('href="'.url('/contact').'"', false)->assertSee('Contact us');
     }
 
     public function test_popular_links_follow_live_ads(): void

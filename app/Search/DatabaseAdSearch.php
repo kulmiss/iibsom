@@ -121,6 +121,8 @@ class DatabaseAdSearch implements AdSearch
         // Saved-search alerts: only ads published since the last check.
         if (($filters['published_after'] ?? null) instanceof \DateTimeInterface) {
             $query->where('ads.published_at', '>', $filters['published_after']);
+            // A free "move to top" (PR 68) is not a new ad: alerts leave it out.
+            $query->where(fn ($q) => $q->whereNull('ads.bumped_at')->orWhere('ads.bumped_at', '<=', $filters['published_after']));
         }
         foreach ($filters['fields'] ?? [] as $key => $value) {
             $this->field($query, $key, $value);

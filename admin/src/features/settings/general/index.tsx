@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Link } from '@tanstack/react-router'
+import { Link, Navigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { api, apiErrorMessage } from '@/lib/api'
 import { useAuthStore } from '@/stores/auth-store'
@@ -21,6 +21,7 @@ type General = {
   available_languages: { code: string; name: string; default: boolean }[]
   currency: string
   bad_words: string
+  drug_words: string
   weekly_emails: string[]
   weekly_last_sent: string | null
   support_email: string
@@ -37,7 +38,10 @@ type General = {
 }
 
 export function SettingsGeneral() {
-  const { data } = useQuery({ queryKey: ['settings-general'], queryFn: async () => (await api.get<General>('/settings/general')).data })
+  // Staff without "settings.manage" (moderator, support) only have their own settings: open those.
+  const canManage = useAuthStore((st) => st.can('settings.manage'))
+  const { data } = useQuery({ queryKey: ['settings-general'], queryFn: async () => (await api.get<General>('/settings/general')).data, enabled: canManage })
+  if (!canManage) return <Navigate to='/settings/appearance' replace />
   if (!data) return <Skeleton className='h-64 w-full' />
   return <GeneralForm initial={data} />
 }
@@ -109,6 +113,15 @@ function GeneralForm({ initial }: { initial: General }) {
           <Label htmlFor='bad_words'>Bad words (one per line)</Label>
           <Textarea id='bad_words' rows={6} className='max-w-md font-mono text-xs' value={form.bad_words} onChange={(e) => setForm({ ...form, bad_words: e.target.value })} />
           <p className='text-xs text-muted-foreground'>Ads with these words are refused (whole words, any case). Add Somali words too. Switch: Safety → Bad word filter.</p>
+        </div>
+        <div className='grid gap-2'>
+          <Label htmlFor='drug_words'>Drug words (one per line)</Label>
+          <Textarea id='drug_words' rows={8} className='max-w-md font-mono text-xs' value={form.drug_words} onChange={(e) => setForm({ ...form, drug_words: e.target.value })} />
+          <p className='text-xs text-muted-foreground'>
+            New and edited ads with these words are refused (whole words, any case: &quot;chat&quot; and &quot;Qatar&quot; are fine). Avoid
+            normal words such as &quot;qaad&quot; (take) or &quot;jaad&quot; (kind). Switch: Safety → No drugs. After changes, run{' '}
+            <code>php artisan iibsom:drugs:check</code> to find live ads that match.
+          </p>
         </div>
         <div className='grid gap-2'>
           <Label htmlFor='weekly_emails'>Weekly summary email to (up to 5 addresses, one per line)</Label>

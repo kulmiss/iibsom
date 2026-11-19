@@ -1,4 +1,4 @@
-import { useState, type JSX } from 'react'
+import { type JSX } from 'react'
 import { useLocation, useNavigate, Link } from '@tanstack/react-router'
 import { cn } from '@/lib/utils'
 import { buttonVariants } from '@/components/ui/button'
@@ -22,10 +22,10 @@ type SidebarNavProps = React.HTMLAttributes<HTMLElement> & {
 export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
   const { pathname } = useLocation()
   const navigate = useNavigate()
-  const [val, setVal] = useState(pathname ?? '/settings')
+  // Follow the address (also after a redirect), so the phone menu always shows the open page.
+  const val = pathname.replace(/\/$/, '') || '/settings'
 
   const handleSelect = (e: string) => {
-    setVal(e)
     navigate({ to: e })
   }
 

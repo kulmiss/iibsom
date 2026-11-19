@@ -23,6 +23,7 @@ class SavedSearch extends Model
     protected function casts(): array
     {
         return [
+            'muted' => 'boolean',
             'criteria' => 'array',
             'checked_until' => 'datetime',
             'last_sent_at' => 'datetime',
@@ -41,6 +42,9 @@ class SavedSearch extends Model
         $c = $this->criteria;
         $query = array_filter([
             'q' => $c['q'], 'min' => $c['min'], 'max' => $c['max'], 'condition' => $c['condition'],
+            'area' => $c['area_id'] ?? null,
+            'photos' => ! empty($c['photos']) ? 1 : null,
+            'verified' => ! empty($c['verified']) ? 1 : null,
             'f' => $c['fields'] ?: null,
         ], fn ($v) => $v !== null && $v !== '');
 

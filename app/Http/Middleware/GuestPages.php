@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 class GuestPages
 {
     /** Route names (without the "loc." language prefix) that are the same for every guest. */
-    public const CACHEABLE = ['home', 'search', 'browse.category', 'browse.brand', 'ad.show', 'page', 'help', 'help.show', 'shop.show', 'seller.reviews'];
+    public const CACHEABLE = ['home', 'search', 'browse.category', 'browse.brand', 'ad.show', 'page', 'help', 'help.show', 'shop.show', 'seller.show', 'seller.reviews', 'contact'];
 
     public function handle(Request $request, Closure $next): Response
     {

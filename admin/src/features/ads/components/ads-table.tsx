@@ -98,6 +98,12 @@ export function AdsTable({ status, userId, queue }: { status?: string; userId?: 
       ),
     },
     { accessorKey: 'status', header: 'Status', cell: ({ row }) => <StatusBadge status={row.original.status} label={row.original.status_label} />, enableSorting: false },
+    {
+      accessorKey: 'flag',
+      header: 'Check',
+      enableSorting: false,
+      cell: ({ row }) => (row.original.flag ? <Badge variant='destructive' title={row.original.flag}>Drugs</Badge> : null),
+    },
     { accessorKey: 'price', header: ({ column }) => <DataTableColumnHeader column={column} title='Price' />, meta: { className: 'whitespace-nowrap' } },
     { accessorKey: 'city', header: 'City', enableSorting: false },
     {
@@ -123,7 +129,11 @@ export function AdsTable({ status, userId, queue }: { status?: string; userId?: 
         queryKey='ads'
         columns={columns}
         extraParams={{ ...(status ? { status } : {}), ...(userId ? { user_id: userId } : {}) }}
-        filters={status ? [] : [{ columnId: 'status', title: 'Status', options: STATUS_OPTIONS }]}
+        filters={[
+          ...(status ? [] : [{ columnId: 'status', title: 'Status', options: STATUS_OPTIONS }]),
+          // Ads sent back by the drug check, or reported as drugs (PR 72).
+          { columnId: 'flag', title: 'Drugs', options: [{ value: 'drugs', label: 'Drug check or drug reports' }] },
+        ]}
         searchPlaceholder='Search title or #id…'
         csvName={queue ? 'ads-waiting' : 'ads'}
         rowId={(r) => String(r.id)}

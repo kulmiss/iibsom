@@ -25,6 +25,7 @@ class GeneralSettings
             'languages' => ['required', 'array', 'min:1'],
             'languages.*' => [Rule::in(array_keys(config()->array('iibsom.locales')))],
             'bad_words' => ['nullable', 'string', 'max:20000'],
+            'drug_words' => ['nullable', 'string', 'max:20000'],
             'weekly_emails' => ['nullable', 'array', 'max:5'],
             'weekly_emails.*' => ['email:rfc', 'max:120'],
             'support_email' => ['nullable', 'email:rfc', 'max:120'],
@@ -111,6 +112,12 @@ class GeneralSettings
             $this->settings->set('safety.bad_words', $words, $userId);
         }
 
+        if (array_key_exists('drug_words', $data)) {
+            $words = collect(preg_split('/\r?\n/', (string) ($data['drug_words'] ?? '')) ?: [])
+                ->map(fn ($w) => mb_strtolower(trim($w)))->filter()->unique()->take(1000)->values()->all();
+            $this->settings->set('safety.drug_words', $words, $userId);
+        }
+
         if (array_key_exists('weekly_emails', $data)) {
             $emails = array_values(array_unique(array_map('mb_strtolower', array_filter((array) ($data['weekly_emails'] ?? []), 'is_string'))));
             $this->settings->set('reports.weekly_emails', $emails, $userId);
@@ -170,6 +177,7 @@ class GeneralSettings
             'available_languages' => collect(config()->array('iibsom.locales'))->map(fn ($l, $code) => ['code' => $code, 'name' => $l['name'], 'default' => $code === config('iibsom.default_locale')])->values(),
             'currency' => setting('currency'),
             'bad_words' => implode("\n", setting('safety.bad_words') ?? []),
+            'drug_words' => implode("\n", setting('safety.drug_words') ?? []),
             'weekly_emails' => SendWeeklySummary::recipients(),
             'weekly_last_sent' => setting('reports.weekly_last_sent') ?: null,
             'support_email' => setting('site.support_email'),

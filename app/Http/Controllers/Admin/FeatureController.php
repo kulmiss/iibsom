@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Support\Admin\Activity;
 use App\Support\Ads\AdCounters;
 use App\Support\Features\FeatureManager;
+use App\Support\Search\SearchTerms;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -32,9 +33,7 @@ class FeatureController extends Controller
         $on = $request->validate(['enabled' => ['required', 'boolean']])['enabled'];
 
         $features->set($key, $on, $this->authUser($request)->id);
-        if ($key === 'site.demo_data') {
-            AdCounters::refreshAll();
-        }
+        $this->afterChange($key);
         Activity::log('feature.'.($on ? 'on' : 'off'), 'Switched “'.config("features.{$key}.label").'” '.($on ? 'ON' : 'OFF'), null, ['key' => $key]);
 
         return response()->json(['key' => $key, 'enabled' => $features->enabled($key)]);
@@ -44,9 +43,19 @@ class FeatureController extends Controller
     {
         abort_unless($features->exists($key), 404);
         $features->reset($key);
+        $this->afterChange($key);
         Activity::log('feature.reset', 'Reset “'.config("features.{$key}.label").'” to default', null, ['key' => $key]);
 
         return response()->json(['key' => $key, 'enabled' => $features->enabled($key)]);
+    }
+
+    /** Showing or hiding demo ads changes the live-ad totals and the words offered in search suggestions. */
+    private function afterChange(string $key): void
+    {
+        if ($key === 'site.demo_data') {
+            AdCounters::refreshAll();
+            defer(fn () => SearchTerms::rebuild()); // after the answer is sent (a few seconds on big sites)
+        }
     }
 
     /** "Preview of what changes" in easy English. */

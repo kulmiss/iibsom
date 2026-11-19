@@ -13,6 +13,7 @@ return [
     'empty' => 'Marka hore qor fariin.',
     'blocked' => 'Sheekadan waa la xannibay. Fariimo kale lama diri karo.',
     'unavailable' => 'Qofkan hadda fariimo ma heli karo.',
+    'drugs' => 'Waan ka xunnahay, fariintan lama dirin. Ka hadalka daroogada (qaad, xashiish, kiniin iyo wax la mid ah) laguma oggola iibsom. Fadlan ka qor alaabta oo keliya.',
     'not_allowed' => 'Fariintaadu waxay leedahay erayo aan la oggolayn. Fadlan beddel.',
     'block' => 'Xannib',
     'unblock' => 'Ka qaad xannibaadda',
@@ -20,6 +21,13 @@ return [
     'blocked_by_you' => 'Adiga ayaa xannibay sheekadan.',
     'blocked_by_them' => 'Sheekadan waa la xannibay.',
     'new' => 'Cusub',
+    'offer' => [
+        'button' => 'Qiime soo jeedi',
+        'label' => 'Qiimahaaga (USD)',
+        'continue' => 'Qor dalabka',
+        'note' => 'Wada-hadalku wuxuu ku furmayaa dalabkaaga oo qoran. Adigaa weli riixaya Dir.',
+        'text' => 'Salaan, waxaan doonayaa inaan ku bixiyo :amount. Ma kuu fiican tahay?',
+    ],
     'quick' => [
         'title' => 'Weydii iibiyaha',
         'available' => 'Weli ma la heli karaa?',

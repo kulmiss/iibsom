@@ -1,11 +1,24 @@
 <header class="sticky top-0 z-20 bg-brand-700 text-white">
+    @feature('search.suggestions')
+        {{-- Words for the search suggestions list (search-suggest.js). --}}
+        <template id="suggest-text" data-recent="{{ __('site.search.recent') }}" data-clear="{{ __('site.search.clear_recent') }}" data-category="{{ __('site.search.category') }}"
+                  data-none="{{ trans_choice('site.search.count', 0) }}" data-one="{{ trans_choice('site.search.count', 1, ['count' => ':count']) }}" data-many="{{ trans_choice('site.search.count', 2, ['count' => ':count']) }}"></template>
+    @endfeature
     <div class="mx-auto flex max-w-6xl items-center gap-2 px-4 py-2.5 sm:gap-3">
         <a href="{{ lroute('home') }}" class="text-2xl font-extrabold tracking-tight" aria-label="{{ config('app.name') }} – {{ __('site.nav.home') }}">
             {{-- Lowercase so the first "I" is not read as "l". --}}
             {{ \Illuminate\Support\Str::lower(config('app.name')) }}
         </a>
 
+        @php($headerSearch = feature('site.header_search') && ! request()->routeIs('home', 'loc.home'))
+        @if ($headerSearch)
+            @include('partials.header-search', ['only' => 'desktop'])
+        @endif
+
         <nav class="ml-auto flex items-center gap-1.5 sm:gap-2" aria-label="Main">
+            @if ($headerSearch)
+                @include('partials.header-search', ['only' => 'phone'])
+            @endif
             @include('partials.language-switcher')
 
             {{-- Phase 2 features: hidden until their switch is ON. --}}
@@ -15,9 +28,12 @@
             @feature('chat')
                 <a href="{{ lroute('chat') }}" class="icon-btn relative hidden lg:flex" title="{{ __('site.nav.messages') }}">{{ icon('message-circle') }}<span class="sr-only">{{ __('site.nav.messages') }}</span>@if (($chatUnread ?? 0) > 0)@include('partials.unread-badge', ['count' => $chatUnread, 'ring' => 'ring-brand-700', 'position' => 'end-0 top-0', 'dot' => 'bg-accent-400', 'dotRing' => 'ring-2 ring-brand-700', 'dotPosition' => 'end-1 top-1'])@endif</a>
             @endfeature
-            @feature('saved_searches')
+            @if (auth()->check() && feature('notifications'))
+                {{-- Notifications bell (PR 66); saved searches are reached from the account page and the list. --}}
+                <a href="{{ lroute('notifications') }}" class="icon-btn relative" title="{{ __('notify.bell') }}">{{ icon('bell') }}<span class="sr-only">{{ __('notify.bell') }}</span>@if (($bellUnread ?? 0) > 0)@include('partials.unread-badge', ['count' => $bellUnread, 'label' => trans_choice('notify.unread', $bellUnread, ['count' => $bellUnread]), 'ring' => 'ring-brand-700', 'position' => 'end-0 top-0', 'dot' => 'bg-accent-400', 'dotRing' => 'ring-2 ring-brand-700', 'dotPosition' => 'end-1 top-1'])@endif</a>
+            @elseif (feature('saved_searches'))
                 <a href="{{ lroute('searches') }}" class="icon-btn" title="{{ __('site.nav.alerts') }}">{{ icon('bell') }}<span class="sr-only">{{ __('site.nav.alerts') }}</span></a>
-            @endfeature
+            @endif
 
             @auth
                 @if (feature('site.header_icons') && feature('ads.my_ads'))

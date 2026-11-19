@@ -2,9 +2,12 @@
 
 use App\Enums\AdStatus;
 use App\Models\Ad;
+use App\Models\ContactMessage;
+use App\Models\InboxItem;
 use App\Support\Ads\AdStats;
 use App\Support\Health\HealthChecker;
 use App\Support\Money\Boosts;
+use App\Support\Notify\Inbox;
 use App\Support\Safety\GuestReports;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
@@ -29,6 +32,17 @@ if (config('iibsom.hosting') === 'shared') {
 
 // Live ads past their end date become "expired" (sellers can renew them).
 Schedule::command('iibsom:ads:expire')->name('expire-ads')->hourly()->withoutOverlapping();
+
+// Search suggestions: words from live ad titles (PR 63).
+Schedule::command('iibsom:search-terms')->name('search-terms')->dailyAt('03:50')->withoutOverlapping();
+
+// Notifications older than 180 days are deleted (PR 66).
+Schedule::call(fn () => InboxItem::where('created_at', '<', now()->subDays(Inbox::KEEP_DAYS))->limit(50000)->delete())
+    ->name('prune-notifications')->dailyAt('04:10');
+
+// Contact form messages older than 180 days are deleted (PR 69).
+Schedule::call(fn () => ContactMessage::where('created_at', '<', now()->subDays(ContactMessage::KEEP_DAYS))->delete())
+    ->name('prune-contact-messages')->dailyAt('04:15');
 
 // Weekly numbers to the owner: Monday 07:00 Mogadishu time (the command never sends a week twice).
 Schedule::command('iibsom:weekly-summary')->name('weekly-summary')

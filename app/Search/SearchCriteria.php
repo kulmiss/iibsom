@@ -10,7 +10,9 @@ use App\Models\City;
  * category, city and field filters. Ids, not slugs, so renaming a category
  * does not break a saved search.
  *
- * @phpstan-type Criteria array{q: ?string, min: ?int, max: ?int, condition: ?string, category_id: ?int, city_id: ?int, fields: array<string, string>}
+ * Since PR 56 also: area, only with photos, verified sellers (missing in older saved searches = not used).
+ *
+ * @phpstan-type Criteria array{q: ?string, min: ?int, max: ?int, condition: ?string, category_id: ?int, city_id: ?int, fields: array<string, string>, area_id?: ?int, photos?: bool, verified?: bool}
  */
 final class SearchCriteria
 {
@@ -35,7 +37,7 @@ final class SearchCriteria
      * switched OFF: then the search would show everything, so it is skipped.
      *
      * @param  Criteria  $criteria
-     * @return array{q: ?string, min: ?int, max: ?int, condition: ?string, category_ids: ?list<int>, city_id: ?int, fields: array<string, string>, sort: string}|null
+     * @return array{q: ?string, min: ?int, max: ?int, condition: ?string, category_ids: ?list<int>, city_id: ?int, area_id: ?int, photos: bool, verified: bool, fields: array<string, string>, sort: string}|null
      */
     public static function toFilters(array $criteria): ?array
     {
@@ -57,6 +59,9 @@ final class SearchCriteria
             'condition' => $criteria['condition'],
             'category_ids' => self::categoryIds($category),
             'city_id' => $criteria['city_id'],
+            'area_id' => $criteria['area_id'] ?? null,
+            'photos' => (bool) ($criteria['photos'] ?? false),
+            'verified' => (bool) ($criteria['verified'] ?? false),
             'fields' => $criteria['fields'],
             'sort' => 'newest',
         ];
@@ -69,6 +74,12 @@ final class SearchCriteria
         ksort($fields);
         $criteria['fields'] = $fields;
         $criteria['q'] = $criteria['q'] === null ? null : mb_strtolower($criteria['q']);
+        // Not set = the same as an older saved search without these keys.
+        foreach (['area_id' => null, 'photos' => false, 'verified' => false] as $key => $empty) {
+            if (($criteria[$key] ?? $empty) === $empty) {
+                unset($criteria[$key]);
+            }
+        }
 
         return hash('sha256', (string) json_encode($criteria));
     }

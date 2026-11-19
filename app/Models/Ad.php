@@ -42,6 +42,7 @@ class Ad extends Model
             'published_at' => 'datetime',
             'expires_at' => 'datetime',
             'sold_at' => 'datetime',
+            'bumped_at' => 'datetime',
             'reviewed_at' => 'datetime',
             'approved_snapshot' => 'array',
         ];

@@ -52,7 +52,10 @@
 @endpush
 
 @section('content')
-    <div class="mx-auto max-w-6xl px-4 py-4" @if (feature('recommendations') && $ad->isLive()) data-track-cat="{{ $ad->category_id }}" data-track-ad="{{ $ad->id }}" @endif>
+    @php($phoneOk = $ad->isLive() && $ad->user->phone && ! $ad->user->isBanned())
+    @php($bar = feature('ads.sticky_contact') && $ad->isLive() && auth()->id() !== $ad->user_id
+        && (($phoneOk && (feature('contact.call') || feature('contact.whatsapp'))) || feature('chat')))
+    <div class="mx-auto max-w-6xl px-4 py-4 {{ $bar ? 'pb-24 lg:pb-4' : '' }}" @if (feature('recommendations') && $ad->isLive()) data-track-cat="{{ $ad->category_id }}" data-track-ad="{{ $ad->id }}" @endif>
         <nav class="text-sm text-stone-500" aria-label="Breadcrumb">
             <a href="{{ lroute('home') }}" class="hover:underline">{{ __('site.nav.home') }}</a>
             @if ($ad->category->parent)
@@ -74,23 +77,36 @@
                 {{-- Gallery: swipe on phones, tap to zoom --}}
                 <section class="overflow-hidden rounded-xl bg-white ring-1 ring-stone-200" aria-label="{{ __('ads.form.photos') }}">
                     @if ($photos->isEmpty())
-                        <div class="flex aspect-[4/3] items-center justify-center bg-stone-100 text-stone-400">{{ icon($ad->category->icon, 'size-16') }}<span class="sr-only">{{ __('ads.page.no_photo') }}</span></div>
+                        <div class="flex aspect-[4/3] flex-col items-center justify-center gap-2 bg-gradient-to-br from-brand-50 to-stone-100 text-brand-300">{{ icon($ad->category->icon, 'size-16') }}<span class="text-sm font-medium text-stone-500">{{ __('ads.page.no_photo') }}</span></div>
                     @else
                         <div class="flex snap-x snap-mandatory overflow-x-auto" data-gallery>
                             @foreach ($photos as $photo)
-                                <button type="button" class="relative aspect-[4/3] w-full shrink-0 snap-center bg-stone-900" data-zoom="{{ $photo->url('large') }}">{{-- name comes from the photo's alt text --}}
+                                <button type="button" class="relative aspect-[4/3] w-full shrink-0 snap-center bg-stone-900" data-zoom="{{ $photo->url('large') }}" data-index="{{ $loop->index }}">{{-- name comes from the photo's alt text --}}
                                     <picture>
                                         @if ($avif = $photo->url('medium', 'avif'))
                                             <source type="image/avif" srcset="{{ $avif }} 900w, {{ $photo->url('large', 'avif') }} 1600w" sizes="(min-width: 1024px) 720px, 100vw">
                                         @endif
                                         <img src="{{ $photo->url('medium') }}" srcset="{{ $photo->url('medium') }} 900w, {{ $photo->url('large') }} 1600w" sizes="(min-width: 1024px) 720px, 100vw"
                                              alt="{{ $ad->title }} – {{ __('ads.page.photo', ['n' => $loop->iteration, 'total' => $photos->count()]) }}"
-                                             class="size-full object-contain" @if ($loop->first) fetchpriority="high" @else loading="lazy" @endif decoding="async" width="{{ $photo->width ?: 900 }}" height="{{ $photo->height ?: 675 }}">
+                                             class="size-full object-contain" @if ($loop->first) fetchpriority="high" @else loading="lazy" fetchpriority="low" decoding="async" @endif width="{{ $photo->width ?: 900 }}" height="{{ $photo->height ?: 675 }}">
                                     </picture>
                                     <span class="absolute bottom-2 right-2 rounded bg-black/60 px-2 py-0.5 text-xs text-white" aria-hidden="true">{{ $loop->iteration }}/{{ $photos->count() }}</span>
                                 </button>
                             @endforeach
                         </div>
+                        @if ($photos->count() > 1 && feature('ads.gallery_plus'))
+                            {{-- Small pictures: jump to any photo. Plain links to the zoom image without JavaScript. --}}
+                            <ul class="flex gap-2 overflow-x-auto p-2" data-thumbs aria-label="{{ __('ads.page.all_photos') }}">
+                                @foreach ($photos as $photo)
+                                    <li class="shrink-0">
+                                        <a href="{{ $photo->url('large') }}" data-thumb="{{ $loop->index }}" @if ($loop->first) aria-current="true" @endif
+                                           class="block size-16 overflow-hidden rounded-lg ring-2 ring-transparent aria-[current=true]:ring-brand-600 sm:size-20">
+                                            <img src="{{ $photo->url('thumb') }}" alt="{{ __('ads.page.photo', ['n' => $loop->iteration, 'total' => $photos->count()]) }}" loading="lazy" fetchpriority="low" decoding="async" width="80" height="80" class="size-full object-cover">
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @endif
                     @endif
                 </section>
 
@@ -105,6 +121,9 @@
                     <p class="mt-1 flex flex-wrap gap-x-3 text-sm text-stone-600">
                         <span>{{ icon('map-pin', 'inline size-4') }} {{ $ad->city->label }}@if ($ad->area), {{ $ad->area->label }}@endif</span>
                         <span>{{ __('ads.page.posted', ['when' => ($ad->published_at ?? $ad->created_at)->diffForHumans()]) }}</span>
+                        @if (feature('ads.public_views') && feature('ad_stats') && (int) $ad->views > 0)
+                            <span>{{ icon('eye', 'inline size-4') }} {{ trans_choice('ads.page.views', (int) $ad->views, ['count' => number_format((int) $ad->views)]) }}</span>
+                        @endif
                     </p>
                     @feature('diaspora')
                         @include('ads._diaspora')
@@ -112,25 +131,29 @@
 
                     @if ($fieldRows || $ad->condition)
                         <h2 class="mt-5 font-semibold">{{ __('ads.page.details') }}</h2>
-                        <dl class="mt-2 grid grid-cols-2 gap-x-4 gap-y-2 text-sm sm:grid-cols-3">
+                        <dl class="mt-2 grid grid-cols-2 gap-x-4 gap-y-3 text-sm sm:grid-cols-3" data-details>
                             @if ($ad->condition)
-                                <div><dt class="text-stone-500">{{ __('ads.form.condition') }}</dt><dd class="font-medium">{{ __('ads.form.'.$ad->condition) }}</dd></div>
+                                <div class="relative min-h-9 ps-11"><dt class="text-stone-500"><span class="absolute start-0 top-0 flex size-9 items-center justify-center rounded-lg bg-brand-50 text-brand-700" aria-hidden="true">{{ icon('tag', 'size-4') }}</span>{{ __('ads.form.condition') }}</dt><dd class="font-medium break-words">{{ __('ads.form.'.$ad->condition) }}</dd></div>
                             @endif
                             @foreach ($fieldRows as $row)
-                                <div><dt class="text-stone-500">{{ $row['label'] }}</dt><dd class="font-medium">{{ $row['value'] }}</dd></div>
+                                <div class="relative min-h-9 ps-11"><dt class="text-stone-500"><span class="absolute start-0 top-0 flex size-9 items-center justify-center rounded-lg bg-brand-50 text-brand-700" aria-hidden="true">{{ icon($row['icon'], 'size-4') }}</span>{{ $row['label'] }}</dt><dd class="font-medium break-words">{{ $row['value'] }}</dd></div>
                             @endforeach
                         </dl>
                     @endif
 
                     <h2 class="mt-5 font-semibold">{{ __('ads.page.description') }}</h2>
                     {{-- Plain text only: escaped, line breaks kept --}}
-                    <p class="mt-1 whitespace-pre-line break-words text-stone-800">{{ $ad->description }}</p>
+                    <p class="mt-1 whitespace-pre-line break-words text-stone-800" id="ad-text" @feature('ads.read_more') data-read-more @endfeature>{{ $ad->description }}</p>
+                    @feature('ads.read_more')
+                        <button type="button" class="mt-1 text-sm font-semibold text-brand-700 underline" aria-controls="ad-text" aria-expanded="false" data-read-more-button hidden
+                                data-more="{{ __('ads.page.read_more') }}" data-less="{{ __('ads.page.read_less') }}">{{ __('ads.page.read_more') }}</button>
+                    @endfeature
                 </section>
             </div>
 
             <aside class="space-y-4">
                 {{-- Seller + contact --}}
-                <section class="rounded-xl bg-white p-4 ring-1 ring-stone-200">
+                <section id="contact" class="scroll-mt-20 rounded-xl bg-white p-4 ring-1 ring-stone-200">
                     <h2 class="sr-only">{{ __('ads.page.seller') }}</h2>
                     <div class="flex items-center gap-3">
                         <span class="flex size-12 shrink-0 items-center justify-center rounded-full bg-brand-700 text-lg font-bold text-white">{{ $ad->user->initial() }}</span>
@@ -142,7 +165,11 @@
                                 @endif
                             </p>
                             <p class="text-xs text-stone-500">{{ $ad->user->city?->label }} · {{ __('ads.page.member_since', ['date' => mdate($ad->user->created_at, 'M Y')]) }}</p>
-                            <p class="text-xs text-stone-500">{{ trans_choice('ads.page.seller_ads', max(1, $sellerLiveAds), ['count' => $sellerLiveAds]) }}</p>
+                            @if (feature('sellers.page'))
+                                <a href="{{ lroute('seller.show', ['user' => $ad->user_id]) }}" class="text-xs font-medium text-brand-700 hover:underline" data-seller-link>{{ trans_choice('ads.page.seller_ads', max(1, $sellerLiveAds), ['count' => $sellerLiveAds]) }} →</a>
+                            @else
+                                <p class="text-xs text-stone-500">{{ trans_choice('ads.page.seller_ads', max(1, $sellerLiveAds), ['count' => $sellerLiveAds]) }}</p>
+                            @endif
                             @feature('sellers.badges')
                                 @php($tenure = \App\Support\Users\SellerBadges::tenure($ad->user))
                                 @php($fast = \App\Support\Users\SellerBadges::repliesFast($ad->user))
@@ -158,6 +185,9 @@
                                 @endif
                             @endfeature
                             @include('partials.seller-rating', ['seller' => $ad->user])
+                            @if (feature('sellers.page'))
+                                <div class="mt-2">@include('sellers._follow-button', ['seller' => $ad->user, 'following' => $following])</div>
+                            @endif
                             @if (feature('shops') && $ad->user->shop?->isActive())
                                 <a href="{{ $ad->user->shop->url() }}" class="mt-1 inline-flex items-center gap-1 text-sm font-semibold text-brand-700 hover:underline">{{ icon('store', 'size-4') }} {{ __('account.shop.visit') }}</a>
                             @endif
@@ -186,6 +216,22 @@
                             </div>
                         </div>
                     @endif
+                    @if ($ad->isLive() && feature('notifications') && feature('contact.call_back'))
+                        {{-- "Ask the seller to call me" (PR 66): the buyer sends their own name and number to this seller. --}}
+                        @auth
+                            @if (auth()->id() !== $ad->user_id && auth()->user()->phone)
+                                <form method="post" action="{{ lroute('call_back', ['ad' => $ad->id]) }}" class="mt-2" data-call-back>
+                                    @csrf
+                                    <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-lg px-3 py-3 font-semibold text-brand-800 ring-1 ring-brand-200 hover:bg-brand-50">{{ icon('phone-call', 'size-5') }} {{ __('notify.call_back.button') }}</button>
+                                    <p class="mt-1 text-center text-xs text-stone-500">{{ __('notify.call_back.note', ['phone' => \App\Support\Phone\SomaliPhone::format(auth()->user()->phone)]) }}</p>
+                                </form>
+                            @endif
+                        @else
+                            @if (feature('login.google') || \App\Http\Controllers\Auth\TestSignInController::available())
+                                <a href="{{ lroute('login') }}" class="mt-2 flex w-full items-center justify-center gap-2 rounded-lg px-3 py-3 font-semibold text-brand-800 ring-1 ring-brand-200 hover:bg-brand-50" title="{{ __('notify.call_back.sign_in') }}">{{ icon('phone-call', 'size-5') }} {{ __('notify.call_back.button') }}</a>
+                            @endif
+                        @endauth
+                    @endif
                     @feature('chat')
                         @if ($ad->isLive() && auth()->id() !== $ad->user_id)
                             @auth
@@ -201,6 +247,23 @@
                                     @endfeature
                                     <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-lg px-3 py-3 font-semibold text-brand-800 ring-1 ring-brand-200 hover:bg-brand-50">{{ icon('message-circle', 'size-5') }} {{ __('chat.start') }}</button>
                                 </form>
+                                @feature('chat.offers')
+                                    {{-- Make an offer: the chat opens with the offer written in; the buyer still taps Send. --}}
+                                    <details id="offer-box" class="mt-2 scroll-mt-20 rounded-lg ring-1 ring-brand-200" data-offer @if ($errors->has('offer')) open @endif>
+                                        <summary class="flex cursor-pointer list-none items-center justify-center gap-2 px-3 py-3 font-semibold text-brand-800 hover:bg-brand-50 [&::-webkit-details-marker]:hidden">{{ icon('hand-coins', 'size-5') }} {{ __('chat.offer.button') }}</summary>
+                                        <form method="post" action="{{ lroute('chat.start', ['ad' => $ad->id]) }}" class="border-t border-brand-100 p-3">
+                                            @csrf
+                                            <label for="offer" class="text-sm font-medium">{{ __('chat.offer.label') }}</label>
+                                            <div class="mt-1 flex gap-2">
+                                                <input id="offer" name="offer" type="number" inputmode="numeric" min="1" max="99999999" step="1" required value="{{ old('offer') }}"
+                                                       class="form-input min-w-0 flex-1" @if ($errors->has('offer')) aria-invalid="true" aria-describedby="offer-error" @endif>
+                                                <button type="submit" class="btn-primary shrink-0">{{ __('chat.offer.continue') }}</button>
+                                            </div>
+                                            @error('offer')<p id="offer-error" class="mt-1 text-sm text-red-700">{{ $message }}</p>@enderror
+                                            <p class="mt-1.5 text-xs text-stone-500">{{ __('chat.offer.note') }}</p>
+                                        </form>
+                                    </details>
+                                @endfeature
                             @else
                                 @feature('login.google')
                                     <a href="{{ lroute('login') }}" class="mt-2 flex w-full items-center justify-center gap-2 rounded-lg px-3 py-3 font-semibold text-brand-800 ring-1 ring-brand-200 hover:bg-brand-50" title="{{ __('chat.sign_in') }}">{{ icon('message-circle', 'size-5') }} {{ __('chat.start') }}</a>
@@ -244,7 +307,7 @@
                                     @csrf
                                     <fieldset>
                                         <legend class="form-label">{{ __('ads.page.report_reason') }}</legend>
-                                        @foreach (\App\Models\Report::REASONS as $reason)
+                                        @foreach (\App\Models\Report::reasons() as $reason)
                                             <label class="flex items-center gap-2 py-0.5 text-sm"><input type="radio" name="reason" value="{{ $reason }}" required class="size-4"> {{ __('reports.reason.'.$reason) }}</label>
                                         @endforeach
                                     </fieldset>
@@ -266,10 +329,10 @@
                                     @if ($guestState === 'error')
                                         <p class="form-error mt-2" role="alert">{{ __('ads.page.report_guest_error') }}</p>
                                     @endif
-                                    <form method="post" action="{{ lroute('ad.report_guest', ['ad' => $ad->id]) }}" class="mt-3 space-y-3">
+                                    <form method="post" action="{{ lroute('ad.report_guest', ['ad' => $ad->id]) }}" class="mt-3 space-y-3" data-guest-report="{{ lroute('ad.report_token') }}">
                                         <fieldset>
                                             <legend class="form-label">{{ __('ads.page.report_reason') }}</legend>
-                                            @foreach (\App\Models\Report::REASONS as $reason)
+                                            @foreach (\App\Models\Report::reasons() as $reason)
                                                 <label class="flex items-center gap-2 py-0.5 text-sm"><input type="radio" name="reason" value="{{ $reason }}" required class="size-4"> {{ __('reports.reason.'.$reason) }}</label>
                                             @endforeach
                                         </fieldset>
@@ -312,10 +375,80 @@
                 </div>
             </section>
         @endif
+
+        @if ($fromSeller->isNotEmpty())
+            <section class="mt-8" data-more-from-seller>
+                <div class="flex flex-wrap items-baseline justify-between gap-2">
+                    <h2 class="text-lg font-semibold">{{ __('ads.page.more_from_seller', ['name' => $ad->user->name]) }}</h2>
+                    @if (feature('sellers.page') && $sellerLiveAds > $fromSeller->count() + 1)
+                        <a href="{{ lroute('seller.show', ['user' => $ad->user_id]) }}" class="text-sm font-medium text-brand-700 underline">{{ trans_choice('ads.page.seller_ads', $sellerLiveAds, ['count' => $sellerLiveAds]) }} →</a>
+                    @endif
+                </div>
+                <div class="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+                    @foreach ($fromSeller as $s)
+                        @include('ads._card', ['ad' => $s])
+                    @endforeach
+                </div>
+            </section>
+        @endif
+
+        @if (feature('ads.recently_viewed') && feature('recommendations'))
+            {{-- Filled by for-you.js from this browser's own history (this ad left out). --}}
+            <div data-for-you data-url="{{ lroute('for-you') }}" data-exclude="{{ $ad->id }}" hidden class="mt-8">
+                <section data-slot="recent" hidden>
+                    <h2 class="text-lg font-semibold">{{ __('site.home.recently_viewed') }}</h2>
+                    <div data-cards class="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6"></div>
+                </section>
+            </div>
+        @endif
     </div>
 
-    <dialog data-zoom-dialog class="m-auto max-h-none max-w-none bg-transparent p-0 backdrop:bg-black/90">
-        <form method="dialog"><button class="fixed right-3 top-3 z-10 rounded-full bg-white/90 px-3 py-1 text-lg font-bold" aria-label="Close">✕</button></form>
-        <img alt="" data-zoom-img class="max-h-[95vh] max-w-[95vw] touch-pinch-zoom object-contain">
-    </dialog>
+    @if ($bar)
+        {{-- Phones: price and contact stay in reach while reading (PR 76). Without JavaScript the buttons jump to the
+             contact box; with it, Call and WhatsApp show the number first (counted like the normal button). --}}
+        <div class="fixed inset-x-0 bottom-[calc(3.6rem+env(safe-area-inset-bottom))] z-20 border-t border-stone-200 bg-white/95 px-3 py-2 backdrop-blur lg:hidden" data-contact-bar>
+            <div class="mx-auto flex max-w-md items-center gap-2">
+                <p class="min-w-0 flex-1 truncate font-extrabold text-brand-800">{{ $ad->priceLabel() ?: __('ads.page.negotiable') }}</p>
+                @if ($phoneOk && feature('contact.call'))
+                    <a href="#contact" class="flex items-center gap-1 rounded-lg bg-brand-700 px-3 py-2 text-sm font-semibold text-white" data-bar="call">{{ icon('phone', 'size-4') }}<span class="max-[400px]:sr-only">{{ __('ads.page.call') }}</span></a>
+                @endif
+                @if ($phoneOk && feature('contact.whatsapp'))
+                    <a href="#contact" class="flex items-center gap-1 rounded-lg bg-[#15803d] px-3 py-2 text-sm font-semibold text-white" data-bar="whatsapp">{{ icon('social-whatsapp', 'size-4') }}<span class="max-[400px]:sr-only">{{ __('ads.page.whatsapp') }}</span></a>
+                @endif
+                @feature('chat')
+                    <a href="#contact" class="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-semibold text-brand-800 ring-1 ring-brand-200" data-bar="chat">{{ icon('message-circle', 'size-4') }}<span class="max-[400px]:sr-only">{{ __('ads.page.bar_chat') }}</span></a>
+                    @if (feature('chat.offers') && auth()->check())
+                        <a href="#offer-box" class="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-semibold text-brand-800 ring-1 ring-brand-200" data-bar="offer">{{ icon('hand-coins', 'size-4') }}<span class="max-[400px]:sr-only">{{ __('ads.page.bar_offer') }}</span></a>
+                    @endif
+                @endfeature
+            </div>
+        </div>
+    @endif
+
+    @if (feature('ads.gallery_plus') && $photos->isNotEmpty())
+        {{-- Full screen: all photos, swipe or arrow keys, pinch to zoom (PR 76). --}}
+        <dialog data-viewer aria-label="{{ __('ads.page.all_photos') }}" class="m-0 h-dvh max-h-none w-screen max-w-none bg-black p-0 text-white backdrop:bg-black">
+            <div class="absolute inset-x-0 top-0 z-10 flex items-center justify-between gap-3 bg-gradient-to-b from-black/70 to-transparent p-3">
+                <p class="text-sm font-semibold" aria-live="polite" data-viewer-count></p>
+                <form method="dialog"><button class="flex size-10 items-center justify-center rounded-full bg-white/15 hover:bg-white/25" aria-label="{{ __('ads.page.close') }}">{{ icon('x', 'size-5') }}</button></form>
+            </div>
+            <div class="flex h-full snap-x snap-mandatory overflow-x-auto overscroll-contain" data-viewer-track>
+                @foreach ($photos as $photo)
+                    <figure class="flex h-full w-full shrink-0 snap-center items-center justify-center">
+                        <img data-src="{{ $photo->url('large') }}" alt="{{ $ad->title }} – {{ __('ads.page.photo', ['n' => $loop->iteration, 'total' => $photos->count()]) }}"
+                             class="max-h-full max-w-full touch-pinch-zoom object-contain" decoding="async">
+                    </figure>
+                @endforeach
+            </div>
+            @if ($photos->count() > 1)
+                <button type="button" class="absolute start-3 top-1/2 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/15 hover:bg-white/25 sm:flex rtl:rotate-180" data-viewer-prev aria-label="{{ __('ads.page.photo_prev') }}">{{ icon('chevron-left', 'size-6') }}</button>
+                <button type="button" class="absolute end-3 top-1/2 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/15 hover:bg-white/25 sm:flex rtl:rotate-180" data-viewer-next aria-label="{{ __('ads.page.photo_next') }}">{{ icon('chevron-right', 'size-6') }}</button>
+            @endif
+        </dialog>
+    @else
+        <dialog data-zoom-dialog class="m-auto max-h-none max-w-none bg-transparent p-0 backdrop:bg-black/90">
+            <form method="dialog"><button class="fixed right-3 top-3 z-10 rounded-full bg-white/90 px-3 py-1 text-lg font-bold" aria-label="Close">✕</button></form>
+            <img alt="" data-zoom-img class="max-h-[95vh] max-w-[95vw] touch-pinch-zoom object-contain">
+        </dialog>
+    @endif
 @endsection

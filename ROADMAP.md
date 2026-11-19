@@ -27,10 +27,16 @@ Google sign-in, post an ad, browse + search, ad page, My Ads, safety (reports, a
 - More regions (other countries) via region switches
 
 ## Ideas
+- A 600 px phone-size photo for ad pages, so ads with very large first photos also load in under 1.5 s on slow phones (PR 80).
+- New demo photos that match every demo ad (free licence), so fewer cards show "No photo" (PR 79: the workspace could not download new photos).
+- Touch-drag to reorder photos on phones (PR 78 kept the ‹ › buttons).
+- An "updated on" date on ad pages (needs a separate edit date).
+- One SVG sprite for icons, to make big pages (home) smaller before compression.
 - Footer "Our apps" column (App Store / Google Play badges) once there is a phone app.
 - Dark mode for the public site (the admin has one); the footer is already dark.
 - Brand pages are the slowest list (≈60 ms at 100k ads) because the brand sits in each ad's JSON fields: a generated column + index would make them ≈20 ms (only needed with many more ads).
-- Search suggestions while typing (categories + common words), "Request call back" button, notifications bell (ad approved, new message, price drop) — from the Jiji study (docs/jiji-study.md).
+- "Request call back" button, notifications bell (ad approved, new message, price drop) — from the Jiji study (docs/jiji-study.md); being built in the Jiji round (PRs 65–66). Search suggestions: built in PR 63.
+- Search suggestions with spelling help ("toyta" → "toyota") and Somali/English word pairs ("baabuur" ↔ "car") once there are more ads.
 - ✅ Admin Health page (PR 12). ✅ "Move to VPS" checklist (docs/scaling.md, PR 19).
 - ✅ (PR 21) Admin "Edited" badge in the approval queue showing what changed since the last approval.
 - ✅ (PR 22) Match demo photos to the brand/type in the title.

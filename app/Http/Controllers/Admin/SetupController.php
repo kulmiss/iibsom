@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Support\Admin\Activity;
+use App\Support\Ads\AdCounters;
 use App\Support\Features\FeatureManager;
+use App\Support\Search\SearchTerms;
 use App\Support\Settings\GeneralSettings;
 use App\Support\Settings\SettingsManager;
 use Illuminate\Http\JsonResponse;
@@ -63,6 +65,10 @@ class SetupController extends Controller
             $features->set('site.demo_data', (bool) $data['demo_data'], $userId);
             $settings->set('setup.completed_at', now()->toIso8601String(), $userId);
         });
+
+        // Demo ads may have been shown or hidden: live-ad totals and search words follow.
+        AdCounters::refreshAll();
+        defer(fn () => SearchTerms::rebuild());
 
         Activity::log('setup.finished', 'Finished the first-time setup', null, ['cities_on' => count($data['cities'])]);
 

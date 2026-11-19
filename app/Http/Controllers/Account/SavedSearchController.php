@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Account;
 
 use App\Http\Controllers\Controller;
+use App\Models\Area;
 use App\Models\Category;
 use App\Models\City;
 use App\Models\SavedSearch;
@@ -32,6 +33,9 @@ class SavedSearchController extends Controller
             'condition' => ['nullable', 'in:new,used'],
             'category' => ['nullable', 'string', 'max:80'],
             'city' => ['nullable', 'string', 'max:80'],
+            'area' => ['nullable', 'integer'],
+            'photos' => ['nullable', 'in:1'],
+            'verified' => ['nullable', 'in:1'],
             'f' => ['nullable', 'array', 'max:20'],
             'f.*' => ['nullable', 'string', 'max:100'],
         ]);
@@ -55,6 +59,17 @@ class SavedSearchController extends Controller
             'city_id' => $city?->id,
             'fields' => $fields,
         ];
+        // An area only counts inside the chosen city.
+        $areaId = $city && filled($data['area'] ?? null) ? Area::where('city_id', $city->id)->whereKey((int) $data['area'])->value('id') : null;
+        if ($areaId !== null) {
+            $criteria['area_id'] = (int) $areaId;
+        }
+        if (isset($data['photos'])) {
+            $criteria['photos'] = true;
+        }
+        if (isset($data['verified']) && feature('verified_badge')) {
+            $criteria['verified'] = true;
+        }
         if ($criteria['q'] === null && $criteria['category_id'] === null) {
             return back()->with('status', __('ads.searches.too_wide'));
         }
@@ -77,6 +92,27 @@ class SavedSearchController extends Controller
         return back()->with('status', __('ads.searches.saved'));
     }
 
+    /** Rename or mute (switch "saved_searches.manage"). */
+    public function update(Request $request, SavedSearch $search): RedirectResponse
+    {
+        abort_unless($search->user_id === $this->authUser($request)->id, 404);
+        $data = $request->validate([
+            'label' => ['sometimes', 'required', 'string', 'max:80'],
+            'muted' => ['sometimes', 'boolean'],
+        ], [], ['label' => __('ads.searches.name')]);
+
+        if (isset($data['label'])) {
+            $search->label = trim(strip_tags($data['label'])) ?: $search->label;
+        }
+        if (array_key_exists('muted', $data)) {
+            $search->muted = (bool) $data['muted'];
+        }
+        $search->save();
+
+        return redirect(lroute('searches'))->with('status', __(array_key_exists('muted', $data)
+            ? ($search->muted ? 'ads.searches.muted_done' : 'ads.searches.unmuted_done') : 'ads.searches.renamed'));
+    }
+
     public function destroy(Request $request, SavedSearch $search): RedirectResponse
     {
         abort_unless($search->user_id === $this->authUser($request)->id, 404);
@@ -85,17 +121,27 @@ class SavedSearchController extends Controller
         return redirect(lroute('searches'))->with('status', __('ads.searches.deleted'));
     }
 
-    /** @param  array{q: ?string, min: ?int, max: ?int, condition: ?string, category_id: ?int, city_id: ?int, fields: array<string, string>}  $c */
+    /** @param  array{q: ?string, min: ?int, max: ?int, condition: ?string, category_id: ?int, city_id: ?int, fields: array<string, string>, area_id?: ?int, photos?: bool, verified?: bool}  $c */
     private function label(array $c, ?Category $category, ?City $city): string
     {
         $parts = array_filter([
             $c['q'] !== null ? '"'.$c['q'].'"' : null,
             $category?->label,
             $city?->label,
+            isset($c['area_id']) ? Area::find($c['area_id'])?->label : null,
             ...array_values($c['fields']),
             $c['min'] !== null || $c['max'] !== null ? '$'.($c['min'] ?? 0).'–'.($c['max'] !== null ? '$'.$c['max'] : '…') : null,
+            ! empty($c['photos']) ? $this->text('ads.browse.with_photos') : null,
+            ! empty($c['verified']) ? $this->text('ads.browse.verified_only') : null,
         ]);
 
         return mb_substr(implode(' · ', $parts), 0, 150);
+    }
+
+    private function text(string $key): string
+    {
+        $text = __($key);
+
+        return is_string($text) ? $text : $key;
     }
 }

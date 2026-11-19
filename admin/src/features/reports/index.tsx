@@ -71,7 +71,7 @@ export function Reports() {
       header: 'Reason',
       cell: ({ row }) => (
         <div className='max-w-64'>
-          <Badge variant={row.original.reason === 'scam' ? 'destructive' : 'outline'}>{row.original.reason_label}</Badge>
+          <Badge variant={['scam', 'drugs'].includes(row.original.reason) ? 'destructive' : 'outline'}>{row.original.reason_label}</Badge>
           {row.original.details && <p className='mt-1 line-clamp-2 text-xs text-muted-foreground'>{row.original.details}</p>}
         </div>
       ),
@@ -110,6 +110,7 @@ export function Reports() {
             title: 'Reason',
             options: [
               { value: 'scam', label: 'Scam or fraud' },
+              { value: 'drugs', label: 'Drugs' },
               { value: 'wrong_category', label: 'Wrong category' },
               { value: 'sold', label: 'Already sold' },
               { value: 'offensive', label: 'Offensive' },
@@ -123,7 +124,7 @@ export function Reports() {
         mobileCard={(r) => (
           <div className='space-y-2 text-sm'>
             <div className='flex items-center justify-between gap-2'>
-              <Badge variant={r.reason === 'scam' ? 'destructive' : 'outline'}>{r.reason_label}</Badge>
+              <Badge variant={['scam', 'drugs'].includes(r.reason) ? 'destructive' : 'outline'}>{r.reason_label}</Badge>
               <Badge variant={r.status === 'waiting' ? 'default' : 'secondary'}>{STATUS[r.status]}</Badge>
             </div>
             <button type='button' className='text-start font-medium underline' onClick={() => setOpenAd(r.ad_id)}>

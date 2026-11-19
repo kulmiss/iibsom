@@ -146,4 +146,12 @@ class FiltersTest extends TestCase
         // The basic filters still work.
         $this->get('/cars?max=100')->assertOk()->assertSee('Old Toyota far away')->assertDontSee('New Nissan in Hodan');
     }
+
+    public function test_grid_and_list_buttons_are_on_phones_too(): void
+    {
+        // Found by the checklist run: the buttons were hidden below 640 px (all phones).
+        $html = (string) $this->get('/cars')->assertOk()->getContent();
+        $this->assertSame(1, preg_match('#<div class="([^"]*)" data-view-toggle>#', $html, $m));
+        $this->assertStringNotContainsString('hidden', $m[1]);
+    }
 }

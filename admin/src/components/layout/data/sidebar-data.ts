@@ -3,21 +3,22 @@ import {
   BadgeCheck,
   BookOpen,
   FileText,
-  FlaskConical,
   Flag,
+  FlaskConical,
   FolderTree,
   HeartPulse,
   Image,
   LayoutDashboard,
   ListChecks,
+  Mail,
   MapPin,
   Megaphone,
   Palette,
-  Store,
   Receipt,
   Settings,
   ShieldCheck,
   Star,
+  Store,
   ToggleRight,
   UserCog,
   Users,
@@ -38,6 +39,7 @@ export const sidebarData: SidebarData = {
         { title: 'Ads', url: '/ads', icon: Megaphone, permission: 'ads.view' },
         { title: 'Waiting for approval', url: '/ads/pending', icon: ListChecks, permission: 'ads.moderate' },
         { title: 'Reports', url: '/reports', icon: Flag, permission: 'reports.view' },
+        { title: 'Messages', url: '/messages', icon: Mail, permission: 'messages.manage', feature: 'contact_form' },
         { title: 'Users', url: '/users', icon: Users, permission: 'users.view' },
         { title: 'ID checks', url: '/verifications', icon: BadgeCheck, permission: 'users.verify', feature: 'verified_badge' },
         { title: 'Ratings', url: '/reviews', icon: Star, permission: 'reviews.manage', feature: 'seller_ratings' },
@@ -84,7 +86,7 @@ export const sidebarData: SidebarData = {
 
 /** The menu for this staff member (items they may not use, or switched OFF, are removed). */
 export function visibleNavGroups(can: (permission: string) => boolean, user: StaffUser | null): SidebarData['navGroups'] {
-  const allowed = (item: { permission?: string; feature?: 'guide' | 'verified_badge' | 'seller_ratings' | 'shops' | 'boosts' }) => (!item.permission || can(item.permission)) && (!item.feature || !!user?.[item.feature])
+  const allowed = (item: { permission?: string; feature?: 'guide' | 'verified_badge' | 'seller_ratings' | 'shops' | 'boosts' | 'contact_form' }) => (!item.permission || can(item.permission)) && (!item.feature || !!user?.[item.feature])
   return sidebarData.navGroups
     .map((group) => ({
       ...group,

@@ -6,10 +6,10 @@
 @php($locales = app(\App\Support\Localization\Locales::class))
 @if ($locales->showSwitcher())
     <details class="relative" data-lang-menu>
-        <summary class="flex h-9 cursor-pointer list-none items-center gap-1 rounded-lg px-2 text-sm font-semibold hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white [&::-webkit-details-marker]:hidden"
-                 aria-label="{{ __('site.nav.language') }}: {{ $locales->supported()[app()->getLocale()]['native'] }}">
+        <summary class="flex h-9 cursor-pointer list-none items-center gap-1 rounded-lg px-2 text-sm font-semibold hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white [&::-webkit-details-marker]:hidden">
             {{ icon('globe', 'size-5') }}
-            <span aria-hidden="true">{{ strtoupper(app()->getLocale()) }}</span>
+            {{-- The spoken name starts with the visible "EN" (screen readers and voice control match it). --}}
+            <span>{{ strtoupper(app()->getLocale()) }}</span><span class="sr-only"> – {{ __('site.nav.language') }}: {{ $locales->supported()[app()->getLocale()]['native'] }}</span>
             {{ icon('chevron-down', 'size-4 opacity-80') }}
         </summary>
         <ul class="absolute end-0 z-30 mt-1 min-w-40 overflow-hidden rounded-xl bg-white py-1 text-stone-800 shadow-lg ring-1 ring-stone-200" aria-label="{{ __('site.nav.language') }}">

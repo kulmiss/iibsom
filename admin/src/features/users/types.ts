@@ -9,6 +9,7 @@ export type UserRow = {
   profile_complete: boolean
   banned: boolean
   ban_reason: string | null
+  flag: string | null
   created_at: string
   last_login_at: string | null
   is_demo: boolean

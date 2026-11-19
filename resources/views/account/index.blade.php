@@ -5,7 +5,8 @@
 @php($user = auth()->user())
 
 @section('content')
-    <section class="mx-auto max-w-md px-4 py-8">
+    @php($dash = feature('account.dashboard'))
+    <section class="mx-auto {{ $dash ? 'max-w-3xl' : 'max-w-md' }} px-4 py-8">
         <div class="flex items-center gap-4 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-stone-200">
             <span class="flex size-14 shrink-0 items-center justify-center rounded-full bg-brand-700 text-xl font-bold text-white">{{ $user->initial() }}</span>
             <div class="min-w-0">
@@ -15,7 +16,43 @@
             </div>
         </div>
 
-        <ul class="mt-4 divide-y divide-stone-100 overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-stone-200">
+        @if ($dash)
+            {{-- Dashboard (PR 79): own numbers only, each a link to the page with the details. --}}
+            @php($sum = \App\Support\Users\AccountSummary::for($user))
+            @php($tiles = array_values(array_filter([
+                feature('ads.my_ads') ? ['list', __('account.dash.live'), $sum['live'], lroute('account.ads')] : null,
+                feature('ads.my_ads') && $sum['waiting'] > 0 ? ['clock', __('account.dash.waiting'), $sum['waiting'], lroute('account.ads', ['tab' => 'pending'])] : null,
+                $sum['views'] !== null ? ['eye', __('account.dash.views'), $sum['views'], lroute('account.ads')] : null,
+                $sum['contacts'] !== null ? ['phone', __('account.dash.contacts'), $sum['contacts'], lroute('account.ads')] : null,
+                $sum['unread'] !== null ? ['message-circle', __('account.dash.unread'), $sum['unread'], lroute('chat')] : null,
+                $sum['saved'] !== null ? ['bookmark', __('account.dash.saved'), $sum['saved'], lroute('saved')] : null,
+                $sum['followers'] !== null ? ['users', __('account.dash.followers'), $sum['followers'], lroute('seller.show', ['user' => $user->id])] : null,
+            ])))
+            <h2 class="sr-only">{{ __('account.dash.title') }}</h2>
+            <ul class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3" data-dashboard>
+                @foreach ($tiles as [$tileIcon, $tileLabel, $tileValue, $tileUrl])
+                    <li>
+                        <a href="{{ $tileUrl }}" class="flex h-full flex-col gap-1 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-stone-200 hover:ring-brand-300">
+                            <span class="flex items-center gap-1.5 text-xs font-medium text-stone-600">{{ icon($tileIcon, 'size-4 text-brand-700') }} {{ $tileLabel }}</span>
+                            <span class="text-2xl font-bold">{{ number_format($tileValue) }}</span>
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
+            @if (feature('ads.posting'))
+                <div class="mt-4 flex flex-wrap gap-2" data-dashboard-actions>
+                    <a href="{{ lroute('post') }}" class="btn-sell">{{ icon('plus', 'size-4') }} {{ __('site.nav.post_ad') }}</a>
+                    @feature('ads.my_ads')
+                        <a href="{{ lroute('account.ads') }}" class="btn-chip">{{ icon('list', 'size-4') }} {{ __('account.account.my_ads') }}</a>
+                    @endfeature
+                    @feature('chat')
+                        <a href="{{ lroute('chat') }}" class="btn-chip">{{ icon('message-circle', 'size-4') }} {{ __('site.nav.messages') }}</a>
+                    @endfeature
+                </div>
+            @endif
+        @endif
+
+        <ul @class(['mt-4 divide-y divide-stone-100 overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-stone-200', 'sm:grid sm:grid-cols-2 sm:divide-y-0 sm:[&>li]:border-b sm:[&>li]:border-stone-100 sm:[&>li:nth-child(odd)]:border-e' => $dash])>
             <li>
                 <a href="{{ lroute('account.profile') }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50">
                     {{ icon('user', 'size-5 text-brand-700') }}<span class="flex-1">{{ __('account.account.edit_profile') }}</span>{{ icon('chevron-right', 'size-4 text-stone-400') }}
@@ -70,10 +107,24 @@
                     </a>
                 </li>
             @endfeature
+            @feature('notifications')
+                <li>
+                    <a href="{{ lroute('notifications') }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50">
+                        {{ icon('bell', 'size-5 text-brand-700') }}<span class="flex-1">{{ __('notify.title') }}</span>{{ icon('chevron-right', 'size-4 text-stone-400') }}
+                    </a>
+                </li>
+            @endfeature
+            @if (feature('sellers.page') && feature('sellers.follow'))
+                <li>
+                    <a href="{{ lroute('following') }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50">
+                        {{ icon('user-check', 'size-5 text-brand-700') }}<span class="flex-1">{{ __('sellers.my_following') }}</span>{{ icon('chevron-right', 'size-4 text-stone-400') }}
+                    </a>
+                </li>
+            @endif
             @feature('saved_searches')
                 <li>
                     <a href="{{ lroute('searches') }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50">
-                        {{ icon('bell', 'size-5 text-brand-700') }}<span class="flex-1">{{ __('account.account.searches') }}</span>{{ icon('chevron-right', 'size-4 text-stone-400') }}
+                        {{ icon(feature('notifications') ? 'search' : 'bell', 'size-5 text-brand-700') }}<span class="flex-1">{{ __('account.account.searches') }}</span>{{ icon('chevron-right', 'size-4 text-stone-400') }}
                     </a>
                 </li>
             @endfeature

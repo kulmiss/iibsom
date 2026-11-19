@@ -96,13 +96,14 @@
         @if ($conversation->blocked_by !== null)
             <p class="mt-4 rounded-xl bg-stone-100 p-3 text-center text-sm text-stone-700">{{ $conversation->blocked_by === $user->id ? __('chat.blocked_by_you') : __('chat.blocked_by_them') }}</p>
         @else
-            <form method="post" action="{{ lroute('chat.send', ['conversation' => $conversation->id]) }}" class="sticky bottom-16 mt-4 flex items-end gap-2 rounded-2xl bg-white p-2 shadow-sm ring-1 ring-stone-200 lg:bottom-2" data-chat-form>
+            <form method="post" action="{{ lroute('chat.send', ['conversation' => $conversation->id]) }}" class="sticky bottom-16 mt-4 flex flex-wrap items-end gap-2 rounded-2xl bg-white p-2 shadow-sm ring-1 ring-stone-200 lg:bottom-2" data-chat-form>
                 @csrf
+                {{-- Inside the sticky box, above the text, so the note is seen on phones (the bottom bar covers anything below). --}}
+                <p class="form-error order-first m-0 w-full px-1" role="alert" data-chat-error @error('body') @else hidden @enderror>@error('body'){{ $message }}@enderror</p>
                 <label for="body" class="sr-only">{{ __('chat.message') }}</label>
-                <textarea id="body" name="body" rows="1" maxlength="{{ \App\Models\Message::MAX_LENGTH }}" required placeholder="{{ __('chat.placeholder') }}" class="max-h-40 min-h-11 flex-1 resize-y rounded-xl border-0 bg-stone-50 px-3 py-2.5 focus:ring-2 focus:ring-brand-600" @if ($draft !== '') autofocus @endif>{{ old('body', $draft) }}</textarea>
+                <textarea id="body" name="body" rows="{{ old('body', $draft) !== '' ? 3 : 1 }}" maxlength="{{ \App\Models\Message::MAX_LENGTH }}" required placeholder="{{ __('chat.placeholder') }}" class="max-h-40 min-h-11 min-w-0 flex-1 resize-y rounded-xl border-0 bg-stone-50 px-3 py-2.5 focus:ring-2 focus:ring-brand-600" @if ($draft !== '') autofocus @endif>{{ old('body', $draft) }}</textarea>
                 <button type="submit" class="btn-sell h-11 px-4" aria-label="{{ __('chat.send') }}">{{ icon('send', 'size-5') }}</button>
             </form>
-            <p class="form-error mt-1" data-chat-error @error('body') @else hidden @enderror>@error('body'){{ $message }}@enderror</p>
         @endif
     </section>
 @endsection

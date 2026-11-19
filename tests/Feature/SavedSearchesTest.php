@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Mail\SavedSearchAlertMail;
 use App\Models\Ad;
+use App\Models\Area;
 use App\Models\Category;
 use App\Models\City;
 use App\Models\SavedSearch;
@@ -222,5 +223,50 @@ class SavedSearchesTest extends TestCase
         $b = ['q' => 'toyota', 'min' => null, 'max' => null, 'condition' => null, 'category_id' => 1, 'city_id' => null, 'fields' => ['brand' => 'toyota', 'fuel' => 'petrol']];
 
         $this->assertSame(SearchCriteria::hash($a), SearchCriteria::hash($b));
+    }
+
+    public function test_area_photos_and_verified_are_kept(): void
+    {
+        $this->on();
+        app(FeatureManager::class)->set('verified_badge', true);
+        $hodan = Area::where('slug', 'hodan')->firstOrFail();
+
+        // The button on the page sends the page's filters (area, only with photos, verified sellers).
+        $page = (string) $this->actingAs($this->buyer)->get('/cars/mogadishu?area='.$hodan->id.'&photos=1&verified=1&posted=7d')->assertOk()->getContent();
+        $this->assertSame(1, preg_match('#<form method="post" action="[^"]*/account/searches".*?</form>#s', $page, $form));
+        $html = $form[0];
+        foreach (['name="area" value="'.$hodan->id.'"', 'name="photos" value="1"', 'name="verified" value="1"'] as $hidden) {
+            $this->assertStringContainsString($hidden, $html, $hidden);
+        }
+        $this->assertStringNotContainsString('name="posted"', $html, '"Posted within" makes no sense for alerts about new ads.');
+
+        $this->actingAs($this->buyer)->from('/cars/mogadishu')
+            ->post('/account/searches', ['category' => 'cars', 'city' => 'mogadishu', 'area' => $hodan->id, 'photos' => 1, 'verified' => 1])
+            ->assertRedirect('/cars/mogadishu');
+        $saved = SavedSearch::firstOrFail();
+        $this->assertSame([$hodan->id, true, true], [$saved->criteria['area_id'], $saved->criteria['photos'], $saved->criteria['verified']]);
+        $this->assertStringContainsString('area='.$hodan->id, $saved->url());
+        $this->assertStringContainsString('Hodan', $saved->label);
+        $this->assertStringContainsString(__('ads.browse.with_photos'), $saved->label);
+        $this->assertStringContainsString('photos=1', $saved->url());
+
+        // The alert uses them too.
+        $filters = SearchCriteria::toFilters($saved->criteria);
+        $this->assertSame([$hodan->id, true, true], [$filters['area_id'], $filters['photos'], $filters['verified']]);
+
+        // An area of another city is ignored.
+        $other = Area::whereHas('city', fn ($q) => $q->where('slug', '!=', 'mogadishu'))->first();
+        if ($other) {
+            $this->actingAs($this->buyer)->post('/account/searches', ['category' => 'cars', 'city' => 'mogadishu', 'area' => $other->id, 'q' => 'x']);
+            $this->assertNull(SavedSearch::latest('id')->first()?->criteria['area_id'] ?? null);
+        }
+    }
+
+    public function test_old_saved_searches_without_the_new_keys_still_work(): void
+    {
+        $this->on();
+        $old = ['q' => 'toyota', 'min' => null, 'max' => null, 'condition' => null, 'category_id' => $this->cars->id, 'city_id' => null, 'fields' => []];
+        $this->assertNotNull(SearchCriteria::toFilters($old));
+        $this->assertSame(SearchCriteria::hash($old), SearchCriteria::hash($old + ['area_id' => null, 'photos' => false, 'verified' => false]), 'Same search, same hash.');
     }
 }

@@ -1,4 +1,5 @@
 import { initLanguageSwitch } from './language-switch';
+import { initCardSave } from './card-save';
 import { initCategoryMenu } from './category-menu';
 import { initChat } from './chat';
 import { initCopyText } from './copy-text';
@@ -7,10 +8,15 @@ import { initFavourites } from './favourite';
 import { initFilters } from './filters';
 import { initFooter } from './footer';
 import { initForYou } from './for-you';
-import { initPwa } from './pwa';
+import { initGuestReport } from './guest-report';
+import { initInstallCard, initPwa } from './pwa';
+import { initSearchSuggest } from './search-suggest';
+import { initShowMore } from './show-more';
+import { initTheme } from './theme';
 import { initTour } from './tour';
 
 initLanguageSwitch();
+initCardSave();
 initCategoryMenu();
 initChat();
 initCopyText();
@@ -19,7 +25,12 @@ initFavourites();
 initFilters();
 initFooter();
 initForYou();
+initGuestReport();
 initPwa();
+initInstallCard();
+initSearchSuggest();
+initShowMore();
+initTheme();
 initTour();
 
 // After a successful post, drop the drafts saved on this phone.

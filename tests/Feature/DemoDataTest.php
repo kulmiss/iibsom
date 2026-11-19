@@ -12,6 +12,7 @@ use App\Support\Demo\DemoData;
 use App\Support\Features\FeatureManager;
 use App\Support\Money\Boosts;
 use App\Support\Money\Ledger;
+use App\Support\Safety\SpamGuard;
 use Database\Seeders\DemoSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -86,6 +87,17 @@ class DemoDataTest extends TestCase
         $car = Ad::whereHas('category', fn ($q) => $q->where('slug', 'cars'))->first();
         $this->assertArrayHasKey('brand', $car->fields);
         $this->assertArrayHasKey('year', $car->fields);
+
+        // Views for "Ad statistics", "Popular" and "Popular now" (PR 64): totals match the daily rows.
+        $this->assertGreaterThanOrEqual(10, Ad::where('views', '>=', config('iibsom.popular_views'))->count());
+        $this->assertSame((int) DB::table('ad_stats')->sum('views'), (int) Ad::sum('views'));
+        $this->assertSame(0, (int) DB::table('ad_stats')->join('ads', 'ads.id', '=', 'ad_stats.ad_id')->whereNull('ads.published_at')->count());
+        $this->assertSame(0, (int) DB::table('ad_stats')->where('day', '<', now('Africa/Mogadishu')->subDays(30)->toDateString())->count());
+
+        // No demo ad may look like a drug ad (PR 72).
+        foreach (Ad::all(['id', 'title', 'description']) as $ad) {
+            $this->assertNull(SpamGuard::drugWord($ad->title.' '.$ad->description), "demo ad #{$ad->id} matches the drug list");
+        }
 
         $this->assertTrue(feature('site.demo_data'));
     }

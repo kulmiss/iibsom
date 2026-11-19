@@ -68,7 +68,7 @@ class HelpCentreTest extends TestCase
         $names = fn (string $locale) => array_map(fn ($f) => $f->getFilename(), File::files(resource_path("help/{$locale}")));
 
         $this->assertSame($names('en'), $names('so'));
-        $this->assertCount(8, $names('en')); // + How to sell (PR 55)
+        $this->assertCount(11, $names('en')); // + How to sell (PR 55), Posting rules + How to buy (PR 69), How we keep you safe (PR 79)
         foreach (HelpCentre::raw('so') as $slug => $article) {
             $this->assertNotSame(HelpCentre::raw('en')[$slug]['title'], $article['title'], "help/so/{$slug} is still in English");
         }

@@ -22,6 +22,7 @@ export type StaffUser = {
   shops: boolean
   /** "Paid boosts" switch (Phase 2). */
   boosts: boolean
+  contact_form: boolean
   /** Super Admin who has not done the first-time setup yet. */
   setup_needed: boolean
 }

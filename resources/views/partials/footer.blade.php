@@ -16,8 +16,11 @@
             'copyright' => $footer->on('copyright') ? [lroute('page', ['slug' => 'copyright']), __('site.footer.copyright')] : null,
         ]);
         $support = array_filter([
-            'contact' => $footer->on('contact') && $supportEmail !== '' ? ['mailto:'.$supportEmail, __('site.footer.contact')] : null,
+            // The contact form (PR 69) when it is ON; otherwise the help email from Settings.
+            'contact' => ! $footer->on('contact') ? null : (feature('site.contact_form') ? [lroute('contact'), __('site.footer.contact')]
+                : ($supportEmail !== '' ? ['mailto:'.$supportEmail, __('site.footer.contact')] : null)),
             'safety' => $footer->on('safety') ? [lroute('page', ['slug' => 'safety']), __('site.footer.safety')] : null,
+            'keep_safe' => feature('help.centre') && feature('help.how_we_keep_safe') ? [lroute('help.show', ['article' => 'how-we-keep-you-safe']), __('site.footer.keep_safe')] : null,
             'help' => $footer->on('help') && feature('help.centre') ? [lroute('help'), __('site.footer.faq')] : null,
         ]);
         $popularCats = $footer->on('popular') ? $footer->popularCategories() : [];
@@ -88,6 +91,7 @@
                             @endforeach
                         </nav>
                     @endif
+                    @include('partials.theme-switch')
                     <p>© {{ now()->year }} {{ \Illuminate\Support\Str::lower(config('app.name')) }}. {{ __('site.footer.rights') }}</p>
                 </div>
             </div>

@@ -6,6 +6,8 @@ export type AdRow = {
   status: AdStatus
   status_label: string
   rejection_reason: string | null
+  closed_reason: string | null
+  flag: string | null
   price: string
   category: string | null
   category_id: number

@@ -50,6 +50,19 @@ return [
         'phone.country_codes' => ['+252'],
         // One word or phrase per line. Matched as whole words, any case. Admin → Settings → General.
         'safety.bad_words' => ['fuck', 'shit', 'bitch', 'porn', 'escort', 'sex service', 'western union only', 'send money first'],
+        // Drugs are not allowed (switch "safety.no_drugs", Settings → General). English, Somali and common spellings.
+        // NOT here on purpose: "qaad", "jaad" and "jaadka" (Somali also for "take" and "kind/type"), "chat", "crack", "hash",
+        // "grinder" and "drugs": normal words in normal ads. Their drug meanings are covered by the forms below.
+        'safety.drug_words' => [
+            'khat', 'qat', 'miraa', 'mirraa', 'catha edulis', 'qaadka', 'qaadkii',
+            'qaad cusub', 'qaad fresh', 'jaad fresh',
+            'cannabis', 'marijuana', 'marihuana', 'weed', 'ganja', 'hashish', 'hash oil', 'thc', 'xashiish', 'xashiishad',
+            'heroin', 'cocaine', 'crack cocaine', 'meth', 'methamphetamine', 'crystal meth', 'amphetamine',
+            'ecstasy pills', 'mdma', 'lsd', 'opium', 'ketamine', 'rohypnol',
+            'tramadol', 'tramadool', 'codeine', 'diazepam', 'valium', 'xanax', 'alprazolam', 'pethidine', 'morphine', 'pregabalin',
+            'daroogo', 'maandooriye', 'mukhaadaraad', 'narcotics',
+            'bong', 'rolling papers', 'drug pipe', 'weed pipe',
+        ],
         'ads.renew_days_before' => 7, // "Renew" shows this many days before an ad ends
         'reports.weekly_emails' => [], // Admin → Settings → General → Weekly summary
         'reports.weekly_last_sent' => '', // e.g. "2026-W46" (set by the command)

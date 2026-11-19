@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\CategoryField;
 use App\Models\City;
 use App\Search\AdSearch;
+use App\Search\DatabaseAdSearch;
 use App\Search\SearchCriteria;
 use App\Search\SearchRequest;
 use App\Support\Catalog;
@@ -115,6 +116,21 @@ class BrowseController extends Controller
         }
         $results = $this->search->search($searchFilters, 24, max(1, $request->integer('page', 1)))->withQueryString();
 
+        // Nothing found (PR 77, switch "search.rich_empty"): the newest ads of this category in this place,
+        // without the other filters, so the page still offers something real.
+        $fallback = $results->isEmpty() && feature('search.rich_empty')
+            ? DatabaseAdSearch::publicQuery()->with(['category', 'city', 'cover'])->withPhotoCount()
+                ->when($categoryIds, fn ($q) => $q->whereIn('category_id', $categoryIds))
+                ->when($city?->id, fn ($q, $cityId) => $q->where('city_id', $cityId))
+                ->latest('published_at')->limit(8)->get()
+            : collect();
+
+        // A short, true intro for Google and people (switch "seo.intro"): only on the plain first page of a category.
+        $plain = Arr::except($request->query(), ['page']) === [];
+        $intro = feature('seo.intro') && $category && $brand === null && $plain && $results->currentPage() === 1 && $results->total() > 0
+            ? Landing::priceRange($categoryIds, $city?->id)
+            : null;
+
         return view('browse.index', [
             'results' => $results,
             'category' => $category,
@@ -131,6 +147,8 @@ class BrowseController extends Controller
             'brandLinks' => $category && $category->parent_id !== null && $brand === null && feature('seo.landing_pages') && $city !== null
                 ? Landing::topBrands($category, $city) : [],
             'cityLinks' => $category && feature('seo.landing_pages') ? Landing::otherCities($city, $this->catalog->cities()) : [],
+            'fallback' => $fallback,
+            'intro' => $intro,
         ]);
     }
 

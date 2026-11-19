@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-17 (PR 55)_
+_Last updated: 2026-11-18 (PR 80)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -31,9 +31,18 @@ _Last updated: 2026-11-17 (PR 55)_
 - **PRs 31–38 (Part B, Phase 2, all OFF):** favourites, saved searches, ad stats, verified badge, shop pages, paid boosts (test mode, ledger), banner ads, chat.
 - **PRs 39–43 (Part C, Phase 3, all OFF):** write API + keys, price guide, seller ratings, auto-post, help for buyers abroad.
 - **PRs 44–47 (Part D):** bug hunt (Somalia-time dates), security audit (SECURITY_REPORT.md), load test 100k ads (docs/load-test.md), docs.
+- **PRs 56–62 (checklist run):** 43 checks run in a real browser, 6 bugs fixed (saved-search filters, guest-report time stamp, friendly error pages, phone grid/list, staff Settings, local test sign-in), admin build tools dev-only, one-line home panel.
+- **PRs 63–68 (Jiji round, docs/jiji-study.md):** PR 63 search suggestions (`search.suggestions`), recent searches (on the phone only), search in the header of every page (`site.header_search`). Terms table `search_terms` rebuilt nightly by `iibsom:search-terms` and by demo reset/delete. PR 64 Save button on cards (`ads.card_save`; state from `<meta name="card-save">`, card-save.js), New/Used + list-view text (`ads.card_details`), "Show more ads" (`lists.show_more`, show-more.js, fires `cards:added`), "Popular now" (`home.popular_now`, `App\Support\Ads\PopularNow`), demo views (DemoSeeder::stats). PR 65 Body type (Cars) + RAM (Mobile Phones) via `CategorySeeder::addMissing()`, public views on ad pages (`ads.public_views`), Make an offer (`chat.offers`, `?offer=` fills the chat box), chat box grows. PR 66 notifications bell (`notifications`; `inbox_items`, `App\Support\Notify\Inbox`, settings in `users.notify_settings`), price drop (`favourites.price_drop`, `favourites.price_when_saved`), call back (`contact.call_back`, CallBackMail), nightly prune. PR 67 seller pages (`sellers.page`, SellerPageController, noindex, cached for guests), follow (`sellers.follow`, table `follows`, `Inbox::followedAd` on first publish), rename/pause saved searches (`saved_searches.manage`, `saved_searches.muted`). PR 68 close with a reason (`ads.close_reason`, `ads.closed_reason`), free move to top every 7 days (`ads.free_bump`, `ads.bumped_at`; alerts skip bumped ads). PR 69 help articles posting-rules + how-to-buy (`help.posting_rules`, `help.how_to_buy`), contact form (`site.contact_form`, ContactController stateless, table `contact_messages`, admin Messages, permission `messages.manage`). PR 70 security check: Save/Follow use insertOrIgnore (double taps), call requests use a short lock; checklist rows 25 and 39 updated. PR 71 speed check at 100k ads (docs/performance.md), index `ads(status, views)` for Popular now. PR 72 no drugs: `SpamGuard::drugWord` (setting `safety.drug_words`, switch `safety.no_drugs`), report reason `drugs`, `ads.flag`/`flag_word`, admin filter `flag=drugs`, command `iibsom:drugs:check`. PR 73 chat drug check (`ChatController::send`, `users.flag*`, admin Users state `drugs`, clear-flag).
 - Which switch does what, and what to turn on first: **docs/features.md**.
 - Nothing is deployed yet.
 - Owner runs locally with **Laragon** on Windows (see docs/local-setup.md → A).
+- **PR 74 (visitor side: audit + design system):** docs/ux-audit.md (scores + screenshots), dark mode (`site.dark_mode`; `resources/js/theme.js`, head script sets `<html data-theme>`; dark colours in one block of `resources/css/app.css`: use normal classes, `bg-white` = `var(--surface)`), `<x-empty-state>` component, friendly 404, card title lines + no-photo box, `.skeleton-card`, one focus ring, Sell button in normal case.
+- **PR 75 (rich home):** `App\Support\Home\HomeSections` (popular searches, places, facts, featured, trusted sellers; 10-minute cache keyed by the page-cache version), `partials/home-more.blade.php`, install card in `resources/js/pwa.js`. 7 new switches (`home.hero_plus`, `home.places`, `home.how_it_works`, `home.trust_strip`, `home.featured`, `home.trusted_sellers`, `pwa.install_prompt`).
+- **PR 76 (rich ad page):** `resources/js/ad-page.js` (shared `reveal()` for the number, contact bar, thumbnails, full-screen viewer `[data-viewer]`, read more), `AdPageController` (`fromSeller`, `following`, `FIELD_ICONS`), for-you.js `data-exclude`. 5 switches: `ads.gallery_plus`, `ads.sticky_contact`, `ads.read_more`, `ads.more_from_seller`, `ads.recently_viewed`.
+- **PR 77 (category + search):** `browse/_quick-bar.blade.php`, `Landing::priceRange()`, `fallback` + `intro` in `BrowseController::results()`, drop-down closing in `filters.js`. Switches `search.quick_bar`, `search.rich_empty`, `seo.intro`.
+- **PR 78 (post an ad):** `ads/_post-steps.blade.php`, category search + `initPreview()` in `resources/js/post-ad.js` (also loaded on the choose page), share on the done page via `copy-text.js` (`[data-share] [data-copy-link]`). Switches `post.steps`, `post.category_search`, `post.tips`, `post.preview`, `post.done_plus`.
+- **PR 79 (account, seller, safety):** `App\Support\Users\AccountSummary`, dashboard in `account/index.blade.php`, seller page filters in `SellerPageController` (`c`, `sort`), help article `resources/help/{en,so}/5-how-we-keep-you-safe.md` (`:checked_line` filled in `HelpCentre::fill()`). Switches `account.dashboard`, `sellers.page_plus`, `help.how_we_keep_safe`.
+- **PR 80 (speed + accessibility):** `<html class="js">` set in `<head>` (use `hidden [.js_&]:block` for JavaScript-only parts), `$eager` on `ads._card`, dark-mode colour fixes at the end of `app.css`, mod_deflate in `public/.htaccess`. Lighthouse/axe numbers in docs/performance.md. To measure like production locally, put a gzip front before `php artisan serve`.
 
 ## How to run
 See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example .env && docker compose up -d --build`, then open http://localhost:8095.
@@ -102,6 +111,13 @@ See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example 
 53. **PR 53:** Big footer with the coast drawing, link columns, social pages and languages, set in Settings → General → Footer; new pages Cookie info + Copyright; switch `site.new_footer` (ON).
 54. **PR 54:** Seller badges (years on iibsom, Replies fast), photo count + Popular on cards, My ads + unread number in the header; switches `sellers.badges`, `ads.card_badges`, `site.header_icons` (all ON). Fix: old view totals kept.
 55. **PR 55:** How to sell article + buttons, safety tip at the phone number, quick chat questions (prefilled), photo mark; switches `help.how_to_sell`, `contact.safety_tip`, `chat.quick_replies` (ON), `photos.watermark` (OFF). Round 2 done; the top PR points at main.
+56. **PR 56:** Saved searches keep area / only with photos / verified sellers (alerts use them). Found by the 43-row checklist run.
+57. **PR 57:** Guest report form gets a fresh time stamp when it opens (cached pages); friendly 403/419/429/500/503 pages in both languages.
+58. **PR 58:** Grid/list buttons on phones too.
+59. **PR 59:** Staff without site-settings rights open Settings on Appearance (no broken page); phone settings menu follows the address.
+60. **PR 60:** Test sign-in box on /login for your own computer only (APP_ENV=local, switch login.test_accounts); Google without keys explains instead of failing at Google.
+61. **PR 61:** Admin: @tailwindcss/vite moved to devDependencies (build-only); production audit clean.
+62. **PR 62:** Home side panel: one line per sub category (owner request).
 
 ## Known notes
 - The local PHP Docker image could not be built inside Claude's sandbox (the Alpine package site is blocked there). CI builds it on GitHub to prove it works.

@@ -7,15 +7,24 @@
 @php($cities = $catalog->cities())
 @php($popular = $catalog->popularCategories(8))
 @php($latest = \App\Search\DatabaseAdSearch::publicQuery()->with(['category:id,slug,icon,parent_id', 'city:id,name,slug', 'cover'])->withPhotoCount()->latest('published_at')->limit(12)->get())
+@php($popularNow = \App\Support\Ads\PopularNow::ads())
 @php($banners = feature('site.banners') ? \App\Models\Banner::forHome() : [])
+@php($popularSearches = \App\Support\Home\HomeSections::popularSearches())
+@php($places = \App\Support\Home\HomeSections::places())
+@php($featured = \App\Support\Home\HomeSections::featured())
+@php($trusted = \App\Support\Home\HomeSections::trustedSellers())
+@php($canPost = feature('ads.posting') && (auth()->check() || feature('login.google')))
 
 @section('content')
     {{-- Big search (inspired by jiji.com, in iibsom colours) --}}
     <section class="rounded-b-3xl bg-brand-700 text-white">
         <div class="mx-auto max-w-3xl px-4 pb-7 pt-6 text-center sm:pb-16 sm:pt-14">
             <h1 class="text-xl font-bold sm:text-3xl">{{ __('site.home.heading') }}</h1>
+            @feature('home.hero_plus')
+                <p class="mt-1.5 text-sm text-white sm:text-base" data-home-promise>{{ __('site.home.promise') }}</p>
+            @endfeature
 
-            <form class="mt-5 flex gap-2" role="search" action="{{ lroute('search') }}" method="get">
+            <form class="mt-5 flex gap-2" role="search" action="{{ lroute('search') }}" method="get" data-search-form>
                 {{-- Picker only when there is a choice (2+ live cities). --}}
                 @if (count($cities) > 1)
                     <label for="city" class="sr-only">{{ __('site.home.location_label') }}</label>
@@ -29,7 +38,8 @@
 
                 <div class="relative flex-1">
                     <label for="q" class="sr-only">{{ __('site.home.search_placeholder') }}</label>
-                    <input id="q" name="q" type="search" placeholder="{{ __('site.home.search_placeholder') }}"
+                    <input id="q" name="q" type="search" autocomplete="off" placeholder="{{ __('site.home.search_placeholder') }}"
+                           @feature('search.suggestions') data-suggest="{{ lroute('search.suggest') }}" @endfeature
                            class="w-full rounded-lg border-0 bg-white py-3 pl-3 pr-11 sm:pl-4 text-stone-900 placeholder:text-stone-500 focus:ring-2 focus:ring-accent-400">
                     <button type="submit" class="absolute inset-y-0 right-0 flex w-12 items-center justify-center text-stone-500 hover:text-brand-700">
                         {{ icon('search') }}
@@ -37,6 +47,21 @@
                     </button>
                 </div>
             </form>
+
+            @feature('home.hero_plus')
+                @if ($popularSearches)
+                    {{-- Words from live ad titles only (made at night), never what visitors typed. --}}
+                    <nav class="-mx-4 mt-3 flex items-center gap-2 overflow-x-auto px-4 pb-1 text-sm sm:mx-0 sm:flex-wrap sm:justify-center sm:overflow-visible sm:px-0" aria-label="{{ __('site.home.popular_searches') }}" data-popular-searches>
+                        <span class="shrink-0 text-white">{{ __('site.home.popular_searches') }}</span>
+                        @foreach ($popularSearches as $term)
+                            <a href="{{ lroute('search', ['q' => $term]) }}" class="shrink-0 rounded-full bg-brand-800 px-3 py-1 font-medium text-white ring-1 ring-white/30 hover:bg-brand-900">{{ $term }}</a>
+                        @endforeach
+                    </nav>
+                @endif
+                @if ($canPost)
+                    <a href="{{ lroute('post') }}" class="btn-sell mt-4 px-5 py-2.5" data-home-post>{{ icon('plus', 'size-4') }} {{ __('site.home.post_free') }}</a>
+                @endif
+            @endfeature
         </div>
     </section>
 
@@ -68,15 +93,14 @@
                                     <span>{{ translated($category['name']) }}</span>
                                     <a href="{{ lroute('browse.category', ['category' => $category['slug']]) }}" class="text-sm font-medium text-brand-700 hover:underline">{{ __('ads.browse.all_in', ['category' => translated($category['name'])]) }} ({{ number_format($category['ads_count']) }})</a>
                                 </p>
-                                <ul class="mt-3 grid grid-cols-2 gap-1">
+                                {{-- One sub category per line (owner's wish, 2026-11-18): name and count side by side. --}}
+                                <ul class="mt-3 grid gap-0.5" data-cat-subs>
                                     @foreach ($subs as $sub)
                                         <li>
-                                            <a href="{{ lroute('browse.category', ['category' => $sub['slug']]) }}" class="flex items-center gap-3 rounded-lg px-2 py-2 hover:bg-brand-50 focus-visible:bg-brand-50">
-                                                <span class="flex size-9 shrink-0 items-center justify-center rounded-lg bg-stone-50 text-brand-700">{{ icon($sub['icon'], 'size-5') }}</span>
-                                                <span class="min-w-0">
-                                                    <span class="block text-sm font-medium leading-tight">{{ translated($sub['name']) }}</span>
-                                                    <span class="block text-xs text-stone-500">{{ trans_choice('site.ads_count', $sub['ads_count'], ['count' => number_format($sub['ads_count'])]) }}</span>
-                                                </span>
+                                            <a href="{{ lroute('browse.category', ['category' => $sub['slug']]) }}" class="flex items-center gap-3 rounded-lg px-2 py-1.5 hover:bg-brand-50 focus-visible:bg-brand-50" title="{{ translated($sub['name']) }}">
+                                                <span class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-stone-50 text-brand-700">{{ icon($sub['icon'], 'size-5') }}</span>
+                                                <span class="min-w-0 flex-1 truncate text-sm font-medium">{{ translated($sub['name']) }}</span>
+                                                <span class="shrink-0 text-xs text-stone-500">{{ trans_choice('site.ads_count', $sub['ads_count'], ['count' => number_format($sub['ads_count'])]) }}</span>
                                             </a>
                                         </li>
                                     @endforeach
@@ -168,6 +192,31 @@
                 </div>
             @endfeature
 
+            {{-- Featured (boosted) ads: needs paid boosts; hidden when none --}}
+            @if ($featured->isNotEmpty())
+                <section class="mt-8" aria-labelledby="featured" data-home-featured>
+                    <h2 id="featured" class="flex items-center gap-2 text-lg font-semibold">{{ icon('rocket', 'size-5 text-brand-700') }} {{ __('site.home.featured') }}</h2>
+                    <div class="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
+                        @foreach ($featured as $ad)
+                            @include('ads._card', ['ad' => $ad])
+                        @endforeach
+                    </div>
+                </section>
+            @endif
+
+            {{-- Popular now: most viewed ads of the last 30 days (needs Ad statistics) --}}
+            @if ($popularNow->isNotEmpty())
+                <section class="mt-8" aria-labelledby="popular-now">
+                    <h2 id="popular-now" class="flex items-center gap-2 text-lg font-semibold">{{ icon('flame', 'size-5 text-orange-600') }} {{ __('site.home.popular_now') }}</h2>
+                    <p class="text-sm text-stone-600">{{ __('site.home.popular_now_note') }}</p>
+                    <div class="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
+                        @foreach ($popularNow as $ad)
+                            @include('ads._card', ['ad' => $ad])
+                        @endforeach
+                    </div>
+                </section>
+            @endif
+
             {{-- Latest ads --}}
             <h2 id="trending" class="mt-8 scroll-mt-20 text-lg font-semibold">{{ __('site.home.trending_ads') }}</h2>
             @if ($latest->isNotEmpty())
@@ -178,15 +227,14 @@
                 </div>
                 <a href="{{ lroute('search') }}" class="mt-4 inline-block font-medium text-brand-700 underline">{{ __('ads.browse.all_ads') }} →</a>
             @else
-                <div class="mt-3 rounded-xl border border-dashed border-stone-300 bg-white p-8 text-center">
-                    <span class="mx-auto flex size-12 items-center justify-center rounded-full bg-brand-50 text-brand-700">{{ icon('trending-up', 'size-6') }}</span>
-                    <p class="mt-3 font-semibold">{{ __('site.home.no_ads_title') }}</p>
-                    <p class="mt-1 text-sm text-stone-600">{{ __('site.home.no_ads_text') }}</p>
+                <x-empty-state class="mt-3" icon="trending-up" :title="__('site.home.no_ads_title')" :text="__('site.home.no_ads_text')">
                     @feature('ads.posting')
-                        <a href="{{ lroute('post') }}" class="btn-sell mt-4">{{ __('site.nav.post_ad') }}</a>
+                        <a href="{{ lroute('post') }}" class="btn-sell">{{ __('site.nav.post_ad') }}</a>
                     @endfeature
-                </div>
+                </x-empty-state>
             @endif
+
+            @include('partials.home-more')
         </div>
     </div>
 @endsection

@@ -5,6 +5,7 @@
 return [
     'reason' => [
         'scam' => 'Khiyaano ama musuqmaasuq',
+        'drugs' => 'Daroogo (qaad, xashiish, kiniin…)',
         'wrong_category' => 'Qayb khaldan',
         'sold' => 'Horay ayaa loo iibiyey',
         'offensive' => 'Aflagaado ama aan la oggolayn',

@@ -42,6 +42,16 @@ export function initChat() {
         }
     };
 
+    // The message box grows with the text (up to its max height), so a written-in offer is readable.
+    const box = form?.querySelector('textarea');
+    const grow = () => {
+        if (!box) return;
+        box.style.height = 'auto';
+        box.style.height = `${box.scrollHeight + 2}px`;
+    };
+    box?.addEventListener('input', grow);
+    grow();
+
     form?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const text = form.querySelector('textarea');
@@ -51,13 +61,14 @@ export function initChat() {
         try {
             const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json', 'X-Requested-With': 'XMLHttpRequest' }, credentials: 'same-origin' });
             const data = await res.json().catch(() => ({}));
-            if (!res.ok) {
+            if (!res.ok || data.ok === false) {
                 error.textContent = data.message || data.errors?.body?.[0] || '';
                 error.hidden = !error.textContent;
                 return;
             }
             error.hidden = true;
             text.value = '';
+            grow();
             add(data.message);
             toBottom();
         } catch {

@@ -23,6 +23,7 @@ return [
             'ads.view',
             'reports.view',
             'users.view',
+            'messages.manage',
         ]],
     ],
 
@@ -39,6 +40,7 @@ return [
         'users.ban' => 'Ban users and block phone numbers',
         'users.verify' => 'Check ID photos and give or remove the Verified badge',
         'reviews.manage' => 'Hide seller ratings that break the rules',
+        'messages.manage' => 'Read contact form messages and mark them done',
         'staff.manage' => 'Add and change staff accounts',
         'categories.manage' => 'Edit categories and their fields',
         'locations.manage' => 'Edit cities and areas',

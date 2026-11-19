@@ -83,7 +83,8 @@ class LocalizationTest extends TestCase
 
         $this->get('/so')->assertOk()
             ->assertSee('data-lang-menu', false)
-            ->assertSee('aria-label="Luqadda: Soomaali"', false)
+            // The spoken name starts with the visible code (PR 77, Lighthouse "label in name").
+            ->assertSee('<span>SO</span><span class="sr-only"> – Luqadda: Soomaali</span>', false)
             ->assertSeeInOrder(['>SO<', 'English', 'Soomaali'], false)
             ->assertSee('lang="so"'.'
 '.'                       data-lang-switch="so"', false);

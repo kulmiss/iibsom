@@ -11,7 +11,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Report extends Model
 {
-    public const REASONS = ['scam', 'wrong_category', 'sold', 'offensive', 'other'];
+    public const REASONS = ['scam', 'drugs', 'wrong_category', 'sold', 'offensive', 'other']; // drugs: PR 72
+
+    /** @return list<string> the reasons people can choose now ("Drugs" with the switch "safety.no_drugs") */
+    public static function reasons(): array
+    {
+        return array_values(array_filter(self::REASONS, fn ($r) => $r !== 'drugs' || feature('safety.no_drugs')));
+    }
 
     protected $fillable = ['reason', 'details'];
 

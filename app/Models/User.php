@@ -38,6 +38,8 @@ class User extends Authenticatable
             'two_factor_recovery_codes' => 'encrypted:array',
             'two_factor_confirmed_at' => 'datetime',
             'is_demo' => 'boolean',
+            'notify_settings' => 'array',
+            'flagged_at' => 'datetime',
         ];
     }
 
@@ -93,7 +95,23 @@ class User extends Authenticatable
      */
     public function favourites(): BelongsToMany
     {
-        return $this->belongsToMany(Ad::class, 'favourites')->withTimestamps();
+        return $this->belongsToMany(Ad::class, 'favourites')->withTimestamps()->withPivot('price_when_saved');
+    }
+
+    /**
+     * Sellers this person follows (switch "sellers.follow").
+     *
+     * @return BelongsToMany<User, $this>
+     */
+    public function following(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'follows', 'follower_id', 'seller_id')->withPivot('created_at');
+    }
+
+    /** @return HasMany<InboxItem, $this> */
+    public function inboxItems(): HasMany
+    {
+        return $this->hasMany(InboxItem::class);
     }
 
     /** @return HasMany<SavedSearch, $this> */

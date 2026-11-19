@@ -2,9 +2,12 @@
 
 use App\Http\Controllers\Account\ApiTokenController;
 use App\Http\Controllers\Account\BoostController;
+use App\Http\Controllers\Account\CallBackController;
 use App\Http\Controllers\Account\ChatController;
 use App\Http\Controllers\Account\FavouriteController;
+use App\Http\Controllers\Account\FollowController;
 use App\Http\Controllers\Account\MyAdsController;
+use App\Http\Controllers\Account\NotificationController;
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\Account\ReviewController;
 use App\Http\Controllers\Account\SavedSearchController;
@@ -17,12 +20,16 @@ use App\Http\Controllers\Ads\PriceHintController;
 use App\Http\Controllers\AdStatsController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\TestSignInController;
 use App\Http\Controllers\BannerClickController;
 use App\Http\Controllers\BrowseController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ForYouController;
 use App\Http\Controllers\GuestReportController;
 use App\Http\Controllers\HelpController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\SearchSuggestController;
+use App\Http\Controllers\SellerPageController;
 use App\Http\Controllers\SellerReviewsController;
 use App\Http\Controllers\ShopPageController;
 use App\Http\Controllers\SitemapController;
@@ -51,6 +58,8 @@ $publicRoutes = function () use ($stateless) {
     // Sign in (Google only for customers).
     Route::middleware(['guest', 'feature:login.google'])->group(function () {
         Route::get('/login', [LoginController::class, 'show'])->name('login');
+        // Test sign-in: the owner's own computer only (APP_ENV=local); 404 everywhere else.
+        Route::post('/login/test', [TestSignInController::class, 'store'])->middleware('throttle:10,1')->name('login.test');
     });
 
     Route::middleware('auth')->group(function () {
@@ -81,6 +90,8 @@ $publicRoutes = function () use ($stateless) {
                 Route::get('/{ad}/edit', [MyAdsController::class, 'edit'])->whereNumber('ad')->name('.edit');
                 Route::put('/{ad}', [MyAdsController::class, 'update'])->whereNumber('ad')->middleware('throttle:20,1')->name('.update');
                 Route::post('/{ad}/sold', [MyAdsController::class, 'sold'])->whereNumber('ad')->middleware('throttle:30,1')->name('.sold');
+                Route::post('/{ad}/close', [MyAdsController::class, 'close'])->whereNumber('ad')->middleware(['feature:ads.close_reason', 'throttle:30,1'])->name('.close');
+                Route::post('/{ad}/bump', [MyAdsController::class, 'bump'])->whereNumber('ad')->middleware(['feature:ads.free_bump', 'throttle:30,1'])->name('.bump');
                 Route::post('/{ad}/renew', [MyAdsController::class, 'renew'])->whereNumber('ad')->middleware('throttle:30,1')->name('.renew');
                 Route::delete('/{ad}', [MyAdsController::class, 'destroy'])->whereNumber('ad')->middleware('throttle:30,1')->name('.destroy');
             });
@@ -124,6 +135,20 @@ $publicRoutes = function () use ($stateless) {
                 Route::post('/account/verify', [VerificationController::class, 'store'])->middleware('throttle:5,60')->name('verify.store');
             });
 
+            // Notifications bell (PR 66) and "Ask the seller to call me".
+            Route::middleware('feature:notifications')->group(function () {
+                Route::get('/account/notifications', [NotificationController::class, 'index'])->name('notifications');
+                Route::get('/account/notifications/settings', [NotificationController::class, 'settings'])->name('notifications.settings');
+                Route::post('/account/notifications/settings', [NotificationController::class, 'save'])->middleware('throttle:20,1')->name('notifications.settings.save');
+                Route::post('/ads/{ad}/call-back', [CallBackController::class, 'store'])->whereNumber('ad')->middleware(['feature:contact.call_back', 'throttle:5,1'])->name('call_back');
+            });
+
+            // Follow a seller (PR 67).
+            Route::middleware('feature:sellers.follow')->group(function () {
+                Route::get('/account/following', [FollowController::class, 'index'])->name('following');
+                Route::post('/follow/{seller}', [FollowController::class, 'toggle'])->whereNumber('seller')->middleware('throttle:30,1')->name('follow.toggle');
+            });
+
             // Favourites (Phase 2): saved ads.
             Route::middleware('feature:favourites')->group(function () {
                 Route::get('/account/saved', [FavouriteController::class, 'index'])->name('saved');
@@ -134,6 +159,7 @@ $publicRoutes = function () use ($stateless) {
             Route::middleware('feature:saved_searches')->group(function () {
                 Route::get('/account/searches', [SavedSearchController::class, 'index'])->name('searches');
                 Route::post('/account/searches', [SavedSearchController::class, 'store'])->middleware('throttle:20,1')->name('searches.store');
+                Route::patch('/account/searches/{search}', [SavedSearchController::class, 'update'])->whereNumber('search')->middleware(['feature:saved_searches.manage', 'throttle:30,1'])->name('searches.update');
                 Route::delete('/account/searches/{search}', [SavedSearchController::class, 'destroy'])->whereNumber('search')->middleware('throttle:30,1')->name('searches.destroy');
             });
 
@@ -147,12 +173,24 @@ $publicRoutes = function () use ($stateless) {
     Route::post('/ads/{ad}/report-guest', [GuestReportController::class, 'store'])->whereNumber('ad')
         ->middleware(['feature:ads.reports', 'feature:ads.guest_reports', 'throttle:5,10'])
         ->withoutMiddleware($stateless)->name('ad.report_guest');
+    // Contact form (PR 69): the page is cached for guests; sending is stateless like guest reports.
+    Route::get('/contact', [ContactController::class, 'show'])->middleware('feature:site.contact_form')->name('contact');
+    Route::post('/contact', [ContactController::class, 'store'])
+        ->middleware(['feature:site.contact_form', 'throttle:6,10'])
+        ->withoutMiddleware($stateless)->name('contact.send');
+    // A fresh time stamp for that form when it opens (the page itself may come from the page cache).
+    Route::get('/report-token', [GuestReportController::class, 'token'])
+        ->middleware(['feature:ads.reports', 'feature:ads.guest_reports', 'throttle:30,1'])
+        ->withoutMiddleware($stateless)->name('ad.report_token');
 
     // Seller's number after a tap (JSON, rate-limited).
     Route::get('/ads/{ad}/contact', [AdPageController::class, 'contact'])->whereNumber('ad')->middleware('throttle:30,1')
         ->withoutMiddleware($stateless)->name('ad.contact');
 
     Route::get('/search', [BrowseController::class, 'search'])->name('search');
+    // Suggestions while typing (PR 63): stateless JSON, cached.
+    Route::get('/search-suggest', SearchSuggestController::class)->middleware(['feature:search.suggestions', 'throttle:60,1'])
+        ->withoutMiddleware($stateless)->name('search.suggest');
     // "Show 120 results" on the phone filter sheet (JSON; no session or cookie for guests).
     Route::get('/browse-count', [BrowseController::class, 'count'])->middleware(['feature:search.more_filters', 'throttle:120,1'])
         ->withoutMiddleware($stateless)->name('browse.count');
@@ -162,6 +200,9 @@ $publicRoutes = function () use ($stateless) {
 
     // Business shop pages (Phase 2): public only while an admin has the shop active.
     Route::get('/shop/{shop}', [ShopPageController::class, 'show'])->where('shop', '[a-z0-9]+(-[a-z0-9]+)*')->middleware('feature:shops')->name('shop.show');
+
+    // Public seller page (PR 67): every seller's live ads.
+    Route::get('/seller/{user}', [SellerPageController::class, 'show'])->whereNumber('user')->middleware('feature:sellers.page')->name('seller.show');
 
     // Seller ratings (Phase 3): public list of a seller's stars.
     Route::get('/seller/{user}/reviews', [SellerReviewsController::class, 'show'])->whereNumber('user')->middleware('feature:seller_ratings')->name('seller.reviews');

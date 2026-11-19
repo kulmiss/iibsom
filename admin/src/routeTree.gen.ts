@@ -26,6 +26,7 @@ import { Route as AuthenticatedFeaturesRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedGuideRouteImport } from './routes/_authenticated/guide'
 import { Route as AuthenticatedHealthRouteImport } from './routes/_authenticated/health'
 import { Route as AuthenticatedLocationsRouteImport } from './routes/_authenticated/locations'
+import { Route as AuthenticatedMessagesRouteImport } from './routes/_authenticated/messages'
 import { Route as AuthenticatedPagesRouteImport } from './routes/_authenticated/pages'
 import { Route as AuthenticatedPaymentsRouteImport } from './routes/_authenticated/payments'
 import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
@@ -126,6 +127,11 @@ const AuthenticatedHealthRoute = AuthenticatedHealthRouteImport.update({
 const AuthenticatedLocationsRoute = AuthenticatedLocationsRouteImport.update({
   id: '/locations',
   path: '/locations',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedMessagesRoute = AuthenticatedMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedPagesRoute = AuthenticatedPagesRouteImport.update({
@@ -239,6 +245,7 @@ export interface FileRoutesByFullPath {
   '/guide': typeof AuthenticatedGuideRoute
   '/health': typeof AuthenticatedHealthRoute
   '/locations': typeof AuthenticatedLocationsRoute
+  '/messages': typeof AuthenticatedMessagesRoute
   '/pages': typeof AuthenticatedPagesRoute
   '/payments': typeof AuthenticatedPaymentsRoute
   '/reports': typeof AuthenticatedReportsRoute
@@ -272,6 +279,7 @@ export interface FileRoutesByTo {
   '/guide': typeof AuthenticatedGuideRoute
   '/health': typeof AuthenticatedHealthRoute
   '/locations': typeof AuthenticatedLocationsRoute
+  '/messages': typeof AuthenticatedMessagesRoute
   '/pages': typeof AuthenticatedPagesRoute
   '/payments': typeof AuthenticatedPaymentsRoute
   '/reports': typeof AuthenticatedReportsRoute
@@ -309,6 +317,7 @@ export interface FileRoutesById {
   '/_authenticated/guide': typeof AuthenticatedGuideRoute
   '/_authenticated/health': typeof AuthenticatedHealthRoute
   '/_authenticated/locations': typeof AuthenticatedLocationsRoute
+  '/_authenticated/messages': typeof AuthenticatedMessagesRoute
   '/_authenticated/pages': typeof AuthenticatedPagesRoute
   '/_authenticated/payments': typeof AuthenticatedPaymentsRoute
   '/_authenticated/reports': typeof AuthenticatedReportsRoute
@@ -347,6 +356,7 @@ export interface FileRouteTypes {
     | '/guide'
     | '/health'
     | '/locations'
+    | '/messages'
     | '/pages'
     | '/payments'
     | '/reports'
@@ -380,6 +390,7 @@ export interface FileRouteTypes {
     | '/guide'
     | '/health'
     | '/locations'
+    | '/messages'
     | '/pages'
     | '/payments'
     | '/reports'
@@ -416,6 +427,7 @@ export interface FileRouteTypes {
     | '/_authenticated/guide'
     | '/_authenticated/health'
     | '/_authenticated/locations'
+    | '/_authenticated/messages'
     | '/_authenticated/pages'
     | '/_authenticated/payments'
     | '/_authenticated/reports'
@@ -566,6 +578,13 @@ declare module '@tanstack/react-router' {
       path: '/locations'
       fullPath: '/locations'
       preLoaderRoute: typeof AuthenticatedLocationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/messages': {
+      id: '/_authenticated/messages'
+      path: '/messages'
+      fullPath: '/messages'
+      preLoaderRoute: typeof AuthenticatedMessagesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/pages': {
@@ -719,6 +738,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedGuideRoute: typeof AuthenticatedGuideRoute
   AuthenticatedHealthRoute: typeof AuthenticatedHealthRoute
   AuthenticatedLocationsRoute: typeof AuthenticatedLocationsRoute
+  AuthenticatedMessagesRoute: typeof AuthenticatedMessagesRoute
   AuthenticatedPagesRoute: typeof AuthenticatedPagesRoute
   AuthenticatedPaymentsRoute: typeof AuthenticatedPaymentsRoute
   AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
@@ -743,6 +763,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedGuideRoute: AuthenticatedGuideRoute,
   AuthenticatedHealthRoute: AuthenticatedHealthRoute,
   AuthenticatedLocationsRoute: AuthenticatedLocationsRoute,
+  AuthenticatedMessagesRoute: AuthenticatedMessagesRoute,
   AuthenticatedPagesRoute: AuthenticatedPagesRoute,
   AuthenticatedPaymentsRoute: AuthenticatedPaymentsRoute,
   AuthenticatedReportsRoute: AuthenticatedReportsRoute,

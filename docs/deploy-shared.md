@@ -80,6 +80,8 @@ This runs everything that happens by itself: resizing photos and sending emails 
 - https://iibsom.com opens; https://iibsom.com/admin → sign in → set up 2FA on your phone.
 - Admin → **System health**: all green.
 - Post a test ad with a photo → approve it → it shows on the home page.
+- Pages are compressed: in Chrome press F12 → Network → click the first line → "content-encoding: gzip" (or br).
+  If it is missing, ask the host to turn on **mod_deflate** (public/.htaccess already asks for it).
 
 ## Updating later
 1. `bash tools/make-release` on your computer.

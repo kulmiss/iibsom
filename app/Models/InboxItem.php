@@ -1,0 +1,35 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+/**
+ * One line in the notifications bell (switch "notifications").
+ *
+ * @property array<string, mixed>|null $data
+ */
+class InboxItem extends Model
+{
+    public const UPDATED_AT = null;
+
+    protected $guarded = ['id'];
+
+    protected function casts(): array
+    {
+        return ['data' => 'array', 'read_at' => 'datetime'];
+    }
+
+    /** @return BelongsTo<User, $this> */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /** @return BelongsTo<Ad, $this> */
+    public function ad(): BelongsTo
+    {
+        return $this->belongsTo(Ad::class);
+    }
+}

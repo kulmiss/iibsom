@@ -1,0 +1,43 @@
+<?php
+
+return [
+    'title' => 'Notifications',
+    'bell' => 'Notifications',
+    'unread' => '{1} 1 new notification|[2,*] :count new notifications',
+    'empty' => 'Nothing yet. We will tell you here when your ad is approved, a saved ad gets cheaper, new ads match your saved searches, or a buyer asks you to call.',
+    'new' => 'New',
+    'settings_link' => 'Choose what you get',
+    'text' => [
+        'ad_approved' => 'Your ad “:title” is approved and live.',
+        'ad_rejected' => 'Your ad “:title” was not approved: :reason',
+        'saved_search' => '{1} 1 new ad for your saved search “:label”.|[2,*] :count new ads for your saved search “:label”.',
+        'price_drop' => 'Price dropped: “:title” is now :to (was :from).',
+        'call_back' => ':name asks you to call :phone about “:title”.',
+        'followed_ad' => ':seller, whom you follow, has a new ad: “:title”.',
+    ],
+    'settings' => [
+        'title' => 'Notifications',
+        'intro' => 'Choose what you want to hear about. Changes count from now.',
+        'bell' => 'In the bell on iibsom',
+        'email' => 'By email',
+        'bell_ad_approved' => 'My ad is approved',
+        'bell_ad_rejected' => 'My ad is not approved (with the reason)',
+        'bell_saved_search' => 'New ads for my saved searches',
+        'bell_price_drop' => 'A saved ad gets cheaper',
+        'bell_call_back' => 'A buyer asks me to call',
+        'bell_followed_ad' => 'A seller I follow posts a new ad',
+        'email_saved_search' => 'New ads for my saved searches (once a day)',
+        'email_call_back' => 'A buyer asks me to call',
+        'save' => 'Save',
+        'saved' => 'Saved. You get only what is ticked.',
+    ],
+    'call_back' => [
+        'button' => 'Request a call from the seller',
+        'note' => 'We send your name and your number (:phone) to this seller only.',
+        'sent' => 'Done. The seller has your number (:phone) and can call you.',
+        'already' => 'You already asked this seller today. Please wait for the call.',
+        'too_many' => 'You asked 10 sellers today. Please try again tomorrow.',
+        'sign_in' => 'Sign in to ask the seller to call you',
+    ],
+    'price_drop' => 'Cheaper: :from → :to',
+];

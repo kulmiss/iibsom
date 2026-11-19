@@ -9,7 +9,9 @@ use App\Models\Page;
 use App\Models\Report;
 use App\Models\User;
 use App\Support\Features\FeatureManager;
+use App\Support\Search\SearchTerms;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class AdminSiteTest extends AdminTestCase
@@ -185,5 +187,23 @@ class AdminSiteTest extends AdminTestCase
 
         $this->putJson('/admin/api/features/site.demo_data', ['enabled' => true])->assertOk();
         $this->assertSame(1, $cars->fresh()->ads_count);
+    }
+
+    public function test_demo_switch_changes_also_update_search_words_and_reset_recounts(): void
+    {
+        $this->asStaff();
+        $cars = Category::where('slug', 'cars')->first();
+        $demo = Ad::factory()->live()->create(['category_id' => $cars->id, 'title' => 'Demo Zanzibar boat']);
+        $demo->forceFill(['is_demo' => true])->save();
+        SearchTerms::rebuild();
+        $this->assertFalse(DB::table('search_terms')->where('term', 'zanzibar')->exists());
+
+        $this->putJson('/admin/api/features/site.demo_data', ['enabled' => true])->assertOk();
+        $this->assertTrue(DB::table('search_terms')->where('term', 'zanzibar')->exists());
+
+        // "Reset to default" (OFF) must recount and drop the demo words too (it did neither before).
+        $this->deleteJson('/admin/api/features/site.demo_data')->assertOk();
+        $this->assertSame(0, $cars->fresh()->ads_count);
+        $this->assertFalse(DB::table('search_terms')->where('term', 'zanzibar')->exists());
     }
 }

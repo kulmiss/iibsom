@@ -8,7 +8,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Ad;
 use App\Support\Ads\AdForm;
 use App\Support\Ads\AdStats;
+use App\Support\Cache\PageCache;
 use App\Support\Catalog;
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -85,6 +87,61 @@ class MyAdsController extends Controller
         return back()->with('status', __('ads.mine.marked_sold'));
     }
 
+    /** Why a seller closes an ad (switch "ads.close_reason"). The two "sold" reasons mark it sold. */
+    public const CLOSE_REASONS = ['sold_here', 'sold_elsewhere', 'not_selling', 'other'];
+
+    public const BUMP_DAYS = 7;
+
+    /** Close with a reason: sold (here or elsewhere) = Sold; otherwise ended now (it can be renewed later). */
+    public function close(Request $request, Ad $ad): RedirectResponse
+    {
+        $this->own($request, $ad);
+        abort_unless($ad->status === AdStatus::Live, 404);
+        $reason = $request->validate(['reason' => ['required', 'in:'.implode(',', self::CLOSE_REASONS)]], [], ['reason' => __('ads.mine.close_reason')])['reason'];
+
+        $ad->closed_reason = $reason;
+        if (str_starts_with($reason, 'sold_')) {
+            $ad->status = AdStatus::Sold;
+            $ad->sold_at = now();
+        } else {
+            $ad->status = AdStatus::Expired;
+            $ad->expires_at = now();
+        }
+        $ad->save();
+
+        return back()->with('status', __(str_starts_with($reason, 'sold_') ? 'ads.mine.marked_sold' : 'ads.mine.closed'));
+    }
+
+    /** Free "move to top" once every 7 days (switch "ads.free_bump"): the ad shows again as new in lists. */
+    public function bump(Request $request, Ad $ad): RedirectResponse
+    {
+        $this->own($request, $ad);
+        abort_unless($ad->isLive(), 404);
+        if (! self::canBump($ad)) {
+            return back()->with('status', __('ads.mine.bump_wait', ['date' => mdate(self::nextBump($ad))]));
+        }
+
+        // Atomic: two quick taps (or two tabs) move it only once.
+        $done = Ad::whereKey($ad->id)->where('status', AdStatus::Live)
+            ->where('published_at', '<=', now()->subDays(self::BUMP_DAYS))
+            ->update(['published_at' => now(), 'bumped_at' => now(), 'updated_at' => now()]);
+        if ($done === 1) {
+            PageCache::bump();
+        }
+
+        return back()->with('status', __('ads.mine.bumped'));
+    }
+
+    public static function canBump(Ad $ad): bool
+    {
+        return feature('ads.free_bump') && $ad->isLive() && $ad->published_at !== null && $ad->published_at->lte(now()->subDays(self::BUMP_DAYS));
+    }
+
+    public static function nextBump(Ad $ad): CarbonInterface
+    {
+        return ($ad->published_at ?? now())->copy()->addDays(self::BUMP_DAYS);
+    }
+
     /** Renew = same ad, new end date. No new check: the text did not change. */
     public function renew(Request $request, Ad $ad, AdForm $form): RedirectResponse
     {
@@ -92,6 +149,7 @@ class MyAdsController extends Controller
         abort_unless(feature('ads.expiry') && $this->canRenew($ad), 404);
 
         $ad->status = AdStatus::Live;
+        $ad->closed_reason = null;
         $form->publish($ad);
         $ad->save();
 

@@ -62,6 +62,26 @@ function start() {
     initView();
 }
 
+// Quick filter drop-downs (switch "search.quick_bar"): one open at a time; a tap outside or Escape closes them.
+function closeQuick(except) {
+    document.querySelectorAll('[data-quick][open]').forEach((d) => { if (d !== except) d.open = false; });
+}
+document.addEventListener('toggle', (e) => {
+    if (e.target.matches?.('[data-quick]') && e.target.open) closeQuick(e.target);
+}, true);
+document.addEventListener('click', (e) => { if (!e.target.closest('[data-quick]')) closeQuick(null); });
+document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    const open = document.querySelector('[data-quick][open]');
+    if (open) { open.open = false; open.querySelector('summary')?.focus(); }
+});
+
+// Leave empty boxes out of the address (?max=9000, not ?min=&max=9000).
+document.addEventListener('submit', (e) => {
+    if (!e.target.closest('[data-quick]')) return;
+    e.target.querySelectorAll('input').forEach((i) => { if (i.value === '') i.disabled = true; });
+});
+
 export function initFilters() {
     start();
     document.addEventListener('page:swapped', start); // the language switch puts a new page in

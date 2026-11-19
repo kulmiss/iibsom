@@ -12,4 +12,18 @@ export function initCopyText() {
             }
         });
     });
+
+    // A button with data-copy-link inside [data-share] copies that page address (or opens the phone's share sheet).
+    document.querySelectorAll('[data-share] [data-copy-link]').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+            const box = btn.closest('[data-share]');
+            if (navigator.share) {
+                try { await navigator.share({ title: box.dataset.title, url: box.dataset.url }); return; } catch { /* closed */ }
+            }
+            try {
+                await navigator.clipboard.writeText(box.dataset.url);
+                btn.textContent = btn.dataset.done;
+            } catch { /* no clipboard */ }
+        });
+    });
 }

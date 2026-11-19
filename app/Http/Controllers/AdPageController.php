@@ -8,6 +8,7 @@ use App\Models\Report;
 use App\Search\DatabaseAdSearch;
 use App\Support\Ads\AdStats;
 use App\Support\Phone\SomaliPhone;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -29,13 +30,28 @@ class AdPageController extends Controller
         }
 
         $similar = feature('ads.similar') && $ad->isLive()
-            ? DatabaseAdSearch::publicQuery()->with(['category', 'city', 'cover'])->withPhotoCount()->where('category_id', $ad->category_id)->whereKeyNot($ad->id)->latest('published_at')->limit(6)->get()
-            : collect();
+            ? DatabaseAdSearch::publicQuery()->withPhotoCount()->where('category_id', $ad->category_id)->whereKeyNot($ad->id)->latest('published_at')->limit(6)->get()
+            : new EloquentCollection;
+
+        // "More from this seller" (PR 76): the seller's other live ads, newest first.
+        $fromSeller = feature('ads.more_from_seller') && $ad->isLive()
+            ? DatabaseAdSearch::publicQuery()->withPhotoCount()->where('user_id', $ad->user_id)->whereKeyNot($ad->id)->latest('published_at')->limit(6)->get()
+            : new EloquentCollection;
+
+        // Both rows share one set of look-ups (category, city, cover photo) to keep the page light.
+        (new EloquentCollection([...$similar->all(), ...$fromSeller->all()]))->load(['category', 'city', 'cover']);
+
+        // Fewer than 6 others found = we already know the total; no extra count needed.
+        $sellerLiveAds = feature('ads.more_from_seller') && $ad->isLive() && $fromSeller->count() < 6
+            ? $fromSeller->count() + 1
+            : DatabaseAdSearch::publicQuery()->where('user_id', $ad->user_id)->count();
 
         return view('ads.show', [
             'ad' => $ad,
             'similar' => $similar,
-            'sellerLiveAds' => DatabaseAdSearch::publicQuery()->where('user_id', $ad->user_id)->count(),
+            'fromSeller' => $fromSeller,
+            'following' => feature('sellers.follow') && $request->user() !== null && $request->user()->following()->whereKey($ad->user_id)->exists(),
+            'sellerLiveAds' => $sellerLiveAds,
             'fieldRows' => $this->fieldRows($ad),
             'reported' => $request->user() !== null && Report::where('ad_id', $ad->id)->where('user_id', $request->user()->id)->exists(),
             'saved' => feature('favourites') && $request->user() !== null && $request->user()->favourites()->whereKey($ad->id)->exists(),
@@ -72,7 +88,7 @@ class AdPageController extends Controller
         abort_if($ad->user_id === $this->authUser($request)->id, 403);
 
         $data = $request->validate([
-            'reason' => ['required', Rule::in(Report::REASONS)],
+            'reason' => ['required', Rule::in(Report::reasons())],
             'details' => ['nullable', 'string', 'max:500'],
             'website' => ['prohibited'], // honeypot: real people never fill this hidden field
         ]);
@@ -102,7 +118,15 @@ class AdPageController extends Controller
         return $user !== null && ($user->id === $ad->user_id || $user->isStaff());
     }
 
-    /** @return list<array{label: string, value: string}> */
+    /** A small picture for each detail (PR 76); other fields get a plain tick. */
+    private const FIELD_ICONS = [
+        'brand' => 'badge-check', 'model' => 'car-front', 'year' => 'calendar', 'mileage' => 'gauge', 'fuel' => 'fuel',
+        'transmission' => 'cog', 'colour' => 'palette', 'body_type' => 'car', 'seats' => 'armchair', 'part_type' => 'wrench',
+        'bedrooms' => 'bed-double', 'bathrooms' => 'bath', 'furnished' => 'sofa', 'size' => 'ruler', 'ram' => 'memory-stick',
+        'storage' => 'hard-drive', 'quantity' => 'boxes', 'job_type' => 'briefcase',
+    ];
+
+    /** @return list<array{label: string, value: string, icon: string}> */
     private function fieldRows(Ad $ad): array
     {
         $rows = [];
@@ -121,7 +145,7 @@ class AdPageController extends Controller
             if ($f->key === 'year') {
                 $shown = (string) $value;
             }
-            $rows[] = ['label' => $f->label_text, 'value' => $shown.($f->unit ? ' '.$f->unit : '')];
+            $rows[] = ['label' => $f->label_text, 'value' => $shown.($f->unit ? ' '.$f->unit : ''), 'icon' => self::FIELD_ICONS[$f->key] ?? 'circle-check'];
         }
 
         return $rows;
