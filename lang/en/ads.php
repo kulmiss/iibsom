@@ -55,6 +55,16 @@ return [
         'my_ads' => 'Go to My ads',
     ],
 
+    // Usual price on the ad page (PR 83)
+    'market' => [
+        'range' => 'Similar :what ads usually ask $:low – $:high',
+        'from' => '{1}(from 1 ad, last 6 months)|[2,*](from :count ads, last 6 months)',
+        'within' => 'This price is in the usual range.',
+        'below' => 'This price is lower than usual.',
+        'far_below' => 'This price is much lower than usual. See the item before you pay anything.',
+        'above' => 'This price is higher than usual. You can make an offer.',
+    ],
+
     'price_hint' => [
         'title' => 'Price guide',
         'range' => 'Most :what ads are $:low – $:high',
@@ -228,6 +238,11 @@ return [
         'photo_prev' => 'Previous photo',
         'photo_next' => 'Next photo',
         'close' => 'Close',
+        'details_more' => 'Show all :count details',
+        'details_less' => 'Show fewer details',
+        'mark_sold' => 'Already sold? Let us know',
+        'like_this_text' => 'Have one like this to sell?',
+        'like_this_button' => 'Post an ad like this',
     ],
 
     'safety' => [

@@ -57,6 +57,16 @@ return [
         'my_ads' => 'Tag Xayeysiisyadayda',
     ],
 
+    // Qiimaha caadiga ah ee bogga xayeysiiska (PR 83)
+    'market' => [
+        'range' => 'Xayeysiisyada :what ee la midka ah badanaa waxay weydiiyaan $:low – $:high',
+        'from' => '{1}(1 xayeysiis, 6dii bilood ee la soo dhaafay)|[2,*](:count xayeysiis, 6dii bilood ee la soo dhaafay)',
+        'within' => 'Qiimahani wuxuu ku jiraa xadka caadiga ah.',
+        'below' => 'Qiimahani wuu ka hooseeyaa kan caadiga ah.',
+        'far_below' => 'Qiimahani aad buu uga hooseeyaa kan caadiga ah. Arag alaabta ka hor intaadan wax lacag ah bixin.',
+        'above' => 'Qiimahani wuu ka sarreeyaa kan caadiga ah. Waxaad soo jeedin kartaa qiime.',
+    ],
+
     'price_hint' => [
         'title' => 'Hagaha qiimaha',
         'range' => 'Inta badan xayeysiisyada :what waa $:low – $:high',
@@ -230,6 +240,11 @@ return [
         'photo_prev' => 'Sawirkii hore',
         'photo_next' => 'Sawirka xiga',
         'close' => 'Xir',
+        'details_more' => 'Muuji dhammaan :count faahfaahin',
+        'details_less' => 'Muuji faahfaahin yar',
+        'mark_sold' => 'Ma la iibiyey? Noo sheeg',
+        'like_this_text' => 'Ma haysaa mid kan oo kale oo aad iibinayso?',
+        'like_this_button' => 'Dhig xayeysiis kan oo kale',
     ],
 
     'safety' => [

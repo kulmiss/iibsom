@@ -118,6 +118,15 @@
                         @endfeature
                     </div>
                     <p class="mt-1 text-2xl font-extrabold text-brand-800">{{ $ad->priceLabel() ?: __('ads.page.negotiable') }}</p>
+                    @if ($market)
+                        {{-- Usual price of similar ads (PR 83): real prices only, at least 5 ads, this ad left out. --}}
+                        <div @class(['mt-2 rounded-lg px-3 py-2 text-sm ring-1', 'bg-amber-50 ring-amber-200' => $market['place'] === 'far_below', 'bg-stone-50 ring-stone-200' => $market['place'] !== 'far_below']) data-market-price data-place="{{ $market['place'] }}">
+                            <p class="flex items-start gap-1.5 text-stone-700">{{ icon('chart-no-axes-column', 'mt-0.5 size-4 shrink-0 text-brand-700') }}
+                                <span>{{ __('ads.market.range', ['what' => $market['what'], 'low' => number_format($market['low']), 'high' => number_format($market['high'])]) }}
+                                    <span class="text-stone-500">{{ trans_choice('ads.market.from', $market['count'], ['count' => $market['count']]) }}</span></span></p>
+                            <p @class(['mt-1 font-medium', 'text-amber-800' => $market['place'] === 'far_below', 'text-stone-700' => $market['place'] !== 'far_below'])>{{ match ($market['place']) { 'far_below' => __('ads.market.far_below'), 'below' => __('ads.market.below'), 'above' => __('ads.market.above'), default => __('ads.market.within') } }}</p>
+                        </div>
+                    @endif
                     <p class="mt-1 flex flex-wrap gap-x-3 text-sm text-stone-600">
                         <span>{{ icon('map-pin', 'inline size-4') }} {{ $ad->city->label }}@if ($ad->area), {{ $ad->area->label }}@endif</span>
                         <span>{{ __('ads.page.posted', ['when' => ($ad->published_at ?? $ad->created_at)->diffForHumans()]) }}</span>
@@ -131,14 +140,23 @@
 
                     @if ($fieldRows || $ad->condition)
                         <h2 class="mt-5 font-semibold">{{ __('ads.page.details') }}</h2>
-                        <dl class="mt-2 grid grid-cols-2 gap-x-4 gap-y-3 text-sm sm:grid-cols-3" data-details>
+                        {{-- Long lists: the first 6 show, "Show all details" opens the rest (PR 82, "ads.details_more").
+                             Without JavaScript all of them show. --}}
+                        @php($detailCount = ($ad->condition ? 1 : 0) + count($fieldRows))
+                        @php($foldDetails = feature('ads.details_more') && $detailCount > 6)
+                        <dl class="mt-2 grid grid-cols-2 gap-x-4 gap-y-3 text-sm sm:grid-cols-3" id="ad-details" data-details>
                             @if ($ad->condition)
                                 <div class="relative min-h-9 ps-11"><dt class="text-stone-500"><span class="absolute start-0 top-0 flex size-9 items-center justify-center rounded-lg bg-brand-50 text-brand-700" aria-hidden="true">{{ icon('tag', 'size-4') }}</span>{{ __('ads.form.condition') }}</dt><dd class="font-medium break-words">{{ __('ads.form.'.$ad->condition) }}</dd></div>
                             @endif
                             @foreach ($fieldRows as $row)
-                                <div class="relative min-h-9 ps-11"><dt class="text-stone-500"><span class="absolute start-0 top-0 flex size-9 items-center justify-center rounded-lg bg-brand-50 text-brand-700" aria-hidden="true">{{ icon($row['icon'], 'size-4') }}</span>{{ $row['label'] }}</dt><dd class="font-medium break-words">{{ $row['value'] }}</dd></div>
+                                @php($extra = $foldDetails && ($loop->index + ($ad->condition ? 1 : 0)) >= 6)
+                                <div @class(['relative min-h-9 ps-11', '[.js_&]:hidden' => $extra]) @if ($extra) data-detail-extra @endif><dt class="text-stone-500"><span class="absolute start-0 top-0 flex size-9 items-center justify-center rounded-lg bg-brand-50 text-brand-700" aria-hidden="true">{{ icon($row['icon'], 'size-4') }}</span>{{ $row['label'] }}</dt><dd class="font-medium break-words">@if ($row['url'])<a href="{{ $row['url'] }}" class="text-brand-800 underline decoration-brand-300 underline-offset-2 hover:decoration-brand-700" data-field-link>{{ $row['value'] }}</a>@else{{ $row['value'] }}@endif</dd></div>
                             @endforeach
                         </dl>
+                        @if ($foldDetails)
+                            <button type="button" class="mt-2 hidden items-center gap-1 text-sm font-semibold text-brand-800 underline [.js_&]:inline-flex" aria-controls="ad-details" aria-expanded="false"
+                                    data-details-more data-more="{{ __('ads.page.details_more', ['count' => $detailCount]) }}" data-less="{{ __('ads.page.details_less') }}">{{ __('ads.page.details_more', ['count' => $detailCount]) }}</button>
+                        @endif
                     @endif
 
                     <h2 class="mt-5 font-semibold">{{ __('ads.page.description') }}</h2>
@@ -300,6 +318,14 @@
                     <section id="report" class="rounded-xl bg-white p-4 ring-1 ring-stone-200">
                         @if ($reported)
                             <p class="text-sm text-stone-600">{{ __('ads.page.reported') }}</p>
+                        @else
+                            @if (feature('ads.mark_unavailable') && (auth()->check() || feature('ads.guest_reports')))
+                                {{-- One tap: opens the report box with "Already sold" chosen (PR 82). Without JavaScript it
+                                     only jumps to the box. Same report, same checks, nothing new is stored. --}}
+                                <a href="#report" class="mb-3 flex items-center gap-2 text-sm font-medium text-stone-700 underline" data-mark-sold>{{ icon('circle-check', 'size-4 text-stone-500') }} {{ __('ads.page.mark_sold') }}</a>
+                            @endif
+                        @endif
+                        @if ($reported)
                         @elseif (auth()->check())
                             <details>
                                 <summary class="cursor-pointer text-sm font-medium text-red-700">{{ __('ads.page.report') }}</summary>
@@ -364,6 +390,14 @@
                 @endif
             </aside>
         </div>
+
+        @if (feature('ads.post_like_this') && feature('ads.posting') && $ad->isLive() && auth()->id() !== $ad->user_id)
+            {{-- "Have one like this?" (PR 82): opens Post an ad in this category with the same brand, model and condition. --}}
+            <aside class="mt-8 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-brand-50 p-4 ring-1 ring-brand-200" data-post-like-this>
+                <p class="flex items-center gap-2 font-medium text-stone-800">{{ icon('square-plus', 'size-5 text-brand-700') }} {{ __('ads.page.like_this_text') }}</p>
+                <a href="{{ lroute('post.form', ['category' => $ad->category->slug, 'like' => $ad->id]) }}" class="btn-sell" rel="nofollow">{{ __('ads.page.like_this_button') }}</a>
+            </aside>
+        @endif
 
         @if ($similar->isNotEmpty())
             <section class="mt-8">

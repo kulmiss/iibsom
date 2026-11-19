@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Enums\AdStatus;
 use App\Models\Ad;
+use App\Models\CategoryField;
 use App\Models\Report;
 use App\Search\DatabaseAdSearch;
 use App\Support\Ads\AdStats;
+use App\Support\Ads\PriceHint;
 use App\Support\Phone\SomaliPhone;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
@@ -46,13 +49,17 @@ class AdPageController extends Controller
             ? $fromSeller->count() + 1
             : DatabaseAdSearch::publicQuery()->where('user_id', $ad->user_id)->count();
 
+        // The category's details, loaded once for the details list and the usual price.
+        $defs = $ad->category->allFields()->keyBy('key');
+
         return view('ads.show', [
             'ad' => $ad,
             'similar' => $similar,
             'fromSeller' => $fromSeller,
+            'market' => $this->marketPrice($ad, $defs),
             'following' => feature('sellers.follow') && $request->user() !== null && $request->user()->following()->whereKey($ad->user_id)->exists(),
             'sellerLiveAds' => $sellerLiveAds,
-            'fieldRows' => $this->fieldRows($ad),
+            'fieldRows' => $this->fieldRows($ad, $defs),
             'reported' => $request->user() !== null && Report::where('ad_id', $ad->id)->where('user_id', $request->user()->id)->exists(),
             'saved' => feature('favourites') && $request->user() !== null && $request->user()->favourites()->whereKey($ad->id)->exists(),
         ]);
@@ -103,6 +110,45 @@ class AdPageController extends Controller
         return redirect($ad->url().'#report')->with('status', __('ads.page.report_thanks'));
     }
 
+    /**
+     * Usual price of similar ads (PR 83, switch "ads.market_price"): the middle half of the prices of similar live or
+     * sold ads (same category and condition; same brand and model when there are enough). Hidden with fewer than 5,
+     * so no single seller's price can be worked out. This ad itself is left out.
+     *
+     * @param  Collection<string, CategoryField>  $defs
+     * @return array{low: int, high: int, count: int, what: string, place: string}|null
+     */
+    private function marketPrice(Ad $ad, Collection $defs): ?array
+    {
+        if (! feature('ads.market_price') || ! $ad->isLive() || (int) $ad->price <= 0) {
+            return null;
+        }
+        $hint = PriceHint::for($ad->category, $ad->condition, $ad->fields ?? [], $ad->id);
+        if ($hint === null) {
+            return null;
+        }
+        $brandField = $defs->get('brand');
+        $brand = $brandField ? ($brandField->optionList()[(string) ($ad->fields['brand'] ?? '')] ?? '') : '';
+        $what = match ($hint['scope']) {
+            'brand_model' => trim($brand.' '.mb_substr((string) ($ad->fields['model'] ?? ''), 0, 40)),
+            'brand' => $brand,
+            default => $ad->category->label,
+        };
+        $price = (int) $ad->price;
+
+        return [
+            'low' => $hint['low'], 'high' => $hint['high'], 'count' => $hint['count'],
+            'what' => $what !== '' ? $what : $ad->category->label,
+            // Where this ad's price sits; "far below" is a gentle warning (very low prices are a common trick).
+            'place' => match (true) {
+                $price < $hint['low'] * 0.5 => 'far_below',
+                $price < $hint['low'] => 'below',
+                $price > $hint['high'] => 'above',
+                default => 'within',
+            },
+        ];
+    }
+
     /** Live ads for everyone; the seller and staff can also preview their own waiting/rejected ad. */
     private function canSee(Request $request, Ad $ad): bool
     {
@@ -126,11 +172,13 @@ class AdPageController extends Controller
         'storage' => 'hard-drive', 'quantity' => 'boxes', 'job_type' => 'briefcase',
     ];
 
-    /** @return list<array{label: string, value: string, icon: string}> */
-    private function fieldRows(Ad $ad): array
+    /**
+     * @param  Collection<string, CategoryField>  $defs
+     * @return list<array{label: string, value: string, icon: string, url: ?string}>
+     */
+    private function fieldRows(Ad $ad, Collection $defs): array
     {
         $rows = [];
-        $defs = $ad->category->allFields()->keyBy('key');
         foreach ($ad->fields ?? [] as $key => $value) {
             $f = $defs[$key] ?? null;
             if (! $f) {
@@ -145,7 +193,11 @@ class AdPageController extends Controller
             if ($f->key === 'year') {
                 $shown = (string) $value;
             }
-            $rows[] = ['label' => $f->label_text, 'value' => $shown.($f->unit ? ' '.$f->unit : ''), 'icon' => self::FIELD_ICONS[$f->key] ?? 'circle-check'];
+            // Brand, model and other list choices that can be filtered link to all such ads (PR 82, "ads.field_links").
+            $url = feature('ads.field_links') && $f->type === 'select' && $f->filterable && is_scalar($value) && $ad->isLive()
+                ? lroute('browse.category', ['category' => $ad->category->slug]).'?'.http_build_query(['f' => [$f->key => (string) $value]])
+                : null;
+            $rows[] = ['label' => $f->label_text, 'value' => $shown.($f->unit ? ' '.$f->unit : ''), 'icon' => self::FIELD_ICONS[$f->key] ?? 'circle-check', 'url' => $url];
         }
 
         return $rows;

@@ -173,3 +173,24 @@ if (!viewer?.showModal) document.querySelectorAll('[data-zoom]').forEach((el) =>
     });
 });
 dialog?.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
+
+// "Already sold? Let us know" (switch "ads.mark_unavailable"): open the report box with "Already sold" chosen.
+document.querySelector('[data-mark-sold]')?.addEventListener('click', (e) => {
+    const box = document.querySelector('#report details');
+    const sold = box?.querySelector('input[name=reason][value=sold]');
+    if (!box || !sold) return; // no JavaScript-ready box: the link just jumps to #report
+    e.preventDefault();
+    box.open = true;
+    sold.checked = true;
+    box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    box.querySelector('button')?.focus({ preventScroll: true });
+});
+
+// Long details (switch "ads.details_more"): show the rest on demand.
+const detailsMore = document.querySelector('[data-details-more]');
+detailsMore?.addEventListener('click', () => {
+    const open = detailsMore.getAttribute('aria-expanded') !== 'true';
+    document.querySelectorAll('[data-detail-extra]').forEach((row) => row.classList.toggle('[.js_&]:hidden', !open));
+    detailsMore.setAttribute('aria-expanded', String(open));
+    detailsMore.textContent = open ? detailsMore.dataset.less : detailsMore.dataset.more;
+});

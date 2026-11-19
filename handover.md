@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-19 (PR 81)_
+_Last updated: 2026-11-19 (PR 83)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -44,6 +44,8 @@ _Last updated: 2026-11-19 (PR 81)_
 - **PR 79 (account, seller, safety):** `App\Support\Users\AccountSummary`, dashboard in `account/index.blade.php`, seller page filters in `SellerPageController` (`c`, `sort`), help article `resources/help/{en,so}/5-how-we-keep-you-safe.md` (`:checked_line` filled in `HelpCentre::fill()`). Switches `account.dashboard`, `sellers.page_plus`, `help.how_we_keep_safe`.
 - **PR 80 (speed + accessibility):** `<html class="js">` set in `<head>` (use `hidden [.js_&]:block` for JavaScript-only parts), `$eager` on `ads._card`, dark-mode colour fixes at the end of `app.css`, mod_deflate in `public/.htaccess`. Lighthouse/axe numbers in docs/performance.md. To measure like production locally, put a gzip front before `php artisan serve`.
 - **PR 81 (report without profile):** the `ad.report` route moved out of the `profile.complete` group in `routes/web.php` (still `auth`). Test: `ReportWithoutProfileTest`.
+- **PR 82 (ad page extras):** `PostAdController::likeThis()` (`?like=`), `url` in `AdPageController::fieldRows()`, mark-sold + details-more in `resources/js/ad-page.js`. Switches `ads.post_like_this`, `ads.field_links`, `ads.mark_unavailable`, `ads.details_more`.
+- **PR 83 (usual price):** `AdPageController::marketPrice()` (uses `PriceHint::for()`, now one query), box under the price in `ads/show.blade.php`, texts `ads.market.*`. Switch `ads.market_price`.
 
 ## How to run
 See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example .env && docker compose up -d --build`, then open http://localhost:8095.

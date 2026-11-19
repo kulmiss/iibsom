@@ -110,6 +110,8 @@ The same rows run automatically in a real browser (see "Automatic run" below).
 | J53 | How we keep you safe | Footer → Support → How we keep you safe (EN + SO) | The article opens; the home safety promise links to it | `help.how_we_keep_safe` |
 | J54 | Dark mode, readable everywhere | Footer → Dark; look at the Sell button, the home "Post an ad free" button, a help article's links | Dark text on yellow; links light blue and easy to read | `site.dark_mode` |
 | J55 | Report while signed in, profile not finished | Sign in with a new account, skip "Almost done", open someone's ad → Report this ad → Send | "Thank you" on the ad page (no jump to "Almost done"); Post an ad still asks to finish the profile | `ads.reports` |
+| J56 | Ad page extras | Open a car ad with many details (EN + SO): tap Show all details; tap the brand; back, tap "Already sold? Let us know"; sign in as someone else and tap "Post an ad like this" | All details show; the brand opens all its ads; the report box opens with "Already sold" chosen; Post an ad opens in Cars with the same brand and condition (title and price empty) | `ads.post_like_this`, `ads.field_links`, `ads.mark_unavailable`, `ads.details_more` |
+| J57 | Usual price | Open a car ad (EN + SO) in a category with 5+ priced ads; then one with a very low price | "Similar … ads usually ask $X – $Y (from N ads)" + "in the usual range"; the very low one shows the amber "see the item before you pay" line; hidden when there are fewer than 5 ads | `ads.market_price` |
 
 ## Automatic run
 

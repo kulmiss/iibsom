@@ -92,7 +92,7 @@
                         @foreach ($fields as $field)
                             @php($name = "fields[{$field->key}]")
                             @php($id = "field-{$field->key}")
-                            @php($value = (string) old("fields.{$field->key}", isset($ad->fields[$field->key]) ? (is_bool($ad->fields[$field->key]) ? (int) $ad->fields[$field->key] : $ad->fields[$field->key]) : null))
+                            @php($value = (string) old("fields.{$field->key}", isset($ad->fields[$field->key]) ? (is_bool($ad->fields[$field->key]) ? (int) $ad->fields[$field->key] : $ad->fields[$field->key]) : ($prefill['fields'][$field->key] ?? null)))
                             <div>
                                 <label for="{{ $id }}" class="form-label">{{ $field->label_text }}@if ($field->unit) <span class="font-normal text-stone-500">({{ $field->unit }})</span>@endif @if ($field->required)<span class="text-red-700" aria-hidden="true">*</span>@endif</label>
                                 @switch($field->type)
@@ -129,7 +129,7 @@
                         <div class="grid grid-cols-2 gap-2">
                             @foreach (['new', 'used'] as $condition)
                                 <label class="flex cursor-pointer items-center justify-center rounded-lg border border-stone-300 px-3 py-2.5 font-medium has-checked:border-brand-700 has-checked:bg-brand-50 has-checked:text-brand-800">
-                                    <input type="radio" name="condition" value="{{ $condition }}" class="sr-only" @checked(old('condition', $ad?->condition) === $condition)>
+                                    <input type="radio" name="condition" value="{{ $condition }}" class="sr-only" @checked(old('condition', $ad?->condition ?? ($prefill['condition'] ?? null)) === $condition)>
                                     {{ __('ads.form.'.$condition) }}
                                 </label>
                             @endforeach
