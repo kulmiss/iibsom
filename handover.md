@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-18 (PR 80)_
+_Last updated: 2026-11-19 (PR 81)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -43,6 +43,7 @@ _Last updated: 2026-11-18 (PR 80)_
 - **PR 78 (post an ad):** `ads/_post-steps.blade.php`, category search + `initPreview()` in `resources/js/post-ad.js` (also loaded on the choose page), share on the done page via `copy-text.js` (`[data-share] [data-copy-link]`). Switches `post.steps`, `post.category_search`, `post.tips`, `post.preview`, `post.done_plus`.
 - **PR 79 (account, seller, safety):** `App\Support\Users\AccountSummary`, dashboard in `account/index.blade.php`, seller page filters in `SellerPageController` (`c`, `sort`), help article `resources/help/{en,so}/5-how-we-keep-you-safe.md` (`:checked_line` filled in `HelpCentre::fill()`). Switches `account.dashboard`, `sellers.page_plus`, `help.how_we_keep_safe`.
 - **PR 80 (speed + accessibility):** `<html class="js">` set in `<head>` (use `hidden [.js_&]:block` for JavaScript-only parts), `$eager` on `ads._card`, dark-mode colour fixes at the end of `app.css`, mod_deflate in `public/.htaccess`. Lighthouse/axe numbers in docs/performance.md. To measure like production locally, put a gzip front before `php artisan serve`.
+- **PR 81 (report without profile):** the `ad.report` route moved out of the `profile.complete` group in `routes/web.php` (still `auth`). Test: `ReportWithoutProfileTest`.
 
 ## How to run
 See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example .env && docker compose up -d --build`, then open http://localhost:8095.
