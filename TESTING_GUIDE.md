@@ -109,6 +109,7 @@ The same rows run automatically in a real browser (see "Automatic run" below).
 | J52 | Seller page | Open a seller with ads in 2+ categories; tap a category chip; Cheapest; Most expensive | Cover band; only that category's ads; order changes; the header still says all their ads | `sellers.page_plus` |
 | J53 | How we keep you safe | Footer → Support → How we keep you safe (EN + SO) | The article opens; the home safety promise links to it | `help.how_we_keep_safe` |
 | J54 | Dark mode, readable everywhere | Footer → Dark; look at the Sell button, the home "Post an ad free" button, a help article's links | Dark text on yellow; links light blue and easy to read | `site.dark_mode` |
+| J55 | Report while signed in, profile not finished | Sign in with a new account, skip "Almost done", open someone's ad → Report this ad → Send | "Thank you" on the ad page (no jump to "Almost done"); Post an ad still asks to finish the profile | `ads.reports` |
 
 ## Automatic run
 

@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/** Posting/reporting need name, city, phone and accepted Terms first. */
+/** Posting (and the rest of the account pages) need name, city, phone and accepted Terms first. Reporting does not (PR 81). */
 class EnsureProfileComplete
 {
     public function handle(Request $request, Closure $next): Response

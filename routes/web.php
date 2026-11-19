@@ -68,6 +68,11 @@ $publicRoutes = function () use ($stateless) {
         Route::get('/welcome', [ProfileController::class, 'welcome'])->name('welcome');
         Route::post('/welcome', [ProfileController::class, 'save'])->middleware('throttle:20,1')->name('welcome.save');
 
+        // Report an ad: signed in is enough, no finished profile needed (PR 81, owner 2026-11-19) —
+        // guests can report without one too, and a typed report must not be lost on the way to "Almost done".
+        Route::post('/ads/{ad}/report', [AdPageController::class, 'report'])->whereNumber('ad')
+            ->middleware(['feature:ads.reports', 'throttle:10,1'])->name('ad.report');
+
         Route::middleware('profile.complete')->group(function () {
             // Post an ad (signed in + profile complete + switch ON).
             Route::middleware('feature:ads.posting')->group(function () {
@@ -80,9 +85,6 @@ $publicRoutes = function () use ($stateless) {
                 Route::post('/post-photos', [AdPhotoController::class, 'store'])->middleware('throttle:60,1')->name('post.photos.store');
                 Route::delete('/post-photos/{photo}', [AdPhotoController::class, 'destroy'])->whereNumber('photo')->middleware('throttle:60,1')->name('post.photos.destroy');
             });
-
-            Route::post('/ads/{ad}/report', [AdPageController::class, 'report'])->whereNumber('ad')
-                ->middleware(['feature:ads.reports', 'throttle:10,1'])->name('ad.report');
 
             // My Ads: edit, mark sold, renew, delete (own ads only).
             Route::middleware('feature:ads.my_ads')->prefix('/account/ads')->name('account.ads')->group(function () {
