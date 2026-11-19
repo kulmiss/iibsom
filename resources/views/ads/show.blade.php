@@ -118,6 +118,15 @@
                         @endfeature
                     </div>
                     <p class="mt-1 text-2xl font-extrabold text-brand-800">{{ $ad->priceLabel() ?: __('ads.page.negotiable') }}</p>
+                    @if ($market)
+                        {{-- Usual price of similar ads (PR 83): real prices only, at least 5 ads, this ad left out. --}}
+                        <div @class(['mt-2 rounded-lg px-3 py-2 text-sm ring-1', 'bg-amber-50 ring-amber-200' => $market['place'] === 'far_below', 'bg-stone-50 ring-stone-200' => $market['place'] !== 'far_below']) data-market-price data-place="{{ $market['place'] }}">
+                            <p class="flex items-start gap-1.5 text-stone-700">{{ icon('chart-no-axes-column', 'mt-0.5 size-4 shrink-0 text-brand-700') }}
+                                <span>{{ __('ads.market.range', ['what' => $market['what'], 'low' => number_format($market['low']), 'high' => number_format($market['high'])]) }}
+                                    <span class="text-stone-500">{{ trans_choice('ads.market.from', $market['count'], ['count' => $market['count']]) }}</span></span></p>
+                            <p @class(['mt-1 font-medium', 'text-amber-800' => $market['place'] === 'far_below', 'text-stone-700' => $market['place'] !== 'far_below'])>{{ match ($market['place']) { 'far_below' => __('ads.market.far_below'), 'below' => __('ads.market.below'), 'above' => __('ads.market.above'), default => __('ads.market.within') } }}</p>
+                        </div>
+                    @endif
                     <p class="mt-1 flex flex-wrap gap-x-3 text-sm text-stone-600">
                         <span>{{ icon('map-pin', 'inline size-4') }} {{ $ad->city->label }}@if ($ad->area), {{ $ad->area->label }}@endif</span>
                         <span>{{ __('ads.page.posted', ['when' => ($ad->published_at ?? $ad->created_at)->diffForHumans()]) }}</span>

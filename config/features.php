@@ -44,6 +44,7 @@ return [
     'ads.field_links' => ['group' => 'Ads', 'default' => true, 'label' => 'Brand and model are links', 'description' => 'On ad pages, list choices that can be filtered (brand, model, …) are links to all live ads with that choice in the category.'],
     'ads.mark_unavailable' => ['group' => 'Ads', 'default' => true, 'label' => '"Already sold? Let us know"', 'description' => 'On ad pages, one tap opens the report box with "Already sold" chosen. Uses the normal report (also for guests when that switch is ON).'],
     'ads.details_more' => ['group' => 'Ads', 'default' => true, 'label' => 'Long details: "Show all details"', 'description' => 'Ads with more than 6 details show the first 6 and a button for the rest. Without JavaScript all show.'],
+    'ads.market_price' => ['group' => 'Ads', 'default' => true, 'label' => 'Usual price on ad pages', 'description' => 'Under the price: "Similar Toyota ads usually ask $X – $Y" from at least 5 real live or sold ads of the last 6 months (this ad left out), and whether this price is in the usual range. A much lower price gets a gentle "see the item before you pay" note. Hidden when there are too few ads.'],
     'ads.similar' => ['group' => 'Ads', 'default' => true, 'label' => 'Similar ads', 'description' => 'Show similar ads on the ad page.'],
 
     'ads.edit_changes' => ['group' => 'Ads', 'default' => true, 'label' => 'Show what sellers changed', 'description' => 'An ad edited after approval shows "Edited" in the queue, with the old and new text side by side.'],

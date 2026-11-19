@@ -55,6 +55,16 @@ return [
         'my_ads' => 'Go to My ads',
     ],
 
+    // Usual price on the ad page (PR 83)
+    'market' => [
+        'range' => 'Similar :what ads usually ask $:low – $:high',
+        'from' => '{1}(from 1 ad, last 6 months)|[2,*](from :count ads, last 6 months)',
+        'within' => 'This price is in the usual range.',
+        'below' => 'This price is lower than usual.',
+        'far_below' => 'This price is much lower than usual. See the item before you pay anything.',
+        'above' => 'This price is higher than usual. You can make an offer.',
+    ],
+
     'price_hint' => [
         'title' => 'Price guide',
         'range' => 'Most :what ads are $:low – $:high',

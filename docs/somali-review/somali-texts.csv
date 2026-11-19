@@ -159,6 +159,12 @@ ads.done.facebook,Facebook,Facebook,"needs native review",resources/views/ads/po
 ads.done.bump_title,"Move to top for free","Kor u qaad bilaash","needs native review",resources/views/ads/post-done.blade.php,
 ads.done.bump_text,"Every 7 days you can move your ad to the top of the list again, free. Find the button in My ads.","7-dii maalmoodba mar waxaad xayeysiiskaaga kor ugu qaadi kartaa liiska, bilaash. Badhanka ka hel Xayeysiisyadayda.","needs native review",resources/views/ads/post-done.blade.php,
 ads.done.my_ads,"Go to My ads","Tag Xayeysiisyadayda","needs native review",resources/views/ads/post-done.blade.php,
+ads.market.range,"Similar :what ads usually ask $:low – $:high","Xayeysiisyada :what ee la midka ah badanaa waxay weydiiyaan $:low – $:high","needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.market.from,"{1}(from 1 ad, last 6 months)|[2,*](from :count ads, last 6 months)","{1}(1 xayeysiis, 6dii bilood ee la soo dhaafay)|[2,*](:count xayeysiis, 6dii bilood ee la soo dhaafay)","needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.market.within,"This price is in the usual range.","Qiimahani wuxuu ku jiraa xadka caadiga ah.","needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.market.below,"This price is lower than usual.","Qiimahani wuu ka hooseeyaa kan caadiga ah.","needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.market.far_below,"This price is much lower than usual. See the item before you pay anything.","Qiimahani aad buu uga hooseeyaa kan caadiga ah. Arag alaabta ka hor intaadan wax lacag ah bixin.","needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.market.above,"This price is higher than usual. You can make an offer.","Qiimahani wuu ka sarreeyaa kan caadiga ah. Waxaad soo jeedin kartaa qiime.","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.price_hint.title,"Price guide","Hagaha qiimaha","needs native review",resources/views/ads/post-form.blade.php,ads-post-form.png
 ads.price_hint.range,"Most :what ads are $:low – $:high","Inta badan xayeysiisyada :what waa $:low – $:high","needs native review",app/Http/Controllers/Ads/PriceHintController.php,
 ads.price_hint.detail,"Middle price $:middle, from :count ads in the last 6 months. You choose your own price.","Qiimaha dhexe $:middle, laga soo qaaday :count xayeysiis 6dii bilood ee la soo dhaafay. Qiimahaaga adigaa go'aansanaya.","needs native review",app/Http/Controllers/Ads/PriceHintController.php,

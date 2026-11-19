@@ -38,19 +38,31 @@ class PriceHint
         $key = 'price-hint:'.md5(implode('|', [$category->id, $condition, $brand, mb_substr($model, 0, 60), $exceptAdId, (int) feature('site.demo_data')]));
 
         return Cache::remember($key, 3600, function () use ($category, $condition, $brand, $model, $exceptAdId) {
+            // One query for the whole category (PR 83: the ad page shows this too); the closest match is picked here.
+            $rows = self::query($category, $condition, '', '', $exceptAdId)->latest('published_at')->limit(self::MAX_ROWS)
+                ->toBase()->get(['price', 'fields'])
+                ->map(function ($r): array {
+                    $f = is_string($r->fields) ? (json_decode($r->fields, true) ?: []) : (array) $r->fields;
+
+                    return [
+                        'price' => (int) $r->price,
+                        'brand' => is_string($f['brand'] ?? null) ? Str::lower(trim($f['brand'])) : '',
+                        'model' => is_string($f['model'] ?? null) ? Str::lower(Str::squish($f['model'])) : '',
+                    ];
+                });
+
             $tries = [];
             if ($brand !== '' && $model !== '') {
-                $tries[] = ['brand_model', $brand, $model];
+                $tries['brand_model'] = $rows->filter(fn (array $r) => $r['brand'] === $brand && $r['model'] === $model);
             }
             if ($brand !== '') {
-                $tries[] = ['brand', $brand, ''];
+                $tries['brand'] = $rows->filter(fn (array $r) => $r['brand'] === $brand);
             }
-            $tries[] = ['category', '', ''];
+            $tries['category'] = $rows;
 
-            foreach ($tries as [$scope, $b, $m]) {
-                $prices = array_map('intval', self::query($category, $condition, $b, $m, $exceptAdId)
-                    ->latest('published_at')->limit(self::MAX_ROWS)->pluck('price')->all());
-                sort($prices);
+            foreach ($tries as $scope => $matches) {
+                /** @var list<int> $prices */
+                $prices = array_values(array_map('intval', $matches->pluck('price')->sort()->values()->all()));
 
                 if (count($prices) >= self::MIN_ADS) {
                     return [
