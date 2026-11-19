@@ -9,6 +9,7 @@ use App\Models\Report;
 use App\Search\DatabaseAdSearch;
 use App\Support\Ads\AdStats;
 use App\Support\Ads\PriceHint;
+use App\Support\Catalog;
 use App\Support\Phone\SomaliPhone;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Http\JsonResponse;
@@ -57,6 +58,7 @@ class AdPageController extends Controller
             'similar' => $similar,
             'fromSeller' => $fromSeller,
             'market' => $this->marketPrice($ad, $defs),
+            'discover' => $this->discoverMore($ad, $defs),
             'following' => feature('sellers.follow') && $request->user() !== null && $request->user()->following()->whereKey($ad->user_id)->exists(),
             'sellerLiveAds' => $sellerLiveAds,
             'fieldRows' => $this->fieldRows($ad, $defs),
@@ -147,6 +149,48 @@ class AdPageController extends Controller
                 default => 'within',
             },
         ];
+    }
+
+    /**
+     * "Discover more" (PR 84, switch "ads.discover_more"): searches built from this ad's own details, so every
+     * link has at least one ad (this one). No extra database queries: cities come from the cached catalog.
+     *
+     * @param  Collection<string, CategoryField>  $defs
+     * @return list<array{label: string, url: string}>
+     */
+    private function discoverMore(Ad $ad, Collection $defs): array
+    {
+        if (! feature('ads.discover_more') || ! $ad->isLive()) {
+            return [];
+        }
+        $category = $ad->category;
+        $base = lroute('browse.category', ['category' => $category->slug]);
+        $links = [];
+
+        if (in_array($ad->condition, ['new', 'used'], true)) {
+            $links[] = ['label' => __('ads.discover.condition', ['condition' => mb_strtolower($ad->condition === 'new' ? __('ads.form.new') : __('ads.form.used')), 'category' => $category->label]), 'url' => $base.'?condition='.$ad->condition];
+        }
+
+        $brandField = $defs->get('brand');
+        $brand = is_scalar($ad->fields['brand'] ?? null) ? (string) $ad->fields['brand'] : '';
+        if ($brandField && $brandField->type === 'select' && $brandField->filterable && $brand !== '' && isset($brandField->optionList()[$brand])) {
+            $links[] = ['label' => __('ads.discover.brand', ['brand' => $brandField->optionList()[$brand], 'category' => $category->label]), 'url' => $base.'?'.http_build_query(['f' => ['brand' => $brand]])];
+        }
+
+        $cityLive = in_array($ad->city_id, array_column(app(Catalog::class)->cities(), 'id'), true);
+        if ($cityLive) {
+            $inCity = lroute('browse.category', ['category' => $category->slug, 'city' => $ad->city->slug]);
+            $links[] = ['label' => __('ads.discover.in', ['category' => $category->label, 'place' => $ad->city->label]), 'url' => $inCity];
+            if (feature('search.more_filters') && $ad->area && $ad->area->enabled && $ad->area->city_id === $ad->city_id) {
+                $links[] = ['label' => __('ads.discover.in', ['category' => $category->label, 'place' => $ad->area->label]), 'url' => $inCity.'?area='.$ad->area->id];
+            }
+        }
+
+        if ($category->parent) {
+            $links[] = ['label' => __('ads.browse.all_in', ['category' => $category->parent->label]), 'url' => lroute('browse.category', ['category' => $category->parent->slug])];
+        }
+
+        return $links;
     }
 
     /** Live ads for everyone; the seller and staff can also preview their own waiting/rejected ad. */

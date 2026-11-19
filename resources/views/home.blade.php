@@ -110,6 +110,9 @@
                     </li>
                 @endforeach
             </ul>
+            @feature('catalog.finder')
+                <a href="{{ lroute('categories') }}" class="mt-2 flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-brand-800 hover:bg-brand-50" data-finder-link>{{ icon('layout-grid', 'size-4') }} {{ __('ads.finder.title') }}</a>
+            @endfeature
         </aside>
 
         <div class="min-w-0">
@@ -159,6 +162,12 @@
                         <span>{{ translated($category['name']) }}</span>
                     </a>
                 @endforeach
+                @feature('catalog.finder')
+                    <a href="{{ lroute('categories') }}" class="tile" data-finder-tile>
+                        <span class="tile-icon bg-stone-100 text-stone-700">{{ icon('layout-grid', 'size-8') }}</span>
+                        <span>{{ __('ads.finder.tile') }}</span>
+                    </a>
+                @endfeature
             </nav>
 
             {{-- Popular categories --}}

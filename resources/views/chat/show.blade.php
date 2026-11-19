@@ -6,6 +6,11 @@
     <meta name="robots" content="noindex">
 @endpush
 
+@push('scripts')
+    {{-- The chat keeps polling for new messages: the language switch loads this page fully (PR 84). --}}
+    <meta name="page-script" content="chat">
+@endpush
+
 @section('content')
     <section class="mx-auto flex max-w-2xl flex-col px-4 py-6">
         <a href="{{ lroute('chat') }}" class="text-sm text-brand-700 hover:underline">← {{ __('chat.all') }}</a>

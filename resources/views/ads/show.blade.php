@@ -49,7 +49,22 @@
 
 @push('scripts')
     @vite('resources/js/ad-page.js')
+    {{-- This page has its own script: the language switch loads the page fully (PR 84). --}}
+    <meta name="page-script" content="ad-page">
 @endpush
+
+@feature('ads.phone_top_bar')
+    @section('phone_bar')
+        <a href="{{ lroute('browse.category', ['category' => $ad->category->slug]) }}" class="icon-btn shrink-0" aria-label="{{ __('ads.page.back_to', ['category' => $ad->category->label]) }}" data-phone-back>{{ icon('chevron-left', 'size-6 rtl:rotate-180') }}</a>
+        <p class="min-w-0 flex-1 truncate font-semibold" aria-hidden="true">{{ $ad->category->label }}</p>
+        {{-- Share needs JavaScript (the phone's share sheet, or copy the link). --}}
+        <button type="button" class="icon-btn hidden shrink-0 [.js_&]:flex" data-share-sheet data-url="{{ $ad->url() }}" data-title="{{ $ad->title }}" data-done="{{ __('ads.page.copied') }}" aria-label="{{ __('ads.page.share') }}" title="{{ __('ads.page.share') }}">{{ icon('share-2', 'size-5') }}<span class="sr-only" role="status" data-share-done></span></button>
+        @feature('favourites')
+            @include('ads._save-button', ['compact' => true])
+        @endfeature
+        @include('partials.language-switcher')
+    @endsection
+@endfeature
 
 @section('content')
     @php($phoneOk = $ad->isLive() && $ad->user->phone && ! $ad->user->isBanned())
@@ -397,6 +412,18 @@
                 <p class="flex items-center gap-2 font-medium text-stone-800">{{ icon('square-plus', 'size-5 text-brand-700') }} {{ __('ads.page.like_this_text') }}</p>
                 <a href="{{ lroute('post.form', ['category' => $ad->category->slug, 'like' => $ad->id]) }}" class="btn-sell" rel="nofollow">{{ __('ads.page.like_this_button') }}</a>
             </aside>
+        @endif
+
+        @if ($discover !== [])
+            {{-- "Discover more" (PR 84): searches made from this ad's details; each one has at least this ad. --}}
+            <nav class="mt-8" aria-labelledby="discover-title" data-discover>
+                <h2 id="discover-title" class="text-lg font-semibold">{{ __('ads.discover.title') }}</h2>
+                <ul class="mt-3 flex flex-wrap gap-2">
+                    @foreach ($discover as $link)
+                        <li><a href="{{ $link['url'] }}" class="chip gap-1.5 bg-white ring-stone-200 hover:bg-brand-50">{{ icon('search', 'size-4 text-brand-700') }}{{ $link['label'] }}</a></li>
+                    @endforeach
+                </ul>
+            </nav>
         @endif
 
         @if ($similar->isNotEmpty())

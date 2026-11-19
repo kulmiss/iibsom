@@ -46,6 +46,7 @@ async function toggle(button, m) {
         m.content = [...ids].join(',');
         // The same ad can be on the page twice (for example "Popular now" and "Latest ads").
         document.querySelectorAll(`button[data-card-save="${CSS.escape(id)}"]`).forEach((b) => paint(b, data.saved === true));
+        document.dispatchEvent(new CustomEvent('favourite:changed', { detail: { saved: data.saved === true } }));
     } catch {
         // Offline: nothing changed; the button simply stays as it was.
     } finally {

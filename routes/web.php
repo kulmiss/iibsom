@@ -23,6 +23,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\TestSignInController;
 use App\Http\Controllers\BannerClickController;
 use App\Http\Controllers\BrowseController;
+use App\Http\Controllers\CategoryFinderController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ForYouController;
 use App\Http\Controllers\GuestReportController;
@@ -202,6 +203,9 @@ $publicRoutes = function () use ($stateless) {
 
     // Business shop pages (Phase 2): public only while an admin has the shop active.
     Route::get('/shop/{shop}', [ShopPageController::class, 'show'])->where('shop', '[a-z0-9]+(-[a-z0-9]+)*')->middleware('feature:shops')->name('shop.show');
+
+    // All categories with a search box (PR 84). Before the catch-all category route below.
+    Route::get('/categories', [CategoryFinderController::class, 'index'])->middleware('feature:catalog.finder')->name('categories');
 
     // Public seller page (PR 67): every seller's live ads.
     Route::get('/seller/{user}', [SellerPageController::class, 'show'])->whereNumber('user')->middleware('feature:sellers.page')->name('seller.show');

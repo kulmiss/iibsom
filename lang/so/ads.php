@@ -57,6 +57,21 @@ return [
         'my_ads' => 'Tag Xayeysiisyadayda',
     ],
 
+    // "Wax kale" bogga xayeysiiska (PR 84)
+    'discover' => [
+        'title' => 'Wax kale ka eeg',
+        'condition' => ':category :condition',
+        'brand' => ':category :brand',
+        'in' => ':category ku yaal :place',
+    ],
+    // Bogga "Dhammaan qaybaha" (PR 84)
+    'finder' => [
+        'title' => 'Dhammaan qaybaha',
+        'tile' => 'Dhammaan',
+        'description' => 'Qayb kasta oo iibsom ku jirta, iyo tirada xayeysiisyada ka shaqeeya mid kasta.',
+        'search' => 'Raadi qayb, tusaale: taleefan, baabuur, guri',
+        'none' => 'Qayb magacaas leh lama helin. Isku day eray kale.',
+    ],
     // Qiimaha caadiga ah ee bogga xayeysiiska (PR 83)
     'market' => [
         'range' => 'Xayeysiisyada :what ee la midka ah badanaa waxay weydiiyaan $:low – $:high',
@@ -204,6 +219,7 @@ return [
         'whatsapp' => 'WhatsApp',
         'whatsapp_text' => 'Salaan, waxaan iibsom ku arkay xayeysiiskaaga “:title”: :url',
         'share' => 'La wadaag',
+        'back_to' => 'Ku noqo :category',
         'share_whatsapp' => 'WhatsApp',
         'share_facebook' => 'Facebook',
         'copy_link' => 'Koobiyee linkiga',

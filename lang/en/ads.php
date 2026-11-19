@@ -55,6 +55,21 @@ return [
         'my_ads' => 'Go to My ads',
     ],
 
+    // "Discover more" on the ad page (PR 84)
+    'discover' => [
+        'title' => 'Discover more',
+        'condition' => ':Condition :category',
+        'brand' => ':brand :category',
+        'in' => ':category in :place',
+    ],
+    // "All categories" page (PR 84)
+    'finder' => [
+        'title' => 'All categories',
+        'tile' => 'All',
+        'description' => 'Every category on iibsom, with the number of live ads in each.',
+        'search' => 'Find a category, e.g. phone, car, house',
+        'none' => 'No category with that name. Try another word.',
+    ],
     // Usual price on the ad page (PR 83)
     'market' => [
         'range' => 'Similar :what ads usually ask $:low – $:high',
@@ -202,6 +217,7 @@ return [
         'whatsapp' => 'WhatsApp',
         'whatsapp_text' => 'Hello, I saw your ad “:title” on iibsom: :url',
         'share' => 'Share',
+        'back_to' => 'Back to :category',
         'share_whatsapp' => 'WhatsApp',
         'share_facebook' => 'Facebook',
         'copy_link' => 'Copy link',
