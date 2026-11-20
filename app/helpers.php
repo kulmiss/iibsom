@@ -1,5 +1,6 @@
 <?php
 
+use App\Support\Auth\SignIn;
 use App\Support\Features\FeatureManager;
 use App\Support\Settings\SettingsManager;
 use Illuminate\Support\Facades\Vite;
@@ -10,6 +11,14 @@ if (! function_exists('feature')) {
     function feature(string $key): bool
     {
         return app(FeatureManager::class)->enabled($key);
+    }
+}
+
+if (! function_exists('sign_in_open')) {
+    /** Is there any way to sign in right now (email, Google with keys, or test sign-in)? PR 105. */
+    function sign_in_open(): bool
+    {
+        return SignIn::open();
     }
 }
 

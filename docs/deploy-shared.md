@@ -49,7 +49,7 @@ QUEUE_CONNECTION=database
 
 PHOTOS_DISK=r2          # see cloudflare-r2.md
 TRUSTED_PROXIES=*       # when the site is behind Cloudflare
-GOOGLE_CLIENT_ID=...    # see google-login.md
+GOOGLE_CLIENT_ID=...    # see google-signin-setup.md
 GOOGLE_CLIENT_SECRET=...
 MAIL_HOST=...           # your host's email (SMTP) settings
 # Optional, only for auto-post (see social-autopost.md):

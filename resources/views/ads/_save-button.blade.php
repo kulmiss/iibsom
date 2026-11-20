@@ -15,9 +15,9 @@
         </form>
     @endif
 @else
-    @feature('login.google')
+    @if (sign_in_open())
         <a href="{{ lroute('login') }}" @class(['chip shrink-0 gap-1.5 ring-stone-200' => ! $compact, 'icon-btn shrink-0' => $compact]) title="{{ __('ads.saved.sign_in') }}">
             {{ icon('bookmark', $compact ? 'size-5' : 'size-4') }}<span @class(['sr-only' => $compact])>{{ $saved ?? false ? __('ads.saved.saved') : __('ads.saved.save') }}</span>
         </a>
-    @endfeature
+    @endif
 @endauth

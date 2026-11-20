@@ -87,7 +87,7 @@
                                             <span class="text-stone-500" data-like-count>{{ $review->likes_count > 0 ? $review->likes_count : '' }}</span>
                                         </button>
                                     </form>
-                                @elseif ($viewer === null && feature('login.google'))
+                                @elseif ($viewer === null && sign_in_open())
                                     <a href="{{ lroute('login') }}" class="chip gap-1.5 ring-stone-200" title="{{ __('ads.ratings.helpful_sign_in') }}">{{ icon('thumbs-up', 'size-4') }}<span>{{ __('ads.ratings.helpful') }}</span>@if ($review->likes_count > 0)<span class="text-stone-500">{{ $review->likes_count }}</span>@endif</a>
                                 @elseif ($review->likes_count > 0)
                                     <span class="inline-flex items-center gap-1.5 text-stone-600">{{ icon('thumbs-up', 'size-4') }} {{ trans_choice('ads.ratings.helpful_count', $review->likes_count, ['count' => $review->likes_count]) }}</span>

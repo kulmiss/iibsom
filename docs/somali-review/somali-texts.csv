@@ -1,20 +1,48 @@
 ﻿key,english,translation,status,where,screenshot
-account.login.title,"Sign in",Gal,"needs native review",resources/views/auth/login.blade.php,auth-login.png
-account.login.heading,"Welcome to iibsom","Ku soo dhowow iibsom","needs native review",resources/views/auth/login.blade.php,auth-login.png
-account.login.intro,"Sign in to post ads and report bad ones. Browsing is free, no account needed.","Gal si aad xayeysiis u dhigto ama aad u sheegto kuwa xun. Daawashadu waa bilaash, akoon looma baahna.","needs native review",resources/views/auth/login.blade.php,auth-login.png
-account.login.google,"Continue with Google","Ku gal Google","needs native review",resources/views/auth/login.blade.php,auth-login.png
-account.login.no_password,"No password needed. We only use your name and email from Google.","Furaha sirta ah looma baahna. Google waxaan ka qaadanaa magacaaga iyo iimaylkaaga oo keliya.","needs native review",resources/views/auth/login.blade.php,auth-login.png
-account.login.terms_note,"You will accept our Terms in the next step.","Tallaabada xigta waxaad aqbali doontaa Shuruudahayaga.","needs native review",resources/views/auth/login.blade.php,auth-login.png
-account.login.cancelled,"Sign-in was cancelled. You can try again.","Galitaanka waa la joojiyey. Mar kale isku day.","needs native review",app/Http/Controllers/Auth/GoogleController.php,
-account.login.failed,"Sign-in did not work. Please try again.","Galitaanku ma shaqeyn. Fadlan mar kale isku day.","needs native review",app/Http/Controllers/Auth/GoogleController.php,
-account.login.unverified,"Your Google email is not verified yet. Please verify it with Google and try again.","Iimaylkaaga Google weli lama xaqiijin. Ka xaqiiji Google kadibna mar kale isku day.","needs native review",app/Http/Controllers/Auth/GoogleController.php,
-account.login.banned,"This account is blocked. If you think this is a mistake, contact us.","Akoonkan waa la xiray. Haddii aad u malaynayso inay khalad tahay, nala soo xiriir.","needs native review","app/Http/Controllers/Auth/GoogleController.php | app/Http/Controllers/Auth/TestSignInController.php | app/Http/Middleware/AuthenticateApiToken.php | app/Http/Middleware/LogoutBannedUsers.php",
-account.login.not_set_up,"Sign-in with Google is not set up yet on this site.","Ku gelidda Google weli laguma diyaarin boggan.","needs native review",app/Http/Controllers/Auth/GoogleController.php,
-account.login.test_title,"Test sign-in","Gelid tijaabo ah","needs native review",resources/views/auth/login.blade.php,auth-login.png
-account.login.test_note,"Only on your own computer, for testing. This box never shows on the live site.","Kaliya kombiyuutarkaaga, si aad u tijaabiso. Sanduuqan weligiis kama muuqdo bogga rasmiga ah.","needs native review",resources/views/auth/login.blade.php,auth-login.png
-account.login.test_email,"Any email","Iimayl kasta","needs native review",resources/views/auth/login.blade.php,auth-login.png
-account.login.test_button,"Sign in or sign up","Gal ama is diiwaangeli","needs native review",resources/views/auth/login.blade.php,auth-login.png
-account.login.test_staff,"Staff accounts sign in at /admin.","Akoonnada shaqaaluhu waxay ka galaan /admin.","needs native review",app/Http/Controllers/Auth/TestSignInController.php,
+account.login.title,"Sign in",Gal,"needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.heading,"Welcome to iibsom","Ku soo dhowow iibsom","needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.intro,"Sign in to post ads and report bad ones. Browsing is free, no account needed.","Gal si aad xayeysiis u dhigto ama aad u sheegto kuwa xun. Daawashadu waa bilaash, akoon looma baahna.","needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.google,"Continue with Google","Ku gal Google","needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.no_password,"With Google you need no password. We only use your name and email from Google.","Google-ka furaha sirta ah looma baahna. Google waxaan ka qaadanaa magacaaga iyo iimaylkaaga oo keliya.","needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.terms_note,"You will accept our Terms in the next step.","Tallaabada xigta waxaad aqbali doontaa Shuruudahayaga.","needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.cancelled,"Sign-in was cancelled. You can try again.","Galitaanka waa la joojiyey. Mar kale isku day.","needs native review","app/Http/Controllers/Auth/GoogleController.php | resources/views/auth/register.blade.php",
+account.login.failed,"Sign-in did not work. Please try again.","Galitaanku ma shaqeyn. Fadlan mar kale isku day.","needs native review","app/Http/Controllers/Auth/GoogleController.php | resources/views/auth/register.blade.php",
+account.login.unverified,"Your Google email is not verified yet. Please verify it with Google and try again.","Iimaylkaaga Google weli lama xaqiijin. Ka xaqiiji Google kadibna mar kale isku day.","needs native review","app/Http/Controllers/Auth/GoogleController.php | resources/views/auth/register.blade.php",
+account.login.banned,"This account is blocked. If you think this is a mistake, contact us.","Akoonkan waa la xiray. Haddii aad u malaynayso inay khalad tahay, nala soo xiriir.","needs native review","app/Http/Controllers/Auth/EmailAuthController.php | app/Http/Controllers/Auth/GoogleController.php | app/Http/Controllers/Auth/TestSignInController.php | app/Http/Middleware/AuthenticateApiToken.php | app/Http/Middleware/LogoutBannedUsers.php | resources/views/auth/register.blade.php",
+account.login.not_set_up,"Sign-in with Google is not set up yet on this site.","Ku gelidda Google weli laguma diyaarin boggan.","needs native review","app/Http/Controllers/Auth/GoogleController.php | resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.test_title,"Test sign-in","Gelid tijaabo ah","needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.test_note,"Only on your own computer, for testing. This box never shows on the live site.","Kaliya kombiyuutarkaaga, si aad u tijaabiso. Sanduuqan weligiis kama muuqdo bogga rasmiga ah.","needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.test_email,"Any email","Iimayl kasta","needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.test_button,"Sign in or sign up","Gal ama is diiwaangeli","needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.test_staff,"Staff accounts sign in at /admin.","Akoonnada shaqaaluhu waxay ka galaan /admin.","needs native review","app/Http/Controllers/Auth/EmailAuthController.php | app/Http/Controllers/Auth/TestSignInController.php | resources/views/auth/register.blade.php",
+account.login.or,or,ama,"needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.email,Email,Iimayl,"needs native review","resources/views/auth/forgot.blade.php | resources/views/auth/login.blade.php | resources/views/auth/register.blade.php | resources/views/auth/reset.blade.php",auth-login.png
+account.login.password,Password,"Furaha sirta ah","needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php | resources/views/auth/reset.blade.php",auth-login.png
+account.login.password_confirm,"Password again","Furaha sirta ah mar kale","needs native review","resources/views/auth/register.blade.php | resources/views/auth/reset.blade.php",
+account.login.password_hint,"At least 8 characters, with letters and numbers.","Ugu yaraan 8 xaraf, oo leh xarfo iyo lambarro.","needs native review","resources/views/auth/register.blade.php | resources/views/auth/reset.blade.php",
+account.login.name,"Your name",Magacaaga,"needs native review",resources/views/auth/register.blade.php,
+account.login.sign_in,"Sign in",Gal,"needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.forgot,"Forgot password?","Ma ilowday furaha sirta ah?","needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.no_account,"No account yet?","Akoon ma lihid?","needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.create,"Create an account","Samee akoon","needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.have_account,"Already have an account?","Akoon ma leedahay?","needs native review",resources/views/auth/register.blade.php,
+account.login.register_title,"Create an account","Samee akoon","needs native review",resources/views/auth/register.blade.php,
+account.login.register_intro,"It is free. We send a link to your email to confirm it.","Waa bilaash. Waxaan linki u dirnaa iimaylkaaga si aad u xaqiijiso.","needs native review",resources/views/auth/register.blade.php,
+account.login.register_button,"Create account","Samee akoon","needs native review",resources/views/auth/register.blade.php,
+account.login.wrong,"Email or password is wrong.","Iimaylka ama furaha sirta ah waa khalad.","needs native review","app/Http/Controllers/Auth/EmailAuthController.php | resources/views/auth/register.blade.php",
+account.login.too_many,"Too many tries. Please wait :seconds seconds.","Isku day badan. Fadlan sug :seconds ilbiriqsi.","needs native review","app/Http/Controllers/Auth/EmailAuthController.php | app/Http/Controllers/Auth/PasswordResetController.php | resources/views/auth/register.blade.php",
+account.login.check_email,"Check your email (:email). Open the link we sent, then sign in. Not there? Look in spam.","Eeg iimaylkaaga (:email). Fur linkiga aan kuu dirnay, kadibna gal. Ma jiro? Eeg spam-ka.","needs native review","app/Http/Controllers/Auth/EmailAuthController.php | resources/views/auth/register.blade.php",
+account.login.confirm_first,"Please confirm your email first. We sent a new link to :email.","Fadlan marka hore xaqiiji iimaylkaaga. Linki cusub ayaan u dirnay :email.","needs native review","app/Http/Controllers/Auth/EmailAuthController.php | resources/views/auth/register.blade.php",
+account.login.confirmed,"Your email is confirmed. Sign in with your password.","Iimaylkaaga waa la xaqiijiyay. Ku gal furahaaga sirta ah.","needs native review","app/Http/Controllers/Auth/EmailAuthController.php | resources/views/auth/register.blade.php",
+account.login.link_bad,"This link does not work any more. Please ask for a new one.","Linkigan hadda ma shaqeynayo. Fadlan mid cusub codso.","needs native review","app/Http/Controllers/Auth/EmailAuthController.php | app/Http/Controllers/Auth/PasswordResetController.php | resources/views/auth/register.blade.php",
+account.login.forgot_title,"Forgot your password?","Ma ilowday furaha sirta ah?","needs native review","resources/views/auth/forgot.blade.php | resources/views/auth/register.blade.php",
+account.login.forgot_intro,"Type your email. If it has an account, we send a link to choose a new password.","Qor iimaylkaaga. Haddii uu akoon leeyahay, waxaan kuu soo diraynaa linki aad ku dooranayso fure cusub.","needs native review","resources/views/auth/forgot.blade.php | resources/views/auth/register.blade.php",
+account.login.forgot_button,"Send link","Dir linkiga","needs native review","resources/views/auth/forgot.blade.php | resources/views/auth/register.blade.php",
+account.login.reset_sent,"If :email has an account, we sent a link. It works for 60 minutes. Not there? Look in spam.","Haddii :email uu akoon leeyahay, linki ayaan u dirnay. Wuxuu shaqeynayaa 60 daqiiqo. Ma jiro? Eeg spam-ka.","needs native review","app/Http/Controllers/Auth/PasswordResetController.php | resources/views/auth/register.blade.php",
+account.login.reset_title,"Choose a new password","Dooro fure sir ah oo cusub","needs native review","resources/views/auth/register.blade.php | resources/views/auth/reset.blade.php",
+account.login.reset_button,"Save new password","Kaydi furaha cusub","needs native review","resources/views/auth/register.blade.php | resources/views/auth/reset.blade.php",
+account.login.reset_done,"Your new password is saved. You are signed in.","Furahaaga cusub waa la kaydiyay. Waad gashay.","needs native review","app/Http/Controllers/Auth/PasswordResetController.php | resources/views/auth/register.blade.php",
+account.login.back,"Back to sign in","Ku noqo galitaanka","needs native review","resources/views/auth/forgot.blade.php | resources/views/auth/register.blade.php",
 account.welcome.title,"Almost done","Waad ku dhowdahay","needs native review",resources/views/account/profile-form.blade.php,account-profile-form.png
 account.welcome.intro,"Buyers will use these details to contact you. You can change them later.","Iibsadayaashu waxay faahfaahintan u isticmaali doonaan inay kula soo xiriiraan. Hadhow waad beddeli kartaa.","needs native review",resources/views/account/profile-form.blade.php,account-profile-form.png
 account.welcome.submit,"Save and continue","Keydi oo sii wad","needs native review",resources/views/account/profile-form.blade.php,account-profile-form.png
@@ -348,7 +376,7 @@ ads.page.details_less,"Show fewer details","Muuji faahfaahin yar","needs native 
 ads.page.mark_sold,"Already sold? Let us know","Ma la iibiyey? Noo sheeg","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.like_this_text,"Have one like this to sell?","Ma haysaa mid kan oo kale oo aad iibinayso?","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.like_this_button,"Post an ad like this","Dhig xayeysiis kan oo kale","needs native review",resources/views/ads/show.blade.php,ads-show.png
-ads.safety.bot,"Something went wrong. Please try again.","Wax baa khaldamay. Fadlan mar kale isku day.","needs native review",app/Support/Safety/SpamGuard.php,
+ads.safety.bot,"Something went wrong. Please try again.","Wax baa khaldamay. Fadlan mar kale isku day.","needs native review","app/Http/Controllers/Auth/EmailAuthController.php | app/Support/Safety/SpamGuard.php",
 ads.safety.links,"Please remove web links. Buyers contact you by phone or WhatsApp.","Fadlan ka saar linkiyada internetka. Iibsadayaashu waxay kula soo xiriiraan taleefan ama WhatsApp.","needs native review",app/Support/Safety/SpamGuard.php,
 ads.safety.bad_words,"Please remove rude or unsafe words from your ad.","Fadlan xayeysiiskaaga ka saar erayada xun ama aan ammaanka ahayn.","needs native review",app/Support/Safety/SpamGuard.php,
 ads.safety.drugs,"Drugs are not allowed on iibsom (khat, cannabis, narcotics, medicines that need a doctor, and anything similar). Please remove them. See the posting rules in Help.","Daroogo laguma oggola iibsom (qaad, xashiish, maandooriye, daawooyin u baahan dhakhtar iyo wax la mid ah). Fadlan ka saar. Eeg xeerarka dhigista xayeysiiska ee Caawimaadda.","needs native review",app/Support/Safety/SpamGuard.php,
@@ -824,13 +852,13 @@ pages.terms.body,"**Draft: to be checked by the owner before launch.**
 pages.privacy.title,Privacy,Qarsoodiga,"needs native review","Page /privacy (starter text; admin > Pages can change it)",pages-privacy.png
 pages.privacy.body,"**Draft: to be checked by the owner before launch.**
 
-- **What we keep:** your name, email (from Google), city and phone number, and the ads you post.
+- **What we keep:** your name, email (from Google or the sign-up form), city and phone number, and the ads you post. A password is kept only as a scrambled code that nobody can read back.
 - **Who sees it:** buyers see your name, city and phone number (after they tap ""Show number"").
 - **Visitors who are not signed in:** we do not store their IP address.
 - **Photos:** we remove hidden data like GPS location from every photo.
 - **Delete your data:** contact us and we will remove your account.","**Qabyo: mulkiilaha ayaa hubin doona ka hor furitaanka.**
 
-- **Waxa aan keydinno:** magacaaga, iimaylkaaga (Google), magaaladaada iyo lambarkaaga taleefanka, iyo xayeysiisyada aad dhigto.
+- **Waxa aan keydinno:** magacaaga, iimaylkaaga (Google ama foomka diiwaangelinta), magaaladaada iyo lambarkaaga taleefanka, iyo xayeysiisyada aad dhigto. Furaha sirta ah waxaa loo keydiyaa qaab qarsoon oo aan dib loo akhrin karin.
 - **Cidda arkaysa:** iibsadayaashu waxay arkaan magacaaga, magaaladaada iyo lambarkaaga (marka ay riixaan ""Muuji lambarka"").
 - **Booqdayaasha aan galin:** ma keydinno cinwaankooda IP.
 - **Sawirrada:** sawir kasta waxaan ka saarnaa xogta qarsoon sida goobta GPS.
@@ -915,7 +943,7 @@ help.post-an-ad.title,"How to post an ad","Sida loo dhigo xayeysiis","needs nati
 help.post-an-ad.body,"Posting is free.
 
 1. Tap **Sell** at the bottom of the screen (or **Post an ad** at the top).
-2. Sign in with Google. The first time, add your name, city and phone number.
+2. Sign in with Google or with your email and password. The first time, add your name, city and phone number.
 3. Choose the category, for example **Cars**.
 4. Add up to :max_photos photos. The first photo is the main one.
 5. Write a short, clear title, for example ""Toyota Vitz 2012, automatic"".
@@ -925,7 +953,7 @@ help.post-an-ad.body,"Posting is free.
 Our team checks every ad before it goes live. You can post up to :max_per_day ads a day.","Xayeysiis dhigiddu waa bilaash.
 
 1. Riix **iibi** xagga hoose ee shaashadda (ama **Dhig xayeysiis** xagga sare).
-2. Ku gal Google. Markii ugu horreysay, ku dar magacaaga, magaaladaada iyo lambarkaaga taleefanka.
+2. Ku gal Google ama iimaylkaaga iyo furaha sirta ah. Markii ugu horreysay, ku dar magacaaga, magaaladaada iyo lambarkaaga taleefanka.
 3. Dooro qaybta, tusaale **Baabuur**.
 4. Ku dar ilaa :max_photos sawir. Sawirka koowaad waa kan ugu muhiimsan.
 5. Qor cinwaan gaaban oo cad, tusaale ""Toyota Vitz 2012, otomaatig"".
@@ -1140,11 +1168,15 @@ Our team checks every report. The seller does not see who reported the ad.","Ma 
 
 Kooxdayadu way hubisaa warbixin kasta. Iibiyuhu ma arko cidda ka warbixisay.","needs native review","Help page /help/report-an-ad",
 help.your-account.title,"Your account",Akoonkaaga,"needs native review","Help page /help/your-account",help-index.png
-help.your-account.body,"- **Sign in:** tap **Sign in** and choose your Google account. We never see your Google password.
+help.your-account.body,"- **Sign in:** tap **Sign in**, then choose your Google account (we never see your Google password) or use your email and password.
+- **New with email:** tap **Create an account**, then open the link we email you before your first sign-in. No email? Look in spam.
+- **Forgot your password:** on the sign-in page tap **Forgot password?** and we email you a link (it works for 60 minutes).
 - **Change your name, city or phone:** **Account** → **Edit profile**.
 - **Your phone number:** buyers see it on your ads after they tap **Show phone number**.
 - **Language:** tap **English** or **Soomaali** at the top of any page.
-- **Delete your account:** write to us and we will remove your account and your ads. Our email is at the bottom of the [Help page](:help_url).","- **Gal:** riix **Gal** oo dooro akoonkaaga Google. Weligeen ma aragno furaha sirta ah ee Google-kaaga.
+- **Delete your account:** write to us and we will remove your account and your ads. Our email is at the bottom of the [Help page](:help_url).","- **Gal:** riix **Gal**, kadib dooro akoonkaaga Google (weligeen ma aragno furaha sirta ah ee Google-kaaga) ama isticmaal iimaylkaaga iyo furaha sirta ah.
+- **Cusub oo iimayl ah:** riix **Samee akoon**, kadib fur linkiga aan kuu soo dirno ka hor galitaankaaga ugu horreeya. Iimayl ma jiro? Eeg spam-ka.
+- **Ma ilowday furaha sirta ah:** bogga galitaanka riix **Ma ilowday furaha sirta ah?** waxaanan kuu soo dirnaa linki (wuxuu shaqeeyaa 60 daqiiqo).
 - **Beddel magacaaga, magaaladaada ama taleefankaaga:** **Akoon** → **Wax ka beddel akoonka**.
 - **Lambarkaaga taleefanka:** iibsadayaashu waxay ku arkaan xayeysiisyadaada markay riixaan **Muuji lambarka**.
 - **Luqadda:** riix **English** ama **Soomaali** xagga sare ee bog kasta.

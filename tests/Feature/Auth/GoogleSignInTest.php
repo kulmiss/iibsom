@@ -54,9 +54,13 @@ class GoogleSignInTest extends TestCase
     {
         app(FeatureManager::class)->set('login.google', false);
 
-        $this->get('/login')->assertNotFound();
+        // PR 105: email sign-in still opens the page, without the Google button.
+        $this->get('/login')->assertOk()->assertDontSee('data-google-button', false);
         $this->get('/auth/google')->assertNotFound();
         $this->get('/auth/google/callback')->assertNotFound();
+
+        app(FeatureManager::class)->set('login.email', false); // no way left to sign in
+        $this->get('/login')->assertNotFound();
         $this->get('/')->assertDontSee('/login', false);
     }
 

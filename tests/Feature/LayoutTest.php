@@ -45,6 +45,7 @@ class LayoutTest extends TestCase
     {
         app(FeatureManager::class)->set('favourites', true);
         app(FeatureManager::class)->set('login.google', false);
+        app(FeatureManager::class)->set('login.email', false); // PR 105: no way left to sign in
 
         $html = $this->get('/')->getContent();
         $bar = substr($html, strpos($html, 'aria-label="Bottom"'));

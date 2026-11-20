@@ -32,7 +32,7 @@
         @auth
             <meta name="card-save" content="{{ auth()->user()->favourites()->pluck('ads.id')->implode(',') }}" data-url="{{ lroute('favourite.toggle', ['ad' => 0]) }}" data-token="{{ csrf_token() }}">
         @else
-            @php($signIn = feature('login.google') || \App\Http\Controllers\Auth\TestSignInController::available())
+            @php($signIn = sign_in_open())
             <meta name="card-save" content=""@if ($signIn) data-login="{{ lroute('login') }}"@endif>
         @endauth
     @endif

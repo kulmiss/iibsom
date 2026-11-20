@@ -44,3 +44,11 @@ The owner said: "take your recommended option for small choices, log them here".
 | 2026-11-20 | 99 | Feature switches: sections by what a switch changes (from its name), Phase 2/3 at the end; one column (open/closed cards of different heights look messy in two); closed sections remembered in this browser; while searching every match is shown open. | Easy to find; nothing hidden by mistake. |
 | 2026-11-20 | 100 | The intro under the title is turned OFF (switch `seo.intro`), not deleted. | It helped Google a little; you can switch it back ON. |
 | 2026-11-20 | 100 | "No scrollbars" covers the customer website only (not the admin), and also text boxes (they still scroll). | Your words: all except the page's own. Tell me if you want them back in text boxes or in the admin. |
+| 2026-11-21 | 105 | Passwords: at least 8 characters with letters and numbers; no check against leaked-password lists. | That check calls an outside website, which shared hosting may block. |
+| 2026-11-21 | 105 | The email link only confirms the address; the person then signs in with their password (it does not sign them in). | A link made by somebody else (who typed your email) can never sign anybody in. |
+| 2026-11-21 | 105 | Signing up again with an unconfirmed email replaces the name and password, and older links stop working. | People who mistype their password can simply sign up again. |
+| 2026-11-21 | 105 | Confirm links work 24 hours; reset links 60 minutes, once. | Slow internet: people read email later. Reset links are more dangerous, so shorter. |
+| 2026-11-21 | 105 | At most 3 sign-up emails an hour to one address; 5 wrong passwords per visitor in 5 minutes and 20 per email in 15 minutes. | Stops inbox flooding and password guessing. |
+| 2026-11-21 | 105 | Staff can't use the email sign-in or the reset link on the customer site. | Staff sign in at /admin with a 2-step code. |
+| 2026-11-21 | 105 | Google button hides when its keys are missing. | Your request; no broken button on a new site. |
+| 2026-11-21 | 105 | The test sign-in box also needs a local address (127.0.0.1, localhost, *.test). | Your request: it stays closed even if APP_ENV is set wrong on the live server. |

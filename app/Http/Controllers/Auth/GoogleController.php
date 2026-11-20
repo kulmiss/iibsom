@@ -116,11 +116,17 @@ class GoogleController extends Controller
             $user->email = $email;
         }
 
-        $user->forceFill([
+        $fill = [
             'google_id' => $google->getId(),
             'avatar_url' => $google->getAvatar(),
             'email_verified_at' => $user->email_verified_at ?? now(),
-        ])->save();
+        ];
+        if ($user->exists && $user->email_verified_at === null) {
+            // An email sign-up that was never confirmed: whoever chose that password never proved the email
+            // was theirs, so it must not keep working now that Google proved who owns it (PR 105).
+            $fill['password'] = null;
+        }
+        $user->forceFill($fill)->save();
 
         return $user;
     }

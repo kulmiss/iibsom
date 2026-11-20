@@ -260,7 +260,7 @@
                                 </form>
                             @endif
                         @else
-                            @if (feature('login.google') || \App\Http\Controllers\Auth\TestSignInController::available())
+                            @if (sign_in_open())
                                 <a href="{{ lroute('login') }}" class="mt-2 flex w-full items-center justify-center gap-2 rounded-lg px-3 py-3 font-semibold text-brand-800 ring-1 ring-brand-200 hover:bg-brand-50" title="{{ __('notify.call_back.sign_in') }}">{{ icon('phone-call', 'size-5') }} {{ __('notify.call_back.button') }}</a>
                             @endif
                         @endauth
@@ -310,9 +310,9 @@
                                     </details>
                                 @endfeature
                             @else
-                                @feature('login.google')
+                                @if (sign_in_open())
                                     <a href="{{ lroute('login') }}" class="mt-2 flex w-full items-center justify-center gap-2 rounded-lg px-3 py-3 font-semibold text-brand-800 ring-1 ring-brand-200 hover:bg-brand-50" title="{{ __('chat.sign_in') }}">{{ icon('message-circle', 'size-5') }} {{ __('chat.start') }}</a>
-                                @endfeature
+                                @endif
                             @endauth
                         @endif
                     @endfeature
@@ -410,7 +410,7 @@
                                     </form>
                                 </details>
                             @endif
-                        @elseif (feature('login.google'))
+                        @elseif (sign_in_open())
                             <a href="{{ lroute('login') }}" class="text-sm font-medium text-red-700 underline">{{ __('ads.page.report_sign_in') }}</a>
                         @endif
                     </section>

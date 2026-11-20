@@ -3,7 +3,7 @@
 Xayeysiis dhigiddu waa bilaash.
 
 1. Riix **iibi** xagga hoose ee shaashadda (ama **Dhig xayeysiis** xagga sare).
-2. Ku gal Google. Markii ugu horreysay, ku dar magacaaga, magaaladaada iyo lambarkaaga taleefanka.
+2. Ku gal Google ama iimaylkaaga iyo furaha sirta ah. Markii ugu horreysay, ku dar magacaaga, magaaladaada iyo lambarkaaga taleefanka.
 3. Dooro qaybta, tusaale **Baabuur**.
 4. Ku dar ilaa :max_photos sawir. Sawirka koowaad waa kan ugu muhiimsan.
 5. Qor cinwaan gaaban oo cad, tusaale "Toyota Vitz 2012, otomaatig".

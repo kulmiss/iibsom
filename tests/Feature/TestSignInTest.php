@@ -2,10 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Http\Controllers\Auth\TestSignInController;
 use App\Models\User;
 use App\Support\Features\FeatureManager;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Process;
 use Tests\TestCase;
 
 /**
@@ -61,6 +63,47 @@ class TestSignInTest extends TestCase
             $this->post('/login/test', ['email' => 'x@example.com'])->assertNotFound();
         }
         $this->assertSame(0, User::where('email', 'x@example.com')->count());
+    }
+
+    public function test_production_never_opens_it_even_with_the_switch_on_and_a_local_address(): void
+    {
+        app(FeatureManager::class)->set('login.test_accounts', true);
+        $this->env('production');
+
+        $this->get('http://127.0.0.1:8095/login')->assertOk()->assertDontSee('Test sign-in');
+        $this->post('http://127.0.0.1:8095/login/test', ['email' => 'x@example.com'])->assertNotFound();
+        $this->assertFalse(TestSignInController::routeAllowed());
+        $this->assertSame(0, User::where('email', 'x@example.com')->count());
+    }
+
+    public function test_a_wrong_app_env_on_the_real_domain_still_keeps_it_closed(): void
+    {
+        $this->local(); // APP_ENV=local by mistake on the live server
+        foreach (['https://iibsom.com', 'https://www.iibsom.com', 'http://203.0.113.5'] as $site) {
+            $this->get($site.'/login')->assertOk()->assertDontSee('Test sign-in');
+            $this->post($site.'/login/test', ['email' => 'x@example.com'])->assertNotFound();
+        }
+        $this->assertSame(0, User::where('email', 'x@example.com')->count());
+
+        // The owner's own computer still works.
+        foreach (['http://127.0.0.1:8095', 'http://localhost', 'http://iibsom.test', 'http://[::1]:8095'] as $site) {
+            $this->get($site.'/login')->assertOk()->assertSee('Test sign-in');
+        }
+    }
+
+    public function test_the_route_does_not_exist_when_the_site_starts_in_production(): void
+    {
+        // A fresh start with APP_ENV=production (like the live server): the route list has no test sign-in.
+        $run = Process::path(base_path())
+            ->env(['APP_ENV' => 'production', 'APP_DEBUG' => 'false'])
+            ->run([PHP_BINARY, 'artisan', 'route:list', '--json', '--path=login']);
+
+        $this->assertTrue($run->successful(), $run->errorOutput());
+        $names = array_column((array) json_decode($run->output(), true), 'name');
+        $this->assertContains('login', $names);
+        $this->assertContains('login.email', $names);
+        $this->assertNotContains('login.test', $names);
+        $this->assertNotContains('loc.login.test', $names);
     }
 
     public function test_not_for_staff_banned_people_or_with_the_switch_off(): void

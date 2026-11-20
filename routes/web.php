@@ -19,8 +19,10 @@ use App\Http\Controllers\Ads\AdPhotoController;
 use App\Http\Controllers\Ads\PostAdController;
 use App\Http\Controllers\Ads\PriceHintController;
 use App\Http\Controllers\AdStatsController;
+use App\Http\Controllers\Auth\EmailAuthController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Auth\TestSignInController;
 use App\Http\Controllers\BannerClickController;
 use App\Http\Controllers\BrowseController;
@@ -57,11 +59,19 @@ $stateless = [EncryptCookies::class, AddQueuedCookiesToResponse::class, StartSes
 $publicRoutes = function () use ($stateless) {
     Route::view('/', 'home')->name('home');
 
-    // Sign in (Google only for customers).
-    Route::middleware(['guest', 'feature:login.google'])->group(function () {
+    // Sign in: Google (when its keys are set) and email + password (PR 105). Each way checks its own switch;
+    // the page answers 404 when no way is open.
+    Route::middleware('guest')->group(function () {
         Route::get('/login', [LoginController::class, 'show'])->name('login');
-        // Test sign-in: the owner's own computer only (APP_ENV=local); 404 everywhere else.
-        Route::post('/login/test', [TestSignInController::class, 'store'])->middleware('throttle:10,1')->name('login.test');
+        // Test sign-in: the owner's own computer only. Not even made when APP_ENV=production (404); the controller checks again.
+        if (TestSignInController::routeAllowed()) {
+            Route::post('/login/test', [TestSignInController::class, 'store'])->middleware('throttle:10,1')->name('login.test');
+        }
+        Route::post('/login/email', [EmailAuthController::class, 'login'])->middleware('throttle:20,1')->name('login.email');
+        Route::get('/register', [EmailAuthController::class, 'showRegister'])->name('register');
+        Route::post('/register', [EmailAuthController::class, 'register'])->middleware('throttle:6,1')->name('register.store');
+        Route::get('/forgot-password', [PasswordResetController::class, 'showForgot'])->name('password.request');
+        Route::post('/forgot-password', [PasswordResetController::class, 'sendLink'])->middleware('throttle:6,1')->name('password.email');
     });
 
     Route::middleware('auth')->group(function () {
@@ -249,6 +259,15 @@ Route::post('/ads/{ad}/event', [AdStatsController::class, 'event'])
 
 Route::get('/sitemap.xml', [SitemapController::class, 'sitemap'])->name('sitemap');
 Route::get('/robots.txt', [SitemapController::class, 'robots'])->name('robots');
+
+// Links inside emails (PR 105): fixed URLs (no language prefix), the language travels as ?lang=.
+Route::middleware('throttle:20,1')->group(function () {
+    Route::get('/auth/confirm-email/{id}/{hash}', [EmailAuthController::class, 'confirm'])->whereNumber('id')->name('auth.email.confirm');
+    Route::middleware('guest')->group(function () {
+        Route::get('/auth/reset-password/{token}', [PasswordResetController::class, 'showReset'])->name('password.reset');
+        Route::post('/auth/reset-password', [PasswordResetController::class, 'reset'])->name('password.update');
+    });
+});
 
 // Google OAuth: fixed URLs (the callback must match Google Cloud settings exactly).
 Route::middleware(['feature:login.google', 'throttle:20,1'])->group(function () {

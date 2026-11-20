@@ -111,7 +111,8 @@ class FeatureController extends Controller
     private function effectOff(string $key): string
     {
         return match ($key) {
-            'login.google' => 'Nobody can sign in with Google. The sign-in page and button disappear. Signed-in people stay signed in.',
+            'login.google' => 'Nobody can sign in with Google. The Google button disappears. Signed-in people stay signed in.',
+            'login.email' => 'Nobody can sign up or sign in with email and password. Signed-in people stay signed in.',
             'ads.posting' => 'The Sell / Post ad buttons disappear and nobody can post new ads. Existing ads stay.',
             'ads.approval' => 'New ads go live at once, without a check by staff.',
             'ads.expiry' => 'Ads stop ending after the set number of days.',

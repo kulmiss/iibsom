@@ -11,7 +11,7 @@
             </form>
         @endif
     @else
-        @if (feature('login.google') || \App\Http\Controllers\Auth\TestSignInController::available())
+        @if (sign_in_open())
             <a href="{{ lroute('login') }}" class="chip gap-1.5 bg-white text-brand-800 ring-brand-200" title="{{ __('sellers.sign_in') }}">{{ icon('user-plus', 'size-4') }}<span>{{ __('sellers.follow') }}</span></a>
         @endif
     @endauth
