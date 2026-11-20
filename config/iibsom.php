@@ -48,6 +48,8 @@ return [
         'ads.expiry_days' => 60,
         'ads.max_per_day' => 5,
         'ads.max_photos' => 8,
+        // Auto-hide (PR 89): an ad is hidden for a staff check after reports from this many different signed-in people.
+        'reports.auto_hide_at' => 3,
         'currency' => 'USD',
         'phone.country_codes' => ['+252'],
         // One word or phrase per line. Matched as whole words, any case. Admin → Settings → General.

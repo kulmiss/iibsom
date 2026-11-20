@@ -10,6 +10,7 @@ return [
     'text' => [
         'ad_approved' => 'Your ad “:title” is approved and live.',
         'ad_rejected' => 'Your ad “:title” was not approved: :reason',
+        'ad_hidden' => 'Your ad “:title” is hidden for now: several people reported it. Our team will check it and tell you.',
         'saved_search' => '{1} 1 new ad for your saved search “:label”.|[2,*] :count new ads for your saved search “:label”.',
         'price_drop' => 'Price dropped: “:title” is now :to (was :from).',
         'call_back' => ':name asks you to call :phone about “:title”.',
@@ -22,6 +23,7 @@ return [
         'email' => 'By email',
         'bell_ad_approved' => 'My ad is approved',
         'bell_ad_rejected' => 'My ad is not approved (with the reason)',
+        'bell_ad_hidden' => 'My ad is hidden while our team checks reports',
         'bell_saved_search' => 'New ads for my saved searches',
         'bell_price_drop' => 'A saved ad gets cheaper',
         'bell_call_back' => 'A buyer asks me to call',

@@ -18,6 +18,10 @@
 @php($canPost = feature('ads.posting') && (auth()->check() || feature('login.google')))
 
 @section('content')
+    @if (session('report_thanks'))
+        {{-- After a report that hid the ad (PR 89): the reporter lands here; only signed-in people (never cached). --}}
+        <p class="mx-auto mt-3 max-w-6xl px-4" role="status"><span class="block rounded-xl bg-green-50 px-4 py-3 text-sm text-green-800 ring-1 ring-green-200" data-report-thanks>{{ __('ads.page.report_thanks') }}</span></p>
+    @endif
     {{-- Big search (inspired by jiji.com, in iibsom colours) --}}
     <section class="rounded-b-3xl bg-brand-700 text-white">
         <div class="mx-auto max-w-3xl px-4 pb-7 pt-6 text-center sm:pb-16 sm:pt-14">

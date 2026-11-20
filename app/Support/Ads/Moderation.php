@@ -4,6 +4,7 @@ namespace App\Support\Ads;
 
 use App\Enums\AdStatus;
 use App\Models\Ad;
+use App\Models\Report;
 use App\Models\User;
 use App\Support\Admin\Activity;
 use App\Support\Notify\Inbox;
@@ -20,6 +21,7 @@ final class Moderation
 
         $before = is_array($ad->approved_snapshot) ? ($ad->approved_snapshot['price'] ?? null) : null;
         $firstTime = $ad->published_at === null;
+        $wasHiddenByReports = $ad->flag === AutoHide::FLAG;
 
         $ad->forceFill([
             'flag' => null, // staff checked it (PR 72)
@@ -34,6 +36,12 @@ final class Moderation
         ])->save();
 
         Activity::log('ad.approved', "Approved ad #{$ad->id} “{$ad->title}”", $ad);
+
+        // Hidden after reports (PR 89) and checked by staff: the waiting reports were wrong; close them.
+        if ($wasHiddenByReports) {
+            Report::where('ad_id', $ad->id)->where('status', 'waiting')
+                ->update(['status' => 'rejected', 'handled_by' => $by->id, 'handled_at' => now(), 'staff_note' => 'Checked after the ad was hidden: the ad is fine.']);
+        }
 
         // Notifications (PR 66): tell the seller; people who saved it hear about a lower price.
         Inbox::add($ad->user, 'ad_approved', $ad, ['title' => $ad->title]);

@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 final class Inbox
 {
     /** Bell kinds. */
-    public const KINDS = ['ad_approved', 'ad_rejected', 'saved_search', 'price_drop', 'call_back', 'followed_ad'];
+    public const KINDS = ['ad_approved', 'ad_rejected', 'ad_hidden', 'saved_search', 'price_drop', 'call_back', 'followed_ad'];
 
     /** Emails people can turn off ("saved_search" is the daily alert that already existed). */
     public const EMAILS = ['saved_search', 'call_back'];
@@ -115,6 +115,7 @@ final class Inbox
         return match ($item->kind) {
             'ad_approved' => __('notify.text.ad_approved', ['title' => $d['title'] ?? '']),
             'ad_rejected' => __('notify.text.ad_rejected', ['title' => $d['title'] ?? '', 'reason' => $d['reason'] ?? '']),
+            'ad_hidden' => __('notify.text.ad_hidden', ['title' => $d['title'] ?? '']),
             'saved_search' => trans_choice('notify.text.saved_search', (int) ($d['count'] ?? 1), ['count' => (int) ($d['count'] ?? 1), 'label' => $d['label'] ?? '']),
             'price_drop' => __('notify.text.price_drop', ['title' => $d['title'] ?? '', 'from' => $money($d['from'] ?? 0), 'to' => $money($d['to'] ?? 0)]),
             'followed_ad' => __('notify.text.followed_ad', ['seller' => $d['seller'] ?? '', 'title' => $d['title'] ?? '']),
@@ -131,6 +132,7 @@ final class Inbox
         return match ($item->kind) {
             'ad_approved', 'price_drop', 'followed_ad' => $ad?->isLive() ? $ad->url() : null,
             'ad_rejected' => feature('ads.my_ads') ? lroute('account.ads') : null,
+            'ad_hidden' => feature('ads.my_ads') ? lroute('account.ads', ['tab' => 'pending']) : null,
             'saved_search' => feature('saved_searches') ? lroute('searches') : null,
             'call_back' => isset($item->data['phone']) ? 'tel:'.preg_replace('/[^\d+]/', '', (string) $item->data['phone']) : null,
             default => null,
@@ -142,6 +144,7 @@ final class Inbox
         return match ($kind) {
             'ad_approved' => 'circle-check',
             'ad_rejected' => 'circle-x',
+            'ad_hidden' => 'eye-off',
             'saved_search' => 'search',
             'price_drop' => 'trending-down',
             'call_back' => 'phone-call',

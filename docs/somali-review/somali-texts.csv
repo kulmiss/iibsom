@@ -320,7 +320,7 @@ ads.page.report_contact_help,"Only if you want our team to answer you. Only staf
 ads.page.report_guest_error,"Please choose a reason. A phone number or email must look right.","Fadlan dooro sabab. Lambarka taleefanka ama iimaylku waa inuu sax yahay.","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.report_sum,"To stop robots: what is :a + :b?","Si loo joojiyo robots: imisa waa :a + :b?","needs native review","app/Http/Controllers/GuestReportController.php | resources/views/ads/show.blade.php | resources/views/contact.blade.php",ads-show.png
 ads.page.report_guest_privacy,"We don't keep your IP address or put a cookie on your phone for this.","Uma haynno cinwaankaaga IP mana dhigno cookie taleefankaaga tan awgeed.","needs native review",resources/views/ads/show.blade.php,ads-show.png
-ads.page.report_thanks,"Thank you. Our team will check this ad.","Mahadsanid. Kooxdayadu way hubin doontaa xayeysiiskan.","needs native review","app/Http/Controllers/AdPageController.php | resources/views/ads/show.blade.php",ads-show.png
+ads.page.report_thanks,"Thank you. Our team will check this ad.","Mahadsanid. Kooxdayadu way hubin doontaa xayeysiiskan.","needs native review","app/Http/Controllers/AdPageController.php | resources/views/ads/show.blade.php | resources/views/home.blade.php","ads-show.png | home.png"
 ads.page.report_sign_in,"Sign in to report","Gal si aad u warbixiso","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.reported,"You reported this ad. Thank you.","Waad ka warbixisay xayeysiiskan. Mahadsanid.","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.safety_title,"Stay safe","Ammaan ahaw","needs native review",resources/views/ads/show.blade.php,ads-show.png
@@ -384,6 +384,7 @@ ads.mine.ended_on,"Ended :date","Wuxuu dhacay :date","needs native review",resou
 ads.mine.sold_on,"Sold :date","La iibiyey :date","needs native review",resources/views/account/my-ads.blade.php,account-my-ads.png
 ads.mine.rejected_reason,"Why: :reason","Sababta: :reason","needs native review",resources/views/account/my-ads.blade.php,account-my-ads.png
 ads.mine.rejected_help,"Fix the ad and save it. We will check it again.","Sax xayeysiiska oo keydi. Mar kale ayaan hubin doonnaa.","needs native review",resources/views/account/my-ads.blade.php,account-my-ads.png
+ads.mine.hidden_reports,"Hidden for now: several people reported this ad. Our team will check it soon and tell you.","Waa la qariyey hadda: dad dhowr ah ayaa ka warbixiyey xayeysiiskan. Kooxdayadu dhowaan way hubin doontaa, waana ku ogeysiin doonaa.","needs native review",resources/views/account/my-ads.blade.php,account-my-ads.png
 ads.mine.posting_rules,"Read our posting rules","Akhri xeerarka dhigista xayeysiiska","needs native review","resources/views/account/my-ads.blade.php | resources/views/ads/post-choose.blade.php","account-my-ads.png | ads-post-choose.png"
 ads.mine.saved,"Your changes are saved.","Isbeddeladaada waa la keydiyey.","needs native review",app/Http/Controllers/Account/MyAdsController.php,
 ads.mine.saved_pending,"Saved. Our team checks the changes before they go live.","Waa la keydiyey. Kooxdayadu waxay hubisaa isbeddelada ka hor inta aysan muuqan.","needs native review",app/Http/Controllers/Account/MyAdsController.php,
@@ -529,6 +530,7 @@ notify.new,New,Cusub,"needs native review",resources/views/account/notifications
 notify.settings_link,"Choose what you get","Dooro waxaad heleyso","needs native review",resources/views/account/notifications/index.blade.php,
 notify.text.ad_approved,"Your ad “:title” is approved and live.","Xayeysiiskaaga “:title” waa la oggolaaday waana shaqeynayaa.","needs native review",app/Support/Notify/Inbox.php,
 notify.text.ad_rejected,"Your ad “:title” was not approved: :reason","Xayeysiiskaaga “:title” lama oggolaan: :reason","needs native review",app/Support/Notify/Inbox.php,
+notify.text.ad_hidden,"Your ad “:title” is hidden for now: several people reported it. Our team will check it and tell you.","Xayeysiiskaaga “:title” waa la qariyey hadda: dad dhowr ah ayaa ka warbixiyey. Kooxdayadu way hubin doontaa, waana ku ogeysiin doonaa.","needs native review",app/Support/Notify/Inbox.php,
 notify.text.saved_search,"{1} 1 new ad for your saved search “:label”.|[2,*] :count new ads for your saved search “:label”.","{1} 1 xayeysiis cusub oo ku habboon raadintaada “:label”.|[2,*] :count xayeysiis oo cusub oo ku habboon raadintaada “:label”.","needs native review",app/Support/Notify/Inbox.php,
 notify.text.price_drop,"Price dropped: “:title” is now :to (was :from).","Qiimaha ayaa dhacay: “:title” hadda waa :to (wuxuu ahaa :from).","needs native review",app/Support/Notify/Inbox.php,
 notify.text.call_back,":name asks you to call :phone about “:title”.",":name ayaa kaa codsanaya inaad ka wacdo :phone oo ku saabsan “:title”.","needs native review",app/Support/Notify/Inbox.php,
@@ -539,6 +541,7 @@ notify.settings.bell,"In the bell on iibsom","Gambaleelka iibsom","needs native 
 notify.settings.email,"By email","Iimayl ahaan","needs native review",resources/views/account/notifications/settings.blade.php,
 notify.settings.bell_ad_approved,"My ad is approved","Xayeysiiskayga waa la oggolaaday","needs native review",resources/views/account/notifications/settings.blade.php,
 notify.settings.bell_ad_rejected,"My ad is not approved (with the reason)","Xayeysiiskayga lama oggolaan (sababta)","needs native review",resources/views/account/notifications/settings.blade.php,
+notify.settings.bell_ad_hidden,"My ad is hidden while our team checks reports","Xayeysiiskayga waa la qariyey inta kooxdu hubinayso warbixinnada","needs native review",resources/views/account/notifications/settings.blade.php,
 notify.settings.bell_saved_search,"New ads for my saved searches","Xayeysiisyo cusub oo ku habboon raadintayda","needs native review",resources/views/account/notifications/settings.blade.php,
 notify.settings.bell_price_drop,"A saved ad gets cheaper","Xayeysiis aan kaydiyey qiimihiisu dhaco","needs native review",resources/views/account/notifications/settings.blade.php,
 notify.settings.bell_call_back,"A buyer asks me to call","Iibsade ayaa iga codsada inaan wacdo","needs native review",resources/views/account/notifications/settings.blade.php,

@@ -8,6 +8,7 @@ use App\Models\CategoryField;
 use App\Models\Report;
 use App\Search\DatabaseAdSearch;
 use App\Support\Ads\AdStats;
+use App\Support\Ads\AutoHide;
 use App\Support\Ads\PriceHint;
 use App\Support\Catalog;
 use App\Support\Phone\SomaliPhone;
@@ -108,6 +109,11 @@ class AdPageController extends Controller
         $report->user_id = $this->authUser($request)->id;
         $report->status = 'waiting';
         $report->save();
+
+        // Enough different people reported it: hidden until staff check it (PR 89). The reporter sees the same thanks.
+        if (AutoHide::check($ad)) {
+            return redirect(lroute('home'))->with('report_thanks', true); // the ad page is hidden now; home says thanks
+        }
 
         return redirect($ad->url().'#report')->with('status', __('ads.page.report_thanks'));
     }

@@ -317,6 +317,7 @@ return [
         'sold_on' => 'Sold :date',
         'rejected_reason' => 'Why: :reason',
         'rejected_help' => 'Fix the ad and save it. We will check it again.',
+        'hidden_reports' => 'Hidden for now: several people reported this ad. Our team will check it soon and tell you.',
         'posting_rules' => 'Read our posting rules',
         'saved' => 'Your changes are saved.',
         'saved_pending' => 'Saved. Our team checks the changes before they go live.',

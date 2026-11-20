@@ -22,6 +22,7 @@ class GeneralSettings
             'ads_expiry_days' => ['required', 'integer', 'min:7', 'max:365'],
             'ads_max_per_day' => ['required', 'integer', 'min:1', 'max:100'],
             'ads_max_photos' => ['required', 'integer', 'min:1', 'max:20'],
+            'reports_auto_hide_at' => ['sometimes', 'integer', 'min:2', 'max:50'], // older forms may not send it
             'languages' => ['required', 'array', 'min:1'],
             'languages.*' => [Rule::in(array_keys(config()->array('iibsom.locales')))],
             'bad_words' => ['nullable', 'string', 'max:20000'],
@@ -104,6 +105,9 @@ class GeneralSettings
         $this->settings->set('ads.expiry_days', (int) $data['ads_expiry_days'], $userId);
         $this->settings->set('ads.max_per_day', (int) $data['ads_max_per_day'], $userId);
         $this->settings->set('ads.max_photos', (int) $data['ads_max_photos'], $userId);
+        if (isset($data['reports_auto_hide_at'])) {
+            $this->settings->set('reports.auto_hide_at', (int) $data['reports_auto_hide_at'], $userId);
+        }
         $this->settings->set('languages.enabled', $languages, $userId);
 
         if (array_key_exists('bad_words', $data)) {
@@ -173,6 +177,7 @@ class GeneralSettings
             'ads_expiry_days' => setting('ads.expiry_days'),
             'ads_max_per_day' => setting('ads.max_per_day'),
             'ads_max_photos' => setting('ads.max_photos'),
+            'reports_auto_hide_at' => setting('reports.auto_hide_at'),
             'languages' => setting('languages.enabled'),
             'available_languages' => collect(config()->array('iibsom.locales'))->map(fn ($l, $code) => ['code' => $code, 'name' => $l['name'], 'default' => $code === config('iibsom.default_locale')])->values(),
             'currency' => setting('currency'),

@@ -131,7 +131,8 @@ class AdForm
             if (feature('ads.approval')) {
                 $ad->status = AdStatus::Pending;
                 $ad->rejection_reason = null;
-            } elseif ($ad->status !== AdStatus::Live) {
+            } elseif ($ad->status !== AdStatus::Live && $ad->flag !== AutoHide::FLAG) {
+                // (An ad hidden after reports stays hidden when its seller edits it: staff must check it, PR 89.)
                 $ad->status = AdStatus::Live;
                 $this->publish($ad);
             }
