@@ -54,6 +54,17 @@ class CategoryFinderTest extends TestCase
         $this->assertStringContainsString('<h1 class="mt-2 text-2xl font-bold">All categories</h1>', $html);
     }
 
+    public function test_sub_categories_sit_further_in_than_their_main_category(): void
+    {
+        $html = (string) $this->get('/categories')->assertOk()->getContent();
+
+        // PR 103: every group's sub categories are in an indented list with a start-side line.
+        $groups = substr_count($html, 'data-finder-group');
+        $this->assertGreaterThan(0, $groups);
+        $this->assertSame($groups, substr_count($html, '<ul class="ms-7 border-s-2 border-brand-100 ps-1.5 sm:ms-9" data-finder-subs>'));
+        $this->assertMatchesRegularExpression('/data-finder-subs>.*?data-finder-item/s', $html);
+    }
+
     public function test_search_names_hold_english_and_somali_so_either_word_finds_it(): void
     {
         $cars = Category::where('slug', 'cars')->firstOrFail();

@@ -40,9 +40,6 @@
     <div class="flex min-w-0 flex-1 flex-col gap-0.5 p-2.5">
         <p class="font-bold text-brand-800">{{ $ad->priceLabel() ?: __('ads.page.negotiable') }}</p>
         <p class="line-clamp-2 min-h-[2lh] text-sm leading-snug group-hover:underline group-data-[view=list]/results:min-h-0" data-card-title>{{ $ad->title }}</p>
-        @if ($details && in_array($ad->condition, ['new', 'used'], true))
-            <p class="text-xs font-medium text-stone-600">{{ __('ads.form.'.$ad->condition) }}</p>
-        @endif
         @if ($details && filled($ad->description))
             {{-- List view only: the first words of the description. --}}
             <div class="hidden group-data-[view=list]/results:block"><p class="line-clamp-2 text-sm text-stone-600">{{ \Illuminate\Support\Str::limit(preg_replace('/\s+/u', ' ', (string) $ad->description) ?? '', 160) }}</p></div>
@@ -59,7 +56,15 @@
             {{-- Years only on cards (months would be noise in a list). --}}
             <p class="flex items-center gap-1 text-xs text-stone-600" data-card-years>{{ icon('user-check', 'size-3.5 text-brand-700') }}{{ trans_choice('ads.badges.years', $tenure['count'], ['count' => $tenure['count']]) }}</p>
         @endif
-        <p class="mt-auto pt-1 text-xs text-stone-500">{{ $ad->city?->label }} · {{ $ad->published_at?->diffForHumans(short: true) }}</p>
+        {{-- Bottom line (PR 103, owner: "condition at the very bottom, like a badge"): [New/Used] City · 3d. --}}
+        {{-- flex-wrap-reverse: when the line is too narrow (long Somali words on small phones), the city and time
+             move up a line and the badge stays at the very bottom-left. Nothing is cut. --}}
+        <p class="mt-auto flex min-w-0 flex-wrap-reverse items-center gap-x-1.5 gap-y-1 pt-1 text-xs text-stone-500">
+            @if ($details && in_array($ad->condition, ['new', 'used'], true))
+                <span class="shrink-0 rounded-full px-1.5 py-px font-semibold ring-1 ring-inset {{ $ad->condition === 'new' ? 'bg-brand-50 text-brand-800 ring-brand-200' : 'bg-stone-100 text-stone-700 ring-stone-200' }}" data-card-condition>{{ __('ads.form.'.$ad->condition) }}</span>
+            @endif
+            <span class="min-w-0">{{ $ad->city?->label }} · {{ $ad->published_at?->diffForHumans(short: true) }}</span>
+        </p>
     </div>
 </a>
 @if ($canSave)
