@@ -6,22 +6,35 @@ use App\Models\WatchdogProblem;
 use App\Support\Health\HealthChecker;
 use App\Support\Watchdog\Checks\AppSettingsCheck;
 use App\Support\Watchdog\Checks\BackupsCheck;
+use App\Support\Watchdog\Checks\BannedCheck;
 use App\Support\Watchdog\Checks\CacheCheck;
 use App\Support\Watchdog\Checks\Check;
+use App\Support\Watchdog\Checks\CodeFilesCheck;
+use App\Support\Watchdog\Checks\CopiesCheck;
 use App\Support\Watchdog\Checks\DiskCheck;
+use App\Support\Watchdog\Checks\DrugsCheck;
 use App\Support\Watchdog\Checks\ErrorsCheck;
+use App\Support\Watchdog\Checks\LoginsCheck;
 use App\Support\Watchdog\Checks\MailCheck;
+use App\Support\Watchdog\Checks\PricesCheck;
 use App\Support\Watchdog\Checks\QueueCheck;
+use App\Support\Watchdog\Checks\QueueWaitCheck;
+use App\Support\Watchdog\Checks\ReportsCheck;
 use App\Support\Watchdog\Checks\SchedulerCheck;
+use App\Support\Watchdog\Checks\SignupsCheck;
 use App\Support\Watchdog\Checks\SpeedCheck;
+use App\Support\Watchdog\Checks\SpikesCheck;
 use App\Support\Watchdog\Checks\SslCheck;
+use App\Support\Watchdog\Checks\StaffCheck;
+use App\Support\Watchdog\Checks\UploadPhpCheck;
 use App\Support\Watchdog\Checks\UploadsCheck;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
 /**
- * Runs a group of checks from the scheduler (PR 94): "frequent" every 5 minutes, "daily" once a night.
+ * Runs a group of checks from the scheduler (PR 94): "frequent" every 5 minutes, "hourly", "daily" once a night.
+ * "digest" (every 5 minutes) sends the daily digest once, when it is due (PR 95).
  * The database is checked first: while it is down nothing can be stored, so one urgent alert goes out
  * from the state file (once, then a reminder), and "✅ Fixed" when it is back.
  */
@@ -29,8 +42,14 @@ final class Runner
 {
     /** @var array<string, list<class-string<Check>>> */
     public const GROUPS = [
-        'frequent' => [SchedulerCheck::class, CacheCheck::class, AppSettingsCheck::class, ErrorsCheck::class, QueueCheck::class, DiskCheck::class, SpeedCheck::class],
-        'daily' => [UploadsCheck::class, BackupsCheck::class, SslCheck::class, MailCheck::class],
+        'frequent' => [
+            SchedulerCheck::class, CacheCheck::class, AppSettingsCheck::class, ErrorsCheck::class, QueueCheck::class, DiskCheck::class, SpeedCheck::class,
+            LoginsCheck::class, StaffCheck::class, SignupsCheck::class, BannedCheck::class,
+            DrugsCheck::class, SpikesCheck::class, ReportsCheck::class, QueueWaitCheck::class,
+        ],
+        'hourly' => [UploadPhpCheck::class, CopiesCheck::class, PricesCheck::class],
+        'digest' => [], // no checks: sends the daily digest when it is due (PR 95)
+        'daily' => [UploadsCheck::class, BackupsCheck::class, SslCheck::class, MailCheck::class, CodeFilesCheck::class],
     ];
 
     private const DB_DOWN_REMINDER_HOURS = 6;
@@ -49,6 +68,16 @@ final class Runner
             throw new \InvalidArgumentException("Unknown Watchdog group [{$group}].");
         }
         $done = [];
+
+        if ($group === 'digest') {
+            try {
+                return ['digest' => app(Digest::class)->sendIfDue() ? 'sent' : 'not due'];
+            } catch (Throwable $e) {
+                Log::warning('watchdog.digest_failed', ['error' => class_basename($e)]); // e.g. the database is down: the frequent run tells
+
+                return ['digest' => 'failed'];
+            }
+        }
 
         if ($group === 'frequent') {
             if (! $this->databaseOk()) {

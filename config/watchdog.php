@@ -58,6 +58,34 @@ return [
             'label' => 'SSL certificate', 'help' => 'Warning when the https certificate ends in fewer days than this, urgent under 3 days.'],
         'health.app_settings' => ['area' => 'health', 'group' => 'frequent', 'level' => 'urgent', 'on' => true, 'every' => '5 min',
             'label' => 'App settings', 'help' => 'On the live site APP_DEBUG must be false and APP_ENV production.'],
+
+        // B. Security
+        'security.logins' => ['area' => 'security', 'group' => 'frequent', 'level' => 'urgent', 'on' => true, 'every' => '5 min', 'limit' => 10, 'unit' => 'failed in 15 min',
+            'label' => 'Failed sign-ins', 'help' => 'Staff sign-ins (password or 2-step code) that failed: urgent at this many in 15 minutes. Failed Google sign-ins of users: warning at 3× this number.'],
+        'security.staff' => ['area' => 'security', 'group' => 'frequent', 'level' => 'warning', 'on' => true, 'every' => '5 min',
+            'label' => 'Staff accounts', 'help' => 'A sign-in from a new browser, a new staff account, a changed role, a reset 2-step login. Every staff sign-in goes into the daily digest.'],
+        'security.signups' => ['area' => 'security', 'group' => 'frequent', 'level' => 'warning', 'on' => true, 'every' => '5 min', 'limit' => 30, 'unit' => 'new accounts in 1 hour',
+            'label' => 'Sudden sign-ups', 'help' => 'Many new accounts in one hour can be robots.'],
+        'security.banned' => ['area' => 'security', 'group' => 'frequent', 'level' => 'warning', 'on' => true, 'every' => '5 min', 'limit' => 3, 'unit' => 'tries in 1 hour',
+            'label' => 'Banned people trying again', 'help' => 'Banned users signing in, or blocked phone numbers used to post or in a profile.'],
+        'security.code_files' => ['area' => 'security', 'group' => 'daily', 'level' => 'warning', 'on' => true, 'every' => 'daily',
+            'label' => 'Code files changed', 'help' => 'Compares a fingerprint of the code folders with the night before. After you update the site, run: php artisan iibsom:watchdog:baseline'],
+        'security.upload_php' => ['area' => 'security', 'group' => 'hourly', 'level' => 'urgent', 'on' => true, 'every' => 'hourly',
+            'label' => 'PHP files in uploads', 'help' => 'The uploads folders must only hold photos. A PHP file there is how attackers take over a site.'],
+
+        // C. Ad safety
+        'ads.drugs' => ['area' => 'ads', 'group' => 'frequent', 'level' => 'warning', 'on' => true, 'every' => '5 min',
+            'label' => 'Drug words in ads', 'help' => 'Live ads changed since the last check are read for drug words; any found go back to "Waiting for approval" (Ads → Drugs). Needs the "No drugs" switch.'],
+        'ads.spikes' => ['area' => 'ads', 'group' => 'frequent', 'level' => 'warning', 'on' => true, 'every' => '5 min', 'limit' => 10, 'unit' => 'ads in 1 hour',
+            'label' => 'Many ads at once', 'help' => 'One user, or one phone number (on several accounts), posting this many ads in one hour.'],
+        'ads.reports' => ['area' => 'ads', 'group' => 'frequent', 'level' => 'warning', 'on' => true, 'every' => '5 min', 'limit' => 5, 'unit' => 'reports in 24 hours',
+            'label' => 'Many reports', 'help' => 'One ad, or all ads of one seller together, reported this many times in 24 hours.'],
+        'ads.copies' => ['area' => 'ads', 'group' => 'hourly', 'level' => 'warning', 'on' => true, 'every' => 'hourly', 'limit' => 3, 'unit' => 'ads',
+            'label' => 'Copy spam', 'help' => 'This many ads in 24 hours with the same photo or the same text.'],
+        'ads.queue' => ['area' => 'ads', 'group' => 'frequent', 'level' => 'warning', 'on' => true, 'every' => '5 min', 'limit' => 12, 'unit' => 'hours',
+            'label' => 'Ads waiting for approval', 'help' => 'An ad has waited for a staff check longer than this.'],
+        'ads.prices' => ['area' => 'ads', 'group' => 'hourly', 'level' => 'info', 'on' => true, 'every' => 'hourly',
+            'label' => 'Prices that look like scams', 'help' => 'New ads priced under half of the usual low price of similar ads. Only a "Please check" item: nothing is hidden or banned.'],
     ],
 
     // Defaults of the settings on the Watchdog page (stored in the "watchdog" setting).

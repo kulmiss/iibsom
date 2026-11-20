@@ -7,6 +7,8 @@ use App\Http\Middleware\AdminAuthenticate;
 use App\Models\User;
 use App\Support\Admin\Activity;
 use App\Support\Privacy\Ip;
+use App\Support\Watchdog\Signals;
+use App\Support\Watchdog\StaffDevices;
 use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 use BaconQrCode\Renderer\ImageRenderer;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
@@ -44,6 +46,7 @@ class AuthController extends Controller
         if (! $valid) {
             RateLimiter::hit($key, 300);
             Log::channel('security')->warning('admin.login_failed', ['email_hash' => hash('sha256', Str::lower($data['email']))]);
+            Signals::hit('admin_login_failed');
             throw ValidationException::withMessages(['email' => 'Email or password is wrong.']);
         }
 
@@ -111,6 +114,7 @@ class AuthController extends Controller
 
         if (! $ok) {
             Log::channel('security')->warning('admin.2fa_failed', ['user_id' => $user->id]);
+            Signals::hit('admin_login_failed');
             throw ValidationException::withMessages(['code' => 'That code is not right.']);
         }
 
@@ -185,6 +189,7 @@ class AuthController extends Controller
         RateLimiter::clear('admin-2fa:'.$user->id);
         $user->forceFill(['last_login_at' => now()])->save();
         Activity::log('staff.signed_in', $user->name.' signed in', $user);
+        StaffDevices::signedIn($request, $user);
     }
 
     /** @return array<string, mixed> */

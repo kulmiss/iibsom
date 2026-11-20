@@ -52,6 +52,7 @@ class AdPhotoTest extends TestCase
         $this->assertSame('ready', $photo->status);
         $this->assertNull($photo->upload_path);
         $this->assertSame(1600, $photo->width);
+        $this->assertMatchesRegularExpression('/^[0-9a-f]{16}$/', (string) $photo->phash); // Watchdog copy check (PR 95)
         foreach (['thumb', 'medium', 'large'] as $size) {
             Storage::disk('public')->assertExists($photo->variants[$size]['webp']);
         }

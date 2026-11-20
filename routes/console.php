@@ -9,6 +9,7 @@ use App\Support\Health\HealthChecker;
 use App\Support\Money\Boosts;
 use App\Support\Notify\Inbox;
 use App\Support\Safety\GuestReports;
+use App\Support\Watchdog\Checks\CodeFilesCheck;
 use App\Support\Watchdog\Watchdog;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
@@ -25,6 +26,8 @@ Schedule::call(fn () => app(HealthChecker::class)->beat())
 
 // Watchdog (PR 94): checks every 5 minutes and once a night; alerts by email / Telegram. Never inside a visitor's request.
 Schedule::command('iibsom:watchdog')->name('watchdog')->everyFiveMinutes()->withoutOverlapping(10);
+Schedule::command('iibsom:watchdog digest')->name('watchdog-digest')->everyFiveMinutes()->withoutOverlapping(10);
+Schedule::command('iibsom:watchdog hourly')->name('watchdog-hourly')->hourlyAt(17)->withoutOverlapping(30);
 Schedule::command('iibsom:watchdog daily')->name('watchdog-daily')->dailyAt('03:20')->timezone('Africa/Mogadishu')->withoutOverlapping(30);
 Schedule::call(fn () => Watchdog::prune())->name('watchdog-prune')->dailyAt('04:20')->timezone('Africa/Mogadishu');
 
@@ -95,3 +98,10 @@ Schedule::call(fn () => GuestReports::pruneContacts())->name('guest-report-conta
 
 // Paid boosts: a boost that ended goes back to a normal ad.
 Schedule::call(fn () => Boosts::endExpired())->name('end-boosts')->everyMinute()->withoutOverlapping();
+
+// After you update the site's code: the Watchdog's code check takes the new files as normal (PR 95).
+Artisan::command('iibsom:watchdog:baseline', function () {
+    $this->info('Saved the fingerprints of '.CodeFilesCheck::baseline().' code files. The next nightly check compares with these.');
+
+    return 0;
+})->purpose('Accept the current code files as normal for the Watchdog (run after every update)');

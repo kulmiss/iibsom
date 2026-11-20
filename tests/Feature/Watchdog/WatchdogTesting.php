@@ -2,9 +2,11 @@
 
 namespace Tests\Feature\Watchdog;
 
+use App\Support\Watchdog\Probes\Disk;
 use App\Support\Watchdog\WatchdogSettings;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
+use Mockery\MockInterface;
 
 /** Shared set-up for the Watchdog tests: a temporary state file, faked email + Telegram, channels filled in. */
 trait WatchdogTesting
@@ -27,6 +29,12 @@ trait WatchdogTesting
             'api.telegram.org/*' => Http::response(['ok' => true]),
             '*' => fn ($request) => $this->pageAnswer ? ($this->pageAnswer)($request) : Http::response('ok'),
         ]);
+
+        // This computer's own disk must not decide the tests: 50% full unless a test says otherwise.
+        $this->mock(Disk::class, function (MockInterface $m) {
+            $m->shouldReceive('space')->andReturn(['free' => 50 * 1024 ** 3, 'total' => 100 * 1024 ** 3]);
+            $m->shouldReceive('folderSize')->andReturn(0);
+        });
 
         $settings = app(WatchdogSettings::class);
         $settings->save(['email_to' => 'owner@iibsom.test', 'telegram_chat_id' => self::CHAT], null);

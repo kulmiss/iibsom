@@ -6,10 +6,10 @@ use App\Support\Watchdog\Runner;
 use Illuminate\Console\Command;
 use Throwable;
 
-/** Watchdog checks (PR 94). Run by the scheduler: "frequent" every 5 minutes, "daily" once a night. */
+/** Watchdog checks (PR 94). Run by the scheduler: "frequent" every 5 minutes, "hourly", "daily" once a night. */
 class RunWatchdog extends Command
 {
-    protected $signature = 'iibsom:watchdog {group=frequent : frequent | daily}';
+    protected $signature = 'iibsom:watchdog {group=frequent : frequent | hourly | daily | digest}';
 
     protected $description = 'Run the Watchdog checks and send alerts';
 

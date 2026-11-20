@@ -42,6 +42,9 @@ class ProcessAdPhoto implements ShouldQueue
 
         $manager = new ImageManager(extension_loaded('imagick') ? new ImagickDriver : new GdDriver);
         $source = Storage::disk('local')->get($photo->upload_path);
+        if ($source === null) {
+            throw new \RuntimeException("The uploaded file of photo {$photo->id} is missing."); // the job fails and is retried, as before
+        }
         $disk = config('iibsom.photos_disk');
         $folder = 'ads/'.now()->format('Y/m').'/'.Str::uuid();
         $canAvif = extension_loaded('imagick') ? in_array('AVIF', \Imagick::queryFormats('AVIF'), true) : function_exists('imageavif');
@@ -79,9 +82,27 @@ class ProcessAdPhoto implements ShouldQueue
             'variants' => $variants,
             'width' => $width,
             'height' => $height,
+            'phash' => self::fingerprint($manager, $source),
             'upload_path' => null,
             'status' => 'ready',
         ])->save();
+    }
+
+    /**
+     * A 64-bit "difference hash" of the photo (16 hex letters, PR 95): the same picture gives the same value,
+     * also after it was saved again (a smaller copy usually does too). Used only to find many ads with the same photo.
+     */
+    public static function fingerprint(ImageManager $manager, string $source): string
+    {
+        $image = $manager->read($source)->orient()->greyscale()->resize(9, 8);
+        $bits = '';
+        for ($y = 0; $y < 8; $y++) {
+            for ($x = 0; $x < 8; $x++) {
+                $bits .= $image->pickColor($x, $y)->toArray()[0] > $image->pickColor($x + 1, $y)->toArray()[0] ? '1' : '0';
+            }
+        }
+
+        return str_pad(base_convert(substr($bits, 0, 32), 2, 16), 8, '0', STR_PAD_LEFT).str_pad(base_convert(substr($bits, 32), 2, 16), 8, '0', STR_PAD_LEFT);
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Support\Localization\Locales;
+use App\Support\Watchdog\Signals;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -58,6 +59,7 @@ class GoogleController extends Controller
             $google = Socialite::driver('google')->user();
         } catch (Throwable $e) {
             Log::channel('security')->warning('google.callback_failed', ['error' => class_basename($e)]);
+            Signals::hit('login_failed');
 
             return redirect($loginUrl)->with('error', __('account.login.failed'));
         }
@@ -76,6 +78,7 @@ class GoogleController extends Controller
 
         if ($user->isBanned()) {
             Log::channel('security')->notice('login.banned_user', ['user_id' => $user->id]);
+            Signals::hit('banned_retry');
 
             return redirect($loginUrl)->with('error', __('account.login.banned'));
         }

@@ -4,12 +4,14 @@ namespace App\Support\Watchdog\Checks;
 
 use App\Support\Watchdog\Finding;
 use App\Support\Watchdog\Notifier;
+use App\Support\Watchdog\State;
 use App\Support\Watchdog\Watchdog;
 use App\Support\Watchdog\WatchdogSettings;
 
 /**
- * Sends a short test mail to the alert address once a day, only when email is set up
- * (a real mailer, the email channel ON and an address). If it fails, Telegram tells you.
+ * The daily mail test, only when email is set up (a real mailer, the email channel ON and an address).
+ * The daily digest email is the test when it went out in the last 26 hours (PR 95); otherwise a short
+ * test mail is sent. If it fails, Telegram tells you.
  */
 final class MailCheck implements Check
 {
@@ -26,10 +28,15 @@ final class MailCheck implements Check
         if (! self::mailerSet() || ! Notifier::emailReady($channels)) {
             return [];
         }
-        $sent = $this->notifier->email($channels['email_to'], [
-            'subject' => 'iibsom 🟢 Watchdog daily mail test',
-            'body' => "🟢 Daily mail test\n\nThe site can send email. Nothing to do.",
-        ]);
+        $digest = State::get('digest_email');
+        if (is_array($digest) && (int) ($digest['at'] ?? 0) >= now()->subHours(26)->getTimestamp()) {
+            $sent = (bool) ($digest['ok'] ?? false);
+        } else {
+            $sent = $this->notifier->email($channels['email_to'], [
+                'subject' => 'iibsom 🟢 Watchdog daily mail test',
+                'body' => "🟢 Daily mail test\n\nThe site can send email. Nothing to do.",
+            ]);
+        }
 
         return $sent ? [] : [new Finding($this->key(), 'warning', 'The site cannot send email',
             'The daily test mail could not be sent. Sign-in links, alerts and the weekly summary do not arrive.',
