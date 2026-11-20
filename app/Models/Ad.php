@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\AdStatus;
 use App\Support\Ads\AdCounters;
 use App\Support\Cache\PageCache;
+use App\Support\Search\AdFilters;
 use App\Support\Social\SocialPosts;
 use Database\Factories\AdFactory;
 use Illuminate\Database\Eloquent\Builder;
@@ -51,8 +52,15 @@ class Ad extends Model
     protected static function booted(): void
     {
         // Live-ad counters on categories and cities follow every change.
-        static::saved(fn () => PageCache::bump());
-        static::deleted(fn () => PageCache::bump());
+        // Fast filters (PR 90): the detail values in their own indexed table.
+        static::saved(function (Ad $ad) {
+            if ($ad->wasRecentlyCreated || $ad->wasChanged('fields')) {
+                AdFilters::sync($ad);
+            }
+        });
+        // Its own page at once, the lists soon after (PR 90: the rest of the cache stays).
+        static::saved(fn (Ad $ad) => PageCache::adChanged($ad->id));
+        static::deleted(fn (Ad $ad) => PageCache::adChanged($ad->id));
         static::saved(function (Ad $ad) {
             if ($ad->wasChanged(['status', 'category_id', 'city_id', 'expires_at', 'is_demo']) || $ad->wasRecentlyCreated) {
                 AdCounters::refreshFor($ad);
@@ -105,32 +113,38 @@ class Ad extends Model
     }
 
     /**
-     * The seller's rating, for the stars on ad cards (PR 85, switches "seller_ratings" + "ads.card_stars").
-     * A separate relation with only the rating columns, so it never stands in for the full `user`.
+     * The little the ad cards need about the seller: stars (PR 85, "seller_ratings" + "ads.card_stars") and
+     * "2 years on iibsom" (PR 87, "sellers.badges" + "ads.card_years"). A separate relation with only these
+     * columns, so it never stands in for the full `user`.
      *
      * @return BelongsTo<User, $this>
      */
-    public function sellerStars(): BelongsTo
+    public function cardSeller(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id')->select(['id', 'rating_count', 'rating_sum']);
+        return $this->belongsTo(User::class, 'user_id')->select(['id', 'rating_count', 'rating_sum', 'created_at']);
     }
 
     /**
-     * Loads sellerStars for a list of cards: one query for the whole list, none while the switches are OFF.
-     * Not used on a seller's own page or shop (every card is the same seller; their stars are in the header).
+     * Loads cardSeller for a list of cards: one query for the whole list, none while the switches are OFF.
+     * Not used on a seller's own page or shop (every card is the same seller; it is in the header).
      *
      * @param  Builder<Ad>  $query
      */
-    public function scopeWithSellerStars(Builder $query): void
+    public function scopeWithCardSeller(Builder $query): void
     {
-        if (self::cardStarsOn()) {
-            $query->with('sellerStars');
+        if (self::cardStarsOn() || self::cardYearsOn()) {
+            $query->with('cardSeller');
         }
     }
 
     public static function cardStarsOn(): bool
     {
         return feature('seller_ratings') && feature('ads.card_stars');
+    }
+
+    public static function cardYearsOn(): bool
+    {
+        return feature('sellers.badges') && feature('ads.card_years');
     }
 
     /**

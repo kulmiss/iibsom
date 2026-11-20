@@ -10,6 +10,7 @@ use App\Models\CategoryField;
 use App\Support\Admin\Activity;
 use App\Support\Ads\AdCounters;
 use App\Support\Ads\AdSnapshot;
+use App\Support\Ads\AutoHide;
 use App\Support\Ads\Moderation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -210,6 +211,7 @@ class AdController extends Controller
             'closed_reason' => $ad->closed_reason ? __('ads.close.'.$ad->closed_reason, [], 'en') : null,
             'flag' => match (true) {
                 $ad->flag === 'drugs' => 'Drug check: “'.$ad->flag_word.'”',
+                $ad->flag === AutoHide::FLAG => 'Hidden after reports from '.$ad->flag_word.' people: open Reports, then approve it if it is fine or take it down',
                 $ad->user->flag === 'drugs' => 'Seller wrote drug words in chat: “'.$ad->user->flag_word.'”',
                 default => null,
             },

@@ -7,4 +7,8 @@ Ads that people reported (scam, wrong category, already sold, not allowed). Wait
 - **Take ad down:** the report was right. The ad leaves the site and all waiting reports on it close.
 - **Dismiss:** the report was wrong. The ad stays.
 
+**Hidden after reports** (switch **Hide ads after reports**): when different signed-in people report the same ad (3 by default; change it in **Settings → General**), the ad is hidden at once and waits in **Waiting for approval**, marked "Hidden after reports". Guest reports do not count. The seller is told. Nothing is deleted and nobody is banned:
+- **Put ad back** (here) or **Approve** (in Waiting for approval): the ad is fine. It is live again and its waiting reports are closed as wrong.
+- **Take ad down:** the reports were right.
+
 Many reports against one seller? Open **Users** and look at their other ads.

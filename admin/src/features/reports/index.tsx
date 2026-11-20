@@ -21,6 +21,7 @@ type ReportRow = {
   ad_id: number
   ad_title: string | null
   ad_status: string | null
+  ad_hidden: boolean
   seller: string | null
   reporter: string | null
   is_guest: boolean
@@ -38,12 +39,12 @@ export function Reports() {
   const can = useAuthStore((s) => s.can)
   const qc = useQueryClient()
   const [openAd, setOpenAd] = useState<number | null>(null)
-  const [acting, setActing] = useState<{ report: ReportRow; action: 'dismiss' | 'remove_ad' } | null>(null)
+  const [acting, setActing] = useState<{ report: ReportRow; action: 'dismiss' | 'remove_ad' | 'restore_ad' } | null>(null)
 
   const handle = useMutation({
     mutationFn: ({ id, action, note }: { id: number; action: string; note: string }) => api.post(`/reports/${id}/handle`, { action, note }),
     onSuccess: (_, v) => {
-      toast.success(v.action === 'dismiss' ? 'Report dismissed.' : 'Ad taken down. All reports on it are closed.')
+      toast.success(v.action === 'dismiss' ? 'Report dismissed.' : v.action === 'restore_ad' ? 'Ad is live again. Its reports are closed.' : 'Ad taken down. All reports on it are closed.')
       setActing(null)
       qc.invalidateQueries({ queryKey: ['reports'] })
       qc.invalidateQueries({ queryKey: ['ads'] })
@@ -63,6 +64,7 @@ export function Reports() {
             #{row.original.ad_id} · seller {row.original.seller} · ad {row.original.ad_status}
           </p>
           {row.original.ad_reports > 1 && <Badge variant='destructive' className='mt-1'>{row.original.ad_reports} reports on this ad</Badge>}
+          {row.original.ad_hidden && <Badge variant='outline' className='ms-1 mt-1'>Hidden after reports</Badge>}
         </button>
       ),
     },
@@ -86,6 +88,11 @@ export function Reports() {
         can('reports.handle') &&
         row.original.status === 'waiting' && (
           <div className='flex justify-end gap-1'>
+            {row.original.ad_hidden && (
+              <Button size='sm' onClick={() => setActing({ report: row.original, action: 'restore_ad' })}>
+                Put ad back
+              </Button>
+            )}
             <Button size='sm' variant='destructive' onClick={() => setActing({ report: row.original, action: 'remove_ad' })}>
               Take ad down
             </Button>
@@ -133,8 +140,14 @@ export function Reports() {
             {r.details && <p className='text-muted-foreground'>{r.details}</p>}
             <Reporter r={r} />
             {r.ad_reports > 1 && <Badge variant='destructive'>{r.ad_reports} reports on this ad</Badge>}
+            {r.ad_hidden && <Badge variant='outline'>Hidden after reports</Badge>}
             {can('reports.handle') && r.status === 'waiting' && (
-              <div className='flex gap-2'>
+              <div className='flex flex-wrap gap-2'>
+                {r.ad_hidden && (
+                  <Button size='sm' onClick={() => setActing({ report: r, action: 'restore_ad' })}>
+                    Put ad back
+                  </Button>
+                )}
                 <Button size='sm' variant='destructive' onClick={() => setActing({ report: r, action: 'remove_ad' })}>
                   Take ad down
                 </Button>
@@ -150,12 +163,18 @@ export function Reports() {
       <ReasonDialog
         open={acting !== null}
         onOpenChange={(o) => !o && setActing(null)}
-        title={acting?.action === 'remove_ad' ? 'Take this ad down?' : 'Dismiss this report?'}
-        description={acting?.action === 'remove_ad' ? 'The ad is rejected and every waiting report on it is closed. The seller sees your note (or the report reason).' : 'The ad stays as it is.'}
+        title={acting?.action === 'remove_ad' ? 'Take this ad down?' : acting?.action === 'restore_ad' ? 'Put this ad back?' : 'Dismiss this report?'}
+        description={
+          acting?.action === 'remove_ad'
+            ? 'The ad is rejected and every waiting report on it is closed. The seller sees your note (or the report reason).'
+            : acting?.action === 'restore_ad'
+              ? 'The ad was hidden after reports. It goes live again and every waiting report on it is closed as wrong. The seller is told it is approved.'
+              : 'The ad stays as it is.'
+        }
         label='Note'
         required={false}
         destructive={acting?.action === 'remove_ad'}
-        confirmText={acting?.action === 'remove_ad' ? 'Take down' : 'Dismiss'}
+        confirmText={acting?.action === 'remove_ad' ? 'Take down' : acting?.action === 'restore_ad' ? 'Put back' : 'Dismiss'}
         busy={handle.isPending}
         onConfirm={(note) => acting && handle.mutate({ id: acting.report.id, action: acting.action, note })}
       />

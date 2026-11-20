@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Support\Ads\AdCounters;
 use App\Support\Catalog;
+use App\Support\Search\AdFilters;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -111,6 +112,7 @@ class MakeLoadData extends Command
         $this->newLine();
 
         AdCounters::refreshAll();
+        AdFilters::rebuildAll(); // the inserts above skip the model events (PR 90)
         app(Catalog::class)->flush();
         $this->info('Done: '.DB::table('users')->count().' users, '.DB::table('ads')->count().' ads.');
 

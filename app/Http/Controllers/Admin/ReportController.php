@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\AdStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Report;
 use App\Support\Admin\Activity;
+use App\Support\Ads\AutoHide;
 use App\Support\Ads\Moderation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -22,7 +24,7 @@ class ReportController extends Controller
         ]);
 
         $page = Report::query()->select('reports.*')
-            ->with(['ad:id,title,status,user_id', 'ad.user:id,name', 'user:id,name', 'handler:id,name'])
+            ->with(['ad:id,title,status,user_id,flag', 'ad.user:id,name', 'user:id,name', 'handler:id,name'])
             ->when(! feature('site.demo_data'), fn ($q) => $q->where('is_demo', false))
             ->when($request->status, fn ($q, $s) => $q->whereIn('status', explode(',', $s)))
             ->when($request->reason, fn ($q, $r) => $q->whereIn('reason', explode(',', $r)))
@@ -46,12 +48,21 @@ class ReportController extends Controller
     public function handle(Request $request, Report $report): JsonResponse
     {
         $data = $request->validate([
-            'action' => ['required', Rule::in(['dismiss', 'remove_ad'])],
+            'action' => ['required', Rule::in(['dismiss', 'remove_ad', 'restore_ad'])],
             'note' => ['nullable', 'string', 'max:300'],
         ]);
         $note = isset($data['note']) ? strip_tags($data['note']) : null;
 
-        if ($data['action'] === 'dismiss') {
+        if ($data['action'] === 'restore_ad') {
+            // PR 89: an ad hidden after reports is fine: it goes live again and its waiting reports are closed.
+            $ad = $report->ad;
+            abort_unless($ad->status === AdStatus::Pending && $ad->flag === AutoHide::FLAG && ! $ad->trashed(), 422, 'Only an ad that was hidden after reports can be put back here.');
+            Moderation::approve($ad, $this->authUser($request));
+            if ($note !== null) {
+                Report::where('ad_id', $ad->id)->where('handled_at', '>=', now()->subMinute())->where('status', 'rejected')->update(['staff_note' => $note]);
+            }
+            Activity::log('report.ad_restored', "Put back ad #{$ad->id} after checking the reports", $report);
+        } elseif ($data['action'] === 'dismiss') {
             $report->forceFill(['status' => 'rejected', 'handled_by' => $this->authUser($request)->id, 'handled_at' => now(), 'staff_note' => $note])->save();
             Activity::log('report.dismissed', "Dismissed report #{$report->id} on ad #{$report->ad_id}", $report);
         } else {
@@ -79,6 +90,7 @@ class ReportController extends Controller
             'ad_id' => $r->ad_id,
             'ad_title' => $r->ad->title,
             'ad_status' => $r->ad->status->value,
+            'ad_hidden' => $r->ad->status === AdStatus::Pending && $r->ad->flag === AutoHide::FLAG,
             'seller' => $r->ad->user->name,
             'reporter' => $r->user !== null ? $r->user->name : 'Guest',
             'is_guest' => $r->user_id === null,

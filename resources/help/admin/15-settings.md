@@ -13,7 +13,9 @@
 
 ## Appearance
 
-The brand colour and light or dark mode of this admin.
+**Website colour:** the colour of the website's top bar, buttons and links. Pick one colour (or a ready one); the lighter and darker shades and the dark mode are made from it. The preview shows how it looks. A colour that is too light is refused, because white text on it would be hard to read; you get a darker one to use instead. "Back to iibsom blue" undoes it. Visitors see the new colour at once. Switch: **Website colour**. Only the Super Admin (Settings) can change it.
+
+**Admin colour** and light or dark mode: only for this admin.
 
 ## Security (2FA)
 

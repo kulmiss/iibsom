@@ -148,6 +148,69 @@ class HomeSections
     }
 
     /**
+     * The place picker next to the big search box (PR 87, switch "search.location_picker"): live cities A–Z with
+     * their live-ad counts and, while "More search filters" is ON (the search can only use a district then),
+     * each city's districts A–Z with counts. Empty when there is no choice to make (one city and no districts).
+     * One grouped query for the district counts; kept 10 minutes like the other home lists.
+     *
+     * @return list<array{slug: string, label: string, region: string, count: int, areas: list<array{id: int, label: string, count: int}>}>
+     */
+    public static function locations(): array
+    {
+        if (! feature('search.location_picker')) {
+            return [];
+        }
+
+        /** @var list<array{slug: string, id: int, name: array<string, string>, region: array<string, string>, count: int, areas: list<array{id: int, name: array<string, string>, count: int}>}> $rows */
+        $rows = Cache::remember(self::key('locations'), self::TTL, function (): array {
+            $cities = app(Catalog::class)->cities();
+            $hideEmpty = feature('catalog.hide_empty');
+            $areas = [];
+            if (feature('search.more_filters') && $cities !== []) {
+                $counts = DatabaseAdSearch::publicQuery()->whereIn('ads.city_id', array_column($cities, 'id'))->whereNotNull('ads.area_id')
+                    ->groupBy('ads.area_id')->selectRaw('ads.area_id, COUNT(*) as n')->pluck('n', 'area_id');
+                foreach (Area::whereIn('city_id', array_column($cities, 'id'))->where('enabled', true)->get(['id', 'city_id', 'name']) as $a) {
+                    $n = (int) ($counts[$a->id] ?? 0);
+                    if ($n > 0 || ! $hideEmpty) {
+                        $areas[$a->city_id][] = ['id' => $a->id, 'name' => $a->name, 'count' => $n];
+                    }
+                }
+            }
+
+            return array_map(fn (array $c) => [
+                'slug' => $c['slug'], 'id' => $c['id'], 'name' => $c['name'], 'region' => $c['region'],
+                'count' => $c['ads_count'], 'areas' => $areas[$c['id']] ?? [],
+            ], $cities);
+        });
+
+        if (feature('catalog.hide_empty')) {
+            $rows = array_values(array_filter($rows, fn (array $c) => $c['count'] > 0));
+        }
+        /**
+         * @template T of array{label: string}
+         *
+         * @param  list<T>  $list
+         * @return list<T>
+         */
+        $sort = function (array $list): array {
+            usort($list, fn (array $a, array $b) => strnatcasecmp($a['label'], $b['label']));
+
+            return $list;
+        };
+        $out = $sort(array_map(fn (array $c) => [
+            'slug' => $c['slug'],
+            'label' => translated($c['name']),
+            'region' => translated($c['region']),
+            'count' => $c['count'],
+            'areas' => $sort(array_map(fn (array $a) => ['id' => $a['id'], 'label' => translated($a['name']), 'count' => $a['count']], $c['areas'])),
+        ], $rows));
+
+        $choice = count($out) > 1 || ($out !== [] && count($out[0]['areas']) > 1);
+
+        return $choice ? $out : [];
+    }
+
+    /**
      * True numbers for the trust strip (switch "home.trust_strip"). A number is left out while it is too small
      * to say anything (fewer than 10 ads, fewer than 3 sellers).
      *
@@ -192,7 +255,7 @@ class HomeSections
 
         // Loaded again so an ad whose boost or life ended in the last minutes is left out.
         return DatabaseAdSearch::publicQuery()->whereIn('ads.id', $ids)->where('ads.boosted_until', '>', now())
-            ->with(['category:id,slug,icon,parent_id', 'city:id,name,slug', 'cover'])->withPhotoCount()->withSellerStars()->get()
+            ->with(['category:id,slug,icon,parent_id', 'city:id,name,slug', 'cover'])->withPhotoCount()->withCardSeller()->get()
             ->sortBy(fn (Ad $ad) => array_search($ad->id, $ids, true))->values();
     }
 

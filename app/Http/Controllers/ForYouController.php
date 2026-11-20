@@ -96,7 +96,7 @@ class ForYouController extends Controller
     /** @return Builder<Ad> */
     private function query(): Builder
     {
-        return DatabaseAdSearch::publicQuery()->with(['category:id,slug,icon,parent_id', 'city:id,name,slug', 'cover'])->withPhotoCount()->withSellerStars();
+        return DatabaseAdSearch::publicQuery()->with(['category:id,slug,icon,parent_id', 'city:id,name,slug', 'cover'])->withPhotoCount()->withCardSeller();
     }
 
     /** @param Collection<int, Ad> $ads */

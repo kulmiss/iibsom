@@ -140,6 +140,7 @@ class CardStarsTest extends TestCase
         $this->assertSame(11, substr_count((string) $this->get('/cars')->getContent(), 'data-card-stars')); // 1 + 10 rated sellers
 
         $this->switch('ads.card_stars', false);
+        $this->switch('ads.card_years', false); // the same seller line also carries "2 years on iibsom" (PR 87)
         $this->assertSame($on - 1, $count('/cars'), 'exactly one extra query for the stars');
     }
 }

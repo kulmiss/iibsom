@@ -50,6 +50,10 @@
                                 <span>{{ icon('phone', 'inline size-3.5') }} {{ trans_choice('ads.stats.contacts_n', $st['phone'] + $st['whatsapp'] + $st['call'], ['count' => number_format($st['phone'] + $st['whatsapp'] + $st['call'])]) }}</span>
                             </p>
                         @endfeature
+                        @if ($ad->status === \App\Enums\AdStatus::Pending && $ad->flag === \App\Support\Ads\AutoHide::FLAG)
+                            {{-- PR 89: hidden after reports, waiting for a staff check. --}}
+                            <p class="mt-1 rounded-lg bg-amber-50 px-2 py-1 text-xs text-amber-900" data-hidden-reports>{{ __('ads.mine.hidden_reports') }}</p>
+                        @endif
                         @if ($ad->status === \App\Enums\AdStatus::Rejected)
                             <p class="mt-1 rounded-lg bg-red-50 px-2 py-1 text-xs text-red-800">
                                 @if ($ad->rejection_reason){{ __('ads.mine.rejected_reason', ['reason' => $ad->rejection_reason]) }}<br>@endif

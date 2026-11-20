@@ -319,6 +319,7 @@ return [
         'sold_on' => 'La iibiyey :date',
         'rejected_reason' => 'Sababta: :reason',
         'rejected_help' => 'Sax xayeysiiska oo keydi. Mar kale ayaan hubin doonnaa.',
+        'hidden_reports' => 'Waa la qariyey hadda: dad dhowr ah ayaa ka warbixiyey xayeysiiskan. Kooxdayadu dhowaan way hubin doontaa, waana ku ogeysiin doonaa.',
         'posting_rules' => 'Akhri xeerarka dhigista xayeysiiska',
         'saved' => 'Isbeddeladaada waa la keydiyey.',
         'saved_pending' => 'Waa la keydiyey. Kooxdayadu waxay hubisaa isbeddelada ka hor inta aysan muuqan.',

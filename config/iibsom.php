@@ -39,13 +39,21 @@ return [
     // "Popular" label on ad cards (switches "ads.card_badges" + "ad_stats"): at least this many views.
     'popular_views' => 100,
 
+    // Page cache (PR 90): after an ad changes, pages that list ads are refreshed at most once per this many seconds
+    // (the ad's own page at once). 0 = at once every time (tests).
+    'page_cache_list_delay' => (int) env('PAGE_CACHE_LIST_DELAY', 30),
+
     // Default values for settings the Super Admin can change.
     'settings' => [
         'languages.enabled' => ['en'],
         'admin.brand_color' => '#1f6fd1',
+        // The website's main colour (PR 88, Admin → Settings → Appearance); = brand-700 in resources/css/app.css.
+        'site.brand_color' => '#1d6bca',
         'ads.expiry_days' => 60,
         'ads.max_per_day' => 5,
         'ads.max_photos' => 8,
+        // Auto-hide (PR 89): an ad is hidden for a staff check after reports from this many different signed-in people.
+        'reports.auto_hide_at' => 3,
         'currency' => 'USD',
         'phone.country_codes' => ['+252'],
         // One word or phrase per line. Matched as whole words, any case. Admin → Settings → General.

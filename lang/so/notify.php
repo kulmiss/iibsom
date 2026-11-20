@@ -10,6 +10,7 @@ return [
     'text' => [
         'ad_approved' => 'Xayeysiiskaaga “:title” waa la oggolaaday waana shaqeynayaa.',
         'ad_rejected' => 'Xayeysiiskaaga “:title” lama oggolaan: :reason',
+        'ad_hidden' => 'Xayeysiiskaaga “:title” waa la qariyey hadda: dad dhowr ah ayaa ka warbixiyey. Kooxdayadu way hubin doontaa, waana ku ogeysiin doonaa.',
         'saved_search' => '{1} 1 xayeysiis cusub oo ku habboon raadintaada “:label”.|[2,*] :count xayeysiis oo cusub oo ku habboon raadintaada “:label”.',
         'price_drop' => 'Qiimaha ayaa dhacay: “:title” hadda waa :to (wuxuu ahaa :from).',
         'call_back' => ':name ayaa kaa codsanaya inaad ka wacdo :phone oo ku saabsan “:title”.',
@@ -22,6 +23,7 @@ return [
         'email' => 'Iimayl ahaan',
         'bell_ad_approved' => 'Xayeysiiskayga waa la oggolaaday',
         'bell_ad_rejected' => 'Xayeysiiskayga lama oggolaan (sababta)',
+        'bell_ad_hidden' => 'Xayeysiiskayga waa la qariyey inta kooxdu hubinayso warbixinnada',
         'bell_saved_search' => 'Xayeysiisyo cusub oo ku habboon raadintayda',
         'bell_price_drop' => 'Xayeysiis aan kaydiyey qiimihiisu dhaco',
         'bell_call_back' => 'Iibsade ayaa iga codsada inaan wacdo',

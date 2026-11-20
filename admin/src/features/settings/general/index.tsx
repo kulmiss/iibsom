@@ -17,6 +17,7 @@ type General = {
   ads_expiry_days: number
   ads_max_per_day: number
   ads_max_photos: number
+  reports_auto_hide_at: number
   languages: string[]
   available_languages: { code: string; name: string; default: boolean }[]
   currency: string
@@ -75,7 +76,7 @@ function GeneralForm({ initial }: { initial: General }) {
     onError: (e) => toast.error(apiErrorMessage(e)),
   })
 
-  const num = (key: 'ads_expiry_days' | 'ads_max_per_day' | 'ads_max_photos', label: string, help: string) => (
+  const num = (key: 'ads_expiry_days' | 'ads_max_per_day' | 'ads_max_photos' | 'reports_auto_hide_at', label: string, help: string) => (
     <div className='grid gap-2'>
       <Label htmlFor={key}>{label}</Label>
       <Input id={key} type='number' className='max-w-32' value={form[key]} onChange={(e) => setForm({ ...form, [key]: Number(e.target.value) })} />
@@ -95,6 +96,7 @@ function GeneralForm({ initial }: { initial: General }) {
         {num('ads_expiry_days', 'Ads end after (days)', 'Sellers can renew an ad when it ends. 7 to 365.')}
         {num('ads_max_per_day', 'Ads per person per day', 'Stops spam. 1 to 100.')}
         {num('ads_max_photos', 'Photos per ad', '1 to 20.')}
+        {num('reports_auto_hide_at', 'Hide an ad after this many reports', 'Reports from different signed-in people (guests do not count). The ad waits for a staff check in Waiting for approval; it is never deleted and nobody is banned. 2 to 50. Switch: "Hide ads after reports".')}
         <div className='grid gap-2'>
           <Label>Languages ON</Label>
           {form.available_languages.map((l) => (

@@ -83,11 +83,15 @@ class Catalog
         });
     }
 
-    public function flush(): void
+    /**
+     * Forget the kept lists. $everywhere = false when only the live-ad counts changed (an ad went live or away):
+     * then only pages that list ads are refreshed, with the ad-change wait (PR 90).
+     */
+    public function flush(bool $everywhere = true): void
     {
         $this->cache->forget(self::CATEGORIES_KEY);
         $this->cache->forget(self::CITIES_KEY);
-        PageCache::bump();
+        $everywhere ? PageCache::bump() : PageCache::listsChanged();
     }
 
     /** @return CategoryRow */
