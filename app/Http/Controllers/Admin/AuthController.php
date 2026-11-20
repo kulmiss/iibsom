@@ -189,7 +189,8 @@ class AuthController extends Controller
         RateLimiter::clear('admin-2fa:'.$user->id);
         $user->forceFill(['last_login_at' => now()])->save();
         Activity::log('staff.signed_in', $user->name.' signed in', $user);
-        StaffDevices::signedIn($request, $user);
+        // The Watchdog's "new browser" note must never stop a sign-in (e.g. its table is not migrated yet).
+        rescue(fn () => app(StaffDevices::class)->signedIn($request, $user));
     }
 
     /** @return array<string, mixed> */

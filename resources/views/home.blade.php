@@ -91,6 +91,7 @@
              No visible scrollbar (PR 92, owner): on Windows its strip sat between the list and the side panel, so moving
              the mouse to a sub category closed the panel. The list still scrolls with the wheel or a finger. --}}
         @php($stickyCats = feature('home.sticky_categories'))
+        @php($subIcons = feature('home.sub_icons'))
         <aside @class(['hidden', 'relative lg:block' => ! $stickyCats, 'lg:sticky lg:top-20 lg:z-20 lg:flex lg:max-h-[calc(100dvh-6rem)] lg:flex-col lg:self-start' => $stickyCats]) aria-label="{{ __('site.home.categories') }}" data-cat-menu @if ($stickyCats) data-sticky @endif>
             <ul @class(['rounded-xl bg-white shadow-sm ring-1 ring-stone-200', 'min-h-0 flex-1 overflow-y-auto overscroll-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden' => $stickyCats])>
                 @foreach ($categories as $category)
@@ -121,14 +122,11 @@
                                 </a>
                                 {{-- One sub category per line (owner's wish, 2026-11-18). --}}
                                 <ul class="mt-1 grid gap-0.5 border-t border-stone-100 pt-1" data-cat-subs>
+                                    {{-- PR 98: icon in a light blue box like the main categories, drawn by CSS only once the panel opens (.cat-thumb in app.css): nothing loads before, nothing jumps.
+                                         No icon file → the first letter. Few lines per row: the spaces add up over 141 rows. --}}
                                     @foreach ($subs as $sub)
-                                        <li>
-                                            {{-- PR 96: no icon here (like Jiji): 141 sub categories made the page ~100 KB heavier for every phone. --}}
-                                            <a href="{{ lroute('browse.category', ['category' => $sub['slug']]) }}" class="block rounded-lg px-2 py-1.5 hover:bg-brand-50 focus-visible:bg-brand-50">
-                                                <span class="block text-sm font-medium leading-tight">{{ translated($sub['name']) }}</span>
-                                                <span class="block text-xs text-stone-500">{{ trans_choice('site.ads_count', $sub['ads_count'], ['count' => number_format($sub['ads_count'])]) }}</span>
-                                            </a>
-                                        </li>
+                                        @php($iconUrl = icon_url($sub['icon']))
+                                        <li><a href="{{ lroute('browse.category', ['category' => $sub['slug']]) }}" class="flex items-center gap-3 rounded-lg px-2 py-1.5 hover:bg-brand-50 focus-visible:bg-brand-50">@if ($subIcons)<span @class(['cat-thumb', 'has-i' => $iconUrl]) @if ($iconUrl) style="--i:url({{ $iconUrl }})" @endif data-thumb>@unless ($iconUrl){{ mb_strtoupper(mb_substr(translated($sub['name']), 0, 1)) }}@endunless</span>@endif<span class="min-w-0 flex-1"><span class="block text-sm font-medium leading-tight">{{ translated($sub['name']) }}</span><span class="block text-xs text-stone-500">{{ trans_choice('site.ads_count', $sub['ads_count'], ['count' => number_format($sub['ads_count'])]) }}</span></span></a></li>
                                     @endforeach
                                 </ul>
                             </div>

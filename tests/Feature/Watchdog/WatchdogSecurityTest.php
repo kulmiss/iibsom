@@ -109,14 +109,26 @@ class WatchdogSecurityTest extends AdminTestCase
         $this->assertStringNotContainsString("What happened: {$owner->name} signed in to the admin.", $texts); // the sign-in itself: digest only
     }
 
+    public function test_a_broken_new_browser_note_never_stops_a_sign_in(): void
+    {
+        // E.g. the staff_devices table is not migrated yet on the owner's computer (2026-11-20).
+        $this->mock(StaffDevices::class)->shouldReceive('signedIn')->andThrow(new RuntimeException('Table staff_devices does not exist'));
+        $owner = $this->staff();
+        $this->postJson('/admin/api/login', ['email' => $owner->email, 'password' => 'correct-horse-battery-9'])->assertOk();
+
+        $this->postJson('/admin/api/2fa/verify', ['code' => (new Google2FA)->getCurrentOtp($owner->two_factor_secret)])
+            ->assertOk()->assertJsonPath('user.email', $owner->email);
+        $this->getJson('/admin/api/me')->assertOk();
+    }
+
     public function test_the_same_browser_again_is_not_new(): void
     {
         $owner = $this->staff();
         $request = request();
-        StaffDevices::signedIn($request, $owner);
+        app(StaffDevices::class)->signedIn($request, $owner);
         $cookie = collect(app('cookie')->getQueuedCookies())->first(fn ($c) => $c->getName() === StaffDevices::COOKIE);
         $request->cookies->set(StaffDevices::COOKIE, $cookie->getValue());
-        StaffDevices::signedIn($request, $owner);
+        app(StaffDevices::class)->signedIn($request, $owner);
 
         $this->assertSame(1, DB::table('admin_activities')->where('action', 'staff.new_device')->count());
     }

@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-20 (PR 96)_
+_Last updated: 2026-11-20 (PR 98)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -59,6 +59,8 @@ _Last updated: 2026-11-20 (PR 96)_
 - **PR 94 (Watchdog core):** `app/Support/Watchdog` — `Runner` (groups `frequent` / `daily`, run by `iibsom:watchdog`), `Watchdog` (problem book: alert once, reminder, Fixed, quiet hours), `Notifier` (email + Telegram), checks in `Checks/` (one class each, listed in `config/watchdog.php`). State file `storage/app/watchdog/state.json` (tests use a temp file via `watchdog.state_path`). Errors counted by `ErrorCounter` from `bootstrap/app.php`. Small choices: QUESTIONS.md.
 - **PR 95 (Watchdog security + ads + digest):** groups `frequent` / `hourly` / `daily` / `digest`, all in `routes/console.php`. `Signals` (cache counters), `StaffDevices` (new-browser cookie), `Digest`, `Safety\DrugScan` (shared with `iibsom:drugs:check`). After every deploy: `php artisan iibsom:watchdog:baseline`.
 - **PR 96 (Watchdog admin page):** `WatchdogController` (`/admin/api/watchdog*`), React `admin/src/features/watchdog` (tabs via `?tab=`). Check keys contain a dot: read their config with `WatchdogSettings::definition($key)`, never `config("watchdog.checks.{$key}")`. Set-up guide: docs/watchdog.md. QA script: /tmp/qa/wd.py.
+- **PR 97:** admin `apiErrorMessage()` hides server text for 500+. Optional extras at sign-in (like `StaffDevices`) run in `rescue()`.
+- **PR 98:** sub-category icons in home panels via `.cat-thumb` (app.css) + `icon_url()` (helpers): icon files come from the build entry `resources/js/category-icons.js` (never loaded by pages). Keep the panel row on one Blade line (whitespace × 141 rows).
 
 ## How to run
 See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example .env && docker compose up -d --build`, then open http://localhost:8095.

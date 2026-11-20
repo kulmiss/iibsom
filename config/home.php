@@ -15,6 +15,7 @@ return [
         ['area' => 'top', 'key' => 'home.post_button', 'needs' => ['ads.posting']],
         ['area' => 'main', 'fixed' => true, 'label' => 'Categories', 'description' => 'The list on computers and the picture tiles on phones.'],
         ['area' => 'main', 'key' => 'home.sticky_categories'],
+        ['area' => 'main', 'key' => 'home.sub_icons'],
         ['area' => 'main', 'key' => 'home.quick_links'],
         ['area' => 'main', 'key' => 'site.banners', 'note' => 'Add or change the pictures in Home banners.'],
         ['area' => 'main', 'key' => 'home.popular_categories'],

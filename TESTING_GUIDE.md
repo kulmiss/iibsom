@@ -131,6 +131,7 @@ The same rows run automatically in a real browser (see "Automatic run" below).
 | J74 | Home category panel + dark mode | Computer: hover each category on home, at the top and after scrolling; footer → Dark | Panel as wide as the list, never under the ads; dark mode dark grey (not black), text easy to read | `home.sticky_categories`, `site.dark_mode` |
 | J75 | New categories (PR 93) | Computer: hover Services and Commercial Equipment on home (short window too); open /categories; Jobs → filter "Field of work"; Somali: /so/categories | Every sub category reachable (long panels scroll inside); 17 main groups; Somali names show; empty new groups hidden while "Hide empty" is ON | `home.sticky_categories`, `catalog.finder` |
 | J76 | Watchdog | Admin → Watchdog on your phone and computer. Settings: add your email and Telegram bot, Save, press both test buttons. Turn "Disk space" limit to 50 (alerts only if the disk is more than half full), wait 5 minutes | Test messages arrive; a 🟠 disk alert arrives once (if the disk is over 50%); Mark as fixed works; History shows it; set the limit back to 80 | `watchdog` |
+| J77 | Sub-category icons | Computer, light and dark: hover each category on home | Each sub category has its icon in a light blue box like the main list; nothing jumps; Admin → Home page → "icons next to sub categories" OFF shows names only | `home.sub_icons` |
 
 ## Automatic run
 
