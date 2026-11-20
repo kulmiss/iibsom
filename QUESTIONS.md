@@ -42,3 +42,5 @@ The owner said: "take your recommended option for small choices, log them here".
 | 2026-11-20 | 98 | Icon file missing → the first letter of the sub category in the same box. | Never an empty or broken box. |
 | 2026-11-20 | 98 | Fixed on the way: the admin icon picker listed our own social logos, which it cannot draw (console error). They are no longer offered. | Found by the browser check. |
 | 2026-11-20 | 99 | Feature switches: sections by what a switch changes (from its name), Phase 2/3 at the end; one column (open/closed cards of different heights look messy in two); closed sections remembered in this browser; while searching every match is shown open. | Easy to find; nothing hidden by mistake. |
+| 2026-11-20 | 100 | The intro under the title is turned OFF (switch `seo.intro`), not deleted. | It helped Google a little; you can switch it back ON. |
+| 2026-11-20 | 100 | "No scrollbars" covers the customer website only (not the admin), and also text boxes (they still scroll). | Your words: all except the page's own. Tell me if you want them back in text boxes or in the admin. |

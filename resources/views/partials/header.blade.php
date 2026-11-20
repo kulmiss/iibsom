@@ -7,11 +7,12 @@
     @php($phoneBar = $__env->hasSection('phone_bar'))
     @if ($phoneBar)
         {{-- Phones: a page's own top bar (the ad page: Back, category, Share, Save). Computers keep the normal bar. --}}
-        <div class="flex items-center gap-1 px-2 py-1.5 lg:hidden" data-phone-bar>
+        {{-- PR 100 (owner): the same fixed height as the normal bar (h-14 = 56 px), so the bar does not jump between pages. --}}
+        <div class="flex h-14 items-center gap-1 px-2 lg:hidden" data-phone-bar>
             @yield('phone_bar')
         </div>
     @endif
-    <div @class(['mx-auto max-w-6xl items-center gap-2 px-4 py-2.5 sm:gap-3', 'flex' => ! $phoneBar, 'hidden lg:flex' => $phoneBar])>
+    <div @class(['mx-auto h-14 max-w-6xl items-center gap-2 px-4 sm:gap-3 lg:h-auto lg:py-2.5', 'flex' => ! $phoneBar, 'hidden lg:flex' => $phoneBar]) data-main-bar>
         <a href="{{ lroute('home') }}" class="text-2xl font-extrabold tracking-tight" aria-label="{{ config('app.name') }} – {{ __('site.nav.home') }}">
             {{-- Lowercase so the first "I" is not read as "l". --}}
             {{ \Illuminate\Support\Str::lower(config('app.name')) }}

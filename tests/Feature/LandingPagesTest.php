@@ -43,7 +43,9 @@ class LandingPagesTest extends TestCase
             ->assertSee('"@type":"BreadcrumbList"', false)
             ->assertDontSee('noindex', false);
         // Breadcrumb: Home › Vehicles › Cars › Mogadishu › Toyota (last one is the current page)
-        $this->assertMatchesRegularExpression('#Vehicles</a>.*Cars</a>.*Mogadishu</a>.*<span aria-current="page">Toyota</span>#s', $res->getContent());
+        // PR 100: the breadcrumb ends with the number of results (like Jiji); Google still gets "… › Toyota" (JSON-LD).
+        $this->assertMatchesRegularExpression('#Vehicles</a>.*Cars</a>.*Mogadishu</a>.*<span class="truncate" aria-current="page" data-results-count>1 result for <strong[^>]*>Toyota Cars</strong> in Mogadishu</span>#s', $res->getContent());
+        $this->assertStringContainsString('"name":"Toyota"', $res->getContent());
     }
 
     public function test_category_city_page_links_to_brands_with_ads(): void

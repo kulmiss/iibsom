@@ -38,28 +38,28 @@
 
 @section('content')
     <div class="mx-auto max-w-6xl px-4 py-5" @if (feature('recommendations') && $category) data-track-cat="{{ $category->id }}" @endif>
+        {{-- Breadcrumb like Jiji (PR 100): the links above this page, then the number of results as the last part,
+             on one line (cut with … on narrow phones). The full path is still given to Google (JSON-LD above). --}}
+        @php
+            $whatText = $what ?? (($filters['q'] ?? '') !== '' ? '“'.$filters['q'].'”' : null);
+            $resultsLine = $whatText !== null
+                ? e(trans_choice('ads.browse.results_for', $results->total(), ['count' => number_format($results->total()), 'what' => "\u{E000}", 'where' => $city?->label ?? __('ads.browse.somalia')]))
+                : e(trans_choice('ads.browse.results', $results->total(), ['count' => number_format($results->total())]));
+            $resultsLine = $whatText !== null ? str_replace("\u{E000}", '<strong class="font-semibold text-stone-700">'.e($whatText).'</strong>', $resultsLine) : $resultsLine;
+        @endphp
         <nav class="text-sm text-stone-500" aria-label="Breadcrumb">
-            <ol class="flex flex-wrap items-center gap-x-1">
-                @foreach ($crumbs as $k => [$name, $url])
-                    <li class="flex items-center gap-x-1">
-                        @if ($k > 0)<span aria-hidden="true">›</span>@endif
-                        @if ($loop->last)<span aria-current="page">{{ $name }}</span>@else<a href="{{ $url }}" class="hover:underline">{{ $name }}</a>@endif
-                    </li>
+            <ol class="flex min-w-0 items-center gap-x-1 whitespace-nowrap">
+                @foreach (array_slice($crumbs, 0, $category ? -1 : null) as $k => [$name, $url])
+                    <li class="flex shrink-0 items-center gap-x-1">@if ($k > 0)<span aria-hidden="true">›</span>@endif<a href="{{ $url }}" class="hover:underline">{{ $name }}</a></li>
                 @endforeach
+                <li class="flex min-w-0 items-center gap-x-1"><span aria-hidden="true">›</span><span class="truncate" aria-current="page" data-results-count>{!! $resultsLine !!}</span></li>
             </ol>
         </nav>
         <div class="flex flex-wrap items-end justify-between gap-2">
             <div>
                 <h1 class="mt-1 text-2xl font-bold">{{ $title }}</h1>
-                <p class="text-sm text-stone-600" data-results-count>
-                    @if ($category || !empty($filters['q']))
-                        {{ trans_choice('ads.browse.results_for', $results->total(), ['count' => number_format($results->total()), 'what' => $what ?? '“'.$filters['q'].'”', 'where' => $city?->label ?? __('ads.browse.somalia')]) }}
-                    @else
-                        {{ trans_choice('ads.browse.results', $results->total(), ['count' => number_format($results->total())]) }}
-                    @endif
-                </p>
                 @if ($intro)
-                    {{-- Short, true intro (switch "seo.intro"): numbers from the live ads of this page. --}}
+                    {{-- Short, true intro (switch "seo.intro", OFF since PR 100 — owner: no text under the title): numbers from the live ads of this page. --}}
                     <p class="mt-1 max-w-2xl text-sm text-stone-600" data-intro>
                         {{ trans_choice('ads.browse.intro_count', $results->total(), ['what' => $category->label, 'where' => $city?->label ?? __('ads.browse.somalia'), 'count' => number_format($results->total())]) }}
                         {{ $intro['min'] === $intro['max'] ? __('ads.browse.intro_price_one', ['price' => '$'.number_format($intro['min'])]) : __('ads.browse.intro_price', ['min' => '$'.number_format($intro['min']), 'max' => '$'.number_format($intro['max'])]) }}

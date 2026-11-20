@@ -61,7 +61,14 @@ class AdPhoneBarDiscoverTest extends TestCase
         $this->assertStringContainsString('data-share-sheet data-url="'.e($this->ad->url()).'"', $html);
         $this->assertStringContainsString('aria-label="Share"', $html);
         $this->assertSame(2, substr_count($html, 'data-lang-menu'), 'language menu in the phone bar and the normal bar');
-        $this->assertStringContainsString('class="mx-auto max-w-6xl items-center gap-2 px-4 py-2.5 sm:gap-3 hidden lg:flex"', $html);
+        $this->assertStringContainsString('class="mx-auto h-14 max-w-6xl items-center gap-2 px-4 sm:gap-3 lg:h-auto lg:py-2.5 hidden lg:flex"', $html);
+    }
+
+    public function test_phone_bar_has_the_same_fixed_height_as_the_normal_bar(): void
+    {
+        // PR 100 (owner's recording): on the ad page the bar was 48 px, elsewhere 56 px, so it jumped between pages.
+        $this->assertStringContainsString('<div class="flex h-14 items-center gap-1 px-2 lg:hidden" data-phone-bar>', $this->page());
+        $this->assertMatchesRegularExpression('#<div class="mx-auto h-14 max-w-6xl[^"]*\bflex"\s*data-main-bar>#', (string) $this->get('/cars')->getContent());
     }
 
     public function test_somali_phone_bar(): void
@@ -77,7 +84,7 @@ class AdPhoneBarDiscoverTest extends TestCase
         foreach (['/', '/cars', '/categories'] as $url) {
             $html = $this->page($url);
             $this->assertStringNotContainsString('data-phone-bar', $html, $url);
-            $this->assertStringContainsString('class="mx-auto max-w-6xl items-center gap-2 px-4 py-2.5 sm:gap-3 flex"', $html, $url);
+            $this->assertStringContainsString('class="mx-auto h-14 max-w-6xl items-center gap-2 px-4 sm:gap-3 lg:h-auto lg:py-2.5 flex"', $html, $url);
         }
 
         $this->switch('ads.phone_top_bar', false);

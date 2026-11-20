@@ -111,8 +111,17 @@ class BrowseRichTest extends TestCase
 
     // ---- Intro ----
 
+    public function test_intro_is_off_by_default_no_text_under_the_title(): void
+    {
+        // PR 100 (owner): nothing under the title; the switch can bring the intro back.
+        $this->car('Toyota Vitz', 4100);
+        $this->assertFalse(config('features')['seo.intro']['default']);
+        $this->assertStringNotContainsString('data-intro', $this->get('/cars')->assertOk()->getContent());
+    }
+
     public function test_intro_says_true_numbers_in_both_languages(): void
     {
+        $this->switch('seo.intro', true);
         $this->car('Toyota Vitz', 4100);
         $this->car('Toyota Hilux', 28500);
         $this->car('Price on request', null);
@@ -126,6 +135,7 @@ class BrowseRichTest extends TestCase
 
     public function test_intro_only_on_the_plain_first_page_of_a_category(): void
     {
+        $this->switch('seo.intro', true);
         $this->car('Toyota Vitz', 4100);
 
         $this->assertStringNotContainsString('data-intro', $this->get('/cars?condition=used')->getContent());
