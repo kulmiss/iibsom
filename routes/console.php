@@ -9,6 +9,7 @@ use App\Support\Health\HealthChecker;
 use App\Support\Money\Boosts;
 use App\Support\Notify\Inbox;
 use App\Support\Safety\GuestReports;
+use App\Support\Watchdog\Watchdog;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
 
@@ -21,6 +22,11 @@ use Illuminate\Support\Facades\Schedule;
 Schedule::call(fn () => app(HealthChecker::class)->beat())
     ->name('heartbeat')
     ->everyMinute();
+
+// Watchdog (PR 94): checks every 5 minutes and once a night; alerts by email / Telegram. Never inside a visitor's request.
+Schedule::command('iibsom:watchdog')->name('watchdog')->everyFiveMinutes()->withoutOverlapping(10);
+Schedule::command('iibsom:watchdog daily')->name('watchdog-daily')->dailyAt('03:20')->timezone('Africa/Mogadishu')->withoutOverlapping(30);
+Schedule::call(fn () => Watchdog::prune())->name('watchdog-prune')->dailyAt('04:20')->timezone('Africa/Mogadishu');
 
 // Shared hosting has no always-running queue worker, so cron works the queue.
 if (config('iibsom.hosting') === 'shared') {

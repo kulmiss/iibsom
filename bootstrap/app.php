@@ -12,6 +12,7 @@ use App\Http\Middleware\RejectInvalidUtf8;
 use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\SetLocale;
 use App\Http\Middleware\ThrottleRequests;
+use App\Support\Watchdog\ErrorCounter;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -58,6 +59,11 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        // Watchdog (PR 94): count errors by kind and place, in the cache only (no message, no IP).
+        $exceptions->report(function (Throwable $e): void {
+            ErrorCounter::record($e);
+        });
+
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
         );

@@ -14,7 +14,9 @@ use App\Support\Catalog;
 use App\Support\Features\FeatureManager;
 use App\Support\Health\HealthChecker;
 use App\Support\Settings\SettingsManager;
+use Illuminate\Foundation\Events\DiagnosingHealth;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
 
@@ -49,5 +51,12 @@ class AppServiceProvider extends ServiceProvider
             $model::saved(fn () => app(Catalog::class)->flush());
             $model::deleted(fn () => app(Catalog::class)->flush());
         }
+
+        // /up (for outside uptime monitors, PR 94): answers 500 when the database is down. No details are shown.
+        Event::listen(DiagnosingHealth::class, function () {
+            if (app(HealthChecker::class)->only('database')['status'] !== 'ok') {
+                throw new \RuntimeException('Database not reachable.');
+            }
+        });
     }
 }

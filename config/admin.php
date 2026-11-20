@@ -52,6 +52,7 @@ return [
         'shops.manage' => 'Turn business shop pages on or off (monthly plans)',
         'activity.view' => 'See the activity log',
         'health.view' => 'See system health',
+        'watchdog.manage' => 'See the Watchdog, mark problems fixed, change its alerts',
         'demo.manage' => 'Show / delete demo data',
     ],
 

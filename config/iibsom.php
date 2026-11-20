@@ -54,6 +54,9 @@ return [
         'ads.max_photos' => 8,
         // Auto-hide (PR 89): an ad is hidden for a staff check after reports from this many different signed-in people.
         'reports.auto_hide_at' => 3,
+        // Watchdog (PR 94): the owner's choices (defaults in config/watchdog.php) and the Telegram bot token (kept encrypted).
+        'watchdog' => [],
+        'watchdog.telegram_token' => '',
         'currency' => 'USD',
         'phone.country_codes' => ['+252'],
         // One word or phrase per line. Matched as whole words, any case. Admin → Settings → General.
