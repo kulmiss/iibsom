@@ -86,9 +86,10 @@
         {{-- Category list (desktop). Hover, keyboard focus or the arrow button opens a side panel with the sub categories.
              Phones use the tiles below: a tap opens the category page, which starts with its sub categories. --}}
         {{-- Sticky (PR 87, "home.sticky_categories"): the list scrolls inside on short screens; the side panels are placed
-             against the aside (not the list), so the list's scroll never cuts them off. --}}
+             against the aside (not the list), so the list's scroll never cuts them off. A sticky box makes its own layer,
+             so it needs z-20: without it the ad cards (photo labels, Save buttons) were drawn over the panel (PR 91). --}}
         @php($stickyCats = feature('home.sticky_categories'))
-        <aside @class(['hidden', 'relative lg:block' => ! $stickyCats, 'lg:sticky lg:top-20 lg:flex lg:max-h-[calc(100dvh-6rem)] lg:flex-col lg:self-start' => $stickyCats]) aria-label="{{ __('site.home.categories') }}" data-cat-menu @if ($stickyCats) data-sticky @endif>
+        <aside @class(['hidden', 'relative lg:block' => ! $stickyCats, 'lg:sticky lg:top-20 lg:z-20 lg:flex lg:max-h-[calc(100dvh-6rem)] lg:flex-col lg:self-start' => $stickyCats]) aria-label="{{ __('site.home.categories') }}" data-cat-menu @if ($stickyCats) data-sticky @endif>
             <ul @class(['rounded-xl bg-white shadow-sm ring-1 ring-stone-200', 'min-h-0 flex-1 overflow-y-auto overscroll-contain [scrollbar-width:thin]' => $stickyCats])>
                 @foreach ($categories as $category)
                     @php($subs = $catalog->visibleChildren($category))
@@ -107,20 +108,23 @@
                             @endif
                         </div>
                         @if ($subs)
+                            {{-- Narrow panel, as wide as the list (owner, 2026-11-20, like Jiji): name with the count under it. --}}
                             <div id="cat-panel-{{ $category['id'] }}" data-cat-panel
-                                 class="invisible absolute start-full top-0 z-20 min-h-full w-[34rem] rounded-xl bg-white p-4 opacity-0 shadow-lg ring-1 ring-stone-200 transition group-hover/cat:visible group-hover/cat:opacity-100 data-[open]:visible data-[open]:opacity-100">
-                                <p class="flex items-center justify-between gap-3 font-semibold">
-                                    <span>{{ translated($category['name']) }}</span>
-                                    <a href="{{ lroute('browse.category', ['category' => $category['slug']]) }}" class="text-sm font-medium text-brand-700 hover:underline">{{ __('ads.browse.all_in', ['category' => translated($category['name'])]) }} ({{ number_format($category['ads_count']) }})</a>
-                                </p>
-                                {{-- One sub category per line (owner's wish, 2026-11-18): name and count side by side. --}}
-                                <ul class="mt-3 grid gap-0.5" data-cat-subs>
+                                 class="invisible absolute start-full top-0 z-20 min-h-full w-72 rounded-xl bg-white p-2 opacity-0 shadow-lg ring-1 ring-stone-200 transition group-hover/cat:visible group-hover/cat:opacity-100 data-[open]:visible data-[open]:opacity-100">
+                                <a href="{{ lroute('browse.category', ['category' => $category['slug']]) }}" class="block rounded-lg px-2 py-2 hover:bg-brand-50 focus-visible:bg-brand-50">
+                                    <span class="block font-semibold leading-tight">{{ translated($category['name']) }}</span>
+                                    <span class="block text-xs font-medium text-brand-700">{{ __('ads.browse.all_in', ['category' => translated($category['name'])]) }} ({{ number_format($category['ads_count']) }})</span>
+                                </a>
+                                {{-- One sub category per line (owner's wish, 2026-11-18). --}}
+                                <ul class="mt-1 grid gap-0.5 border-t border-stone-100 pt-1" data-cat-subs>
                                     @foreach ($subs as $sub)
                                         <li>
-                                            <a href="{{ lroute('browse.category', ['category' => $sub['slug']]) }}" class="flex items-center gap-3 rounded-lg px-2 py-1.5 hover:bg-brand-50 focus-visible:bg-brand-50" title="{{ translated($sub['name']) }}">
+                                            <a href="{{ lroute('browse.category', ['category' => $sub['slug']]) }}" class="flex items-center gap-3 rounded-lg px-2 py-1.5 hover:bg-brand-50 focus-visible:bg-brand-50">
                                                 <span class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-stone-50 text-brand-700">{{ icon($sub['icon'], 'size-5') }}</span>
-                                                <span class="min-w-0 flex-1 truncate text-sm font-medium">{{ translated($sub['name']) }}</span>
-                                                <span class="shrink-0 text-xs text-stone-500">{{ trans_choice('site.ads_count', $sub['ads_count'], ['count' => number_format($sub['ads_count'])]) }}</span>
+                                                <span class="min-w-0 flex-1">
+                                                    <span class="block text-sm font-medium leading-tight">{{ translated($sub['name']) }}</span>
+                                                    <span class="block text-xs text-stone-500">{{ trans_choice('site.ads_count', $sub['ads_count'], ['count' => number_format($sub['ads_count'])]) }}</span>
+                                                </span>
                                             </a>
                                         </li>
                                     @endforeach

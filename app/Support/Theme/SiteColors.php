@@ -23,7 +23,7 @@ class SiteColors
     ];
 
     /** Dark mode tints (the light shades turned dark) and the light text colour used on dark. */
-    private const DARK = [50 => '#13243a', 100 => '#17304f', 200 => '#24446b', 300 => '#3a649a'];
+    private const DARK = [50 => '#1d3047', 100 => '#223a59', 200 => '#2c4a73', 300 => '#3f68a0'];
 
     private const DARK_TEXT = '#8ab8f2';
 

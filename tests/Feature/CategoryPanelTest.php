@@ -37,8 +37,9 @@ class CategoryPanelTest extends TestCase
         $this->assertStringContainsString('id="cat-panel-'.$vehicles->id.'"', $html);
         $this->assertStringContainsString('aria-controls="cat-panel-'.$vehicles->id.'"', $html);
         $this->assertMatchesRegularExpression('#cat-panel-'.$vehicles->id.'".*?All in Vehicles \(3\).*?href="'.preg_quote(url('/cars'), '#').'".*?Cars.*?2 ads.*?Buses &amp; Minibuses.*?1 ad#s', $html);
-        // One sub category per line (owner's wish): a single list, the name cut with "…" if very long.
-        $this->assertMatchesRegularExpression('#<ul class="mt-3 grid gap-0.5" data-cat-subs>\s*<li>\s*<a [^>]*title="[^"]+">.*?<span class="min-w-0 flex-1 truncate#s', $html);
+        // One sub category per line (owner's wish), in a narrow panel (owner, 2026-11-20): the count under the name.
+        $this->assertStringContainsString('min-h-full w-72 rounded-xl', $html);
+        $this->assertMatchesRegularExpression('#data-cat-subs>\s*<li>\s*<a [^>]*>.*?<span class="block text-sm font-medium leading-tight">Cars</span>\s*<span class="block text-xs text-stone-500">2 ads</span>#s', $html);
         // Empty sub categories show while the switch is OFF…
         $this->assertStringContainsString(url('/boats'), $html);
     }
