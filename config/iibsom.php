@@ -39,6 +39,10 @@ return [
     // "Popular" label on ad cards (switches "ads.card_badges" + "ad_stats"): at least this many views.
     'popular_views' => 100,
 
+    // Page cache (PR 90): after an ad changes, pages that list ads are refreshed at most once per this many seconds
+    // (the ad's own page at once). 0 = at once every time (tests).
+    'page_cache_list_delay' => (int) env('PAGE_CACHE_LIST_DELAY', 30),
+
     // Default values for settings the Super Admin can change.
     'settings' => [
         'languages.enabled' => ['en'],

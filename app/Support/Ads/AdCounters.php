@@ -86,7 +86,7 @@ final class AdCounters
             City::whereKey($cityId)->update(['ads_count' => self::live()->where('city_id', $cityId)->count()]);
         }
 
-        app(Catalog::class)->flush();
+        app(Catalog::class)->flush(everywhere: false); // counts only: the lists (PR 90)
     }
 
     public static function refreshCategory(Category $category): void
@@ -104,7 +104,7 @@ final class AdCounters
         foreach (City::pluck('id') as $cityId) {
             City::whereKey($cityId)->update(['ads_count' => self::live()->where('city_id', $cityId)->count()]);
         }
-        app(Catalog::class)->flush();
+        app(Catalog::class)->flush(everywhere: false); // counts only: the lists (PR 90)
     }
 
     /**

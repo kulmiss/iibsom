@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\AdStatus;
 use App\Support\Ads\AdCounters;
 use App\Support\Cache\PageCache;
+use App\Support\Search\AdFilters;
 use App\Support\Social\SocialPosts;
 use Database\Factories\AdFactory;
 use Illuminate\Database\Eloquent\Builder;
@@ -51,8 +52,15 @@ class Ad extends Model
     protected static function booted(): void
     {
         // Live-ad counters on categories and cities follow every change.
-        static::saved(fn () => PageCache::bump());
-        static::deleted(fn () => PageCache::bump());
+        // Fast filters (PR 90): the detail values in their own indexed table.
+        static::saved(function (Ad $ad) {
+            if ($ad->wasRecentlyCreated || $ad->wasChanged('fields')) {
+                AdFilters::sync($ad);
+            }
+        });
+        // Its own page at once, the lists soon after (PR 90: the rest of the cache stays).
+        static::saved(fn (Ad $ad) => PageCache::adChanged($ad->id));
+        static::deleted(fn (Ad $ad) => PageCache::adChanged($ad->id));
         static::saved(function (Ad $ad) {
             if ($ad->wasChanged(['status', 'category_id', 'city_id', 'expires_at', 'is_demo']) || $ad->wasRecentlyCreated) {
                 AdCounters::refreshFor($ad);

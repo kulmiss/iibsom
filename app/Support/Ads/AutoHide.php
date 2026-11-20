@@ -52,7 +52,7 @@ final class AutoHide
         $ad->refresh();
         // What a normal status change does through the model events: live-ad counts and the page cache.
         AdCounters::refreshFor($ad);
-        PageCache::bump();
+        PageCache::adChanged($ad->id);
 
         Inbox::add($ad->user, 'ad_hidden', $ad, ['title' => $ad->title]);
         Activity::system('ad.auto_hidden', "Hid ad #{$ad->id} “{$ad->title}” after reports from {$count} people (waits for a check)", $ad, ['reporters' => $count, 'limit' => $limit]);

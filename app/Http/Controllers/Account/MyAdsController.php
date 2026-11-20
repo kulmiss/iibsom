@@ -126,7 +126,7 @@ class MyAdsController extends Controller
             ->where('published_at', '<=', now()->subDays(self::BUMP_DAYS))
             ->update(['published_at' => now(), 'bumped_at' => now(), 'updated_at' => now()]);
         if ($done === 1) {
-            PageCache::bump();
+            PageCache::adChanged($ad->id); // the update above skips the model events
         }
 
         return back()->with('status', __('ads.mine.bumped'));

@@ -126,6 +126,8 @@ The same rows run automatically in a real browser (see "Automatic run" below).
 | J69 | Category list stays in view | Computer: home page, scroll down the ads; hover a category | The list stays at the top of the screen; the sub-category panel still opens in full | `home.sticky_categories` |
 | J70 | Website colour | Admin → Settings → Appearance → Website colour: pick the green dot, Save; open the site (light + dark, phone + computer); try a light yellow; then "Back to iibsom blue" + Save | Top bar, buttons and links green, readable in light and dark; yellow is refused with "Use … instead"; blue again after reset | `site.custom_color` |
 | J71 | Hide ads after reports | Sign in as 3 different customers and report the same ad; then as staff open Reports → "Put ad back"; repeat and "Take ad down" | After the 3rd report the ad is gone from the site, the seller gets a bell message and sees "Hidden for now" in My ads (Waiting tab); Put back = live again, reports closed; Take down = rejected | `reports.auto_hide` |
+| J72 | Cache after ad changes | Page cache ON. As a guest open Help and Cars; as a seller edit an ad's price; as the guest reload that ad, Cars and Help | The ad shows the new price at once; Cars shows it at once (or within 30 seconds if many ads change); Help stays cached | `performance.page_cache` |
+| J73 | Fast detail filters | Cars → filter Toyota, year 2010–2015, then turn "Fast detail filters" OFF and filter again | Same ads both times | `search.indexed_filters` |
 
 ## Automatic run
 

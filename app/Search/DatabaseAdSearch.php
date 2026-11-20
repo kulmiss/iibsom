@@ -4,6 +4,7 @@ namespace App\Search;
 
 use App\Models\Ad;
 use App\Support\Cache\PageCache;
+use App\Support\Search\AdFilters;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
@@ -189,17 +190,39 @@ class DatabaseAdSearch implements AdSearch
             return;
         }
 
+        $indexed = feature('search.indexed_filters');
+
         if (is_array($value)) { // number range
-            if (isset($value['min']) && $value['min'] !== '') {
-                $query->where("fields->{$key}", '>=', (int) $value['min']);
+            $min = isset($value['min']) && $value['min'] !== '' ? (int) $value['min'] : null;
+            $max = isset($value['max']) && $value['max'] !== '' ? (int) $value['max'] : null;
+            if ($indexed && ($min !== null || $max !== null)) {
+                // PR 90: the indexed table (same result as the JSON way below).
+                $query->whereExists(fn ($q) => $q->selectRaw('1')->from('ad_filters')->whereColumn('ad_filters.ad_id', 'ads.id')
+                    ->where('ad_filters.key', $key)->whereNotNull('ad_filters.num_value')
+                    ->when($min !== null, fn ($w) => $w->where('ad_filters.num_value', '>=', $min))
+                    ->when($max !== null, fn ($w) => $w->where('ad_filters.num_value', '<=', $max)));
+
+                return;
             }
-            if (isset($value['max']) && $value['max'] !== '') {
-                $query->where("fields->{$key}", '<=', (int) $value['max']);
+            if ($min !== null) {
+                $query->where("fields->{$key}", '>=', $min);
+            }
+            if ($max !== null) {
+                $query->where("fields->{$key}", '<=', $max);
             }
 
             return;
         }
 
-        $query->where("fields->{$key}", $value === '1' ? true : (string) $value);
+        $text = (string) $value;
+        if ($indexed && mb_strlen($text) <= AdFilters::MAX_TEXT) {
+            // "1" also matches a yes/no field that is yes (kept as '1'), like the JSON way.
+            $query->whereExists(fn ($q) => $q->selectRaw('1')->from('ad_filters')->whereColumn('ad_filters.ad_id', 'ads.id')
+                ->where('ad_filters.key', $key)->where('ad_filters.text_value', $text));
+
+            return;
+        }
+
+        $query->where("fields->{$key}", $value === '1' ? true : $text);
     }
 }
