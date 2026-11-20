@@ -20,13 +20,16 @@ trait WatchdogTesting
     /** What the site's own pages answer to the speed check (tests change it). */
     protected ?\Closure $pageAnswer = null;
 
+    /** What Telegram answers (tests change it). */
+    protected ?\Closure $telegramAnswer = null;
+
     protected function setUpWatchdog(): void
     {
         $this->statePath = sys_get_temp_dir().'/iibsom-watchdog-'.bin2hex(random_bytes(6)).'.json';
         config(['watchdog.state_path' => $this->statePath]);
         Mail::fake();
         Http::fake([
-            'api.telegram.org/*' => Http::response(['ok' => true]),
+            'api.telegram.org/*' => fn ($request) => $this->telegramAnswer ? ($this->telegramAnswer)($request) : Http::response(['ok' => true]),
             '*' => fn ($request) => $this->pageAnswer ? ($this->pageAnswer)($request) : Http::response('ok'),
         ]);
 

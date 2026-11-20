@@ -105,7 +105,7 @@ final class Runner
                 $done[$key] = $findings === [] ? 'ok' : 'found '.count($findings);
             } catch (Throwable $e) {
                 Log::warning('watchdog.check_failed', ['check' => $key, 'error' => class_basename($e)]);
-                $this->watchdog->apply($key, [new Finding($key.':check_failed', 'warning', 'The "'.config("watchdog.checks.{$key}.label").'" check could not run',
+                $this->watchdog->apply($key, [new Finding($key.':check_failed', 'warning', 'The "'.(WatchdogSettings::definition($key)['label'] ?? $key).'" check could not run',
                     'The Watchdog could not finish this check ('.class_basename($e).').', ['Look at storage/logs/laravel.log for "watchdog.check_failed".'])]);
                 $done[$key] = 'failed';
             }

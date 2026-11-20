@@ -97,6 +97,15 @@ class WatchdogCoreTest extends TestCase
         $this->assertCount(2, $this->telegrams());
     }
 
+    public function test_each_problem_gets_the_area_of_its_check(): void
+    {
+        $this->watchdog()->apply('security.logins', [$this->finding('urgent', 'security.logins:staff')]);
+        $this->watchdog()->apply('ads.queue', [$this->finding('warning', 'ads.queue')]);
+        $this->watchdog()->apply('health.backups', [$this->finding('urgent', 'health.backups:old')]);
+
+        $this->assertSame(['ads.queue' => 'ads', 'health.backups:old' => 'backups', 'security.logins:staff' => 'security'], WatchdogProblem::orderBy('key')->pluck('area', 'key')->all());
+    }
+
     public function test_only_the_parts_that_are_found_stay_open(): void
     {
         $this->watchdog()->apply('health.speed', [$this->finding('urgent', 'health.speed:home:down'), $this->finding('urgent', 'health.speed:ad:down')]);
@@ -210,7 +219,7 @@ class WatchdogCoreTest extends TestCase
 
     public function test_a_failing_telegram_never_logs_the_token(): void
     {
-        Http::fake(['api.telegram.org/*' => Http::response(['ok' => false], 401)]);
+        $this->telegramAnswer = fn () => Http::response(['ok' => false], 401);
         $this->watchdog()->apply('health.disk', [$this->finding()]);
 
         $log = (string) @file_get_contents(storage_path('logs/laravel.log'));

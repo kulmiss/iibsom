@@ -45,7 +45,18 @@ final class WatchdogSettings
 
     public function limit(string $check): int
     {
-        return (int) ($this->all()['checks'][$check]['limit'] ?? config("watchdog.checks.{$check}.limit", 0));
+        return (int) ($this->all()['checks'][$check]['limit'] ?? self::definition($check)['limit'] ?? 0);
+    }
+
+    /**
+     * One check from config/watchdog.php. (Check keys have a dot, like "health.disk", so config("watchdog.checks.health.disk")
+     * would look for checks → health → disk and find nothing.)
+     *
+     * @return array<string, mixed>
+     */
+    public static function definition(string $check): array
+    {
+        return (array) (config('watchdog.checks')[$check] ?? []);
     }
 
     /** @param  array<string, mixed>  $values  Already validated (see the admin controller). */

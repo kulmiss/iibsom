@@ -178,7 +178,7 @@ final class Watchdog
     private function fields(Finding $finding): array
     {
         return [
-            'area' => config("watchdog.checks.{$finding->check()}.area", 'health'),
+            'area' => WatchdogSettings::definition($finding->check())['area'] ?? 'health',
             'level' => $finding->level,
             'title' => mb_substr($finding->title, 0, 200),
             'message' => $finding->message,

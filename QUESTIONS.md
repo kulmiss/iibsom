@@ -29,3 +29,9 @@ The owner said: "take your recommended option for small choices, log them here".
 | 2026-11-20 | 95 | Drug check: only live ads changed since the last look (every 5 minutes); found ads go back to Waiting with the Drugs mark (the same as `iibsom:drugs:check`), one message per batch. | Cheap; posting already refuses drug words. |
 | 2026-11-20 | 95 | The daily digest has yesterday's numbers (from the weekly summary code). On Mondays it also has "Last 7 days" — one message, not a second weekly one. The weekly summary email (PR 41) stays as it is. | No double messages. |
 | 2026-11-20 | 95 | The digest email is the daily mail test when it went out; otherwise a short test mail is sent at night. | One email a day, not two. |
+| 2026-11-20 | 96 | The Watchdog page has 3 tabs: Overview, History, Settings. The big status counts only urgent and warning problems; 🟢 notes (like "Backups are not watched yet") show on the card as "All good · 1 note". | One clear answer at the top. |
+| 2026-11-20 | 96 | Mute choices: 1 h, 4 h, 12 h, 1 day, 3 days, 7 days. | Simple list for a phone. |
+| 2026-11-20 | 96 | Limits that would alert all the time are raised when saved: disk warning stays under 90% (90% is always urgent), page speed at least 500 ms, others at least 1. | A typo must not flood your phone. |
+| 2026-11-20 | 96 | The Telegram token is never sent back to the browser; the page only says "a token is saved". Leave the box empty to keep it. | Your rule: no secrets anywhere they can leak. |
+| 2026-11-20 | 96 | No "Check now" button. | The speed check opens the site itself; on a small server (or `php artisan serve`) a page that calls itself can hang. The 5-minute cron is soon enough. |
+| 2026-11-20 | 96 | The whole-Watchdog switch stays in Feature switches ("Watchdog"); while it is OFF the menu item and page are hidden. | Same place as every other switch. |

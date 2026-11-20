@@ -26,6 +26,7 @@ use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\SystemController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\VerificationController;
+use App\Http\Controllers\Admin\WatchdogController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -185,6 +186,17 @@ Route::prefix('admin/api')->group(function () {
             Route::post('/staff/{user}/reset-2fa', [StaffController::class, 'resetTwoFactor'])->name('admin.api.staff.reset2fa');
             Route::post('/staff/{user}/reset-password', [StaffController::class, 'resetPassword'])->name('admin.api.staff.resetPassword');
             Route::delete('/staff/{user}', [StaffController::class, 'destroy'])->name('admin.api.staff.destroy');
+        });
+
+        // Watchdog (PR 96): status, problems, history, settings, test alerts.
+        Route::middleware(['feature:watchdog', 'admin.can:watchdog.manage'])->group(function () {
+            Route::get('/watchdog', [WatchdogController::class, 'index'])->name('admin.api.watchdog');
+            Route::get('/watchdog/history', [WatchdogController::class, 'history'])->name('admin.api.watchdog.history');
+            Route::post('/watchdog/problems/{problem}/fix', [WatchdogController::class, 'fix'])->name('admin.api.watchdog.fix');
+            Route::post('/watchdog/problems/{problem}/mute', [WatchdogController::class, 'mute'])->name('admin.api.watchdog.mute');
+            Route::get('/watchdog/settings', [WatchdogController::class, 'settings'])->name('admin.api.watchdog.settings');
+            Route::put('/watchdog/settings', [WatchdogController::class, 'updateSettings'])->name('admin.api.watchdog.settings.update');
+            Route::post('/watchdog/test', [WatchdogController::class, 'test'])->middleware('throttle:6,1')->name('admin.api.watchdog.test');
         });
 
         // System health + demo data
