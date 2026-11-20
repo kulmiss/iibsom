@@ -101,7 +101,7 @@
                             <a href="{{ lroute('browse.category', ['category' => $category['slug']]) }}" class="flex min-w-0 flex-1 items-center gap-3 py-2.5 ps-3">
                                 <span class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700">{{ icon($category['icon']) }}</span>
                                 <span class="min-w-0 flex-1">
-                                    <span class="block font-medium leading-tight">{{ translated($category['name']) }}</span>
+                                    <span class="line-clamp-2 font-medium leading-tight" data-cat-name>{{ translated($category['name']) }}</span>
                                     <span class="block text-xs text-stone-500">{{ trans_choice('site.ads_count', $category['ads_count'], ['count' => number_format($category['ads_count'])]) }}</span>
                                 </span>
                             </a>
@@ -203,7 +203,7 @@
                     @foreach ($popular as $category)
                         <a href="{{ lroute('browse.category', ['category' => $category['slug']]) }}" class="group flex items-center gap-3 rounded-xl bg-white p-3 shadow-sm ring-1 ring-stone-200 hover:ring-brand-200">
                             <span class="flex size-12 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700 group-hover:bg-brand-700 group-hover:text-white">{{ icon($category['icon'], 'size-6') }}</span>
-                            <span class="text-sm font-medium leading-tight">{{ translated($category['name']) }}</span>
+                            <span class="line-clamp-2 min-w-0 break-words text-sm font-medium leading-tight" data-cat-name>{{ translated($category['name']) }}</span>
                         </a>
                     @endforeach
                 </div>

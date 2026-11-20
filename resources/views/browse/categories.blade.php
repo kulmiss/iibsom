@@ -34,7 +34,10 @@
                             </span>
                             <span class="text-stone-400 transition group-open:rotate-90 rtl:rotate-180 rtl:group-open:rotate-90">{{ icon('chevron-right', 'size-5') }}</span>
                         </summary>
-                        <ul class="border-t border-stone-100 p-1.5">
+                        {{-- PR 103: the sub categories start further in, with a line on their start side, so the main
+                             category above and its sub categories are easy to tell apart. --}}
+                        <div class="border-t border-stone-100 py-1.5 pe-1.5">
+                        <ul class="ms-7 border-s-2 border-brand-100 ps-1.5 sm:ms-9" data-finder-subs>
                             <li>
                                 <a href="{{ lroute('browse.category', ['category' => $main['slug']]) }}" class="flex items-center gap-3 rounded-lg px-2 py-2 text-sm font-medium text-brand-800 hover:bg-brand-50">
                                     {{ __('ads.browse.all_in', ['category' => translated($main['name'])]) }}
@@ -50,6 +53,7 @@
                                 </li>
                             @endforeach
                         </ul>
+                        </div>
                     </details>
                 </li>
             @endforeach

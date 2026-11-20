@@ -32,6 +32,18 @@ class HomePageTest extends TestCase
             ->assertSee('No ads yet');
     }
 
+    public function test_category_names_stop_after_two_lines(): void
+    {
+        // PR 103: side list and popular categories clamp the name to 2 lines; the phone tiles do it in app.css.
+        $html = (string) $this->get('/')->assertOk()->getContent();
+        $names = substr_count($html, 'data-cat-name>');
+        $this->assertGreaterThan(0, $names);
+        $this->assertSame($names, preg_match_all('/<span class="line-clamp-2[^"]*" data-cat-name>/', $html));
+
+        $css = (string) file_get_contents(resource_path('css/app.css'));
+        $this->assertMatchesRegularExpression('/\.tile > span:not\(\.tile-icon\) \{\s*@apply line-clamp-2/', $css);
+    }
+
     public function test_phone_tiles_start_with_post_ad_and_trending(): void
     {
         $html = $this->get('/')->getContent();

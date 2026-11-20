@@ -34,6 +34,10 @@
     .tile {
         @apply flex flex-col items-center gap-1.5 text-center text-xs font-medium leading-tight text-stone-800;
     }
+    /* PR 103 (owner: "category text max 2 lines"): a long name stops after two lines with "…". */
+    .tile > span:not(.tile-icon) {
+        @apply line-clamp-2 break-words;
+    }
     .tile-icon {
         @apply flex aspect-square w-full max-w-[4.5rem] items-center justify-center rounded-xl;
     }

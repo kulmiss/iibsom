@@ -53,15 +53,17 @@ class CardsAndListsTest extends TestCase
         $this->car('Toyota Vitz', ['condition' => 'used', 'description' => "Clean car.\n\nNew <b>tyres</b>, ".str_repeat('very good ', 40)]);
 
         $page = $this->get('/cars')->assertOk();
-        $page->assertSee('>Used</p>', false)
+        // PR 103: a badge on the bottom line, before the city and time (no separate line under the title).
+        $page->assertSeeInOrder(['data-card-title>Toyota Vitz', 'data-card-condition>Used</span>', 'Mogadishu ·'], false)
+            ->assertDontSee('>Used</p>', false)
             ->assertSee('Clean car. New &lt;b&gt;tyres&lt;/b&gt;', false)
             ->assertDontSee('<b>tyres</b>', false)
             ->assertDontSee(str_repeat('very good ', 20), false); // cut at 160 letters
 
-        $this->get('/so/cars')->assertOk()->assertSee('>La isticmaalay</p>', false);
+        $this->get('/so/cars')->assertOk()->assertSee('data-card-condition>La isticmaalay</span>', false);
 
         $this->switches(['ads.card_details' => false]);
-        $this->get('/cars')->assertOk()->assertDontSee('>Used</p>', false)->assertDontSee('Clean car.', false);
+        $this->get('/cars')->assertOk()->assertDontSee('data-card-condition', false)->assertDontSee('Clean car.', false);
     }
 
     public function test_a_card_without_condition_or_description_shows_no_empty_lines(): void
@@ -70,7 +72,7 @@ class CardsAndListsTest extends TestCase
 
         $html = $this->get('/cars')->assertOk()->getContent();
         $this->assertStringNotContainsString('line-clamp-2 text-sm text-stone-600"></p>', (string) $html);
-        $this->assertStringNotContainsString('text-xs font-medium text-stone-600"></p>', (string) $html);
+        $this->assertStringNotContainsString('data-card-condition', (string) $html);
     }
 
     // ---- Save button on cards ----

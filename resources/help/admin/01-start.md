@@ -26,3 +26,7 @@ A 5-step setup asks the main questions: languages, ad rules, cities, emails and 
 - **Support:** can look at ads, reports and users, but not change them.
 
 Everyone signs in with a password **and** a 6-digit code from an authenticator app (2FA). Staff are signed out after 60 minutes without activity.
+
+## Search anything
+
+The **Search** box at the top (or **Ctrl + K**, **⌘ K** on a Mac) finds everything from one place: ads (by words in the title or by number, like #123), people (name, email or phone number), categories (English or Somali), feature switches, pages, settings and the pages of this admin. Use the arrow keys and Enter, or tap a result. An ad opens right there; a setting opens at its field. You only see what your role may open.

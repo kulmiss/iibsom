@@ -1,6 +1,10 @@
 # Settings
 
-## General
+**Find a setting** (top right): type a word such as *colour*, *email*, *drugs* or *Telegram*, press Enter, and the page opens at that field (it lights up for a moment). The menu on the left has the setting pages and, under **Other places**, the pages that have their own settings (Watchdog alerts, Feature switches, Home page parts, Staff, Pages).
+
+## Site rules
+
+The page is in parts (Ads and posting, Languages, Safety words, Emails, Payments, Buyers abroad, Footer); the buttons on top jump to a part. When you change something, a bar with **Save settings** and **Undo** stays at the bottom of the screen until you save.
 
 - **Ad rules:** days before ads end, ads per seller per day, photos per ad.
 - **Languages ON:** English is always ON. Turn Somali ON when the translation is checked.
@@ -11,13 +15,13 @@
 - **Footer:** tick the links to show (About, Terms, Privacy, Cookie info, Copyright, Contact us, Safety tips, Help centre, Popular categories and cities) and paste the links of iibsom's social pages (Facebook, Instagram, TikTok, YouTube, Telegram, WhatsApp). Empty = hidden. Only https links on the network's own site are accepted. The switch **Big footer** (Switches → Site) turns the whole footer on or off.
 - **Run the first-time setup again:** the same questions in 5 short steps.
 
-## Appearance
+## Look and colours
 
 **Website colour:** the colour of the website's top bar, buttons and links. Pick one colour (or a ready one); the lighter and darker shades and the dark mode are made from it. The preview shows how it looks. A colour that is too light is refused, because white text on it would be hard to read; you get a darker one to use instead. "Back to iibsom blue" undoes it. Visitors see the new colour at once. Switch: **Website colour**. Only the Super Admin (Settings) can change it.
 
 **Admin colour** and light or dark mode: only for this admin.
 
-## Security (2FA)
+## Your sign-in (2FA)
 
 Shows that 2FA is on for you. Lost your phone? Use one of your recovery codes, or ask the Super Admin to reset your 2FA (Staff page).
 
