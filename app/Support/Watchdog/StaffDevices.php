@@ -14,11 +14,11 @@ use Illuminate\Support\Str;
  * only its hash is stored, with a label like "Chrome on Windows". A sign-in from a browser this staff member
  * never used is written to the activity log ("staff.new_device"); the Watchdog tells the owner.
  */
-final class StaffDevices
+class StaffDevices
 {
     public const COOKIE = 'iibsom_staff_device';
 
-    public static function signedIn(Request $request, User $user): void
+    public function signedIn(Request $request, User $user): void
     {
         $id = $request->cookie(self::COOKIE);
         $id = is_string($id) ? $id : '';

@@ -11,9 +11,15 @@ export const api = axios.create({
   headers: { Accept: 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
 })
 
-/** First error message from a Laravel validation (422) or other error response. */
+export const SERVER_ERROR = 'Something went wrong on the server. Please try again. If it keeps happening, tell your developer.'
+
+/**
+ * First error message from a Laravel validation (422) or other error response.
+ * A server error (500+) never shows its own text: with debug on it can hold database details.
+ */
 export function apiErrorMessage(error: unknown, fallback = 'Something went wrong. Please try again.'): string {
   if (error instanceof AxiosError) {
+    if ((error.response?.status ?? 0) >= 500) return SERVER_ERROR
     const data = error.response?.data as { message?: string; errors?: Record<string, string[]> } | undefined
     const first = data?.errors ? Object.values(data.errors)[0]?.[0] : undefined
     return first ?? data?.message ?? fallback
