@@ -14,6 +14,8 @@ export type StaffUser = {
   guide: boolean
   /** "Verified badge" switch (Phase 2). */
   verified_badge: boolean
+  /** "Phone confirmed" tick switch (PR 108). */
+  phone_confirmed?: boolean
   /** "Seller ratings" switch (Phase 3). */
   seller_ratings: boolean
   /** "Help for buyers abroad" switch (Phase 3). */

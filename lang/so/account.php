@@ -103,6 +103,26 @@ return [
         'phone_blocked' => 'Lambarkan lagama isticmaali karo iibsom. Nala soo xiriir haddii aad u malaynayso inay khalad tahay.',
     ],
 
+    // "Phone confirmed" (PR 108)
+    'phone' => [
+        'title' => 'Xaqiiji lambarkayga taleefanka',
+        'intro' => 'Iibsadayaashu waxay aaminaan iibiyeyaasha lambarkooda aan hubinnay. Qaado kood gaaban, ugu soo dir WhatsApp-ka lambarkan, kooxdayaduna waxay calaamadin doontaa "Taleefanka waa la xaqiijiyay". SMS ma jiro, lacag ma jirto.',
+        'get_code' => 'Qaado koodkayga',
+        'code_ready' => 'Waa kan koodkaagu. Nooga soo dir WhatsApp-ka lambarkaaga.',
+        'your_code' => 'Koodkaaga',
+        'open_whatsapp' => 'Ku dir WhatsApp',
+        'whatsapp_text' => 'iibsom: fadlan xaqiiji lambarkayga. Koodkaygu waa :code',
+        'whatsapp_note' => 'Ka soo dir lambarka akoonkaaga. Kooxdayadu waxay eegtaa fariimaha maalin kasta.',
+        'no_whatsapp' => 'Kooxdayadu waxay kugu soo wici doontaa lambarkan si ay u xaqiijiso. Koodkan diyaar u ahow.',
+        'done' => 'Lambarkaaga waa la xaqiijiyay. Iibsadayaashu waxay arkaan "Taleefanka waa la xaqiijiyay" magacaaga agtiisa.',
+        'change_note' => 'Haddii aad beddesho lambarkaaga, calaamaddu way baxaysaa ilaa aan xaqiijinno kan cusub.',
+        'tick' => 'Taleefanka waa la xaqiijiyay',
+        'what_title' => 'Maxay tani ka dhigan tahay?',
+        'what_body' => 'Kooxdayadu waxay wacday ama fariin u dirtay lambarkan, iibiyuhuna wuu jawaabay. Macnaheedu maaha inaan hubinnay alaabta ama iibiyaha. Had iyo jeer arag alaabta ka hor intaadan bixin.',
+        'menu' => 'Xaqiiji lambarkayga taleefanka',
+        'menu_done' => 'Taleefanka waa la xaqiijiyay',
+    ],
+
     'verify' => [
         'title' => 'Hel calaamadda La Xaqiijiyey',
         'badge' => 'La xaqiijiyey',

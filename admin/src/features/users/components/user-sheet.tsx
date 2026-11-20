@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { format } from 'date-fns'
-import { Ban, BadgeX, RotateCcw } from 'lucide-react'
+import { format, formatDistanceToNow } from 'date-fns'
+import { Ban, BadgeX, PhoneCall, PhoneOff, RotateCcw } from 'lucide-react'
 import { toast } from 'sonner'
 import { api, apiErrorMessage } from '@/lib/api'
 import { useAuthStore } from '@/stores/auth-store'
@@ -60,6 +60,16 @@ export function UserSheet({ userId, onOpenChange }: { userId: number | null; onO
     onError: (e) => toast.error(apiErrorMessage(e)),
   })
 
+  const phoneOn = useAuthStore((s) => !!s.user?.phone_confirmed)
+  const phone = useMutation({
+    mutationFn: (on: boolean) => (on ? api.post(`/users/${userId}/phone-confirmed`) : api.delete(`/users/${userId}/phone-confirmed`)),
+    onSuccess: (_, on) => {
+      toast.success(on ? 'Phone confirmed. The tick shows on their ads.' : '“Phone confirmed” removed.')
+      refresh()
+    },
+    onError: (e) => toast.error(apiErrorMessage(e)),
+  })
+
   const unban = useMutation({
     mutationFn: () => api.post(`/users/${userId}/unban`),
     onSuccess: () => {
@@ -96,6 +106,37 @@ export function UserSheet({ userId, onOpenChange }: { userId: number | null; onO
                 ))}
                 <Info label='Reports made' value={String(user.reports_made)} />
               </dl>
+              {phoneOn && user.phone && (
+                <div className='flex flex-wrap items-center justify-between gap-2 rounded-md border p-3 text-sm' data-phone-box>
+                  <div className='min-w-0'>
+                    {user.phone_confirmed ? (
+                      <p>
+                        <Badge className='bg-emerald-600'>Phone confirmed</Badge> by {user.phone_confirmed.by ?? 'staff'} on {format(new Date(user.phone_confirmed.at), 'd MMM yyyy')}
+                      </p>
+                    ) : (
+                      <>
+                        <p className='font-medium'>Phone not confirmed yet</p>
+                        <p className='text-muted-foreground'>Call or WhatsApp {user.phone}. Tick it only when the person answered from this number.</p>
+                        {user.phone_code && (
+                          <p className='mt-1'>
+                            Code they asked for: <span className='font-mono font-bold' data-phone-code>{user.phone_code.code}</span> ({formatDistanceToNow(new Date(user.phone_code.at), { addSuffix: true })}). It must match the WhatsApp message from {user.phone}.
+                          </p>
+                        )}
+                      </>
+                    )}
+                  </div>
+                  {can('users.verify') &&
+                    (user.phone_confirmed ? (
+                      <Button size='sm' variant='outline' disabled={phone.isPending} onClick={() => window.confirm(`Remove “Phone confirmed” from ${user.name}?`) && phone.mutate(false)}>
+                        <PhoneOff /> Remove tick
+                      </Button>
+                    ) : (
+                      <Button size='sm' disabled={phone.isPending} onClick={() => phone.mutate(true)} data-phone-confirm>
+                        <PhoneCall /> Mark phone confirmed
+                      </Button>
+                    ))}
+                </div>
+              )}
               {user.phone_blocked && <p className='rounded-md bg-destructive/10 p-3 text-sm'>This phone number is blocked.</p>}
               {user.banned && <p className='rounded-md bg-destructive/10 p-3 text-sm'>Ban reason: {user.ban_reason}</p>}
               {user.flag && (

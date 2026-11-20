@@ -38,7 +38,7 @@ return [
         'reports.handle' => 'Handle reports',
         'users.view' => 'See users',
         'users.ban' => 'Ban users and block phone numbers',
-        'users.verify' => 'Check ID photos and give or remove the Verified badge',
+        'users.verify' => 'Check ID photos, give or remove the Verified badge, and tick "Phone confirmed"',
         'reviews.manage' => 'Hide seller ratings that break the rules',
         'messages.manage' => 'Read contact form messages and mark them done',
         'staff.manage' => 'Add and change staff accounts',

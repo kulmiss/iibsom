@@ -28,6 +28,7 @@ type General = {
   weekly_emails: string[]
   weekly_last_sent: string | null
   support_email: string
+  confirm_whatsapp: string
   payments_test_mode: boolean
   verify_business_price: number
   payment_numbers: Record<string, string>
@@ -177,6 +178,11 @@ function GeneralForm({ initial }: { initial: General }) {
               <Label htmlFor='support_email'>Help email for customers</Label>
               <Input id='support_email' type='email' value={form.support_email} onChange={(e) => setForm({ ...form, support_email: e.target.value })} placeholder='help@iibsom.com' />
               <p className='text-xs text-muted-foreground'>Shown on the Help page and as &quot;Contact us&quot; in the footer. Empty = not shown.</p>
+            </div>
+            <div className='grid content-start gap-1.5' data-setting>
+              <Label htmlFor='confirm_whatsapp'>iibsom WhatsApp number for “Confirm my number”</Label>
+              <Input id='confirm_whatsapp' type='tel' value={form.confirm_whatsapp} onChange={(e) => setForm({ ...form, confirm_whatsapp: e.target.value })} placeholder='+252 61 000 0000' />
+              <p className='text-xs text-muted-foreground'>Sellers send their code to this number; staff match it in Users and tick “Phone confirmed”. Empty = no WhatsApp button (staff call the seller instead).</p>
             </div>
           </div>
         </Part>

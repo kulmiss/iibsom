@@ -22,6 +22,7 @@ class LaunchSetup
         'verified_badge' => [true, 'Trust. Free for everyone; ID photos are deleted after the check.'],
         'social.autopost' => [true, 'Shares new ads to Facebook / Telegram once their keys are set; does nothing without keys.'],
         'diaspora' => [true, 'Help and prices in their money for people abroad.'],
+        'sellers.phone_confirmed' => [true, 'Staff tick "Phone confirmed" after a call or WhatsApp (no SMS).'],
         // Not now
         'chat' => [false, 'Chat stays OFF (your decision).'],
         'seller_ratings' => [false, 'Needs chat.'],

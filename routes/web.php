@@ -8,6 +8,7 @@ use App\Http\Controllers\Account\FavouriteController;
 use App\Http\Controllers\Account\FollowController;
 use App\Http\Controllers\Account\MyAdsController;
 use App\Http\Controllers\Account\NotificationController;
+use App\Http\Controllers\Account\PhoneConfirmController;
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\Account\ReviewController;
 use App\Http\Controllers\Account\ReviewResponseController;
@@ -148,6 +149,11 @@ $publicRoutes = function () use ($stateless) {
             });
 
             // Verified badge (Phase 2): send an ID photo.
+            // "Confirm my number" by WhatsApp code (PR 108). No SMS.
+            Route::middleware('feature:sellers.phone_confirmed')->group(function () {
+                Route::get('/account/phone', [PhoneConfirmController::class, 'show'])->name('account.phone');
+                Route::post('/account/phone/code', [PhoneConfirmController::class, 'code'])->middleware('throttle:5,60')->name('account.phone.code');
+            });
             Route::middleware('feature:verified_badge')->group(function () {
                 Route::get('/account/verify', [VerificationController::class, 'show'])->name('verify');
                 Route::post('/account/verify', [VerificationController::class, 'store'])->middleware('throttle:5,60')->name('verify.store');

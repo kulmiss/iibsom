@@ -101,6 +101,26 @@ return [
         'phone_blocked' => 'This phone number cannot be used on iibsom. Contact us if you think this is a mistake.',
     ],
 
+    // "Phone confirmed" (PR 108)
+    'phone' => [
+        'title' => 'Confirm my phone number',
+        'intro' => 'Buyers trust sellers whose number we checked. Get a short code, send it to us on WhatsApp from this number, and our team ticks "Phone confirmed". No SMS, no cost.',
+        'get_code' => 'Get my code',
+        'code_ready' => 'Here is your code. Send it to us on WhatsApp from your number.',
+        'your_code' => 'Your code',
+        'open_whatsapp' => 'Send it on WhatsApp',
+        'whatsapp_text' => 'iibsom: please confirm my number. My code is :code',
+        'whatsapp_note' => 'Send it from the number on your account. Our team checks messages every day.',
+        'no_whatsapp' => 'Our team will call you on this number to confirm it. Keep this code ready.',
+        'done' => 'Your number is confirmed. Buyers see "Phone confirmed" next to your name.',
+        'change_note' => 'If you change your number, the tick goes away until we confirm the new one.',
+        'tick' => 'Phone confirmed',
+        'what_title' => 'What does this mean?',
+        'what_body' => 'Our team called or messaged this number and the seller answered. It does not mean we checked the item or the seller. Always see the item before you pay.',
+        'menu' => 'Confirm my phone number',
+        'menu_done' => 'Phone confirmed',
+    ],
+
     'verify' => [
         'title' => 'Get the Verified badge',
         'badge' => 'Verified',

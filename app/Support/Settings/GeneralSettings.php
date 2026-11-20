@@ -30,6 +30,7 @@ class GeneralSettings
             'weekly_emails' => ['nullable', 'array', 'max:5'],
             'weekly_emails.*' => ['email:rfc', 'max:120'],
             'support_email' => ['nullable', 'email:rfc', 'max:120'],
+            'confirm_whatsapp' => ['sometimes', 'nullable', 'string', 'max:25', 'regex:/^[0-9 +\-]*$/'], // PR 108
             'payments_test_mode' => ['sometimes', 'boolean'],
             'verify_business_price' => ['sometimes', 'integer', 'min:0', 'max:1000'], // USD; individuals are always free (PR 107)
             'payment_numbers' => ['sometimes', 'array'],
@@ -88,6 +89,7 @@ class GeneralSettings
             'weekly_emails.*.email' => 'Each weekly summary address must be a valid email.',
             'support_email.email' => 'The help email must be a valid email address.',
             'payment_numbers.*.regex' => 'A merchant number can only have numbers, spaces, + and -.',
+            'confirm_whatsapp.regex' => 'The WhatsApp number can only have numbers, spaces, + and -.',
             'diaspora_rates.*.numeric' => 'Each exchange rate must be a number, e.g. 0.92.',
             'diaspora_rates.*.min' => 'An exchange rate cannot be below 0.',
         ];
@@ -137,6 +139,9 @@ class GeneralSettings
         }
         if (array_key_exists('payments_test_mode', $data)) {
             $this->settings->set('payments.test_mode', (bool) $data['payments_test_mode'], $userId);
+        }
+        if (array_key_exists('confirm_whatsapp', $data)) {
+            $this->settings->set('contact.confirm_whatsapp', trim((string) $data['confirm_whatsapp']), $userId);
         }
         if (array_key_exists('verify_business_price', $data)) {
             $this->settings->set('verification.business_price', (int) $data['verify_business_price'], $userId);
@@ -190,6 +195,7 @@ class GeneralSettings
             'weekly_emails' => SendWeeklySummary::recipients(),
             'weekly_last_sent' => setting('reports.weekly_last_sent') ?: null,
             'support_email' => setting('site.support_email'),
+            'confirm_whatsapp' => (string) setting('contact.confirm_whatsapp'),
             'payments_test_mode' => (bool) setting('payments.test_mode'),
             'verify_business_price' => (int) setting('verification.business_price'),
             'payment_numbers' => (object) setting('payments.numbers'),

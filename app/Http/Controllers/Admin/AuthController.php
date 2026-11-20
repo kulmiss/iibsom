@@ -207,6 +207,7 @@ class AuthController extends Controller
             'demo_data' => feature('site.demo_data'),
             'guide' => feature('help.admin_guide'),
             'verified_badge' => feature('verified_badge'),
+            'phone_confirmed' => feature('sellers.phone_confirmed'),
             'seller_ratings' => feature('seller_ratings'),
             'diaspora' => feature('diaspora'),
             'shops' => feature('shops'),

@@ -83,6 +83,8 @@ return [
         'payments.test_mode' => true, // TEST MODE: nobody should send real money; test payments stay out of the real books
         'payments.numbers' => ['evc_plus' => '', 'zaad' => '', 'sahal' => '', 'edahab' => ''], // merchant numbers buyers pay to
         'setup.completed_at' => '', // first-time setup wizard: '' = not done yet
+        // The iibsom WhatsApp number sellers send their "confirm my number" code to (PR 108). Empty = no WhatsApp button.
+        'contact.confirm_whatsapp' => '',
         'site.support_email' => '', // shown on the Help page ("Still need help?") and as "Contact us" in the footer; empty = hidden
         // Footer (switch "site.new_footer"): social pages (empty = hidden) and which links are ON.
         'footer.social' => ['facebook' => '', 'instagram' => '', 'tiktok' => '', 'youtube' => '', 'telegram' => '', 'whatsapp' => ''],

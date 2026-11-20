@@ -60,3 +60,7 @@ The owner said: "take your recommended option for small choices, log them here".
 | 2026-11-21 | 107 | After a decision we keep the decision, date, staff member and the kind of ID (card / passport / licence), not the photo. | The kind of ID is not personal data and helps staff; tell me if you want it removed too. |
 | 2026-11-21 | 107 | "Business" for the badge price = a seller with a shop page. Price setting 0 by default; no payment is taken on the site. | Your instruction: the setting exists but stays 0. |
 | 2026-11-21 | 107 | Backups are database-only today, so ID photos are never in them; the docs now say to leave storage/app/private out of any file copy. | Safest without new tools. |
+| 2026-11-21 | 108 | "Phone confirmed" can be ticked by Super Admin and Moderator (the same permission as ID checks), not Support. | Same trust level as the Verified badge. |
+| 2026-11-21 | 108 | Codes look like IIB-7KQ3M (no 0/O/1/I/L), last 7 days, and the same code is shown again while fresh. | Easy to read out; not a password, only a way to match the message. |
+| 2026-11-21 | 108 | If no iibsom WhatsApp number is set, the page says staff will call instead (no broken button). | You add the number in Settings when ready. |
+| 2026-11-21 | 108 | The tick shows on ad and seller pages (not on small ad cards). | Cards are already busy; the ad page is where people decide to call. |

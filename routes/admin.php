@@ -121,6 +121,11 @@ Route::prefix('admin/api')->group(function () {
             Route::post('/verifications/{verification}/reject', [VerificationController::class, 'reject']);
             Route::post('/users/{user}/unverify', [VerificationController::class, 'revoke']);
         });
+        // "Phone confirmed" tick (PR 108): same permission as the ID checks.
+        Route::middleware(['feature:sellers.phone_confirmed', 'admin.can:users.verify'])->group(function () {
+            Route::post('/users/{user}/phone-confirmed', [UserController::class, 'confirmPhone']);
+            Route::delete('/users/{user}/phone-confirmed', [UserController::class, 'unconfirmPhone']);
+        });
         Route::get('/blocked-phones', [BlockedPhoneController::class, 'index'])->middleware('admin.can:users.view');
         Route::post('/blocked-phones', [BlockedPhoneController::class, 'store'])->middleware('admin.can:users.ban');
         Route::delete('/blocked-phones/{blockedPhone}', [BlockedPhoneController::class, 'destroy'])->middleware('admin.can:users.ban');

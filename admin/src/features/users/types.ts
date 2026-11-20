@@ -15,6 +15,10 @@ export type UserRow = {
   is_demo: boolean
   /** Has the Verified badge (only while the switch is ON). */
   verified: boolean
+  /** "Phone confirmed" (PR 108): who ticked it and when. */
+  phone_confirmed: { at: string; by: string | null } | null
+  /** A "confirm my number" code the seller asked for, to match their WhatsApp message. */
+  phone_code: { code: string; at: string } | null
 }
 
 export type UserDetail = UserRow & {

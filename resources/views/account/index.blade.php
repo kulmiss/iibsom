@@ -59,6 +59,14 @@
                     {{ icon('user', 'size-5 text-brand-700') }}<span class="flex-1">{{ __('account.account.edit_profile') }}</span>{{ icon('chevron-right', 'size-4 text-stone-400') }}
                 </a>
             </li>
+            @if (feature('sellers.phone_confirmed') && filled($user->phone))
+                <li>
+                    <a href="{{ lroute('account.phone') }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50" data-phone-menu>
+                        {{ icon('phone', 'size-5 text-brand-700') }}<span class="flex-1">{{ $user->phone_confirmed_at ? __('account.phone.menu_done') : __('account.phone.menu') }}</span>
+                        @if ($user->phone_confirmed_at){{ icon('check', 'size-4 text-emerald-700') }}@else{{ icon('chevron-right', 'size-4 text-stone-400') }}@endif
+                    </a>
+                </li>
+            @endif
             @feature('ads.my_ads')
                 <li>
                     <a href="{{ lroute('account.ads') }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50">
