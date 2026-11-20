@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-20 (PR 92)_
+_Last updated: 2026-11-20 (PR 93)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -55,6 +55,7 @@ _Last updated: 2026-11-20 (PR 92)_
 - **PR 90 (scale):** `PageCache` has three versions: site (`bump()`), lists (`listsChanged()`, batched by `iibsom.page_cache_list_delay`) and one ad (`adChanged($id)`); `Ad` model events call `adChanged`; `Catalog::flush(everywhere: false)` for live-ad counts. **Use `bump()` only for changes that show everywhere.** Detail filters: `App\Support\Search\AdFilters` + table `ad_filters` (synced on `Ad` saved when `fields` change); raw `DB::table('ads')` inserts/updates of `fields` must call `AdFilters::rebuildAll()` or `sync()`. Tests run with the list delay 0 (phpunit.xml); `PageCacheScopeTest` tests the 30 seconds.
 - **PR 91 (panel fix):** ad cards are `isolate` (their z-index labels stay inside the card); the sticky home category list is `lg:z-20`. Keep new card badges inside the card.
 - **PR 92:** the home category list hides its scrollbar. When testing hover in Playwright, launch Chrome with `ignore_default_args=['--hide-scrollbars']`, or Windows-style scrollbars are not there.
+- **PR 93:** 17 main / 141 sub categories (2 new mains: Commercial Equipment, Business & Industry), job filter "Field of work". Existing sites get them by the data migration `2026_11_20_150000_more_categories` (adds only what is missing, keeps admin edits). Home side panels scroll inside on short screens. New categories need a matching Lucide icon in `resources/svg/icons`.
 
 ## How to run
 See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example .env && docker compose up -d --build`, then open http://localhost:8095.

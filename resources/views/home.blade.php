@@ -111,8 +111,10 @@
                         </div>
                         @if ($subs)
                             {{-- Narrow panel, as wide as the list (owner, 2026-11-20, like Jiji): name with the count under it. --}}
+                            {{-- PR 93: long lists (Services has 26) scroll inside the panel, which never goes past the screen. --}}
                             <div id="cat-panel-{{ $category['id'] }}" data-cat-panel
-                                 class="invisible absolute start-full top-0 z-20 min-h-full w-72 rounded-xl bg-white p-2 opacity-0 shadow-lg ring-1 ring-stone-200 transition group-hover/cat:visible group-hover/cat:opacity-100 data-[open]:visible data-[open]:opacity-100">
+                                 @class(['invisible absolute start-full top-0 z-20 min-h-full w-72 rounded-xl bg-white p-2 opacity-0 shadow-lg ring-1 ring-stone-200 transition group-hover/cat:visible group-hover/cat:opacity-100 data-[open]:visible data-[open]:opacity-100',
+                                         'max-h-[calc(100dvh-6rem)] overflow-y-auto overscroll-contain' => $stickyCats])>
                                 <a href="{{ lroute('browse.category', ['category' => $category['slug']]) }}" class="block rounded-lg px-2 py-2 hover:bg-brand-50 focus-visible:bg-brand-50">
                                     <span class="block font-semibold leading-tight">{{ translated($category['name']) }}</span>
                                     <span class="block text-xs font-medium text-brand-700">{{ __('ads.browse.all_in', ['category' => translated($category['name'])]) }} ({{ number_format($category['ads_count']) }})</span>

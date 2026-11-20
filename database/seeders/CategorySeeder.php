@@ -120,7 +120,16 @@ class CategorySeeder extends Seeder
         $plotSize = [['key' => 'size', 'type' => 'number', 'label' => 'Size', 'unit' => 'm²', 'required' => true]];
         $quantity = [['key' => 'quantity', 'type' => 'number', 'label' => 'How many']];
         $partTypes = ['Engine & Gearbox', 'Wheels & Tyres', 'Car Care', 'Oils & Fluids', 'Lights & Electrics', 'Body Parts', 'Batteries', 'Car Audio & Screens', 'Other Parts'];
-        $jobType = [['key' => 'job_type', 'type' => 'select', 'label' => 'Job type', 'options' => ['Full-time', 'Part-time', 'Contract', 'Temporary']]];
+        // PR 93: the kind of work as a filter (one list, instead of a sub category per field of work).
+        $jobFields = ['Accounting & Finance', 'Administration & Office', 'Advertising & Marketing', 'Arts, Media & Design', 'Childcare',
+            'Cleaning & Housekeeping', 'Construction & Skilled Trades', 'Customer Service', 'Driving & Delivery', 'Teaching & Education',
+            'Engineering', 'Farming & Livestock', 'Healthcare & Nursing', 'Hotels, Restaurants & Catering', 'Human Resources',
+            'IT & Technology', 'Legal', 'Logistics & Transport', 'Management', 'Manufacturing & Production', 'Aid & Development (NGO)',
+            'Research & Data', 'Sales', 'Security', 'Travel & Tourism', 'Internship', 'Other'];
+        $jobType = [
+            ['key' => 'job_type', 'type' => 'select', 'label' => 'Job type', 'options' => ['Full-time', 'Part-time', 'Contract', 'Temporary']],
+            ['key' => 'job_field', 'type' => 'select', 'label' => 'Field of work', 'options' => $jobFields],
+        ];
 
         return [
             ['name' => 'Vehicles', 'icon' => 'car', 'children' => [
@@ -141,6 +150,8 @@ class CategorySeeder extends Seeder
                     ['key' => 'part_type', 'type' => 'select', 'label' => 'Part type', 'required' => true, 'options' => $partTypes],
                 ]],
                 ['name' => 'Boats', 'icon' => 'sailboat'],
+                // PR 93 (owner: "keep ours and add theirs", ideas from Jiji, our own names)
+                ['name' => 'Heavy Machinery', 'slug' => 'heavy-machinery', 'icon' => 'forklift', 'fields' => [$year]],
             ]],
             ['name' => 'Property', 'icon' => 'house', 'condition' => false, 'children' => [
                 ['name' => 'Houses & Apartments for Rent', 'slug' => 'houses-for-rent', 'icon' => 'key', 'popular' => true, 'fields' => $home],
@@ -150,6 +161,14 @@ class CategorySeeder extends Seeder
                 ['name' => 'Rooms for Rent', 'slug' => 'rooms', 'icon' => 'bed-single', 'fields' => [
                     ['key' => 'furnished', 'type' => 'boolean', 'label' => 'Furnished'],
                 ]],
+                ['name' => 'Land & Plots for Rent', 'slug' => 'land-for-rent', 'icon' => 'land-plot', 'fields' => $plotSize],
+                ['name' => 'Short Stays', 'slug' => 'short-stays', 'icon' => 'bed-double', 'fields' => [
+                    ['key' => 'bedrooms', 'type' => 'number', 'label' => 'Bedrooms'],
+                    ['key' => 'furnished', 'type' => 'boolean', 'label' => 'Furnished'],
+                ]],
+                ['name' => 'New Builds', 'slug' => 'new-builds', 'icon' => 'building', 'fields' => $home],
+                ['name' => 'Halls & Event Venues', 'slug' => 'event-venues', 'icon' => 'users'],
+                ['name' => 'Warehouses & Stores', 'slug' => 'warehouses', 'icon' => 'warehouse', 'fields' => $plotSize],
             ]],
             ['name' => 'Phones & Tablets', 'slug' => 'phones-tablets', 'icon' => 'smartphone', 'children' => [
                 ['name' => 'Mobile Phones', 'icon' => 'smartphone', 'popular' => true, 'fields' => [
@@ -159,6 +178,8 @@ class CategorySeeder extends Seeder
                 ]],
                 ['name' => 'Tablets', 'icon' => 'tablet', 'fields' => [['key' => 'brand', 'type' => 'select', 'label' => 'Brand', 'options' => $phoneBrands], $storage]],
                 ['name' => 'Phone Accessories', 'icon' => 'headphones'],
+                ['name' => 'Smart Watches', 'slug' => 'smart-watches', 'icon' => 'watch'],
+                ['name' => 'Headphones & Earbuds', 'slug' => 'headphones', 'icon' => 'headphones'],
             ]],
             ['name' => 'Electronics', 'icon' => 'laptop', 'children' => [
                 ['name' => 'Laptops & Computers', 'icon' => 'laptop', 'popular' => true, 'fields' => [
@@ -171,12 +192,25 @@ class CategorySeeder extends Seeder
                 ['name' => 'Solar & Generators', 'slug' => 'solar-generators', 'icon' => 'sun'],
                 ['name' => 'Cameras', 'icon' => 'camera'],
                 ['name' => 'Other Electronics', 'icon' => 'headphones'],
+                ['name' => 'Video Games & Consoles', 'slug' => 'video-games', 'icon' => 'gamepad-2'],
+                ['name' => 'Security Cameras & Alarms', 'slug' => 'security-cameras', 'icon' => 'cctv'],
+                ['name' => 'Networking & Internet', 'slug' => 'networking', 'icon' => 'router'],
+                ['name' => 'Printers & Scanners', 'slug' => 'printers', 'icon' => 'printer'],
+                ['name' => 'Computer Monitors', 'slug' => 'monitors', 'icon' => 'monitor'],
+                ['name' => 'Computer Parts', 'slug' => 'computer-parts', 'icon' => 'cpu'],
+                ['name' => 'Software', 'slug' => 'software', 'icon' => 'app-window'],
             ]],
             ['name' => 'Home & Furniture', 'icon' => 'sofa', 'children' => [
                 ['name' => 'Furniture', 'icon' => 'sofa', 'popular' => true],
                 ['name' => 'Home Appliances', 'icon' => 'refrigerator'],
                 ['name' => 'Kitchen', 'icon' => 'utensils'],
                 ['name' => 'Home Decor & Carpets', 'slug' => 'home-decor', 'icon' => 'lamp'],
+                ['name' => 'Lighting', 'icon' => 'lightbulb'],
+                ['name' => 'Storage & Shelves', 'slug' => 'storage-shelves', 'icon' => 'boxes'],
+                ['name' => 'Kitchen Appliances', 'slug' => 'kitchen-appliances', 'icon' => 'refrigerator'],
+                ['name' => 'Cleaning Products', 'slug' => 'cleaning-products', 'icon' => 'spray-can'],
+                ['name' => 'Garden Supplies', 'slug' => 'garden', 'icon' => 'sprout'],
+                ['name' => 'Water Tanks & Pumps', 'slug' => 'water-tanks', 'icon' => 'droplets'],
             ]],
             ['name' => 'Fashion', 'icon' => 'shirt', 'children' => [
                 ['name' => "Men's Clothing", 'slug' => 'mens-clothing', 'icon' => 'shirt'],
@@ -195,11 +229,17 @@ class CategorySeeder extends Seeder
                 ['name' => 'Poultry', 'icon' => 'bird', 'fields' => $quantity],
                 ['name' => 'Animal Feed & Supplies', 'slug' => 'animal-feed', 'icon' => 'wheat'],
                 ['name' => 'Pets', 'icon' => 'paw-print'],
+                ['name' => 'Dogs', 'icon' => 'dog'],
+                ['name' => 'Cats', 'icon' => 'cat'],
+                ['name' => 'Birds', 'icon' => 'bird'],
+                ['name' => 'Fish & Aquariums', 'slug' => 'fish', 'icon' => 'fish'],
+                ['name' => 'Pet Accessories', 'slug' => 'pet-accessories', 'icon' => 'paw-print'],
             ]],
             ['name' => 'Agriculture & Food', 'slug' => 'agriculture', 'icon' => 'sprout', 'children' => [
                 ['name' => 'Farm Machinery', 'icon' => 'tractor'],
                 ['name' => 'Seeds & Plants', 'icon' => 'sprout'],
                 ['name' => 'Food & Drinks', 'icon' => 'utensils'],
+                ['name' => 'Fertilizers & Farm Supplies', 'slug' => 'fertilizers', 'icon' => 'wheat'],
             ]],
             ['name' => 'Services', 'icon' => 'wrench', 'condition' => false, 'children' => [
                 ['name' => 'Building & Repair', 'icon' => 'hammer'],
@@ -212,6 +252,22 @@ class CategorySeeder extends Seeder
                 ['name' => 'Events & Weddings', 'slug' => 'events', 'icon' => 'hand-helping'],
                 ['name' => 'Classes & Tutoring', 'slug' => 'tutoring', 'icon' => 'hand-helping'],
                 ['name' => 'Other Services', 'icon' => 'wrench'],
+                ['name' => 'Printing & Design', 'slug' => 'printing-services', 'icon' => 'printer'],
+                ['name' => 'Delivery & Logistics', 'slug' => 'logistics', 'icon' => 'container'],
+                ['name' => 'Legal Services', 'slug' => 'legal-services', 'icon' => 'scale'],
+                ['name' => 'Accounting & Tax', 'slug' => 'accounting-services', 'icon' => 'wallet'],
+                ['name' => 'Recruitment', 'slug' => 'recruitment', 'icon' => 'users'],
+                ['name' => 'Equipment Rental', 'slug' => 'equipment-rental', 'icon' => 'key'],
+                ['name' => 'Drivers & Airport Transfers', 'slug' => 'drivers', 'icon' => 'car-front'],
+                ['name' => 'Travel & Tours', 'slug' => 'travel', 'icon' => 'plane'],
+                ['name' => 'Childcare', 'slug' => 'childcare', 'icon' => 'baby'],
+                ['name' => 'Fitness & Personal Training', 'slug' => 'fitness-training', 'icon' => 'dumbbell'],
+                ['name' => 'Catering', 'icon' => 'chef-hat'],
+                ['name' => 'Photography & Video', 'slug' => 'photography', 'icon' => 'camera'],
+                ['name' => 'DJ & Entertainment', 'slug' => 'entertainment', 'icon' => 'music'],
+                ['name' => 'Gardening & Landscaping', 'slug' => 'gardening', 'icon' => 'sprout'],
+                ['name' => 'Pet Care', 'slug' => 'pet-care', 'icon' => 'paw-print'],
+                ['name' => 'Manufacturing & Workshops', 'slug' => 'manufacturing-services', 'icon' => 'cog'],
             ]],
             ['name' => 'Jobs', 'icon' => 'briefcase', 'condition' => false, 'children' => [
                 ['name' => 'Job Vacancies', 'slug' => 'job-vacancies', 'icon' => 'briefcase', 'popular' => true, 'fields' => $jobType],
@@ -221,21 +277,59 @@ class CategorySeeder extends Seeder
                 ['name' => 'Beauty & Cosmetics', 'slug' => 'beauty', 'icon' => 'heart-pulse'],
                 ['name' => 'Health & Medical', 'slug' => 'health', 'icon' => 'heart-pulse'],
                 ['name' => 'Perfume, Oud & Incense', 'slug' => 'perfume', 'icon' => 'spray-can'],
+                ['name' => 'Hair Care', 'slug' => 'hair-care', 'icon' => 'scissors'],
+                ['name' => 'Skin & Body Care', 'slug' => 'skin-care', 'icon' => 'sparkles'],
+                ['name' => 'Makeup', 'icon' => 'brush'],
+                ['name' => 'Vitamins & Supplements', 'slug' => 'vitamins', 'icon' => 'pill'],
+                ['name' => 'Medical Supplies', 'slug' => 'medical-supplies', 'icon' => 'stethoscope'],
             ]],
             ['name' => 'Babies & Kids', 'icon' => 'baby', 'children' => [
                 ['name' => "Kids' Clothing", 'slug' => 'kids-clothing', 'icon' => 'baby'],
                 ['name' => 'Toys', 'icon' => 'baby'],
                 ['name' => 'Baby Gear', 'icon' => 'baby'],
+                ['name' => "Kids' Shoes", 'slug' => 'kids-shoes', 'icon' => 'footprints'],
+                ['name' => "Children's Furniture", 'slug' => 'kids-furniture', 'icon' => 'armchair'],
+                ['name' => 'Feeding & Baby Care', 'slug' => 'baby-care', 'icon' => 'baby'],
+                ['name' => 'Maternity', 'icon' => 'heart'],
+                ['name' => 'Car Seats & Safety', 'slug' => 'car-seats', 'icon' => 'shield-check'],
+                ['name' => 'Playground Equipment', 'slug' => 'playground', 'icon' => 'tent'],
             ]],
             ['name' => 'Sports & Hobbies', 'icon' => 'dumbbell', 'children' => [
                 ['name' => 'Sports Equipment', 'icon' => 'dumbbell'],
                 ['name' => 'Bicycles', 'icon' => 'motorbike'],
                 ['name' => 'Books & Games', 'icon' => 'tag'],
+                ['name' => 'Musical Instruments', 'slug' => 'musical-instruments', 'icon' => 'guitar'],
+                ['name' => 'Arts & Crafts', 'slug' => 'arts-crafts', 'icon' => 'paintbrush'],
+                ['name' => 'Camping & Outdoor', 'slug' => 'outdoor', 'icon' => 'tent'],
+                ['name' => 'Scooters & E-bikes', 'slug' => 'scooters', 'icon' => 'motorbike'],
             ]],
             ['name' => 'Construction & Tools', 'slug' => 'construction', 'icon' => 'hammer', 'children' => [
                 ['name' => 'Building Materials', 'icon' => 'hard-hat'],
                 ['name' => 'Tools', 'icon' => 'wrench'],
                 ['name' => 'Plumbing & Electrical', 'slug' => 'plumbing-electrical', 'icon' => 'plug-zap'],
+                ['name' => 'Power Tools', 'slug' => 'power-tools', 'icon' => 'zap'],
+                ['name' => 'Measuring Tools', 'slug' => 'measuring-tools', 'icon' => 'ruler'],
+                ['name' => 'Hardware & Fasteners', 'slug' => 'hardware', 'icon' => 'cog'],
+                ['name' => 'Doors, Locks & Gates', 'slug' => 'doors-security', 'icon' => 'door-open'],
+                ['name' => 'Windows & Glass', 'slug' => 'windows-glass', 'icon' => 'house'],
+            ]],
+            // PR 93: two new main categories (ideas from Jiji, our own names).
+            ['name' => 'Commercial Equipment', 'slug' => 'commercial-equipment', 'icon' => 'store', 'children' => [
+                ['name' => 'Medical Equipment', 'slug' => 'medical-equipment', 'icon' => 'stethoscope'],
+                ['name' => 'Safety Gear', 'slug' => 'safety-gear', 'icon' => 'hard-hat'],
+                ['name' => 'Factory Machines', 'slug' => 'factory-machines', 'icon' => 'cog'],
+                ['name' => 'Shop Equipment', 'slug' => 'shop-equipment', 'icon' => 'store'],
+                ['name' => 'Restaurant & Catering Equipment', 'slug' => 'restaurant-equipment', 'icon' => 'chef-hat'],
+                ['name' => 'Office Supplies & Stationery', 'slug' => 'office-supplies', 'icon' => 'briefcase'],
+                ['name' => 'Salon Equipment', 'slug' => 'salon-equipment', 'icon' => 'scissors'],
+                ['name' => 'Printing Machines', 'slug' => 'printing-machines', 'icon' => 'printer'],
+                ['name' => 'Stage & Event Equipment', 'slug' => 'event-equipment', 'icon' => 'music'],
+            ]],
+            ['name' => 'Business & Industry', 'slug' => 'business', 'icon' => 'hand-coins', 'condition' => false, 'children' => [
+                ['name' => 'Businesses for Sale', 'slug' => 'businesses-for-sale', 'icon' => 'store'],
+                ['name' => 'Import & Export', 'slug' => 'import-export', 'icon' => 'ship'],
+                ['name' => 'Wholesale & Bulk', 'slug' => 'wholesale', 'icon' => 'boxes'],
+                ['name' => 'Business Services', 'slug' => 'business-services', 'icon' => 'briefcase'],
             ]],
             ['name' => 'Everything Else', 'slug' => 'other', 'icon' => 'package', 'children' => [
                 ['name' => 'Other Items', 'icon' => 'package'],

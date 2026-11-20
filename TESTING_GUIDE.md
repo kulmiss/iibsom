@@ -129,6 +129,7 @@ The same rows run automatically in a real browser (see "Automatic run" below).
 | J72 | Cache after ad changes | Page cache ON. As a guest open Help and Cars; as a seller edit an ad's price; as the guest reload that ad, Cars and Help | The ad shows the new price at once; Cars shows it at once (or within 30 seconds if many ads change); Help stays cached | `performance.page_cache` |
 | J73 | Fast detail filters | Cars → filter Toyota, year 2010–2015, then turn "Fast detail filters" OFF and filter again | Same ads both times | `search.indexed_filters` |
 | J74 | Home category panel + dark mode | Computer: hover each category on home, at the top and after scrolling; footer → Dark | Panel as wide as the list, never under the ads; dark mode dark grey (not black), text easy to read | `home.sticky_categories`, `site.dark_mode` |
+| J75 | New categories (PR 93) | Computer: hover Services and Commercial Equipment on home (short window too); open /categories; Jobs → filter "Field of work"; Somali: /so/categories | Every sub category reachable (long panels scroll inside); 17 main groups; Somali names show; empty new groups hidden while "Hide empty" is ON | `home.sticky_categories`, `catalog.finder` |
 
 ## Automatic run
 
