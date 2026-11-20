@@ -128,6 +128,7 @@ The same rows run automatically in a real browser (see "Automatic run" below).
 | J71 | Hide ads after reports | Sign in as 3 different customers and report the same ad; then as staff open Reports → "Put ad back"; repeat and "Take ad down" | After the 3rd report the ad is gone from the site, the seller gets a bell message and sees "Hidden for now" in My ads (Waiting tab); Put back = live again, reports closed; Take down = rejected | `reports.auto_hide` |
 | J72 | Cache after ad changes | Page cache ON. As a guest open Help and Cars; as a seller edit an ad's price; as the guest reload that ad, Cars and Help | The ad shows the new price at once; Cars shows it at once (or within 30 seconds if many ads change); Help stays cached | `performance.page_cache` |
 | J73 | Fast detail filters | Cars → filter Toyota, year 2010–2015, then turn "Fast detail filters" OFF and filter again | Same ads both times | `search.indexed_filters` |
+| J74 | Home category panel + dark mode | Computer: hover each category on home, at the top and after scrolling; footer → Dark | Panel as wide as the list, never under the ads; dark mode dark grey (not black), text easy to read | `home.sticky_categories`, `site.dark_mode` |
 
 ## Automatic run
 

@@ -18,7 +18,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex">
     <title>{{ $title }} · iibsom</title>
-    <style>body{font-family:system-ui,sans-serif;background:#fafaf9;color:#1c1917;margin:0;display:flex;min-height:100vh;align-items:center;justify-content:center;text-align:center;padding:1rem}main{max-width:28rem}h1{font-size:1.4rem;margin:.5rem 0}p{color:#57534e;line-height:1.5}a{display:inline-block;margin-top:1.5rem;background:#1f6fd1;color:#fff;padding:.7rem 1.3rem;border-radius:.5rem;text-decoration:none;font-weight:600}svg{display:block;margin:0 auto 1rem}@media (prefers-color-scheme:dark){body{background:#12100e;color:#f5f5f4}p{color:#d6d3d1}.d1{fill:#13243a}.d2{stroke:#3a649a}}</style>
+    <style>body{font-family:system-ui,sans-serif;background:#fafaf9;color:#1c1917;margin:0;display:flex;min-height:100vh;align-items:center;justify-content:center;text-align:center;padding:1rem}main{max-width:28rem}h1{font-size:1.4rem;margin:.5rem 0}p{color:#57534e;line-height:1.5}a{display:inline-block;margin-top:1.5rem;background:#1f6fd1;color:#fff;padding:.7rem 1.3rem;border-radius:.5rem;text-decoration:none;font-weight:600}svg{display:block;margin:0 auto 1rem}@media (prefers-color-scheme:dark){body{background:#1e2227;color:#f3f5f7}p{color:#d7dce0}.d1{fill:#1d3047}.d2{stroke:#3f68a0}}</style>
 </head>
 <body>
 <main>

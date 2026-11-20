@@ -8,7 +8,9 @@
     $photoCount = $badges ? (int) ($ad->ready_photos_count ?? 0) : 0;
     $popular = $badges && feature('ad_stats') && (int) $ad->views >= config('iibsom.popular_views');
 @endphp
-<div class="relative" data-card>
+{{-- "isolate": the photo labels and the Save button stay inside the card's own layer, so menus and side panels
+     (the sticky category list on home, PR 91) are never drawn under them. --}}
+<div class="relative isolate" data-card>
 <a href="{{ $ad->url() }}" class="group flex h-full flex-col overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-stone-200 hover:ring-brand-200 group-data-[view=list]/results:flex-row">
     <div class="relative aspect-[4/3] bg-stone-100 group-data-[view=list]/results:w-40 group-data-[view=list]/results:shrink-0 sm:group-data-[view=list]/results:w-52">
         @if ($boost = $ad->activeBoost())

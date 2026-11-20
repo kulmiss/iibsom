@@ -182,8 +182,11 @@ class HomePlacePickerTest extends TestCase
 
     public function test_category_list_is_sticky_and_scrolls_inside_with_its_switch(): void
     {
+        $this->ad($this->mogadishu);
         $html = (string) $this->get('/')->getContent();
-        $this->assertMatchesRegularExpression('/<aside class="hidden lg:sticky lg:top-20 lg:flex lg:max-h-\[calc\(100dvh-6rem\)\] lg:flex-col lg:self-start"[^>]*data-sticky\s*>/', $html);
+        // PR 91: ad cards keep their labels in their own layer, so the list's side panel is drawn above them.
+        $this->assertStringContainsString('<div class="relative isolate" data-card>', $html);
+        $this->assertMatchesRegularExpression('/<aside class="hidden lg:sticky lg:top-20 lg:z-20 lg:flex lg:max-h-\[calc\(100dvh-6rem\)\] lg:flex-col lg:self-start"[^>]*data-sticky\s*>/', $html);
         $this->assertStringContainsString('min-h-0 flex-1 overflow-y-auto', $html);
 
         $this->switch('home.sticky_categories', false);

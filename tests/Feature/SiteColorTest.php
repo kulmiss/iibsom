@@ -54,7 +54,7 @@ class SiteColorTest extends AdminTestCase
         $this->assertGreaterThan(SiteColors::contrast($p['light'][300], '#000000'), SiteColors::contrast($p['light'][50], '#000000'));
         $this->assertGreaterThan(SiteColors::contrast($p['light'][800], '#ffffff'), SiteColors::contrast($p['light'][950], '#ffffff'));
         // Dark mode text is readable on the dark page.
-        $this->assertGreaterThanOrEqual(4.5, SiteColors::contrast($p['dark_text'], '#1c1916'));
+        $this->assertGreaterThanOrEqual(4.5, SiteColors::contrast($p['dark_text'], '#282c33'));
     }
 
     public function test_site_uses_the_saved_colour_in_light_and_dark(): void
