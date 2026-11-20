@@ -87,10 +87,12 @@
              Phones use the tiles below: a tap opens the category page, which starts with its sub categories. --}}
         {{-- Sticky (PR 87, "home.sticky_categories"): the list scrolls inside on short screens; the side panels are placed
              against the aside (not the list), so the list's scroll never cuts them off. A sticky box makes its own layer,
-             so it needs z-20: without it the ad cards (photo labels, Save buttons) were drawn over the panel (PR 91). --}}
+             so it needs z-20: without it the ad cards (photo labels, Save buttons) were drawn over the panel (PR 91).
+             No visible scrollbar (PR 92, owner): on Windows its strip sat between the list and the side panel, so moving
+             the mouse to a sub category closed the panel. The list still scrolls with the wheel or a finger. --}}
         @php($stickyCats = feature('home.sticky_categories'))
         <aside @class(['hidden', 'relative lg:block' => ! $stickyCats, 'lg:sticky lg:top-20 lg:z-20 lg:flex lg:max-h-[calc(100dvh-6rem)] lg:flex-col lg:self-start' => $stickyCats]) aria-label="{{ __('site.home.categories') }}" data-cat-menu @if ($stickyCats) data-sticky @endif>
-            <ul @class(['rounded-xl bg-white shadow-sm ring-1 ring-stone-200', 'min-h-0 flex-1 overflow-y-auto overscroll-contain [scrollbar-width:thin]' => $stickyCats])>
+            <ul @class(['rounded-xl bg-white shadow-sm ring-1 ring-stone-200', 'min-h-0 flex-1 overflow-y-auto overscroll-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden' => $stickyCats])>
                 @foreach ($categories as $category)
                     @php($subs = $catalog->visibleChildren($category))
                     <li class="group/cat border-b border-stone-100 last:border-0" data-cat-item>

@@ -188,6 +188,8 @@ class HomePlacePickerTest extends TestCase
         $this->assertStringContainsString('<div class="relative isolate" data-card>', $html);
         $this->assertMatchesRegularExpression('/<aside class="hidden lg:sticky lg:top-20 lg:z-20 lg:flex lg:max-h-\[calc\(100dvh-6rem\)\] lg:flex-col lg:self-start"[^>]*data-sticky\s*>/', $html);
         $this->assertStringContainsString('min-h-0 flex-1 overflow-y-auto', $html);
+        // PR 92: no visible scrollbar (on Windows its strip closed the side panel on the way to a sub category).
+        $this->assertStringContainsString('[scrollbar-width:none] [&::-webkit-scrollbar]:hidden', $html);
 
         $this->switch('home.sticky_categories', false);
         $html = (string) $this->get('/')->getContent();
