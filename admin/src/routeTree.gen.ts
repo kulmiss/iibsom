@@ -25,6 +25,7 @@ import { Route as AuthenticatedCategoriesRouteImport } from './routes/_authentic
 import { Route as AuthenticatedFeaturesRouteImport } from './routes/_authenticated/features'
 import { Route as AuthenticatedGuideRouteImport } from './routes/_authenticated/guide'
 import { Route as AuthenticatedHealthRouteImport } from './routes/_authenticated/health'
+import { Route as AuthenticatedHomePageRouteImport } from './routes/_authenticated/home-page'
 import { Route as AuthenticatedLocationsRouteImport } from './routes/_authenticated/locations'
 import { Route as AuthenticatedMessagesRouteImport } from './routes/_authenticated/messages'
 import { Route as AuthenticatedPagesRouteImport } from './routes/_authenticated/pages'
@@ -122,6 +123,11 @@ const AuthenticatedGuideRoute = AuthenticatedGuideRouteImport.update({
 const AuthenticatedHealthRoute = AuthenticatedHealthRouteImport.update({
   id: '/health',
   path: '/health',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedHomePageRoute = AuthenticatedHomePageRouteImport.update({
+  id: '/home-page',
+  path: '/home-page',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedLocationsRoute = AuthenticatedLocationsRouteImport.update({
@@ -244,6 +250,7 @@ export interface FileRoutesByFullPath {
   '/features': typeof AuthenticatedFeaturesRoute
   '/guide': typeof AuthenticatedGuideRoute
   '/health': typeof AuthenticatedHealthRoute
+  '/home-page': typeof AuthenticatedHomePageRoute
   '/locations': typeof AuthenticatedLocationsRoute
   '/messages': typeof AuthenticatedMessagesRoute
   '/pages': typeof AuthenticatedPagesRoute
@@ -278,6 +285,7 @@ export interface FileRoutesByTo {
   '/features': typeof AuthenticatedFeaturesRoute
   '/guide': typeof AuthenticatedGuideRoute
   '/health': typeof AuthenticatedHealthRoute
+  '/home-page': typeof AuthenticatedHomePageRoute
   '/locations': typeof AuthenticatedLocationsRoute
   '/messages': typeof AuthenticatedMessagesRoute
   '/pages': typeof AuthenticatedPagesRoute
@@ -316,6 +324,7 @@ export interface FileRoutesById {
   '/_authenticated/features': typeof AuthenticatedFeaturesRoute
   '/_authenticated/guide': typeof AuthenticatedGuideRoute
   '/_authenticated/health': typeof AuthenticatedHealthRoute
+  '/_authenticated/home-page': typeof AuthenticatedHomePageRoute
   '/_authenticated/locations': typeof AuthenticatedLocationsRoute
   '/_authenticated/messages': typeof AuthenticatedMessagesRoute
   '/_authenticated/pages': typeof AuthenticatedPagesRoute
@@ -355,6 +364,7 @@ export interface FileRouteTypes {
     | '/features'
     | '/guide'
     | '/health'
+    | '/home-page'
     | '/locations'
     | '/messages'
     | '/pages'
@@ -389,6 +399,7 @@ export interface FileRouteTypes {
     | '/features'
     | '/guide'
     | '/health'
+    | '/home-page'
     | '/locations'
     | '/messages'
     | '/pages'
@@ -426,6 +437,7 @@ export interface FileRouteTypes {
     | '/_authenticated/features'
     | '/_authenticated/guide'
     | '/_authenticated/health'
+    | '/_authenticated/home-page'
     | '/_authenticated/locations'
     | '/_authenticated/messages'
     | '/_authenticated/pages'
@@ -571,6 +583,13 @@ declare module '@tanstack/react-router' {
       path: '/health'
       fullPath: '/health'
       preLoaderRoute: typeof AuthenticatedHealthRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/home-page': {
+      id: '/_authenticated/home-page'
+      path: '/home-page'
+      fullPath: '/home-page'
+      preLoaderRoute: typeof AuthenticatedHomePageRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/locations': {
@@ -737,6 +756,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedFeaturesRoute: typeof AuthenticatedFeaturesRoute
   AuthenticatedGuideRoute: typeof AuthenticatedGuideRoute
   AuthenticatedHealthRoute: typeof AuthenticatedHealthRoute
+  AuthenticatedHomePageRoute: typeof AuthenticatedHomePageRoute
   AuthenticatedLocationsRoute: typeof AuthenticatedLocationsRoute
   AuthenticatedMessagesRoute: typeof AuthenticatedMessagesRoute
   AuthenticatedPagesRoute: typeof AuthenticatedPagesRoute
@@ -762,6 +782,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedFeaturesRoute: AuthenticatedFeaturesRoute,
   AuthenticatedGuideRoute: AuthenticatedGuideRoute,
   AuthenticatedHealthRoute: AuthenticatedHealthRoute,
+  AuthenticatedHomePageRoute: AuthenticatedHomePageRoute,
   AuthenticatedLocationsRoute: AuthenticatedLocationsRoute,
   AuthenticatedMessagesRoute: AuthenticatedMessagesRoute,
   AuthenticatedPagesRoute: AuthenticatedPagesRoute,

@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ContactMessageController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FeatureController;
 use App\Http\Controllers\Admin\GuideController;
+use App\Http\Controllers\Admin\HomePageController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\PageAdminController;
 use App\Http\Controllers\Admin\PaymentController;
@@ -150,6 +151,7 @@ Route::prefix('admin/api')->group(function () {
         // Feature switches
         Route::middleware('admin.can:features.manage')->group(function () {
             Route::get('/features', [FeatureController::class, 'index']);
+            Route::get('/home-page', [HomePageController::class, 'index'])->middleware('feature:admin.home_page');
             Route::put('/features/{key}', [FeatureController::class, 'update'])->where('key', '[a-z0-9._]+');
             Route::delete('/features/{key}', [FeatureController::class, 'reset'])->where('key', '[a-z0-9._]+');
         });

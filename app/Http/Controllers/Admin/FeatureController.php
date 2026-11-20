@@ -34,7 +34,7 @@ class FeatureController extends Controller
 
         $features->set($key, $on, $this->authUser($request)->id);
         $this->afterChange($key);
-        Activity::log('feature.'.($on ? 'on' : 'off'), 'Switched “'.config("features.{$key}.label").'” '.($on ? 'ON' : 'OFF'), null, ['key' => $key]);
+        Activity::log('feature.'.($on ? 'on' : 'off'), 'Switched “'.$this->label($key).'” '.($on ? 'ON' : 'OFF'), null, ['key' => $key]);
 
         return response()->json(['key' => $key, 'enabled' => $features->enabled($key)]);
     }
@@ -44,9 +44,18 @@ class FeatureController extends Controller
         abort_unless($features->exists($key), 404);
         $features->reset($key);
         $this->afterChange($key);
-        Activity::log('feature.reset', 'Reset “'.config("features.{$key}.label").'” to default', null, ['key' => $key]);
+        Activity::log('feature.reset', 'Reset “'.$this->label($key).'” to default', null, ['key' => $key]);
 
         return response()->json(['key' => $key, 'enabled' => $features->enabled($key)]);
+    }
+
+    /**
+     * The switch's name. Keys have dots ("site.demo_data"), so config("features.{$key}.label") would read the
+     * wrong place and give nothing (the activity log said "Switched “” ON" for those; fixed in PR 86).
+     */
+    private function label(string $key): string
+    {
+        return (string) (config('features')[$key]['label'] ?? $key);
     }
 
     /** Showing or hiding demo ads changes the live-ad totals and the words offered in search suggestions. */

@@ -7,6 +7,7 @@ import {
   FlaskConical,
   FolderTree,
   HeartPulse,
+  House,
   Image,
   LayoutDashboard,
   ListChecks,
@@ -57,6 +58,7 @@ export const sidebarData: SidebarData = {
     {
       title: 'Website',
       items: [
+        { title: 'Home page', url: '/home-page', icon: House, permission: 'features.manage', feature: 'home_page' },
         { title: 'Pages', url: '/pages', icon: FileText, permission: 'pages.manage' },
         { title: 'Home banners', url: '/banners', icon: Image, permission: 'banners.manage' },
         { title: 'Feature switches', url: '/features', icon: ToggleRight, permission: 'features.manage' },
@@ -86,7 +88,7 @@ export const sidebarData: SidebarData = {
 
 /** The menu for this staff member (items they may not use, or switched OFF, are removed). */
 export function visibleNavGroups(can: (permission: string) => boolean, user: StaffUser | null): SidebarData['navGroups'] {
-  const allowed = (item: { permission?: string; feature?: 'guide' | 'verified_badge' | 'seller_ratings' | 'shops' | 'boosts' | 'contact_form' }) => (!item.permission || can(item.permission)) && (!item.feature || !!user?.[item.feature])
+  const allowed = (item: { permission?: string; feature?: 'guide' | 'verified_badge' | 'seller_ratings' | 'shops' | 'boosts' | 'contact_form' | 'home_page' }) => (!item.permission || can(item.permission)) && (!item.feature || !!user?.[item.feature])
   return sidebarData.navGroups
     .map((group) => ({
       ...group,

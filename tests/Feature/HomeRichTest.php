@@ -80,10 +80,12 @@ class HomeRichTest extends TestCase
         $this->get('/')->assertDontSee('secretword')->assertDontSee('data-popular-searches', false);
     }
 
-    public function test_hero_switch_off_shows_the_old_hero(): void
+    public function test_hero_switches_off_show_the_old_hero(): void
     {
         DB::table('search_terms')->insert(['term' => 'goats', 'ads' => 16]);
-        $this->switch('home.hero_plus', false);
+        foreach (['home.promise', 'home.popular_searches', 'home.post_button'] as $key) { // were "home.hero_plus" (PR 86)
+            $this->switch($key, false);
+        }
 
         $this->get('/')->assertOk()->assertDontSee('data-home-promise', false)->assertDontSee('data-popular-searches', false)->assertDontSee('data-home-post', false);
     }
