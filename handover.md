@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-20 (PR 87)_
+_Last updated: 2026-11-20 (PR 88)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -50,6 +50,7 @@ _Last updated: 2026-11-20 (PR 87)_
 - **PR 85 (message box, card stars, rating answers + likes):** ad-page box posts `message` to `chat.start`; checks in `ChatController::problem()`, saving in `store()`. Card stars: `Ad::cardSeller()` (rating columns + created_at; was `sellerStars` until PR 87) + scope `withCardSeller()` next to `withPhotoCount()` in every card list; `_card` shows stars only when the relation is loaded (never lazy). Ratings: migration `review_replies_and_likes` (`seller_reviews.reply/replied_at/likes_count`, table `review_likes` unique per person), `Account\ReviewResponseController` (`review.reply`, `review.like`), `resources/js/review-like.js`, `sellers/reviews.blade.php`; admin list shows answer + likes (`admin/src/features/reviews`). New icon `thumbs-up` (Lucide).
 - **PR 86 (Admin → Home page):** the parts list is `config/home.php` (page order, `needs` / `needs_any`, `fixed`); `Admin\HomePageController` (`GET /admin/api/home-page`, switch `admin.home_page`, permission `features.manage`); toggling uses `PUT /features/{key}`. React page `admin/src/features/home-page`. **Adding a home part:** give it a switch in `config/features.php`, wrap it in `home.blade.php`, add it to `config/home.php` in page order (a test checks every key exists). `home.hero_plus` is gone (migration `split_home_hero_switch`). Read feature config with `config('features')[$key]`, never `config("features.{$key}")` (dots).
 - **PR 87 (place picker, card years, sticky categories):** `HomeSections::locations()` + `partials/place-picker.blade.php` (a `<dialog>`) + `resources/js/place-picker.js` (one set of page listeners; the hidden `city`/`area` fields stay disabled until a choice; the fallback `<select>` is disabled by JavaScript). Card years: `_card` uses `SellerBadges::tenure()` on `cardSeller`. Sticky list: the `<aside>` in `home.blade.php` (list scrolls inside; panels are placed against the aside so they are not cut).
+- **PR 88 (website colour):** `App\Support\Theme\SiteColors` (palette from one colour, readability rule, suggestion, the `<style>` text), setting `site.brand_color`, `Admin\SiteColorController` (`GET/PUT /admin/api/settings/site-color`, `POST …/check`), React `settings/appearance/site-color-form.tsx`; the `<style data-site-color>` is printed after `@vite` in `layouts/app.blade.php`. If you change the blue scale in `app.css`, change `SiteColors::LIGHT/DARK/DARK_TEXT/DEFAULT` too (a test compares them).
 
 ## How to run
 See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example .env && docker compose up -d --build`, then open http://localhost:8095.

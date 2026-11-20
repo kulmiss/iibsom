@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\SetupController;
 use App\Http\Controllers\Admin\ShopController;
+use App\Http\Controllers\Admin\SiteColorController;
 use App\Http\Controllers\Admin\SpaController;
 use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\SystemController;
@@ -193,6 +194,12 @@ Route::prefix('admin/api')->group(function () {
 
         Route::get('/settings/appearance', [AppearanceController::class, 'show'])->name('admin.api.appearance');
         Route::put('/settings/appearance', [AppearanceController::class, 'update'])->middleware('admin.can:settings.manage')->name('admin.api.appearance.update');
+        // Website colour (PR 88)
+        Route::middleware(['admin.can:settings.manage', 'feature:site.custom_color'])->group(function () {
+            Route::get('/settings/site-color', [SiteColorController::class, 'show']);
+            Route::post('/settings/site-color/check', [SiteColorController::class, 'check'])->middleware('throttle:120,1');
+            Route::put('/settings/site-color', [SiteColorController::class, 'update']);
+        });
     });
 
     Route::any('/{any}', fn () => response()->json(['message' => 'Not found.'], 404))->where('any', '.*');

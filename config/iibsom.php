@@ -43,6 +43,8 @@ return [
     'settings' => [
         'languages.enabled' => ['en'],
         'admin.brand_color' => '#1f6fd1',
+        // The website's main colour (PR 88, Admin → Settings → Appearance); = brand-700 in resources/css/app.css.
+        'site.brand_color' => '#1d6bca',
         'ads.expiry_days' => 60,
         'ads.max_per_day' => 5,
         'ads.max_photos' => 8,

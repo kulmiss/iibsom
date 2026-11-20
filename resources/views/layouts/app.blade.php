@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', __('site.home.title')) · {{ config('app.name') }}</title>
     <meta name="description" content="@yield('description', __('site.meta_description'))">
-    <meta name="theme-color" content="#1f6fd1">
+    <meta name="theme-color" content="{{ \App\Support\Theme\SiteColors::current() }}">
     {{-- "js" on <html> before the page draws: parts that only work with JavaScript take their place at once
          (no jump when the script runs, PR 80). --}}
     <script nonce="{{ Vite::cspNonce() }}">document.documentElement.classList.add('js')</script>
@@ -38,6 +38,10 @@
     @endif
     @stack('head')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @if (feature('site.custom_color') && ($siteColorCss = \App\Support\Theme\SiteColors::css(setting('site.brand_color'))) !== '')
+        {{-- The website colour chosen in Admin → Settings → Appearance (PR 88). Made only from a checked #rrggbb. --}}
+        <style data-site-color>{!! $siteColorCss !!}</style>
+    @endif
     @stack('scripts')
 </head>
 <body class="flex min-h-screen flex-col bg-stone-50 pb-16 text-stone-900 antialiased lg:pb-0">

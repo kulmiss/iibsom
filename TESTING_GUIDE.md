@@ -124,6 +124,7 @@ The same rows run automatically in a real browser (see "Automatic run" below).
 | J67 | Place picker | Home: tap the place box next to the search (EN + SO, phone + computer); type "hod"; pick a district; Search | Districts A–Z with counts; search finds it; the box shows "District, City"; results are only from that district | `search.location_picker` |
 | J68 | "2 years on iibsom" on cards | Cars list with a seller who joined 2+ years ago (and one who joined this year) | "2 years on iibsom" on the old seller's cards only | `ads.card_years` |
 | J69 | Category list stays in view | Computer: home page, scroll down the ads; hover a category | The list stays at the top of the screen; the sub-category panel still opens in full | `home.sticky_categories` |
+| J70 | Website colour | Admin → Settings → Appearance → Website colour: pick the green dot, Save; open the site (light + dark, phone + computer); try a light yellow; then "Back to iibsom blue" + Save | Top bar, buttons and links green, readable in light and dark; yellow is refused with "Use … instead"; blue again after reset | `site.custom_color` |
 
 ## Automatic run
 
