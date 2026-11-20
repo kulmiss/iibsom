@@ -66,6 +66,7 @@ return [
     // Contact buttons
     'contact.whatsapp' => ['group' => 'Contact', 'default' => true, 'label' => 'WhatsApp button', 'description' => 'Big WhatsApp button on the ad page.'],
     'contact.call' => ['group' => 'Contact', 'default' => true, 'label' => 'Call button', 'description' => 'Big Call button on the ad page.'],
+    'share.image' => ['group' => 'Contact', 'default' => true, 'label' => 'Share picture', 'description' => 'When an ad is shared on WhatsApp, Facebook or Telegram, the preview shows a picture made for it: the photo, title, price, city and the iibsom name (never the phone number). Made on the server and made again when the ad changes.'],
     'share.buttons' => ['group' => 'Contact', 'default' => true, 'label' => 'Share buttons', 'description' => 'Share on WhatsApp, Facebook, copy link.'],
 
     // Site content

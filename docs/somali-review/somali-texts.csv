@@ -380,7 +380,7 @@ ads.page.not_live,"Only you can see this ad. Status: :status","Adiga oo keliya a
 ads.page.sold,"This item is sold.","Alaabtan waa la iibiyey.","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.photo,"Photo :n of :total","Sawirka :n ee :total","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.no_photo,"No photo","Sawir ma leh","needs native review","resources/views/ads/_card.blade.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","browse-index.png | ads-post-form.png | ads-show.png"
-ads.page.negotiable,Negotiable,"Waa laga wada hadli karaa","needs native review","resources/views/ads/_card.blade.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","browse-index.png | ads-post-form.png | ads-show.png"
+ads.page.negotiable,Negotiable,"Waa laga wada hadli karaa","needs native review","app/Support/Share/ShareImage.php | resources/views/ads/_card.blade.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","browse-index.png | ads-post-form.png | ads-show.png"
 ads.page.all_photos,"All photos","Dhammaan sawirrada","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.read_more,"Read more","Akhri wax badan","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.read_less,"Show less","Muuji wax yar","needs native review",resources/views/ads/show.blade.php,ads-show.png

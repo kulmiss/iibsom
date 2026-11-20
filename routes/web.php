@@ -37,6 +37,7 @@ use App\Http\Controllers\ScamCheckController;
 use App\Http\Controllers\SearchSuggestController;
 use App\Http\Controllers\SellerPageController;
 use App\Http\Controllers\SellerReviewsController;
+use App\Http\Controllers\ShareImageController;
 use App\Http\Controllers\ShopPageController;
 use App\Http\Controllers\SitemapController;
 use App\Models\Page;
@@ -271,6 +272,11 @@ Route::post('/ads/{ad}/event', [AdStatsController::class, 'event'])
 
 Route::get('/sitemap.xml', [SitemapController::class, 'sitemap'])->name('sitemap');
 Route::get('/robots.txt', [SitemapController::class, 'robots'])->name('robots');
+
+// Share picture for WhatsApp / Facebook / Telegram (PR 110): fixed address, no session or cookies.
+Route::get('/share/{id}-{version}-{lang}.jpg', [ShareImageController::class, 'show'])
+    ->where(['id' => '[0-9]+', 'version' => '[a-f0-9]{12}', 'lang' => '[a-z]{2}'])
+    ->middleware(['feature:share.image', 'throttle:120,1'])->withoutMiddleware($stateless)->name('ad.share_image');
 
 // Links inside emails (PR 105): fixed URLs (no language prefix), the language travels as ?lang=.
 Route::middleware('throttle:20,1')->group(function () {

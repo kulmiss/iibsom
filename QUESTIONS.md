@@ -70,3 +70,7 @@ The owner said: "take your recommended option for small choices, log them here".
 | 2026-11-21 | 109 | New public page "Check a phone number" (/check-number, also /so/…), linked in the footer and the ad page safety box; noindex. | Buyers can check before sending money; Google never lists numbers. |
 | 2026-11-21 | 109 | Review requests: anyone can send one for a listed number (no sign-in needed); one waiting request per number; 3 an hour per visitor; contact deleted 30 days after the decision. | The owner of a number may not have an account. |
 | 2026-11-21 | 109 | Watchdog alert has no number and no name (alerts go by email/Telegram). | Your rule: no personal data in alerts. |
+| 2026-11-21 | 110 | Share picture layout: photo square on the left; iibsom, title (3 lines max), price, city and the site address on the right; no photo = category name on a blue box. | Original design; nothing copied. |
+| 2026-11-21 | 110 | Phone numbers typed inside a title are left out of the picture. | Your rule: no phone number on the image. |
+| 2026-11-21 | 110 | The picture is made the first time an app asks for it, kept on the private disk, and served with a 1-week cache; the address changes when the ad changes (old address → new one). | Fast and works on shared hosting. |
+| 2026-11-21 | 110 | Telegram added next to WhatsApp, Facebook and Copy link. | Your request. |

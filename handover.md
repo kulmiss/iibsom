@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-21 (PR 109)_
+_Last updated: 2026-11-21 (PR 110)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -72,6 +72,7 @@ _Last updated: 2026-11-21 (PR 109)_
 - **PR 107:** ID photo clean-up = `iibsom:verifications:clean` (nightly 03:45); `VerificationRequest::KEEP_PENDING_DAYS`; setting `verification.business_price` (Settings → Site rules → Verified badge).
 - **PR 108:** phone tick = users `phone_confirmed_at/_by`, `phone_confirm_code(_at)`; cleared in `User::booted()` on phone change. Customer `Account\PhoneConfirmController`; admin `UserController::confirmPhone/unconfirmPhone`; setting `contact.confirm_whatsapp`.
 - **PR 109:** scam list = `Support\Safety\ScamNumbers` (cached list, `firstListed()`, `sendAdsToReview()`), models `ScamNumber`/`ScamAppeal`, guard in `Ad::booted()` (never goes live) + `Moderation::approve()` + `AdForm::validate()` + renew. Public `ScamCheckController`; admin `Admin\ScamNumberController` + `features/scam-numbers`. Watchdog `security.scam_numbers`.
+- **PR 110:** share picture = `Support\Share\ShareImage` (bump the number in `version()` after a design change) + `ShareImageController` (`/share/{id}-{version}-{lang}.jpg`, stateless). Files in storage/app/private/share; nightly prune.
 
 ## How to run
 See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example .env && docker compose up -d --build`, then open http://localhost:8095.
