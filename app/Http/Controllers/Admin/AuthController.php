@@ -213,6 +213,7 @@ class AuthController extends Controller
             'shops' => feature('shops'),
             'boosts' => feature('boosts'),
             'contact_form' => feature('site.contact_form'),
+            'scam_numbers' => feature('safety.scam_numbers'),
             'home_page' => feature('admin.home_page'),
             'watchdog' => feature('watchdog'),
             'setup_needed' => feature('admin.setup_wizard') && $user->hasPermission('settings.manage') && ! SetupController::completed(),

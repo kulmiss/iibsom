@@ -10,6 +10,7 @@ use App\Models\Category;
 use App\Models\User;
 use App\Support\Catalog;
 use App\Support\Notify\Inbox;
+use App\Support\Safety\ScamNumbers;
 use App\Support\Safety\SpamGuard;
 use App\Support\Watchdog\Signals;
 use Illuminate\Http\Request;
@@ -65,6 +66,12 @@ class AdForm
         $data['title'] = Str::squish(strip_tags($data['title']));
         $data['description'] = trim(strip_tags($data['description']));
         SpamGuard::checkAd(['title' => $data['title'], 'description' => $data['description']]);
+
+        // Scam number list (PR 109): the seller's number, or a number written in the ad, was reported for scams.
+        if (ScamNumbers::firstListed($user, $data['title'], $data['description']) !== null) {
+            ScamNumbers::postTried($user);
+            throw ValidationException::withMessages(['title' => __('ads.safety.scam_number')]);
+        }
 
         $data['content_hash'] = hash('sha256', $user->id.'|'.Str::lower($data['title']).'|'.Str::lower(Str::squish($data['description'])));
         $duplicate = Ad::where('user_id', $user->id)->where('content_hash', $data['content_hash'])

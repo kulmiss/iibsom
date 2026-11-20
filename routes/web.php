@@ -33,6 +33,7 @@ use App\Http\Controllers\ForYouController;
 use App\Http\Controllers\GuestReportController;
 use App\Http\Controllers\HelpController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\ScamCheckController;
 use App\Http\Controllers\SearchSuggestController;
 use App\Http\Controllers\SellerPageController;
 use App\Http\Controllers\SellerReviewsController;
@@ -197,6 +198,11 @@ $publicRoutes = function () use ($stateless) {
     Route::post('/ads/{ad}/report-guest', [GuestReportController::class, 'store'])->whereNumber('ad')
         ->middleware(['feature:ads.reports', 'feature:ads.guest_reports', 'throttle:5,10'])
         ->withoutMiddleware($stateless)->name('ad.report_guest');
+    // "Check a phone number" + ask for a review (PR 109). Not in the guest page cache (the answer depends on the number).
+    Route::middleware('feature:safety.scam_numbers')->group(function () {
+        Route::get('/check-number', [ScamCheckController::class, 'show'])->name('scam.check');
+        Route::post('/check-number/appeal', [ScamCheckController::class, 'appeal'])->middleware('throttle:10,60')->name('scam.appeal');
+    });
     // Contact form (PR 69): the page is cached for guests; sending is stateless like guest reports.
     Route::get('/contact', [ContactController::class, 'show'])->middleware('feature:site.contact_form')->name('contact');
     Route::post('/contact', [ContactController::class, 'store'])

@@ -41,3 +41,6 @@ Full ASVS level 2 review: see **SECURITY_REPORT.md** in the project root. Fixed 
 
 ## Guest reports (PR 49)
 `POST /ads/{id}/report-guest` is stateless (no session, cookie or CSRF token, like the stats beacon). Bots are stopped by a hidden field, a signed time stamp, a 5-per-10-minutes limit by a keyed hash of the IP (cache, 10 minutes), 20 per ad per day, merging of repeats, and a small sum only while there is a flood. Nothing about the visitor is stored; a contact they type is deleted 30 days after the report is handled.
+
+## Scam number list (PR 109)
+Staff only, with a reason and proof; never automatic. Public pages show only the number and "Reported for scams" — never a name, the proof, or who marked it (`/check-number` is noindex). Review requests store only the message and an optional contact (deleted 30 days after the decision); rate limits use the keyed IP hash in the cache. The watchdog alert carries a count only.

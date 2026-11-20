@@ -11,6 +11,7 @@ use App\Support\Ads\Moderation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use InvalidArgumentException;
 
 class ReportController extends Controller
 {
@@ -57,7 +58,11 @@ class ReportController extends Controller
             // PR 89: an ad hidden after reports is fine: it goes live again and its waiting reports are closed.
             $ad = $report->ad;
             abort_unless($ad->status === AdStatus::Pending && $ad->flag === AutoHide::FLAG && ! $ad->trashed(), 422, 'Only an ad that was hidden after reports can be put back here.');
-            Moderation::approve($ad, $this->authUser($request));
+            try {
+                Moderation::approve($ad, $this->authUser($request));
+            } catch (InvalidArgumentException $e) { // e.g. its number is on the scam list (PR 109)
+                return response()->json(['message' => $e->getMessage()], 422);
+            }
             if ($note !== null) {
                 Report::where('ad_id', $ad->id)->where('handled_at', '>=', now()->subMinute())->where('status', 'rejected')->update(['staff_note' => $note]);
             }

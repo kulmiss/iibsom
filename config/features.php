@@ -57,6 +57,7 @@ return [
     'ads.my_ads' => ['group' => 'Ads', 'default' => true, 'label' => 'My Ads page', 'description' => 'Sellers see their ads and can edit, mark sold, renew and delete them.'],
 
     // Safety and spam
+    'safety.scam_numbers' => ['group' => 'Safety', 'default' => true, 'label' => 'Scam number warning list', 'description' => 'Staff (only) mark a phone number "Reported for scams" with a reason and proof (Admin → Scam numbers). That number cannot post and its ads wait for staff. Buyers who search or check the number see a warning, never a name. The owner can ask for a review. Watchdog alerts when a listed number tries to post.'],
     'safety.no_drugs' => ['group' => 'Safety', 'default' => true, 'label' => 'No drugs', 'description' => 'Ads (new and edited) with drug words are refused: khat, cannabis, narcotics, prescription medicines, paraphernalia. The word list is in Settings → General. Also adds "Drugs" to the report reasons and the "Drugs" filter in Ads.'],
     'safety.bad_words' => ['group' => 'Safety', 'default' => true, 'label' => 'Bad word filter', 'description' => 'Ads with words from the list in Settings are refused.'],
     'safety.block_links' => ['group' => 'Safety', 'default' => true, 'label' => 'No web links in ads', 'description' => 'Ads with web links (often scams) are refused.'],

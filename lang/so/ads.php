@@ -278,6 +278,7 @@ return [
         'bot' => 'Wax baa khaldamay. Fadlan mar kale isku day.',
         'links' => 'Fadlan ka saar linkiyada internetka. Iibsadayaashu waxay kula soo xiriiraan taleefan ama WhatsApp.',
         'bad_words' => 'Fadlan xayeysiiskaaga ka saar erayada xun ama aan ammaanka ahayn.',
+        'scam_number' => 'Lambarkan waxaa laga soo sheegay khiyaano, sidaas darteed laguma isticmaali karo xayeysiisyada. Haddii ay khalad tahay, codso dib-u-eegis bogga "Hubi lambar taleefan".',
         'drugs' => 'Daroogo laguma oggola iibsom (qaad, xashiish, maandooriye, daawooyin u baahan dhakhtar iyo wax la mid ah). Fadlan ka saar. Eeg xeerarka dhigista xayeysiiska ee Caawimaadda.',
     ],
 

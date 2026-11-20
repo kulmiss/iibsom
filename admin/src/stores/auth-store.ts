@@ -25,6 +25,8 @@ export type StaffUser = {
   /** "Paid boosts" switch (Phase 2). */
   boosts: boolean
   contact_form: boolean
+  /** Scam number list (PR 109). */
+  scam_numbers?: boolean
   home_page: boolean
   /** "Watchdog" switch (PR 96). */
   watchdog: boolean

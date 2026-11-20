@@ -341,6 +341,9 @@
                             <li>{{ __('ads.page.safety_3') }}</li>
                         </ul>
                         <a href="{{ lroute('page', ['slug' => 'safety']) }}" class="mt-2 inline-block text-sm font-medium text-brand-800 underline">{{ __('ads.page.safety_more') }}</a>
+                        @feature('safety.scam_numbers')
+                            <a href="{{ lroute('scam.check') }}" class="mt-2 ms-3 inline-block text-sm font-medium text-brand-800 underline" data-scam-link>{{ __('scam.footer') }}</a>
+                        @endfeature
                     </section>
                 @endfeature
 

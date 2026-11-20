@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\AdStatus;
 use App\Support\Ads\AdCounters;
 use App\Support\Cache\PageCache;
+use App\Support\Safety\ScamNumbers;
 use App\Support\Search\AdFilters;
 use App\Support\Social\SocialPosts;
 use Database\Factories\AdFactory;
@@ -51,6 +52,13 @@ class Ad extends Model
 
     protected static function booted(): void
     {
+        // Scam number list (PR 109): an ad that uses a listed number never goes live; it waits for staff.
+        static::saving(function (Ad $ad) {
+            if ($ad->status === AdStatus::Live && ($ad->isDirty('status') || ! $ad->exists) && ScamNumbers::blocksAd($ad)) {
+                $ad->status = AdStatus::Pending;
+                $ad->flag = ScamNumbers::FLAG;
+            }
+        });
         // Live-ad counters on categories and cities follow every change.
         // Fast filters (PR 90): the detail values in their own indexed table.
         static::saved(function (Ad $ad) {

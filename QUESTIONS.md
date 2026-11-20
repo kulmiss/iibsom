@@ -64,3 +64,9 @@ The owner said: "take your recommended option for small choices, log them here".
 | 2026-11-21 | 108 | Codes look like IIB-7KQ3M (no 0/O/1/I/L), last 7 days, and the same code is shown again while fresh. | Easy to read out; not a password, only a way to match the message. |
 | 2026-11-21 | 108 | If no iibsom WhatsApp number is set, the page says staff will call instead (no broken button). | You add the number in Settings when ready. |
 | 2026-11-21 | 108 | The tick shows on ad and seller pages (not on small ad cards). | Cards are already busy; the ad page is where people decide to call. |
+| 2026-11-21 | 109 | Scam list: Super Admin and Moderator can mark numbers (the "ban users" permission); a reason and a proof note are both required. | Your rule: staff only, with proof. |
+| 2026-11-21 | 109 | Numbers written inside ad texts count too (0615…, +252 61…, 615-123-456). | Scammers often put the number in the description. |
+| 2026-11-21 | 109 | Ads of a listed number can only be rejected, not approved, until the number comes off the list. | Stops a mistake in the queue. |
+| 2026-11-21 | 109 | New public page "Check a phone number" (/check-number, also /so/…), linked in the footer and the ad page safety box; noindex. | Buyers can check before sending money; Google never lists numbers. |
+| 2026-11-21 | 109 | Review requests: anyone can send one for a listed number (no sign-in needed); one waiting request per number; 3 an hour per visitor; contact deleted 30 days after the decision. | The owner of a number may not have an account. |
+| 2026-11-21 | 109 | Watchdog alert has no number and no name (alerts go by email/Telegram). | Your rule: no personal data in alerts. |

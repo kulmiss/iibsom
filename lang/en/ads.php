@@ -276,6 +276,7 @@ return [
         'bot' => 'Something went wrong. Please try again.',
         'links' => 'Please remove web links. Buyers contact you by phone or WhatsApp.',
         'bad_words' => 'Please remove rude or unsafe words from your ad.',
+        'scam_number' => 'This phone number was reported for scams, so it cannot be used in ads. If this is a mistake, ask for a review on the "Check a phone number" page.',
         'drugs' => 'Drugs are not allowed on iibsom (khat, cannabis, narcotics, medicines that need a doctor, and anything similar). Please remove them. See the posting rules in Help.',
     ],
 
