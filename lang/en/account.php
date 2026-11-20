@@ -121,6 +121,9 @@ return [
         'rejected' => 'We could not verify your ID: :reason',
         'try_again' => 'You can send a new photo below.',
         'privacy' => 'Your ID photo is never shown to buyers. It is stored encrypted and deleted as soon as our team decides.',
+        'free' => 'Free. Your ID photo is checked by our team only.',
+        'price_business' => 'For businesses the badge costs :price. Send your ID first: our team tells you how to pay.',
+        'expired' => 'Our team could not check your last photo in time, so it was deleted. Please send it again.',
     ],
 
     'shop' => [

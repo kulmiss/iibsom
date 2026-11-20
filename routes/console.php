@@ -96,6 +96,9 @@ Schedule::call(fn () => AdStats::prune())->name('ad-stats-prune')->dailyAt('03:3
 // Guest reports: the phone/email a guest left is removed 30 days after the report was handled.
 Schedule::call(fn () => GuestReports::pruneContacts())->name('guest-report-contacts')->dailyAt('03:40')->timezone('Africa/Mogadishu');
 
+// ID photos (PR 107): unchecked requests end after 30 days; photos with no use are deleted. Runs even with the switch OFF.
+Schedule::command('iibsom:verifications:clean')->name('verifications-clean')->dailyAt('03:45')->timezone('Africa/Mogadishu')->withoutOverlapping();
+
 // Paid boosts: a boost that ended goes back to a normal ad.
 Schedule::call(fn () => Boosts::endExpired())->name('end-boosts')->everyMinute()->withoutOverlapping();
 

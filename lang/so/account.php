@@ -123,6 +123,9 @@ return [
         'rejected' => 'Ma aanan xaqiijin karin aqoonsigaaga: :reason',
         'try_again' => 'Waxaad hoos ka soo diri kartaa sawir cusub.',
         'privacy' => 'Sawirka aqoonsigaaga weligii lama tuso iibsadayaasha. Si qarsoodi ah ayaa loo kaydiyaa, waana la tirtiraa marka kooxdayadu go\'aan gaarto.',
+        'free' => 'Waa bilaash. Sawirka aqoonsigaaga waxaa eegaya kooxdayada oo keliya.',
+        'price_business' => 'Ganacsiyada calaamaddu waxay ku kacaysaa :price. Marka hore soo dir aqoonsigaaga: kooxdayadu waxay kuu sheegi doontaa sida loo bixiyo.',
+        'expired' => 'Kooxdayadu ma hubin karin sawirkaagii ugu dambeeyay waqtigiisa, sidaas darteed waa la tirtiray. Fadlan mar kale soo dir.',
     ],
 
     'shop' => [

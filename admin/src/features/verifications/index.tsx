@@ -12,7 +12,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
-type Status = 'pending' | 'approved' | 'rejected'
+type Status = 'pending' | 'approved' | 'rejected' | 'expired'
 type Verification = {
   id: number
   status: Status
@@ -63,6 +63,7 @@ export function Verifications() {
           <TabsTrigger value='pending'>Waiting {data && status === 'pending' ? `(${data.pending})` : ''}</TabsTrigger>
           <TabsTrigger value='approved'>Verified</TabsTrigger>
           <TabsTrigger value='rejected'>Not verified</TabsTrigger>
+          <TabsTrigger value='expired' title='Nobody checked them in 30 days; the photo was deleted'>Expired</TabsTrigger>
         </TabsList>
       </Tabs>
 
@@ -90,7 +91,7 @@ export function Verifications() {
                   <img src={`/admin/api/verifications/${v.id}/photo`} alt={`ID photo of ${v.user.name}`} className='max-h-72 w-full rounded-md border object-contain' loading='lazy' />
                 </a>
               ) : (
-                <p className='text-sm text-muted-foreground'>The ID photo was deleted after the decision.</p>
+                <p className='text-sm text-muted-foreground'>{v.status === 'expired' ? 'Nobody checked this within 30 days, so it ended and the ID photo was deleted. The seller can send a new one.' : 'The ID photo was deleted after the decision.'}</p>
               )}
               {v.reason && <p className='mt-3 rounded-md bg-muted p-2 text-sm'>Reason: {v.reason}</p>}
             </CardContent>

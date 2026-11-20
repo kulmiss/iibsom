@@ -145,7 +145,7 @@ return [
 
     // Phase 2: money + trust (build only when the owner says)
     'boosts' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Paid boosts', 'description' => 'Sellers pay for Top / VIP / Diamond with EVC Plus, Zaad, Sahal or eDahab and upload the receipt; staff approve it and the ad shows first in lists. Starts in TEST MODE (Settings → General).'],
-    'verified_badge' => ['group' => 'Phase 2', 'default' => true, 'label' => 'Verified badge', 'description' => 'Sellers send a photo of their ID; staff check it and give a "Verified" badge shown next to the seller name. The ID photo is kept encrypted and deleted after the check.'],
+    'verified_badge' => ['group' => 'Phase 2', 'default' => true, 'label' => 'Verified badge', 'description' => 'Sellers send a photo of their ID; staff check it and give a "Verified" badge shown next to the seller name. The ID photo is kept encrypted on the private disk, every look is logged, and it is deleted right after the decision (or after 30 days unchecked). Free for people; a price for businesses is in Settings (0 = free).'],
     'shops' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Business shop pages', 'description' => 'Sellers make a shop page (logo, hours, all their ads) at /shop/name. It is public only while an admin has turned it on for some months (paid outside the site for now).'],
     'chat' => ['group' => 'Phase 2', 'default' => false, 'label' => 'In-website chat', 'description' => 'Buyers tap "Chat with seller" on an ad and talk inside the site (Messages). Works on shared hosting: new messages arrive every few seconds. Either side can block.'],
     'favourites' => ['group' => 'Phase 2', 'default' => true, 'label' => 'Favourites', 'description' => 'Save ads to a list.'],

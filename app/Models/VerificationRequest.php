@@ -17,7 +17,19 @@ class VerificationRequest extends Model
 {
     public const ID_TYPES = ['national_id', 'passport', 'driving_licence'];
 
+    /** A request nobody checked in this many days ends ("expired") and its photo is deleted (PR 107). */
+    public const KEEP_PENDING_DAYS = 30;
+
+    /** Private-disk folder of the encrypted ID photos. */
+    public const FOLDER = 'verifications';
+
     protected $fillable = ['id_type', 'file_path'];
+
+    protected static function booted(): void
+    {
+        // The row can go (user deleted, clean-up): the photo always goes with it.
+        static::deleting(fn (VerificationRequest $v) => PrivateFiles::delete($v->file_path));
+    }
 
     protected function casts(): array
     {
@@ -39,7 +51,7 @@ class VerificationRequest extends Model
     /** Keep the photo encrypted at rest. */
     public static function storePhoto(string $bytes): string
     {
-        return PrivateFiles::put('verifications', $bytes);
+        return PrivateFiles::put(self::FOLDER, $bytes);
     }
 
     public function photoBytes(): ?string

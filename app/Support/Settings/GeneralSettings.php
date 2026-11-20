@@ -31,6 +31,7 @@ class GeneralSettings
             'weekly_emails.*' => ['email:rfc', 'max:120'],
             'support_email' => ['nullable', 'email:rfc', 'max:120'],
             'payments_test_mode' => ['sometimes', 'boolean'],
+            'verify_business_price' => ['sometimes', 'integer', 'min:0', 'max:1000'], // USD; individuals are always free (PR 107)
             'payment_numbers' => ['sometimes', 'array'],
             'payment_numbers.*' => ['nullable', 'string', 'max:30', 'regex:/^[0-9 +\-]*$/'],
             'diaspora_rates' => ['sometimes', 'array'],
@@ -137,6 +138,9 @@ class GeneralSettings
         if (array_key_exists('payments_test_mode', $data)) {
             $this->settings->set('payments.test_mode', (bool) $data['payments_test_mode'], $userId);
         }
+        if (array_key_exists('verify_business_price', $data)) {
+            $this->settings->set('verification.business_price', (int) $data['verify_business_price'], $userId);
+        }
 
         if (array_key_exists('diaspora_rates', $data)) {
             $rates = [];
@@ -187,6 +191,7 @@ class GeneralSettings
             'weekly_last_sent' => setting('reports.weekly_last_sent') ?: null,
             'support_email' => setting('site.support_email'),
             'payments_test_mode' => (bool) setting('payments.test_mode'),
+            'verify_business_price' => (int) setting('verification.business_price'),
             'payment_numbers' => (object) setting('payments.numbers'),
             'payment_methods' => config()->array('boosts.methods'),
             'diaspora_rates' => (object) setting('diaspora.rates'),

@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-21 (PR 106)_
+_Last updated: 2026-11-21 (PR 107)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -69,6 +69,7 @@ _Last updated: 2026-11-21 (PR 106)_
 - **PR 104:** docs only. Owner does not want chat: keep switch `chat` OFF, build no chat features (ROADMAP → Not planned).
 - **PR 105:** email sign-in = `Auth\EmailAuthController` + `Auth\PasswordResetController` + `Support\Auth\SignIn` (`sign_in_open()` in views); mail links use fixed URLs `/auth/confirm-email/…`, `/auth/reset-password/…` with `?lang=`. Login form errors use the `login` error bag. Test sign-in: `TestSignInController::routeAllowed()` / `available()`.
 - **PR 106:** launch list = `Support\Features\LaunchSetup::PRESET`; switch dependencies = `Support\Features\Dependencies::NEEDS` (add a row when a new switch needs another). Admin: `features/launch-setup.tsx`.
+- **PR 107:** ID photo clean-up = `iibsom:verifications:clean` (nightly 03:45); `VerificationRequest::KEEP_PENDING_DAYS`; setting `verification.business_price` (Settings → Site rules → Verified badge).
 
 ## How to run
 See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example .env && docker compose up -d --build`, then open http://localhost:8095.

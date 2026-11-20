@@ -56,3 +56,7 @@ The owner said: "take your recommended option for small choices, log them here".
 | 2026-11-21 | 106 | Launch setup changes exactly the list it showed; if switches changed in the meantime it refuses and asks you to open it again. | Nothing changes that you did not see. |
 | 2026-11-21 | 106 | "Needs … (OFF)" is shown only for switches that need the other one completely (not for ones that work partly without it). | No false warnings. |
 | 2026-11-21 | 106 | Fixed on the way: with My ads OFF and Ad statistics ON, the account page showed Views / Contacts tiles linking to a page that does not open. Those tiles now follow My ads. | Found because Ad statistics became ON by default. |
+| 2026-11-21 | 107 | ID photos: a request nobody checks in 30 days ends ("Expired") and its photo is deleted; the seller can send again. | Photos are never kept longer than needed, even if staff are busy. |
+| 2026-11-21 | 107 | After a decision we keep the decision, date, staff member and the kind of ID (card / passport / licence), not the photo. | The kind of ID is not personal data and helps staff; tell me if you want it removed too. |
+| 2026-11-21 | 107 | "Business" for the badge price = a seller with a shop page. Price setting 0 by default; no payment is taken on the site. | Your instruction: the setting exists but stays 0. |
+| 2026-11-21 | 107 | Backups are database-only today, so ID photos are never in them; the docs now say to leave storage/app/private out of any file copy. | Safest without new tools. |

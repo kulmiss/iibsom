@@ -11,7 +11,7 @@ export type SettingEntry = {
   hash?: string
   search?: Record<string, string>
   permission?: string
-  feature?: 'watchdog' | 'boosts' | 'diaspora' | 'home_page'
+  feature?: 'watchdog' | 'boosts' | 'diaspora' | 'home_page' | 'verified_badge'
 }
 
 export const SETTINGS_INDEX: SettingEntry[] = [
@@ -24,6 +24,7 @@ export const SETTINGS_INDEX: SettingEntry[] = [
   { label: 'Drug words', section: 'Safety words', words: 'drugs khat qaad words block', to: '/settings', hash: 'drug_words', permission: 'settings.manage' },
   { label: 'Weekly summary email', section: 'Emails', words: 'weekly email summary report monday', to: '/settings', hash: 'weekly_emails', permission: 'settings.manage' },
   { label: 'Help email for customers', section: 'Emails', words: 'support help contact email', to: '/settings', hash: 'support_email', permission: 'settings.manage' },
+  { label: 'Verified badge price for businesses', section: 'Verified badge', words: 'verified badge id price business free', to: '/settings', hash: 'verify_business_price', permission: 'settings.manage', feature: 'verified_badge' },
   { label: 'Payments for boosts', section: 'Payments', words: 'payment merchant evc zaad sahal boost money test mode', to: '/settings', hash: 'payments', permission: 'settings.manage', feature: 'boosts' },
   { label: 'Prices for buyers abroad', section: 'Buyers abroad', words: 'diaspora currency exchange rate euro pound', to: '/settings', hash: 'abroad', permission: 'settings.manage', feature: 'diaspora' },
   { label: 'Footer links and social pages', section: 'Footer', words: 'footer facebook telegram whatsapp tiktok instagram youtube social links', to: '/settings', hash: 'footer', permission: 'settings.manage' },

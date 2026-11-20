@@ -23,6 +23,15 @@ class User extends Authenticatable
 
     public const CUSTOMER = 'customer';
 
+    protected static function booted(): void
+    {
+        // The database removes their ID-check rows by itself (cascade), without model events:
+        // delete the encrypted ID photos first, so no file is left behind (PR 107).
+        static::deleting(function (User $user): void {
+            $user->verificationRequests()->get()->each(fn (VerificationRequest $v) => $v->delete());
+        });
+    }
+
     protected function casts(): array
     {
         return [
