@@ -41,3 +41,4 @@ The owner said: "take your recommended option for small choices, log them here".
 | 2026-11-20 | 98 | Switch "Home: icons next to sub categories" (`home.sub_icons`, ON) on Admin → Home page. OFF = names and counts only. | Owner asked for a switch. |
 | 2026-11-20 | 98 | Icon file missing → the first letter of the sub category in the same box. | Never an empty or broken box. |
 | 2026-11-20 | 98 | Fixed on the way: the admin icon picker listed our own social logos, which it cannot draw (console error). They are no longer offered. | Found by the browser check. |
+| 2026-11-20 | 99 | Feature switches: sections by what a switch changes (from its name), Phase 2/3 at the end; one column (open/closed cards of different heights look messy in two); closed sections remembered in this browser; while searching every match is shown open. | Easy to find; nothing hidden by mistake. |

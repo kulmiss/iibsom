@@ -184,12 +184,27 @@ class AdminCatalogueTest extends AdminTestCase
         $this->getJson("/admin/api/cities/{$mog->id}/areas")->assertOk()->assertJsonFragment(['name_en' => 'KM4', 'enabled' => false]);
     }
 
+    public function test_every_switch_is_in_one_named_section_none_too_big(): void
+    {
+        $this->asStaff();
+        $groups = $this->getJson('/admin/api/features')->assertOk()->json('groups');
+
+        $keys = collect($groups)->flatMap(fn ($g) => collect($g['items'])->pluck('key'))->all();
+        $this->assertEqualsCanonicalizing(array_keys(config('features')), $keys); // each switch once
+        $this->assertNotContains('Other', array_column($groups, 'group')); // a new prefix must get a section
+        foreach ($groups as $g) {
+            $this->assertLessThanOrEqual(30, count($g['items']), "Section {$g['group']} is too long");
+        }
+    }
+
     public function test_feature_switches_page_and_toggle(): void
     {
         $this->asStaff();
 
         $data = $this->getJson('/admin/api/features')->assertOk()->json();
-        $this->assertSame('Sign-in', $data['groups'][0]['group']);
+        // PR 99: sections by what a switch changes (the old "Site" group had 71 switches); Phase 2 and 3 last.
+        $this->assertSame('Home page', $data['groups'][0]['group']);
+        $this->assertSame('Phase 3 (build when the owner says)', last($data['groups'])['group']);
         $this->assertGreaterThan(0, $data['summary']['on']);
 
         $this->putJson('/admin/api/features/contact.whatsapp', ['enabled' => false])->assertOk()->assertJson(['enabled' => false]);
