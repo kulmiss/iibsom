@@ -66,9 +66,9 @@ class SocialAutopostTest extends TestCase
         ]);
     }
 
-    public function test_off_by_default_and_nothing_queued_when_off(): void
+    public function test_on_by_default_for_launch_and_nothing_queued_when_off(): void
     {
-        $this->assertFalse(config('features')['social.autopost']['default']);
+        $this->assertTrue(config('features')['social.autopost']['default']); // PR 106: ON for launch (does nothing without keys)
         app(FeatureManager::class)->set('social.autopost', false);
         Queue::fake();
 
@@ -116,6 +116,22 @@ class SocialAutopostTest extends TestCase
         $this->goLive($this->ad());
         $this->assertSame(['telegram'], SocialPost::pluck('network')->all());
         Http::assertSentCount(1);
+    }
+
+    public function test_on_without_any_keys_does_nothing_and_breaks_nothing(): void
+    {
+        // PR 106: ON by default for launch, before the owner adds keys.
+        config(['services.telegram.bot_token' => null, 'services.telegram.chat_id' => null, 'services.facebook.page_id' => null, 'services.facebook.page_token' => null]);
+        Http::fake();
+        Queue::fake();
+
+        $ad = $this->ad();
+        $this->goLive($ad);
+
+        Queue::assertNothingPushed();
+        Http::assertNothingSent();
+        $this->assertSame(0, SocialPost::count());
+        $this->assertSame(AdStatus::Live, $ad->fresh()->status);
     }
 
     public function test_ad_created_live_is_shared(): void

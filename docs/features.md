@@ -8,23 +8,23 @@ Sign-in with Google (button only when its keys are set) and with email + passwor
 
 OFF on purpose: **Mark on photos** (`photos.watermark`, permanent on photos made while ON), **Hide empty sub categories** (`catalog.hide_empty`, turn ON when the site has many ads), **Phone + SMS login** (needs an SMS provider), **Trusted sellers skip approval** (decision #9), **Show demo data** (never on the live site).
 
-## Phase 2 and 3 (all built, all OFF)
+## Phase 2 and 3 (all built; six are ON for launch, PR 106)
 
 | Switch | What people see | Needs before ON | Turn on |
 |---|---|---|---|
-| `favourites` Favourites | "Save" on ad pages, Saved ads page | nothing | **1st wave** |
-| `saved_searches` Saved search alerts | "Save this search", daily email | working email (MAIL_ in .env) | **1st wave** |
-| `ad_stats` Ad stats | sellers see views and taps | nothing | **1st wave** |
-| `verified_badge` Verified badge | sellers send an ID photo, staff check | a Moderator to check ID photos | 2nd wave |
-| `chat` In-website chat | "Chat with seller", Messages | staff ready for "Report" questions | 2nd wave |
+| `favourites` Favourites | "Save" on ad pages, Saved ads page | nothing | **ON for launch** |
+| `saved_searches` Saved search alerts | "Save this search", daily email | working email (MAIL_ in .env) | **ON for launch** |
+| `ad_stats` Ad stats | sellers see views and taps | nothing | **ON for launch** |
+| `verified_badge` Verified badge | sellers send an ID photo, staff check | a Moderator to check ID photos | **ON for launch** (free) |
+| `chat` In-website chat | "Chat with seller", Messages | staff ready for "Report" questions | OFF (owner: no chat) |
 | `seller_ratings` Seller ratings | stars from the chat | **chat ON** | after chat has run a few weeks |
 | `price_suggestions` Price guide | price range while posting | enough real ads (shows only with 5+ similar) | after ~1,000 real ads |
-| `diaspora` Help for buyers abroad | safety note + "≈ €5,980" | exchange rates in Settings → General | 2nd wave |
+| `diaspora` Help for buyers abroad | safety note + "≈ €5,980" | exchange rates in Settings → General | **ON for launch** |
 | `shops` Business shop pages | /shop/name pages | a monthly price (LATER.md) | when businesses ask |
 | `boosts` Paid boosts | Top / VIP / Diamond with mobile money | real prices + merchant numbers, then test mode OFF | when you want income |
 | `banner_ads` Banner ads | paid banners in lists / ad pages | an advertiser | when you sell one |
-| `social.autopost` Auto-post | new ads on your Telegram / Facebook | keys in .env (docs/social-autopost.md) | any time |
+| `social.autopost` Auto-post | new ads on your Telegram / Facebook | keys in .env (docs/social-autopost.md); does nothing without them | **ON for launch** |
 | `api.write` Write API | "App access" keys for an app | a mobile app that uses it | when the app is ready |
 | `app` Mobile app | nothing yet (placeholder) | — | — |
 
-**Recommended first wave (no cost, no risk):** Favourites, Saved search alerts, Ad stats.
+**Launch setup** (Admin → Feature switches, button at the top) sets all of this in one click and shows the list first.

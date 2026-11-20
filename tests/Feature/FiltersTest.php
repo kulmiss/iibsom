@@ -56,11 +56,13 @@ class FiltersTest extends TestCase
         $this->get('/cars?posted=1y')->assertRedirect(); // only known values
 
         // Verified sellers: only while that switch is ON (otherwise the filter does nothing and is not shown).
+        app(FeatureManager::class)->set('verified_badge', false); // ON by default since PR 106
         $this->get('/cars?verified=1')->assertOk()->assertSee('Old Toyota far away')->assertDontSee('Only verified sellers');
         app(FeatureManager::class)->set('verified_badge', true);
         $this->get('/cars?verified=1')->assertOk()->assertSee('Verified seller Honda')->assertDontSee('Old Toyota far away');
 
         // Most viewed: only while ad stats are ON.
+        app(FeatureManager::class)->set('ad_stats', false); // ON by default since PR 106
         $this->get('/cars')->assertOk()->assertDontSee('value="popular"', false);
         // Without view numbers, "popular" in an old link quietly means newest.
         $this->get('/cars?sort=popular')->assertOk()->assertSeeInOrder(['Verified seller Honda', 'New Nissan in Hodan', 'Old Toyota far away']);

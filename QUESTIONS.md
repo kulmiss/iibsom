@@ -52,3 +52,7 @@ The owner said: "take your recommended option for small choices, log them here".
 | 2026-11-21 | 105 | Staff can't use the email sign-in or the reset link on the customer site. | Staff sign in at /admin with a 2-step code. |
 | 2026-11-21 | 105 | Google button hides when its keys are missing. | Your request; no broken button on a new site. |
 | 2026-11-21 | 105 | The test sign-in box also needs a local address (127.0.0.1, localhost, *.test). | Your request: it stays closed even if APP_ENV is set wrong on the live server. |
+| 2026-11-21 | 106 | Launch setup also turns OFF demo data, boosts, shops, banners, price guide, trusted sellers, write API, app, chat, ratings and phone login; it never touches any other switch. | The list is shown first and only those switches change. |
+| 2026-11-21 | 106 | Launch setup changes exactly the list it showed; if switches changed in the meantime it refuses and asks you to open it again. | Nothing changes that you did not see. |
+| 2026-11-21 | 106 | "Needs … (OFF)" is shown only for switches that need the other one completely (not for ones that work partly without it). | No false warnings. |
+| 2026-11-21 | 106 | Fixed on the way: with My ads OFF and Ad statistics ON, the account page showed Views / Contacts tiles linking to a page that does not open. Those tiles now follow My ads. | Found because Ad statistics became ON by default. |

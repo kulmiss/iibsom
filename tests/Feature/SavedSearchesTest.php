@@ -61,8 +61,10 @@ class SavedSearchesTest extends TestCase
         return SavedSearch::firstOrFail();
     }
 
-    public function test_off_by_default(): void
+    public function test_on_by_default_for_launch_and_off_hides_it(): void
     {
+        $this->assertTrue(config('features')['saved_searches']['default']); // PR 106: ON for launch
+        app(FeatureManager::class)->set('saved_searches', false);
         $this->assertFalse(feature('saved_searches'));
         $this->actingAs($this->buyer)->get('/account/searches')->assertNotFound();
         $this->actingAs($this->buyer)->post('/account/searches', ['category' => 'cars'])->assertNotFound();

@@ -56,6 +56,7 @@ class LayoutTest extends TestCase
 
     public function test_phase_2_header_icons_are_hidden_until_switched_on(): void
     {
+        app(FeatureManager::class)->set('favourites', false); // ON by default since PR 106
         $this->get('/')->assertDontSee('Saved ads')->assertDontSee('Messages');
 
         app(FeatureManager::class)->set('chat', true);

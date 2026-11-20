@@ -17,13 +17,14 @@
         </div>
 
         @if ($dash)
-            {{-- Dashboard (PR 79): own numbers only, each a link to the page with the details. --}}
+            {{-- Dashboard (PR 79): own numbers only, each a link to the page with the details. Views and contacts link to
+                 My ads, so they show only while My ads is ON (found when Ad statistics became ON by default, PR 106). --}}
             @php($sum = \App\Support\Users\AccountSummary::for($user))
             @php($tiles = array_values(array_filter([
                 feature('ads.my_ads') ? ['list', __('account.dash.live'), $sum['live'], lroute('account.ads')] : null,
                 feature('ads.my_ads') && $sum['waiting'] > 0 ? ['clock', __('account.dash.waiting'), $sum['waiting'], lroute('account.ads', ['tab' => 'pending'])] : null,
-                $sum['views'] !== null ? ['eye', __('account.dash.views'), $sum['views'], lroute('account.ads')] : null,
-                $sum['contacts'] !== null ? ['phone', __('account.dash.contacts'), $sum['contacts'], lroute('account.ads')] : null,
+                feature('ads.my_ads') && $sum['views'] !== null ? ['eye', __('account.dash.views'), $sum['views'], lroute('account.ads')] : null,
+                feature('ads.my_ads') && $sum['contacts'] !== null ? ['phone', __('account.dash.contacts'), $sum['contacts'], lroute('account.ads')] : null,
                 $sum['unread'] !== null ? ['message-circle', __('account.dash.unread'), $sum['unread'], lroute('chat')] : null,
                 $sum['saved'] !== null ? ['bookmark', __('account.dash.saved'), $sum['saved'], lroute('saved')] : null,
                 $sum['followers'] !== null ? ['users', __('account.dash.followers'), $sum['followers'], lroute('seller.show', ['user' => $user->id])] : null,

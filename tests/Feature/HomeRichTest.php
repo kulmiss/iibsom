@@ -189,6 +189,7 @@ class HomeRichTest extends TestCase
         $this->ad(['user_id' => $good->id]);
         $this->ad(['user_id' => $banned->id]);
 
+        $this->switch('verified_badge', false); // ON by default since PR 106
         $this->get('/')->assertDontSee('data-home-trusted', false);
 
         $this->switch('verified_badge', true);

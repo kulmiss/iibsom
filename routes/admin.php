@@ -157,6 +157,8 @@ Route::prefix('admin/api')->group(function () {
         Route::middleware('admin.can:features.manage')->group(function () {
             Route::get('/features', [FeatureController::class, 'index']);
             Route::get('/home-page', [HomePageController::class, 'index'])->middleware('feature:admin.home_page');
+            Route::get('/features/launch', [FeatureController::class, 'launchPreview'])->name('admin.api.features.launch');
+            Route::post('/features/launch', [FeatureController::class, 'launchApply'])->name('admin.api.features.launch.apply');
             Route::put('/features/{key}', [FeatureController::class, 'update'])->where('key', '[a-z0-9._]+');
             Route::delete('/features/{key}', [FeatureController::class, 'reset'])->where('key', '[a-z0-9._]+');
         });

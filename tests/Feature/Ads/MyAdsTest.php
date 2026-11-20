@@ -190,6 +190,7 @@ class MyAdsTest extends TestCase
     public function test_switch_off_hides_my_ads(): void
     {
         app(FeatureManager::class)->set('ads.my_ads', false);
+        $this->assertTrue(feature('ad_stats')); // its tiles linked to My ads too (PR 106)
 
         $this->actingAs($this->seller)->get('/account/ads')->assertNotFound();
         $this->actingAs($this->seller)->get('/account')->assertOk()->assertDontSee(url('/account/ads'));

@@ -39,8 +39,10 @@ class VerificationTest extends AdminTestCase
         ]);
     }
 
-    public function test_off_by_default_and_hidden_everywhere(): void
+    public function test_on_by_default_for_launch_and_off_hides_it_everywhere(): void
     {
+        $this->assertTrue(config('features')['verified_badge']['default']); // PR 106: ON for launch
+        app(FeatureManager::class)->set('verified_badge', false);
         $this->assertFalse(feature('verified_badge'));
         $this->actingAs($this->seller)->get('/account/verify')->assertNotFound();
         $this->send()->assertNotFound();
