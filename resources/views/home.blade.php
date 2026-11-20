@@ -111,8 +111,10 @@
                         </div>
                         @if ($subs)
                             {{-- Narrow panel, as wide as the list (owner, 2026-11-20, like Jiji): name with the count under it. --}}
+                            {{-- PR 93: long lists (Services has 26) scroll inside the panel, which never goes past the screen. --}}
                             <div id="cat-panel-{{ $category['id'] }}" data-cat-panel
-                                 class="invisible absolute start-full top-0 z-20 min-h-full w-72 rounded-xl bg-white p-2 opacity-0 shadow-lg ring-1 ring-stone-200 transition group-hover/cat:visible group-hover/cat:opacity-100 data-[open]:visible data-[open]:opacity-100">
+                                 @class(['invisible absolute start-full top-0 z-20 min-h-full w-72 rounded-xl bg-white p-2 opacity-0 shadow-lg ring-1 ring-stone-200 transition group-hover/cat:visible group-hover/cat:opacity-100 data-[open]:visible data-[open]:opacity-100',
+                                         'max-h-[calc(100dvh-6rem)] overflow-y-auto overscroll-contain' => $stickyCats])>
                                 <a href="{{ lroute('browse.category', ['category' => $category['slug']]) }}" class="block rounded-lg px-2 py-2 hover:bg-brand-50 focus-visible:bg-brand-50">
                                     <span class="block font-semibold leading-tight">{{ translated($category['name']) }}</span>
                                     <span class="block text-xs font-medium text-brand-700">{{ __('ads.browse.all_in', ['category' => translated($category['name'])]) }} ({{ number_format($category['ads_count']) }})</span>
@@ -121,12 +123,10 @@
                                 <ul class="mt-1 grid gap-0.5 border-t border-stone-100 pt-1" data-cat-subs>
                                     @foreach ($subs as $sub)
                                         <li>
-                                            <a href="{{ lroute('browse.category', ['category' => $sub['slug']]) }}" class="flex items-center gap-3 rounded-lg px-2 py-1.5 hover:bg-brand-50 focus-visible:bg-brand-50">
-                                                <span class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-stone-50 text-brand-700">{{ icon($sub['icon'], 'size-5') }}</span>
-                                                <span class="min-w-0 flex-1">
-                                                    <span class="block text-sm font-medium leading-tight">{{ translated($sub['name']) }}</span>
-                                                    <span class="block text-xs text-stone-500">{{ trans_choice('site.ads_count', $sub['ads_count'], ['count' => number_format($sub['ads_count'])]) }}</span>
-                                                </span>
+                                            {{-- PR 96: no icon here (like Jiji): 141 sub categories made the page ~100 KB heavier for every phone. --}}
+                                            <a href="{{ lroute('browse.category', ['category' => $sub['slug']]) }}" class="block rounded-lg px-2 py-1.5 hover:bg-brand-50 focus-visible:bg-brand-50">
+                                                <span class="block text-sm font-medium leading-tight">{{ translated($sub['name']) }}</span>
+                                                <span class="block text-xs text-stone-500">{{ trans_choice('site.ads_count', $sub['ads_count'], ['count' => number_format($sub['ads_count'])]) }}</span>
                                             </a>
                                         </li>
                                     @endforeach

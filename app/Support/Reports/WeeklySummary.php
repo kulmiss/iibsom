@@ -50,8 +50,8 @@ final class WeeklySummary
         ];
     }
 
-    /** @return Numbers */
-    private static function numbers(CarbonImmutable $from, CarbonImmutable $to, bool $demo): array
+    /** @return Numbers  Also used by the Watchdog's daily digest (PR 95). */
+    public static function numbers(CarbonImmutable $from, CarbonImmutable $to, bool $demo): array
     {
         $between = [$from->utc(), $to->utc()];
 
@@ -73,12 +73,27 @@ final class WeeklySummary
     }
 
     /** @return list<array{name: string, total: int}> */
-    private static function topCategories(CarbonImmutable $from, CarbonImmutable $to, bool $demo): array
+    public static function topCategories(CarbonImmutable $from, CarbonImmutable $to, bool $demo): array
     {
         $rows = self::ads($demo)->whereBetween('ads.created_at', [$from->utc(), $to->utc()])
             ->join('categories', 'categories.id', '=', 'ads.category_id')
             ->select('categories.name', DB::raw('count(*) as total'))
             ->groupBy('categories.id', 'categories.name')->orderByDesc('total')->limit(5)
+            ->toBase()->get()->all();
+
+        return array_values(array_map(fn (object $row) => [
+            'name' => translated(json_decode((string) ($row->name ?? ''), true) ?: ''),
+            'total' => (int) ($row->total ?? 0),
+        ], $rows));
+    }
+
+    /** @return list<array{name: string, total: int}>  Cities with the most new ads (Watchdog digest, PR 95). */
+    public static function topCities(CarbonImmutable $from, CarbonImmutable $to, bool $demo, int $limit = 3): array
+    {
+        $rows = self::ads($demo)->whereBetween('ads.created_at', [$from->utc(), $to->utc()])
+            ->join('cities', 'cities.id', '=', 'ads.city_id')
+            ->select('cities.name', DB::raw('count(*) as total'))
+            ->groupBy('cities.id', 'cities.name')->orderByDesc('total')->limit($limit)
             ->toBase()->get()->all();
 
         return array_values(array_map(fn (object $row) => [

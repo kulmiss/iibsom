@@ -44,6 +44,15 @@ class CategoryPanelTest extends TestCase
         $this->assertStringContainsString(url('/boats'), $html);
     }
 
+    public function test_long_panels_scroll_inside_while_the_list_is_sticky(): void
+    {
+        // PR 93: Services has 26 sub categories; the panel must never go past the screen.
+        $this->assertStringContainsString('max-h-[calc(100dvh-6rem)] overflow-y-auto', (string) $this->get('/')->getContent());
+
+        app(FeatureManager::class)->set('home.sticky_categories', false);
+        $this->assertStringNotContainsString('max-h-[calc(100dvh-6rem)]', (string) $this->get('/')->getContent());
+    }
+
     public function test_hide_empty_switch(): void
     {
         $this->assertFalse(config('features')['catalog.hide_empty']['default']);

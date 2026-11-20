@@ -7,6 +7,7 @@ use App\Models\BlockedPhone;
 use App\Rules\SomaliMobile;
 use App\Support\Catalog;
 use App\Support\Phone\SomaliPhone;
+use App\Support\Watchdog\Signals;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -55,6 +56,7 @@ class ProfileController extends Controller
         ]);
 
         if (BlockedPhone::isBlocked(SomaliPhone::normalize($data['phone']))) {
+            Signals::hit('banned_retry');
             throw ValidationException::withMessages(['phone' => __('account.validation.phone_blocked')]);
         }
 

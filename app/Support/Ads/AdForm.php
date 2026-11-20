@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Support\Catalog;
 use App\Support\Notify\Inbox;
 use App\Support\Safety\SpamGuard;
+use App\Support\Watchdog\Signals;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -57,6 +58,7 @@ class AdForm
         $user = $request->user();
         abort_unless($user instanceof User, 401);
         if (BlockedPhone::isBlocked($user->phone)) {
+            Signals::hit('banned_retry');
             throw ValidationException::withMessages(['title' => __('account.validation.phone_blocked')]);
         }
 

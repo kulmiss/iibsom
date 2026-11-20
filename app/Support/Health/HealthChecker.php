@@ -40,6 +40,21 @@ class HealthChecker
         ];
     }
 
+    /**
+     * One check by its key (used by the Watchdog, PR 94, so the same test is not written twice).
+     *
+     * @return Check
+     */
+    public function only(string $key): array
+    {
+        return match ($key) {
+            'database' => $this->database(),
+            'cache' => $this->cache(),
+            'debug' => $this->debugMode(),
+            default => throw new \InvalidArgumentException("Unknown health check [{$key}]."),
+        };
+    }
+
     public function healthy(): bool
     {
         return collect($this->run())->doesntContain('status', 'fail');
@@ -71,7 +86,7 @@ class HealthChecker
     private function database(): array
     {
         try {
-            DB::select('select 1');
+            DB::connection(config('watchdog.connection'))->select('select 1');
 
             return $this->result('database', 'Database', 'ok', 'Connected ('.DB::connection()->getDriverName().')');
         } catch (Throwable) {

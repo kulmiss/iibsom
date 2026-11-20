@@ -24,6 +24,8 @@ export type StaffUser = {
   boosts: boolean
   contact_form: boolean
   home_page: boolean
+  /** "Watchdog" switch (PR 96). */
+  watchdog: boolean
   /** Super Admin who has not done the first-time setup yet. */
   setup_needed: boolean
 }
