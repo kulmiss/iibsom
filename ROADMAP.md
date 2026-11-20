@@ -27,6 +27,7 @@ Google sign-in, post an ad, browse + search, ad page, My Ads, safety (reports, a
 - More regions (other countries) via region switches
 
 ## Ideas
+- Recommended categories on home (pictures of categories like the ones the visitor looked at), and a coloured frame on boosted ad cards (PR 87 list).
 - Admin → Home page, level 2: move parts up or down, and change the title, the line under it and button texts (English + Somali). Level 3: a full page builder (PR 86).
 - Tell the buyer (bell) when the seller answers their rating (PR 85).
 - A multi-choice field type ("Features: NFC, 120Hz, IP68…") shown as a tidy list on ad pages (seen on Jiji, PR 82).

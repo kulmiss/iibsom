@@ -466,7 +466,7 @@ ads.boost.status_approved,Approved,"Waa la oggolaaday","needs native review",res
 ads.boost.status_rejected,"Not approved: :reason","Lama oggolaan: :reason","needs native review",resources/views/account/payments.blade.php,
 ads.boost.test,Test,Tijaabo,"needs native review",resources/views/account/payments.blade.php,
 ads.boost.boosted_until,":level until :date",":level ilaa :date","needs native review",resources/views/account/boost.blade.php,
-ads.badges.years,"{1} 1 year on iibsom|[2,*] :count years on iibsom","{1} 1 sano ku jira iibsom|[2,*] :count sano ku jira iibsom","needs native review","resources/views/ads/show.blade.php | resources/views/sellers/show.blade.php",ads-show.png
+ads.badges.years,"{1} 1 year on iibsom|[2,*] :count years on iibsom","{1} 1 sano ku jira iibsom|[2,*] :count sano ku jira iibsom","needs native review","resources/views/ads/_card.blade.php | resources/views/ads/show.blade.php | resources/views/sellers/show.blade.php","browse-index.png | ads-show.png"
 ads.badges.months,"{1} 1 month on iibsom|[2,*] :count months on iibsom","{1} 1 bil ku jira iibsom|[2,*] :count bilood ku jira iibsom","needs native review","resources/views/ads/show.blade.php | resources/views/sellers/show.blade.php",ads-show.png
 ads.badges.fast,"Replies fast","Si dhakhso ah ayuu u jawaabaa","needs native review","resources/views/ads/show.blade.php | resources/views/sellers/show.blade.php",ads-show.png
 ads.badges.fast_hint,"Usually answers buyers within an hour","Badanaa wuxuu iibsadayaasha ugu jawaabaa saacad gudaheed","needs native review","resources/views/ads/show.blade.php | resources/views/sellers/show.blade.php",ads-show.png
@@ -598,7 +598,14 @@ site.home.heading,"What are you looking for?","Maxaad raadinaysaa?","needs nativ
 site.home.search_placeholder,"I am looking for...","Waxaan raadinayaa...","needs native review","resources/views/errors/404.blade.php | resources/views/home.blade.php | resources/views/partials/header-search.blade.php","errors-404.png | home.png"
 site.home.search_button,Search,Raadi,"needs native review","resources/views/browse/_filters.blade.php | resources/views/home.blade.php | resources/views/partials/header-search.blade.php",home.png
 site.home.location_label,Location,Goobta,"needs native review",resources/views/home.blade.php,home.png
-site.home.all_somalia,"All Somalia","Soomaaliya oo dhan","needs native review",resources/views/home.blade.php,home.png
+site.home.all_somalia,"All Somalia","Soomaaliya oo dhan","needs native review","resources/views/home.blade.php | resources/views/partials/place-picker.blade.php",home.png
+site.home.place_title,"Choose a place","Dooro goob","needs native review",resources/views/partials/place-picker.blade.php,home.png
+site.home.place_back,"Back to all cities","Ku noqo dhammaan magaalooyinka","needs native review",resources/views/partials/place-picker.blade.php,home.png
+site.home.place_close,Close,Xir,"needs native review",resources/views/partials/place-picker.blade.php,home.png
+site.home.place_search,"Find a city or district","Raadi magaalo ama degmo","needs native review",resources/views/partials/place-picker.blade.php,home.png
+site.home.place_open,"Districts of :city","Degmooyinka :city","needs native review",resources/views/partials/place-picker.blade.php,home.png
+site.home.place_all_in,"All of :city",":city oo dhan","needs native review",resources/views/partials/place-picker.blade.php,home.png
+site.home.place_none,"No place with that name. Try another word.","Goob magacaas leh lama helin. Isku day eray kale.","needs native review",resources/views/partials/place-picker.blade.php,home.png
 site.home.categories,Categories,Qaybaha,"needs native review",resources/views/home.blade.php,home.png
 site.home.popular_categories,"Popular categories","Qaybaha ugu badan","needs native review",resources/views/home.blade.php,home.png
 site.home.trending_ads,"Latest ads","Xayeysiisyadii ugu dambeeyey","needs native review","resources/views/browse/index.blade.php | resources/views/home.blade.php","browse-index.png | home.png"
@@ -651,7 +658,7 @@ site.home.install_text,"It opens like an app and uses little data.","Wuxuu u fur
 site.home.install_yes,Add,"Ku dar","needs native review",resources/views/partials/home-more.blade.php,home.png
 site.home.install_no,"Not now","Hadda maya","needs native review",resources/views/partials/home-more.blade.php,home.png
 site.page_updated,"Last updated: :date","Markii ugu dambeysay ee la cusbooneysiiyey: :date","needs native review",resources/views/pages/show.blade.php,pages-safety.png
-site.ads_count,"{0} No ads yet|{1} :count ad|[2,*] :count ads","{0} Weli xayeysiis ma jiro|{1} :count xayeysiis|[2,*] :count xayeysiis","needs native review","resources/views/browse/categories.blade.php | resources/views/home.blade.php | resources/views/partials/home-more.blade.php",home.png
+site.ads_count,"{0} No ads yet|{1} :count ad|[2,*] :count ads","{0} Weli xayeysiis ma jiro|{1} :count xayeysiis|[2,*] :count xayeysiis","needs native review","resources/views/browse/categories.blade.php | resources/views/home.blade.php | resources/views/partials/home-more.blade.php | resources/views/partials/place-picker.blade.php",home.png
 site.safe_help.checked_all,"People check every ad.** Our team checks every new and changed ad before it goes live.","Dad ayaa hubiya xayeysiis kasta.** Kooxdayadu waxay hubisaa xayeysiis kasta oo cusub ama la beddelay ka hor inta uusan muuqan.","needs native review",app/Support/Help/HelpCentre.php,
 site.safe_help.checked_some,"People check ads.** Our team checks new ads, reports and anything that looks wrong.","Dad ayaa hubiya xayeysiisyada.** Kooxdayadu waxay hubisaa xayeysiisyada cusub, warbixinnada iyo wax kasta oo u eg mid khaldan.","needs native review",app/Support/Help/HelpCentre.php,
 site.theme.label,"Light or dark","Iftiin ama mugdi","needs native review",resources/views/partials/theme-switch.blade.php,home.png

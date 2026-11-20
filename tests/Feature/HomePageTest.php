@@ -43,10 +43,18 @@ class HomePageTest extends TestCase
 
     public function test_location_picker_has_only_live_cities(): void
     {
-        // Only Mogadishu is live → no picker at all.
+        // Only Mogadishu is live → no city list; its districts are in the place picker (PR 87)…
         $this->get('/')
             ->assertDontSee('<select id="city"', false)
+            ->assertSee('data-loc-start="mogadishu"', false);
+
+        // …and without districts there is no choice at all.
+        app(FeatureManager::class)->set('search.more_filters', false);
+        $this->get('/')
+            ->assertDontSee('<select id="city"', false)
+            ->assertDontSee('data-loc-open', false)
             ->assertDontSee('All Somalia');
+        app(FeatureManager::class)->set('search.more_filters', true);
 
         City::where('slug', 'kismayo')->first()->update(['enabled' => true]);
 

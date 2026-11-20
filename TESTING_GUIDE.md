@@ -121,6 +121,9 @@ The same rows run automatically in a real browser (see "Automatic run" below).
 | J64 | Stars on ad cards | Seller ratings ON; a seller with ratings: open Cars, search, home; then their seller page | "★ 4.5 (2)" on that seller's cards; no stars on the seller's own page | `ads.card_stars` |
 | J65 | Answer and Helpful on ratings | As the seller open My ratings → Answer → Post; as someone else tap Helpful twice; as the buyer change the rating | Answer shows once (no second form); Helpful on/off with the number; after the change the answer and Helpful are gone | `ratings.replies`, `ratings.likes` |
 | J66 | Admin → Home page | Admin → Website → Home page; switch "popular searches" OFF; open the home page (phone + computer, EN + SO); switch it ON again | The "Popular:" row is gone, the line above and "Post an ad free" stay; it is back after ON; Activity log says "Switched “Home: popular searches” OFF" | `admin.home_page` |
+| J67 | Place picker | Home: tap the place box next to the search (EN + SO, phone + computer); type "hod"; pick a district; Search | Districts A–Z with counts; search finds it; the box shows "District, City"; results are only from that district | `search.location_picker` |
+| J68 | "2 years on iibsom" on cards | Cars list with a seller who joined 2+ years ago (and one who joined this year) | "2 years on iibsom" on the old seller's cards only | `ads.card_years` |
+| J69 | Category list stays in view | Computer: home page, scroll down the ads; hover a category | The list stays at the top of the screen; the sub-category panel still opens in full | `home.sticky_categories` |
 
 ## Automatic run
 

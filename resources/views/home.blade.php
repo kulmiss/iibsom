@@ -7,11 +7,12 @@
 @php($cities = $catalog->cities())
 {{-- Each part below has its own switch: Admin → Home page (PR 86) lists them in this order (config/home.php). --}}
 @php($popular = feature('home.popular_categories') ? $catalog->popularCategories(8) : [])
-@php($latest = \App\Search\DatabaseAdSearch::publicQuery()->with(['category:id,slug,icon,parent_id', 'city:id,name,slug', 'cover'])->withPhotoCount()->withSellerStars()->latest('published_at')->limit(12)->get())
+@php($latest = \App\Search\DatabaseAdSearch::publicQuery()->with(['category:id,slug,icon,parent_id', 'city:id,name,slug', 'cover'])->withPhotoCount()->withCardSeller()->latest('published_at')->limit(12)->get())
 @php($popularNow = \App\Support\Ads\PopularNow::ads())
 @php($banners = feature('site.banners') ? \App\Models\Banner::forHome() : [])
 @php($popularSearches = \App\Support\Home\HomeSections::popularSearches())
 @php($places = \App\Support\Home\HomeSections::places())
+@php($locations = \App\Support\Home\HomeSections::locations())
 @php($featured = \App\Support\Home\HomeSections::featured())
 @php($trusted = \App\Support\Home\HomeSections::trustedSellers())
 @php($canPost = feature('ads.posting') && (auth()->check() || feature('login.google')))
@@ -26,10 +27,19 @@
             @endfeature
 
             <form class="mt-5 flex gap-2" role="search" action="{{ lroute('search') }}" method="get" data-search-form>
-                {{-- Picker only when there is a choice (2+ live cities). --}}
+                {{-- Place picker (PR 87): a button that opens cities → districts with counts. It needs JavaScript; without it
+                     the simple city list below stays (the button and its fields are hidden and sent only with JavaScript). --}}
+                @if ($locations)
+                    <button type="button" class="hidden w-32 shrink-0 items-center gap-1.5 rounded-lg bg-white px-3 py-3 text-start text-stone-800 sm:w-48 sm:px-4 [.js_&]:flex" aria-haspopup="dialog" aria-controls="place-picker" data-loc-open>
+                        {{ icon('map-pin', 'size-4 shrink-0 text-brand-700') }}<span class="min-w-0 flex-1 truncate" data-loc-label>{{ __('site.home.all_somalia') }}</span>{{ icon('chevron-down', 'size-4 shrink-0 text-stone-500') }}
+                    </button>
+                    <input type="hidden" name="city" value="" disabled data-loc-city>
+                    <input type="hidden" name="area" value="" disabled data-loc-area>
+                @endif
+                {{-- Simple list only when there is a choice (2+ live cities). --}}
                 @if (count($cities) > 1)
                     <label for="city" class="sr-only">{{ __('site.home.location_label') }}</label>
-                    <select id="city" name="city" class="w-32 shrink-0 truncate rounded-lg border-0 bg-white px-3 py-3 text-stone-800 sm:w-48 sm:px-4">
+                    <select id="city" name="city" @class(['w-32 shrink-0 truncate rounded-lg border-0 bg-white px-3 py-3 text-stone-800 sm:w-48 sm:px-4', '[.js_&]:hidden' => (bool) $locations]) @if ($locations) data-loc-fallback @endif>
                         <option value="">{{ __('site.home.all_somalia') }}</option>
                         @foreach ($cities as $city)
                             <option value="{{ $city['slug'] }}">{{ translated($city['name']) }}</option>
@@ -64,11 +74,18 @@
         </div>
     </section>
 
+    @if ($locations)
+        @include('partials.place-picker', ['locations' => $locations])
+    @endif
+
     <div class="mx-auto mt-5 grid max-w-6xl gap-5 px-4 lg:grid-cols-[18rem_1fr]">
         {{-- Category list (desktop). Hover, keyboard focus or the arrow button opens a side panel with the sub categories.
              Phones use the tiles below: a tap opens the category page, which starts with its sub categories. --}}
-        <aside class="relative hidden lg:block" aria-label="{{ __('site.home.categories') }}" data-cat-menu>
-            <ul class="rounded-xl bg-white shadow-sm ring-1 ring-stone-200">
+        {{-- Sticky (PR 87, "home.sticky_categories"): the list scrolls inside on short screens; the side panels are placed
+             against the aside (not the list), so the list's scroll never cuts them off. --}}
+        @php($stickyCats = feature('home.sticky_categories'))
+        <aside @class(['hidden', 'relative lg:block' => ! $stickyCats, 'lg:sticky lg:top-20 lg:flex lg:max-h-[calc(100dvh-6rem)] lg:flex-col lg:self-start' => $stickyCats]) aria-label="{{ __('site.home.categories') }}" data-cat-menu @if ($stickyCats) data-sticky @endif>
+            <ul @class(['rounded-xl bg-white shadow-sm ring-1 ring-stone-200', 'min-h-0 flex-1 overflow-y-auto overscroll-contain [scrollbar-width:thin]' => $stickyCats])>
                 @foreach ($categories as $category)
                     @php($subs = $catalog->visibleChildren($category))
                     <li class="group/cat border-b border-stone-100 last:border-0" data-cat-item>
@@ -110,7 +127,7 @@
                 @endforeach
             </ul>
             @feature('catalog.finder')
-                <a href="{{ lroute('categories') }}" class="mt-2 flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-brand-800 hover:bg-brand-50" data-finder-link>{{ icon('layout-grid', 'size-4') }} {{ __('ads.finder.title') }}</a>
+                <a href="{{ lroute('categories') }}" class="mt-2 flex shrink-0 items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-brand-800 hover:bg-brand-50" data-finder-link>{{ icon('layout-grid', 'size-4') }} {{ __('ads.finder.title') }}</a>
             @endfeature
         </aside>
 

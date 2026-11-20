@@ -105,32 +105,38 @@ class Ad extends Model
     }
 
     /**
-     * The seller's rating, for the stars on ad cards (PR 85, switches "seller_ratings" + "ads.card_stars").
-     * A separate relation with only the rating columns, so it never stands in for the full `user`.
+     * The little the ad cards need about the seller: stars (PR 85, "seller_ratings" + "ads.card_stars") and
+     * "2 years on iibsom" (PR 87, "sellers.badges" + "ads.card_years"). A separate relation with only these
+     * columns, so it never stands in for the full `user`.
      *
      * @return BelongsTo<User, $this>
      */
-    public function sellerStars(): BelongsTo
+    public function cardSeller(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id')->select(['id', 'rating_count', 'rating_sum']);
+        return $this->belongsTo(User::class, 'user_id')->select(['id', 'rating_count', 'rating_sum', 'created_at']);
     }
 
     /**
-     * Loads sellerStars for a list of cards: one query for the whole list, none while the switches are OFF.
-     * Not used on a seller's own page or shop (every card is the same seller; their stars are in the header).
+     * Loads cardSeller for a list of cards: one query for the whole list, none while the switches are OFF.
+     * Not used on a seller's own page or shop (every card is the same seller; it is in the header).
      *
      * @param  Builder<Ad>  $query
      */
-    public function scopeWithSellerStars(Builder $query): void
+    public function scopeWithCardSeller(Builder $query): void
     {
-        if (self::cardStarsOn()) {
-            $query->with('sellerStars');
+        if (self::cardStarsOn() || self::cardYearsOn()) {
+            $query->with('cardSeller');
         }
     }
 
     public static function cardStarsOn(): bool
     {
         return feature('seller_ratings') && feature('ads.card_stars');
+    }
+
+    public static function cardYearsOn(): bool
+    {
+        return feature('sellers.badges') && feature('ads.card_years');
     }
 
     /**

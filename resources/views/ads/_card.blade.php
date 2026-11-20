@@ -45,12 +45,17 @@
             {{-- List view only: the first words of the description. --}}
             <div class="hidden group-data-[view=list]/results:block"><p class="line-clamp-2 text-sm text-stone-600">{{ \Illuminate\Support\Str::limit(preg_replace('/\s+/u', ' ', (string) $ad->description) ?? '', 160) }}</p></div>
         @endif
-        @if (\App\Models\Ad::cardStarsOn() && $ad->relationLoaded('sellerStars') && ($stars = $ad->sellerStars?->rating()) !== null)
-            {{-- Seller stars (PR 85): loaded for the whole list in one query (withSellerStars), never one per card. --}}
+        {{-- About the seller (PR 85 stars, PR 87 years): loaded for the whole list in one query (withCardSeller), never one per card. --}}
+        @php($cardSeller = $ad->relationLoaded('cardSeller') ? $ad->cardSeller : null)
+        @if ($cardSeller && \App\Models\Ad::cardStarsOn() && ($stars = $cardSeller->rating()) !== null)
             <p class="flex items-center gap-1 text-xs text-stone-600" data-card-stars>
-                {{ icon('star', 'size-3.5 fill-amber-400 text-amber-500') }}<span aria-hidden="true">{{ number_format($stars, 1) }} ({{ $ad->sellerStars->rating_count }})</span>
-                <span class="sr-only">{{ trans_choice('ads.ratings.seller_stars', $ad->sellerStars->rating_count, ['rating' => number_format($stars, 1), 'count' => $ad->sellerStars->rating_count]) }}</span>
+                {{ icon('star', 'size-3.5 fill-amber-400 text-amber-500') }}<span aria-hidden="true">{{ number_format($stars, 1) }} ({{ $cardSeller->rating_count }})</span>
+                <span class="sr-only">{{ trans_choice('ads.ratings.seller_stars', $cardSeller->rating_count, ['rating' => number_format($stars, 1), 'count' => $cardSeller->rating_count]) }}</span>
             </p>
+        @endif
+        @if ($cardSeller && \App\Models\Ad::cardYearsOn() && ($tenure = \App\Support\Users\SellerBadges::tenure($cardSeller)) !== null && $tenure['unit'] === 'years')
+            {{-- Years only on cards (months would be noise in a list). --}}
+            <p class="flex items-center gap-1 text-xs text-stone-600" data-card-years>{{ icon('user-check', 'size-3.5 text-brand-700') }}{{ trans_choice('ads.badges.years', $tenure['count'], ['count' => $tenure['count']]) }}</p>
         @endif
         <p class="mt-auto pt-1 text-xs text-stone-500">{{ $ad->city?->label }} · {{ $ad->published_at?->diffForHumans(short: true) }}</p>
     </div>
