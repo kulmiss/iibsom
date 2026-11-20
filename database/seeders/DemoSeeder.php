@@ -502,23 +502,26 @@ class DemoSeeder extends Seeder
 
     /**
      * Daily views and contact taps for the last 30 days (for "Ad statistics", "Popular" and "Popular now").
-     * About one ad in ten is a hot one with 100+ views. The ads' `views` totals match the daily rows.
+     * One ad in ten of those shown 9+ days is a hot one with 100+ views (every 10th, not by chance: the test of
+     * "Popular" once failed when chance gave too few, PR 99). The ads' `views` totals match the daily rows.
      *
      * @param  list<Ad>  $ads
      */
     private function stats(array $ads): void
     {
         $rows = [];
+        $longShown = 0;
         foreach ($ads as $ad) {
             if (! $ad->published_at) {
                 continue;
             }
-            $hot = mt_rand(1, 10) === 1;
             $from = CarbonImmutable::parse($ad->published_at)->max($this->now->subDays(29))->startOfDay();
             $until = $ad->sold_at ? CarbonImmutable::parse($ad->sold_at) : ($ad->expires_at ? CarbonImmutable::parse($ad->expires_at)->min($this->now) : $this->now);
+            // 9+ days × at least 12 views a day = 108+: always over the 100 of "Popular".
+            $hot = $from->diffInDays($until) >= 8 && $longShown++ % 10 === 0;
             $total = 0;
             for ($day = $from; $day->lessThanOrEqualTo($until); $day = $day->addDay()) {
-                $views = $hot ? mt_rand(4, 25) : mt_rand(0, 4);
+                $views = $hot ? mt_rand(12, 25) : mt_rand(0, 4);
                 if ($views === 0) {
                     continue;
                 }

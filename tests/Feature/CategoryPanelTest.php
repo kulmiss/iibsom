@@ -70,20 +70,23 @@ class CategoryPanelTest extends TestCase
         $this->get('/vehicles')->assertOk()
             ->assertSee('aria-label="Sub categories of Vehicles"', false)
             ->assertSeeInOrder(['Cars', 'Motorcycles', 'Trucks', 'Buses &amp; Minibuses', 'Vehicle Parts &amp; Accessories', 'Boats'], false)
-            ->assertSee('3 results for Vehicles in Somalia');
+            ->assertSeeText('3 results for Vehicles in Somalia');
     }
 
     public function test_sub_category_page_has_sibling_chips_breadcrumbs_and_result_line(): void
     {
         $html = (string) $this->get('/cars')->assertOk()
-            ->assertSee('2 results for Cars in Somalia')
+            ->assertSeeText('2 results for Cars in Somalia')
             ->assertSee('All in Vehicles')
             ->getContent();
         $this->assertMatchesRegularExpression('#href="'.preg_quote(url('/cars'), '#').'"[^>]*aria-current="page"#', $html);
-        $this->assertMatchesRegularExpression('#<a href="'.preg_quote(url('/'), '#').'"[^>]*>iibsom</a>.*Vehicles</a>.*<span aria-current="page">Cars</span>#s', $html);
+        // Breadcrumb like Jiji (PR 100): the links above, then the number of results as the last part (the name in bold).
+        $this->assertMatchesRegularExpression('#<a href="'.preg_quote(url('/'), '#').'"[^>]*>iibsom</a>.*Vehicles</a>.*<span class="truncate" aria-current="page" data-results-count>2 results for <strong[^>]*>Cars</strong> in Somalia</span>#s', $html);
+        $this->assertSame(1, substr_count($html, 'data-results-count')); // not a second time under the title
 
-        $this->get('/cars/mogadishu')->assertOk()->assertSee('2 results for Cars in Mogadishu');
-        $this->get('/so/cars')->assertOk()->assertSee('2 natiijo oo Baabuur ah gudaha Soomaaliya')->assertSee('Dhammaan Gaadiid');
-        $this->get('/search?q=toyota')->assertOk()->assertSee('No results for “toyota” in Somalia');
+        $this->get('/cars/mogadishu')->assertOk()->assertSeeText('2 results for Cars in Mogadishu');
+        $this->get('/so/cars')->assertOk()->assertSeeText('2 natiijo oo Baabuur ah gudaha Soomaaliya')->assertSee('Dhammaan Gaadiid');
+        $this->get('/search?q=toyota')->assertOk()->assertSeeText('No results for “toyota” in Somalia');
+        $this->get('/search?q=<b>x</b>')->assertOk()->assertSee('&lt;b&gt;x&lt;/b&gt;', false)->assertDontSee('<strong class="font-semibold text-stone-700"><b>', false); // escaped
     }
 }

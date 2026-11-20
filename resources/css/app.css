@@ -85,6 +85,11 @@
 .cat-thumb.has-i::before { content: ''; position: absolute; inset: 0.625rem; background-color: currentColor; mask-repeat: no-repeat; mask-position: center; mask-size: contain; }
 :is([data-cat-item]:hover, [data-cat-item]:focus-within, [data-cat-panel][data-open]) .cat-thumb.has-i::before { mask-image: var(--i); }
 
+/* PR 100 (owner): no scrollbars inside the page, only the page's own one (the <html> scrollbar, which this does not
+   touch). Rows and boxes still scroll with a finger, the mouse wheel and the keyboard. */
+body * { scrollbar-width: none; }
+body *::-webkit-scrollbar { display: none; }
+
 .prose-iibsom { @apply space-y-3 leading-relaxed text-stone-800; }
 .prose-iibsom h2 { @apply mt-6 text-lg font-semibold; }
 .prose-iibsom h3 { @apply mt-4 font-semibold; }
