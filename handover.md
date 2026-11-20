@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-20 (PR 101)_
+_Last updated: 2026-11-20 (PR 102)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -64,6 +64,7 @@ _Last updated: 2026-11-20 (PR 101)_
 - **PR 99:** Feature switches page sections: `FeatureController::SECTIONS` (name prefix → section). A new switch with a new prefix must be added there (a test checks).
 - **PR 100:** category breadcrumb ends with the results line (`data-results-count`); `seo.intro` OFF by default; `body *` has no scrollbars (app.css) — do not add visible inner scrollbars.
 - **PR 101:** admin Settings shell + `SettingFinder`; every setting is listed in `admin/src/lib/settings-index.ts` (also used by the global search) — add new settings there, with the field's id as `hash`.
+- **PR 102:** global search = `components/command-menu.tsx` (cmdk with `shouldFilter={false}`) + `Admin\SearchController` (one group per permission, 5 each). Add a new group in both.
 
 ## How to run
 See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example .env && docker compose up -d --build`, then open http://localhost:8095.

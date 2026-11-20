@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\PageAdminController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ReviewController;
+use App\Http\Controllers\Admin\SearchController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\SetupController;
 use App\Http\Controllers\Admin\ShopController;
@@ -63,6 +64,8 @@ Route::prefix('admin/api')->group(function () {
         });
         Route::post('/logout', [AuthController::class, 'logout'])->name('admin.api.logout');
 
+        // Global search (PR 102): each group checks its own permission.
+        Route::get('/search', SearchController::class)->middleware('throttle:120,1')->name('admin.api.search');
         Route::get('/dashboard', DashboardController::class)->middleware('admin.can:dashboard.view')->name('admin.api.dashboard');
         Route::get('/activity', ActivityController::class)->middleware('admin.can:activity.view')->name('admin.api.activity');
 
