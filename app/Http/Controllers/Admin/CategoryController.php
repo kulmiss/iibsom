@@ -270,6 +270,7 @@ class CategoryController extends Controller
     private function icons(): array
     {
         return array_values(collect(glob(resource_path('svg/icons/*.svg')) ?: [])->map(fn ($p) => basename($p, '.svg'))
+            ->reject(fn ($n) => str_starts_with($n, 'social-')) // our own brand logos, not Lucide icons (the admin picker cannot draw them)
             ->reject(fn ($n) => in_array($n, ['chevron-down', 'chevron-right', 'search', 'plus', 'square-plus', 'bell', 'bookmark', 'message-circle', 'list', 'globe', 'circle-help', 'pencil', 'check', 'refresh-cw', 'trash-2', 'eye', 'x', 'clock', 'history'], true))
             ->all());
     }

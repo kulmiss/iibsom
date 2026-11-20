@@ -2,6 +2,7 @@
 
 use App\Support\Features\FeatureManager;
 use App\Support\Settings\SettingsManager;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\HtmlString;
 
 if (! function_exists('feature')) {
@@ -72,6 +73,28 @@ if (! function_exists('icon')) {
         return new HtmlString(
             str_replace('<svg ', '<svg class="'.e($class).'" aria-hidden="true" focusable="false" ', $svg)
         );
+    }
+}
+
+if (! function_exists('icon_url')) {
+    /**
+     * The address of an icon file in /build (unique name, kept a year by browsers), for CSS (PR 98).
+     * Null when the icon is not in the build (the page then shows the first letter instead).
+     */
+    function icon_url(string $name): ?string
+    {
+        if (! preg_match('/^[a-z0-9-]+$/', $name) || ! is_file(resource_path("svg/icons/{$name}.svg"))) {
+            return null;
+        }
+        try {
+            $url = Vite::asset("resources/svg/icons/{$name}.svg");
+        } catch (Throwable) {
+            return null;
+        }
+
+        $base = rtrim(url('/'), '/');
+
+        return $url === '' ? null : (str_starts_with($url, $base.'/') ? substr($url, strlen($base)) : $url);
     }
 }
 
