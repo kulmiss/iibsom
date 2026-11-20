@@ -123,12 +123,10 @@
                                 <ul class="mt-1 grid gap-0.5 border-t border-stone-100 pt-1" data-cat-subs>
                                     @foreach ($subs as $sub)
                                         <li>
-                                            <a href="{{ lroute('browse.category', ['category' => $sub['slug']]) }}" class="flex items-center gap-3 rounded-lg px-2 py-1.5 hover:bg-brand-50 focus-visible:bg-brand-50">
-                                                <span class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-stone-50 text-brand-700">{{ icon($sub['icon'], 'size-5') }}</span>
-                                                <span class="min-w-0 flex-1">
-                                                    <span class="block text-sm font-medium leading-tight">{{ translated($sub['name']) }}</span>
-                                                    <span class="block text-xs text-stone-500">{{ trans_choice('site.ads_count', $sub['ads_count'], ['count' => number_format($sub['ads_count'])]) }}</span>
-                                                </span>
+                                            {{-- PR 96: no icon here (like Jiji): 141 sub categories made the page ~100 KB heavier for every phone. --}}
+                                            <a href="{{ lroute('browse.category', ['category' => $sub['slug']]) }}" class="block rounded-lg px-2 py-1.5 hover:bg-brand-50 focus-visible:bg-brand-50">
+                                                <span class="block text-sm font-medium leading-tight">{{ translated($sub['name']) }}</span>
+                                                <span class="block text-xs text-stone-500">{{ trans_choice('site.ads_count', $sub['ads_count'], ['count' => number_format($sub['ads_count'])]) }}</span>
                                             </a>
                                         </li>
                                     @endforeach
