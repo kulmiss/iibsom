@@ -1,22 +1,18 @@
-import { Separator } from '@/components/ui/separator'
-
 type ContentSectionProps = {
   title: string
   desc: string
   children: React.JSX.Element
 }
 
+/** The title of a settings page and its content. The whole page scrolls (no box with its own scroll, PR 101). */
 export function ContentSection({ title, desc, children }: ContentSectionProps) {
   return (
-    <div className='flex flex-1 flex-col'>
-      <div className='flex-none'>
-        <h3 className='text-lg font-medium'>{title}</h3>
+    <div className='flex min-w-0 flex-1 flex-col gap-4'>
+      <div>
+        <h2 className='text-xl font-semibold tracking-tight'>{title}</h2>
         <p className='text-sm text-muted-foreground'>{desc}</p>
       </div>
-      <Separator className='my-4 flex-none' />
-      <div className='faded-bottom h-full w-full overflow-y-auto scroll-smooth pe-4 pb-12'>
-        <div className='-mx-1 px-1.5 lg:max-w-xl'>{children}</div>
-      </div>
+      <div className='min-w-0 pb-16'>{children}</div>
     </div>
   )
 }
