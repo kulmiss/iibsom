@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-19 (PR 85)_
+_Last updated: 2026-11-20 (PR 86)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -48,6 +48,7 @@ _Last updated: 2026-11-19 (PR 85)_
 - **PR 83 (usual price):** `AdPageController::marketPrice()` (uses `PriceHint::for()`, now one query), box under the price in `ads/show.blade.php`, texts `ads.market.*`. Switch `ads.market_price`.
 - **PR 84 (finder, phone ad bar, discover, saved count):** `CategoryFinderController` + `browse/categories.blade.php` + `resources/js/finder.js` (`/categories`, switch `catalog.finder`). Phone ad bar: the ad page fills `@section('phone_bar')`; `partials/header.blade.php` shows it on phones and hides the normal row (`ads.phone_top_bar`); Share = `[data-share-sheet]` in `copy-text.js`; compact Save = `ads/_save-button` with `compact`. `AdPageController::discoverMore()` (`ads.discover_more`). Saved count: `$savedCount` in the layout, `partials/saved-count.blade.php`, `resources/js/saved-count.js` (listens to `favourite:changed`, sent by `favourite.js` and `card-save.js`). **Language switch rule:** a page with its own script must carry `<meta name="page-script" content="…">` (after its `@vite`), so the switch reloads it fully; tested in `PageScriptReloadTest`.
 - **PR 85 (message box, card stars, rating answers + likes):** ad-page box posts `message` to `chat.start`; checks in `ChatController::problem()`, saving in `store()`. Card stars: `Ad::sellerStars()` (rating columns only) + scope `withSellerStars()` next to `withPhotoCount()` in every card list; `_card` shows stars only when the relation is loaded (never lazy). Ratings: migration `review_replies_and_likes` (`seller_reviews.reply/replied_at/likes_count`, table `review_likes` unique per person), `Account\ReviewResponseController` (`review.reply`, `review.like`), `resources/js/review-like.js`, `sellers/reviews.blade.php`; admin list shows answer + likes (`admin/src/features/reviews`). New icon `thumbs-up` (Lucide).
+- **PR 86 (Admin → Home page):** the parts list is `config/home.php` (page order, `needs` / `needs_any`, `fixed`); `Admin\HomePageController` (`GET /admin/api/home-page`, switch `admin.home_page`, permission `features.manage`); toggling uses `PUT /features/{key}`. React page `admin/src/features/home-page`. **Adding a home part:** give it a switch in `config/features.php`, wrap it in `home.blade.php`, add it to `config/home.php` in page order (a test checks every key exists). `home.hero_plus` is gone (migration `split_home_hero_switch`). Read feature config with `config('features')[$key]`, never `config("features.{$key}")` (dots).
 
 ## How to run
 See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example .env && docker compose up -d --build`, then open http://localhost:8095.

@@ -120,6 +120,7 @@ The same rows run automatically in a real browser (see "Automatic run" below).
 | J63 | Message box on the ad page | Chat ON, signed in as a buyer: open an ad, write "Hello" in "Write to …", Send; then try "fresh khat" | "Hello" is in the chat with the seller; the drug text is not sent, the note shows under the box and the text stays | `chat.ad_box` |
 | J64 | Stars on ad cards | Seller ratings ON; a seller with ratings: open Cars, search, home; then their seller page | "★ 4.5 (2)" on that seller's cards; no stars on the seller's own page | `ads.card_stars` |
 | J65 | Answer and Helpful on ratings | As the seller open My ratings → Answer → Post; as someone else tap Helpful twice; as the buyer change the rating | Answer shows once (no second form); Helpful on/off with the number; after the change the answer and Helpful are gone | `ratings.replies`, `ratings.likes` |
+| J66 | Admin → Home page | Admin → Website → Home page; switch "popular searches" OFF; open the home page (phone + computer, EN + SO); switch it ON again | The "Popular:" row is gone, the line above and "Post an ad free" stay; it is back after ON; Activity log says "Switched “Home: popular searches” OFF" | `admin.home_page` |
 
 ## Automatic run
 

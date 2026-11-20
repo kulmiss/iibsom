@@ -29,14 +29,14 @@ class HomeSections
     }
 
     /**
-     * Popular searches under the big search box (switch "home.hero_plus"): the words that most live ads have
+     * Popular searches under the big search box (switch "home.popular_searches"): the words that most live ads have
      * in their title (made at night from ad titles only, never from what visitors type). Two-word phrases first.
      *
      * @return list<string>
      */
     public static function popularSearches(int $limit = 8): array
     {
-        if (! feature('home.hero_plus')) {
+        if (! feature('home.popular_searches')) {
             return [];
         }
 

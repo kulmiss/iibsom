@@ -5,7 +5,8 @@
 @php($catalog = app(\App\Support\Catalog::class))
 @php($categories = $catalog->categories())
 @php($cities = $catalog->cities())
-@php($popular = $catalog->popularCategories(8))
+{{-- Each part below has its own switch: Admin → Home page (PR 86) lists them in this order (config/home.php). --}}
+@php($popular = feature('home.popular_categories') ? $catalog->popularCategories(8) : [])
 @php($latest = \App\Search\DatabaseAdSearch::publicQuery()->with(['category:id,slug,icon,parent_id', 'city:id,name,slug', 'cover'])->withPhotoCount()->withSellerStars()->latest('published_at')->limit(12)->get())
 @php($popularNow = \App\Support\Ads\PopularNow::ads())
 @php($banners = feature('site.banners') ? \App\Models\Banner::forHome() : [])
@@ -20,7 +21,7 @@
     <section class="rounded-b-3xl bg-brand-700 text-white">
         <div class="mx-auto max-w-3xl px-4 pb-7 pt-6 text-center sm:pb-16 sm:pt-14">
             <h1 class="text-xl font-bold sm:text-3xl">{{ __('site.home.heading') }}</h1>
-            @feature('home.hero_plus')
+            @feature('home.promise')
                 <p class="mt-1.5 text-sm text-white sm:text-base" data-home-promise>{{ __('site.home.promise') }}</p>
             @endfeature
 
@@ -48,20 +49,18 @@
                 </div>
             </form>
 
-            @feature('home.hero_plus')
-                @if ($popularSearches)
-                    {{-- Words from live ad titles only (made at night), never what visitors typed. --}}
-                    <nav class="-mx-4 mt-3 flex items-center gap-2 overflow-x-auto px-4 pb-1 text-sm sm:mx-0 sm:flex-wrap sm:justify-center sm:overflow-visible sm:px-0" aria-label="{{ __('site.home.popular_searches') }}" data-popular-searches>
-                        <span class="shrink-0 text-white">{{ __('site.home.popular_searches') }}</span>
-                        @foreach ($popularSearches as $term)
-                            <a href="{{ lroute('search', ['q' => $term]) }}" class="shrink-0 rounded-full bg-brand-800 px-3 py-1 font-medium text-white ring-1 ring-white/30 hover:bg-brand-900">{{ $term }}</a>
-                        @endforeach
-                    </nav>
-                @endif
-                @if ($canPost)
-                    <a href="{{ lroute('post') }}" class="btn-sell mt-4 px-5 py-2.5" data-home-post>{{ icon('plus', 'size-4') }} {{ __('site.home.post_free') }}</a>
-                @endif
-            @endfeature
+            @if ($popularSearches)
+                {{-- Words from live ad titles only (made at night), never what visitors typed. --}}
+                <nav class="-mx-4 mt-3 flex items-center gap-2 overflow-x-auto px-4 pb-1 text-sm sm:mx-0 sm:flex-wrap sm:justify-center sm:overflow-visible sm:px-0" aria-label="{{ __('site.home.popular_searches') }}" data-popular-searches>
+                    <span class="shrink-0 text-white">{{ __('site.home.popular_searches') }}</span>
+                    @foreach ($popularSearches as $term)
+                        <a href="{{ lroute('search', ['q' => $term]) }}" class="shrink-0 rounded-full bg-brand-800 px-3 py-1 font-medium text-white ring-1 ring-white/30 hover:bg-brand-900">{{ $term }}</a>
+                    @endforeach
+                </nav>
+            @endif
+            @if ($canPost && feature('home.post_button'))
+                <a href="{{ lroute('post') }}" class="btn-sell mt-4 px-5 py-2.5" data-home-post>{{ icon('plus', 'size-4') }} {{ __('site.home.post_free') }}</a>
+            @endif
         </div>
     </section>
 
@@ -117,12 +116,14 @@
 
         <div class="min-w-0">
             {{-- Quick links --}}
-            <div class="flex flex-wrap gap-2">
-                <a href="{{ feature('help.how_to_sell') && feature('help.centre') ? lroute('help.show', ['article' => 'how-to-sell']) : lroute('post') }}" class="chip bg-accent-400/30 ring-accent-400">{{ icon('tag', 'size-4') }} {{ __('site.home.how_to_sell') }}</a>
-                @feature('site.safety_box')
-                    <a href="{{ lroute('page', ['slug' => 'safety']) }}" class="chip bg-brand-50 ring-brand-200">{{ icon('shield-check', 'size-4') }} {{ __('site.home.safety_tips') }}</a>
-                @endfeature
-            </div>
+            @feature('home.quick_links')
+                <div class="flex flex-wrap gap-2" data-home-quick-links>
+                    <a href="{{ feature('help.how_to_sell') && feature('help.centre') ? lroute('help.show', ['article' => 'how-to-sell']) : lroute('post') }}" class="chip bg-accent-400/30 ring-accent-400">{{ icon('tag', 'size-4') }} {{ __('site.home.how_to_sell') }}</a>
+                    @feature('site.safety_box')
+                        <a href="{{ lroute('page', ['slug' => 'safety']) }}" class="chip bg-brand-50 ring-brand-200">{{ icon('shield-check', 'size-4') }} {{ __('site.home.safety_tips') }}</a>
+                    @endfeature
+                </div>
+            @endfeature
 
             {{-- Home banners (admin → Home banners) --}}
             @if ($banners)
@@ -172,7 +173,7 @@
 
             {{-- Popular categories --}}
             @if ($popular)
-                <h2 class="mt-6 text-lg font-semibold">{{ __('site.home.popular_categories') }}</h2>
+                <h2 class="mt-6 text-lg font-semibold" data-home-popular-categories>{{ __('site.home.popular_categories') }}</h2>
                 <div class="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
                     @foreach ($popular as $category)
                         <a href="{{ lroute('browse.category', ['category' => $category['slug']]) }}" class="group flex items-center gap-3 rounded-xl bg-white p-3 shadow-sm ring-1 ring-stone-200 hover:ring-brand-200">
@@ -184,7 +185,7 @@
             @endif
 
             {{-- Recommended for you + recently viewed: filled by for-you.js from this browser's own history --}}
-            @feature('recommendations')
+            @if (feature('recommendations') && feature('home.recommended'))
                 <div data-for-you data-url="{{ lroute('for-you') }}" hidden class="mt-8">
                     <section data-slot="recommended" hidden>
                         <div class="flex items-center justify-between gap-2">
@@ -199,7 +200,7 @@
                     </section>
                     <p class="mt-2 text-xs text-stone-500">{{ __('site.home.history_note') }}</p>
                 </div>
-            @endfeature
+            @endif
 
             {{-- Featured (boosted) ads: needs paid boosts; hidden when none --}}
             @if ($featured->isNotEmpty())
