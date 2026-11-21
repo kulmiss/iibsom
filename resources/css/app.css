@@ -38,6 +38,19 @@
     .tile > span:not(.tile-icon) {
         @apply line-clamp-2 break-words;
     }
+    /* Save button on ad cards (PR 112: one class instead of a long list on every card; the bookmark is a mask). */
+    .card-save {
+        @apply absolute end-2 top-2 z-20 flex size-9 items-center justify-center rounded-full bg-white/95 text-stone-700 shadow-sm ring-1 ring-stone-200 hover:text-brand-700 aria-pressed:bg-brand-700 aria-pressed:text-white aria-pressed:ring-brand-700;
+        @apply group-data-[view=list]/results:end-auto group-data-[view=list]/results:start-[7.25rem] sm:group-data-[view=list]/results:start-[10.25rem];
+    }
+    .card-save::before {
+        content: '';
+        @apply size-4 bg-current;
+        mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z'/%3E%3C/svg%3E") center / contain no-repeat;
+    }
+    .card-save[aria-pressed='true']::before {
+        mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z'/%3E%3C/svg%3E") center / contain no-repeat;
+    }
     .tile-icon {
         @apply flex aspect-square w-full max-w-[4.5rem] items-center justify-center rounded-xl;
     }
@@ -163,6 +176,7 @@ body *::-webkit-scrollbar { display: none; }
     .bg-white { background-color: var(--surface); }
     .bg-white\/95 { background-color: color-mix(in oklab, var(--surface) 95%, transparent); }
     .bg-white\/90 { background-color: color-mix(in oklab, var(--surface) 90%, transparent); }
+    .card-save:not([aria-pressed='true']) { background-color: color-mix(in oklab, var(--surface) 95%, transparent); } /* PR 112: same as bg-white/95 */
 }
 :root[data-theme='dark'] :is(.text-brand-700, .text-brand-800, .text-brand-900, .prose-iibsom a) { color: #8ab8f2; }
 :root[data-theme='dark'] .text-red-700, :root[data-theme='dark'] .text-red-600 { color: #fca5a5; }

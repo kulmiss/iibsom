@@ -445,8 +445,8 @@ ads.mine.edit_note,"After you save, our team checks the ad again before it is li
 ads.saved.title,"Saved ads","Xayeysiisyada la kaydiyey","needs native review","resources/views/account/index.blade.php | resources/views/account/saved.blade.php",account-index.png
 ads.saved.save,Save,Kaydi,"needs native review",resources/views/ads/_save-button.blade.php,
 ads.saved.saved,Saved,"La kaydiyey","needs native review",resources/views/ads/_save-button.blade.php,
-ads.saved.save_label,"Save this ad","Kaydi xayeysiiskan","needs native review","resources/views/ads/_card.blade.php | resources/views/ads/_save-button.blade.php",browse-index.png
-ads.saved.unsave_label,"Remove from saved ads","Ka saar xayeysiisyada la kaydiyey","needs native review","resources/views/ads/_card.blade.php | resources/views/ads/_save-button.blade.php",browse-index.png
+ads.saved.save_label,"Save this ad","Kaydi xayeysiiskan","needs native review","resources/views/ads/_save-button.blade.php | resources/views/layouts/app.blade.php",home.png
+ads.saved.unsave_label,"Remove from saved ads","Ka saar xayeysiisyada la kaydiyey","needs native review","resources/views/ads/_save-button.blade.php | resources/views/layouts/app.blade.php",home.png
 ads.saved.added,"Saved. Find it in Saved ads.","Waa la kaydiyey. Ka hel Xayeysiisyada la kaydiyey.","needs native review",app/Http/Controllers/Account/FavouriteController.php,
 ads.saved.removed,"Removed from your saved ads.","Waa laga saaray xayeysiisyadaada la kaydiyey.","needs native review",app/Http/Controllers/Account/FavouriteController.php,
 ads.saved.full,"You can save up to :max ads. Remove some first.","Waxaad kaydin kartaa ilaa :max xayeysiis. Marka hore qaar ka saar.","needs native review",app/Http/Controllers/Account/FavouriteController.php,

@@ -91,6 +91,19 @@ class CardsAndListsTest extends TestCase
         $this->get('/cars')->assertOk()->assertDontSee('data-card-save', false)->assertDontSee('name="card-save"', false);
     }
 
+    public function test_save_button_on_cards_is_small_and_its_words_are_said_once(): void
+    {
+        // PR 112: the button is on every card; its look is a CSS class and its words come once per page.
+        $ad = $this->car('Toyota Vitz');
+        $this->car('Honda Fit');
+        $html = (string) $this->get('/cars')->assertOk()->getContent();
+
+        $this->assertStringContainsString('<button type="button" hidden data-card-save="'.$ad->id.'" aria-pressed="false" class="card-save"></button>', $html);
+        $this->assertSame(1, substr_count($html, 'name="card-save-labels"'));
+        $this->assertStringContainsString('data-on="'.e(__('ads.saved.unsave_label')).'" data-off="'.e(__('ads.saved.save_label')).'"', $html);
+        $this->assertStringNotContainsString('data-label-on="'.e(__('ads.saved.unsave_label')).': Toyota Vitz"', $html);
+    }
+
     public function test_guests_get_the_same_cacheable_page_with_no_saved_ads_and_no_token(): void
     {
         $this->car('Toyota Vitz');

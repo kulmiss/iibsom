@@ -70,10 +70,7 @@
 @if ($canSave)
     {{-- Hidden until card-save.js runs (without JavaScript, save from the ad page).
          Top corner of the photo; in the list view the photo is on the start side (w-40, sm:w-52). --}}
-    <button type="button" hidden data-card-save="{{ $ad->id }}" aria-pressed="false"
-            aria-label="{{ __('ads.saved.save_label') }}: {{ $ad->title }}" data-label-on="{{ __('ads.saved.unsave_label') }}: {{ $ad->title }}" data-label-off="{{ __('ads.saved.save_label') }}: {{ $ad->title }}"
-            class="absolute end-2 top-2 z-20 group-data-[view=list]/results:end-auto group-data-[view=list]/results:start-[7.25rem] sm:group-data-[view=list]/results:start-[10.25rem] flex size-9 items-center justify-center rounded-full bg-white/95 text-stone-700 shadow-sm ring-1 ring-stone-200 hover:text-brand-700 aria-pressed:bg-brand-700 aria-pressed:text-white aria-pressed:ring-brand-700">
-        {{ icon('bookmark', 'size-4') }}
-    </button>
+    {{-- Small on purpose (it is on every card): the look is the .card-save class, the words come from card-save.js. --}}
+    <button type="button" hidden data-card-save="{{ $ad->id }}" aria-pressed="false" class="card-save"></button>
 @endif
 </div>

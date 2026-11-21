@@ -35,6 +35,8 @@
             @php($signIn = sign_in_open())
             <meta name="card-save" content=""@if ($signIn) data-login="{{ lroute('login') }}"@endif>
         @endauth
+        {{-- The button's words, once per page instead of on every card (PR 112: smaller pages). ":" + the ad title is added by card-save.js. --}}
+        <meta name="card-save-labels" data-on="{{ __('ads.saved.unsave_label') }}" data-off="{{ __('ads.saved.save_label') }}">
     @endif
     @stack('head')
     @vite(['resources/css/app.css', 'resources/js/app.js'])

@@ -11,9 +11,17 @@ function savedIds(m) {
     return new Set((m.content || '').split(',').filter(Boolean));
 }
 
+// The words come once from <meta name="card-save-labels">, the ad title from the card itself (PR 112: smaller pages).
+function label(button, on) {
+    const words = document.querySelector('meta[name="card-save-labels"]');
+    const title = button.closest('[data-card]')?.querySelector('[data-card-title]')?.textContent?.trim() || '';
+    const base = (on ? words?.dataset.on : words?.dataset.off) || '';
+    return title ? `${base}: ${title}` : base;
+}
+
 function paint(button, on) {
     button.setAttribute('aria-pressed', on ? 'true' : 'false');
-    button.setAttribute('aria-label', on ? button.dataset.labelOn : button.dataset.labelOff);
+    button.setAttribute('aria-label', label(button, on));
 }
 
 async function toggle(button, m) {

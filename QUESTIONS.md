@@ -85,3 +85,4 @@ The owner said: "take your recommended option for small choices, log them here".
 | 2026-11-21 | 112 | Import: if any row has a problem, nothing is written. Unchanged rows in the sheet count as checked. | Safest; the reviewer saw them. |
 | 2026-11-21 | 112 | Help articles and the 4 pages are not imported automatically (listed to change by hand). | They are long texts with headings; safer by hand in Admin → Pages / help files. |
 | 2026-11-21 | 112 | Names in the database are updated only where the Somali name is still our starter text. | An admin's own change is never overwritten. |
+| 2026-11-21 | 112 | Lighthouse (phone) on /so dropped to 0.83 in CI, because the launch defaults add more to the home page (Popular now, Save buttons). Fixed by making the Save button on every card much smaller (one CSS class; its words once per page): the home page HTML is about 19 KB smaller. | CI limit is 0.85; a real host also compresses pages. |
