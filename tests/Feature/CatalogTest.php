@@ -34,9 +34,14 @@ class CatalogTest extends TestCase
         $this->assertTrue($mogadishu->areas()->where('slug', 'hodan')->exists());
     }
 
-    public function test_no_somaliland_cities(): void
+    public function test_big_cities_the_owner_added_exist_but_stay_off_until_switched_on(): void
     {
-        $this->assertFalse(City::whereIn('slug', ['hargeisa', 'burao', 'berbera', 'borama'])->exists());
+        // Decision #11 changed by the owner on 2026-11-21 (PR 111): Hargeisa and other big cities are added, OFF.
+        $added = City::whereIn('slug', ['hargeisa', 'burao', 'berbera', 'borama'])->get();
+        $this->assertCount(4, $added);
+        $this->assertTrue($added->every(fn (City $c) => ! $c->enabled && ! $c->popular));
+        $this->assertNotContains('hargeisa', collect(app(Catalog::class)->cities())->pluck('slug'));
+        $this->assertSame(['mogadishu'], City::where('enabled', true)->pluck('slug')->all());
     }
 
     public function test_turning_a_city_on_shows_it_right_away(): void

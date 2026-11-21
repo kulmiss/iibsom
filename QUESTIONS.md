@@ -74,3 +74,10 @@ The owner said: "take your recommended option for small choices, log them here".
 | 2026-11-21 | 110 | Phone numbers typed inside a title are left out of the picture. | Your rule: no phone number on the image. |
 | 2026-11-21 | 110 | The picture is made the first time an app asks for it, kept on the private disk, and served with a 1-week cache; the address changes when the ad changes (old address → new one). | Fast and works on shared hosting. |
 | 2026-11-21 | 110 | Telegram added next to WhatsApp, Facebook and Copy link. | Your request. |
+| 2026-11-21 | 111 | Districts = the existing "areas" (one list per city), now called District / Degmada on the site. | No second list of places; the filter and the post form already used them. |
+| 2026-11-21 | 111 | Added Hargeisa (6 districts), Burao, Berbera, Borama — all OFF until you switch them on. This changes decision #11 ("Somaliland cities not added") because you named Hargeisa. | Your instruction; nothing shows on the site until a city is ON. |
+| 2026-11-21 | 111 | I seeded districts only where I am sure of the names (Mogadishu 18, Hargeisa 6). Other big cities: add their districts in Admin → Cities and districts. | Better no district than a wrong one. |
+| 2026-11-21 | 111 | Every starting district is marked "check names" until a native speaker saves or confirms it. | Your request: a list for your review, not final. |
+| 2026-11-21 | 111 | District filter: Property and Vehicles lists (after a city is chosen); switch "District filter on every list" (OFF) shows it on all lists. | Your words: property and cars, optional for all. Before, it showed on every list. A district picked on the home page or in the place picker still filters every list (only the drop-down is limited). |
+| 2026-11-21 | 111 | A district used by ads can only be turned off, not deleted. | Their ads keep it. |
+| 2026-11-21 | 111 | Fixed on the way: Admin → Cities was wider than a 360 px phone. | Found by the browser check. |

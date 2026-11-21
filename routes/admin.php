@@ -165,6 +165,8 @@ Route::prefix('admin/api')->group(function () {
             Route::get('/cities/{city}/areas', [LocationController::class, 'areas']);
             Route::post('/cities/{city}/areas', [LocationController::class, 'storeArea']);
             Route::put('/areas/{area}', [LocationController::class, 'updateArea']);
+            Route::post('/areas/{area}/move', [LocationController::class, 'moveArea']);
+            Route::delete('/areas/{area}', [LocationController::class, 'destroyArea']);
         });
 
         // Feature switches

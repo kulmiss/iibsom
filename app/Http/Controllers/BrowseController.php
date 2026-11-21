@@ -23,6 +23,9 @@ use Illuminate\View\View;
 /** Search results and category pages (/cars, /cars/mogadishu, /search?q=...). */
 class BrowseController extends Controller
 {
+    /** Top categories whose lists always offer the district filter (PR 111). */
+    public const DISTRICT_ROOTS = ['property', 'vehicles'];
+
     public function __construct(private readonly AdSearch $search, private readonly Catalog $catalog) {}
 
     public function search(Request $request): View
@@ -97,8 +100,12 @@ class BrowseController extends Controller
             $fields = $fields->reject(fn ($f) => $f->key === 'brand')->values(); // the page IS the brand
         }
 
-        // An area only counts inside its own (live) city.
+        // An area (district) only counts inside its own (live) city. PR 111: the district filter is for Property and
+        // Vehicles; switch "search.districts_all" shows it on every list too.
         $more = feature('search.more_filters');
+        // A district chosen elsewhere (home "Popular places", the place picker) still filters every list; only the
+        // drop-down is limited to Property and Vehicles.
+        $districtsHere = feature('search.districts_all') || ($category !== null && in_array($category->parent->slug ?? $category->slug, self::DISTRICT_ROOTS, true));
         $areas = $city && $more ? Area::where('city_id', $city->id)->where('enabled', true)->orderBy('sort')->get(['id', 'name']) : collect();
         $area = $request->filled('area') ? $areas->firstWhere('id', $request->integer('area')) : null;
 
@@ -138,7 +145,7 @@ class BrowseController extends Controller
             'fields' => $fields,
             'filters' => $data + ['f' => $fieldFilters],
             'area' => $area,
-            'areas' => $areas,
+            'areas' => $districtsHere ? $areas : collect(),
             'priceBuckets' => $more ? $this->search->priceBuckets($searchFilters) : [],
             'active' => $this->activeChips($request, $fields, $fieldFilters, $area, $brand, $more),
             'categories' => $this->catalog->categories(),

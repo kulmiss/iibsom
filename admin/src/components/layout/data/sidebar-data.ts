@@ -53,7 +53,7 @@ export const sidebarData: SidebarData = {
       title: 'Catalogue',
       items: [
         { title: 'Categories', url: '/categories', icon: FolderTree, permission: 'categories.manage' },
-        { title: 'Cities and areas', url: '/locations', icon: MapPin, permission: 'locations.manage' },
+        { title: 'Cities and districts', url: '/locations', icon: MapPin, permission: 'locations.manage' },
       ],
     },
     {

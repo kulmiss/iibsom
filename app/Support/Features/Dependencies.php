@@ -36,6 +36,7 @@ class Dependencies
         'home.popular_now' => ['ad_stats'],
         'ads.public_views' => ['ad_stats'],
         'pwa.install_prompt' => ['pwa'],
+        'search.districts_all' => ['search.more_filters'],
     ];
 
     /** Short names for the badge ("Needs Chat (OFF)"); others use the switch's own label. */
@@ -53,6 +54,7 @@ class Dependencies
         'sellers.badges' => 'Seller badges',
         'ads.reports' => 'Report an ad',
         'pwa' => 'Installable website',
+        'search.more_filters' => 'More search filters',
     ];
 
     /**

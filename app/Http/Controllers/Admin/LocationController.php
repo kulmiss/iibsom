@@ -9,6 +9,7 @@ use App\Models\Region;
 use App\Support\Admin\Activity;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 /** Regions → cities → areas, each with an on/off switch. */
@@ -16,7 +17,7 @@ class LocationController extends Controller
 {
     public function index(): JsonResponse
     {
-        $regions = Region::query()->orderBy('sort')->with(['cities' => fn ($q) => $q->withCount('areas')])->get();
+        $regions = Region::query()->orderBy('sort')->with(['cities' => fn ($q) => $q->withCount(['areas', 'areas as areas_review' => fn ($a) => $a->where('needs_review', true)])])->get();
 
         return response()->json($regions->map(fn (Region $r) => [
             'id' => $r->id, 'name' => $r->label, 'enabled' => $r->enabled,
@@ -77,7 +78,7 @@ class LocationController extends Controller
 
     public function areas(City $city): JsonResponse
     {
-        return response()->json($city->areas()->get()->map(fn (Area $a) => ['id' => $a->id, 'name_en' => $a->name['en'] ?? '', 'name_so' => $a->name['so'] ?? null, 'enabled' => $a->enabled]));
+        return response()->json($city->areas()->withCount('ads')->get()->map(fn (Area $a) => $this->areaRow($a)));
     }
 
     public function storeArea(Request $request, City $city): JsonResponse
@@ -89,14 +90,18 @@ class LocationController extends Controller
         $area = Area::create(['city_id' => $city->id, 'name' => array_filter(['en' => strip_tags($data['name_en']), 'so' => isset($data['name_so']) ? strip_tags($data['name_so']) : null]), 'slug' => $slug, 'sort' => max(0, (int) $city->areas()->max('sort') + 1)]);
         Activity::log('area.created', "Added area {$area->label} to {$city->label}", $area);
 
-        return response()->json(['id' => $area->id, 'name_en' => $area->name['en'] ?? '', 'name_so' => $area->name['so'] ?? null, 'enabled' => $area->enabled], 201);
+        return response()->json($this->areaRow($area->refresh()->loadCount('ads')), 201); // refresh: the database defaults (ON, checked)
     }
 
     public function updateArea(Request $request, Area $area): JsonResponse
     {
-        $data = $request->validate(['enabled' => ['sometimes', 'boolean'], 'name_en' => ['sometimes', 'string', 'min:2', 'max:60'], 'name_so' => ['sometimes', 'nullable', 'string', 'max:60']]);
+        $data = $request->validate(['enabled' => ['sometimes', 'boolean'], 'name_en' => ['sometimes', 'string', 'min:2', 'max:60'], 'name_so' => ['sometimes', 'nullable', 'string', 'max:60'], 'reviewed' => ['sometimes', 'accepted']]);
         if (isset($data['name_en']) || array_key_exists('name_so', $data)) {
             $area->name = $this->names($data, $area->name);
+            $area->needs_review = false; // the names were looked at and saved (PR 111)
+        }
+        if (isset($data['reviewed'])) {
+            $area->needs_review = false; // "Names are right" (PR 111)
         }
         if (array_key_exists('enabled', $data)) {
             $area->enabled = $data['enabled'];
@@ -104,7 +109,51 @@ class LocationController extends Controller
         $area->save();
         Activity::log('area.updated', "Changed area {$area->label}", $area);
 
-        return response()->json(['id' => $area->id, 'name_en' => $area->name['en'] ?? '', 'name_so' => $area->name['so'] ?? null, 'enabled' => $area->enabled]);
+        return response()->json($this->areaRow($area->loadCount('ads')));
+    }
+
+    /** Move a district one place up or down in its city's list (PR 111). */
+    public function moveArea(Request $request, Area $area): JsonResponse
+    {
+        $up = $request->validate(['direction' => ['required', 'in:up,down']])['direction'] === 'up';
+        DB::transaction(function () use ($area, $up) {
+            $list = Area::where('city_id', $area->city_id)->orderBy('sort')->orderBy('id')->lockForUpdate()->get()->values();
+            $i = $list->search(fn (Area $a) => $a->id === $area->id);
+            $j = $up ? $i - 1 : $i + 1;
+            if ($i === false || ! isset($list[$j])) {
+                return; // already first / last
+            }
+            $order = $list->all();
+            [$order[$i], $order[$j]] = [$order[$j], $order[$i]];
+            foreach ($order as $sort => $a) {
+                if ($a->sort !== $sort) {
+                    $a->forceFill(['sort' => $sort])->save();
+                }
+            }
+        });
+        Activity::log('area.moved', "Moved area {$area->label} ".($up ? 'up' : 'down'), $area);
+
+        return response()->json($area->city->areas()->withCount('ads')->get()->map(fn (Area $a) => $this->areaRow($a)));
+    }
+
+    /** Delete a district nobody used yet; one with ads can only be turned off (their ads keep it). */
+    public function destroyArea(Area $area): JsonResponse
+    {
+        abort_if($area->ads()->withTrashed()->exists(), 422, 'Ads use this area. Turn it off instead: those ads keep it.');
+        $label = $area->label;
+        $area->delete();
+        Activity::log('area.deleted', "Deleted area {$label}", null);
+
+        return response()->json(['ok' => true]);
+    }
+
+    /** @return array<string, mixed> */
+    private function areaRow(Area $a): array
+    {
+        return [
+            'id' => $a->id, 'name_en' => $a->name['en'] ?? '', 'name_so' => $a->name['so'] ?? null, 'enabled' => $a->enabled,
+            'needs_review' => $a->needs_review, 'ads_count' => (int) ($a->ads_count ?? 0),
+        ];
     }
 
     /**
@@ -130,7 +179,7 @@ class LocationController extends Controller
     {
         return [
             'id' => $c->id, 'region_id' => $c->region_id, 'name_en' => $c->name['en'] ?? '', 'name_so' => $c->name['so'] ?? null,
-            'slug' => $c->slug, 'enabled' => $c->enabled, 'popular' => $c->popular, 'ads_count' => $c->ads_count, 'areas_count' => $c->areas_count ?? 0,
+            'slug' => $c->slug, 'enabled' => $c->enabled, 'popular' => $c->popular, 'ads_count' => $c->ads_count, 'areas_count' => $c->areas_count ?? 0, 'areas_review' => (int) ($c->areas_review ?? 0),
         ];
     }
 }

@@ -38,9 +38,38 @@ class LocationSeeder extends Seeder
         'Gedo' => ['Garbahaarey' => [], 'Luuq' => []],
         'Lower Juba' => ['Kismayo' => []],
         'Middle Juba' => ['Jilib' => []],
+        // PR 111 (owner, 2026-11-21: "start with Mogadishu, Hargeisa and the big cities"). OFF until switched on.
+        // District names are a starting list for the owner's native review (marked "needs review" in the admin).
+        'Maroodi Jeex' => ['Hargeisa' => ['26 June', 'Ahmed Dhagah', 'Gacan Libah', 'Ibrahim Koodbuur', 'Mohamed Haybe', 'Mohamed Mooge']],
+        'Togdheer' => ['Burao' => []],
+        'Sahil' => ['Berbera' => []],
+        'Awdal' => ['Borama' => []],
     ];
 
     private const ON_AT_LAUNCH = ['mogadishu'];
+
+    /**
+     * For sites that are already running (PR 111): add only the regions, cities and districts that are missing.
+     * Nothing that exists is changed (names, order and switches stay as the admin set them). New cities start OFF.
+     */
+    public function addMissing(): void
+    {
+        $regionSort = (int) Region::max('sort') + 1;
+        $citySort = (int) City::max('sort') + 1;
+        foreach (self::DATA as $regionName => $cities) {
+            $region = Region::firstOrCreate(['slug' => Str::slug($regionName)], ['name' => $this->names(null, $regionName), 'sort' => $regionSort++, 'enabled' => true]);
+            foreach ($cities as $cityName => $areas) {
+                $city = City::firstOrCreate(['slug' => Str::slug($cityName)], [
+                    'region_id' => $region->id, 'name' => $this->names(null, $cityName), 'sort' => $citySort++, 'enabled' => false, 'popular' => false,
+                ]);
+                foreach ($areas as $i => $areaName) {
+                    Area::firstOrCreate(['city_id' => $city->id, 'slug' => Str::slug($areaName)], [
+                        'name' => $this->names(null, $areaName), 'sort' => (int) $city->areas()->max('sort') + 1 + $i, 'needs_review' => true,
+                    ]);
+                }
+            }
+        }
+    }
 
     public function run(): void
     {
@@ -67,7 +96,11 @@ class LocationSeeder extends Seeder
 
                 foreach ($areas as $i => $areaName) {
                     $area = Area::firstOrNew(['city_id' => $city->id, 'slug' => Str::slug($areaName)]);
-                    $area->fill(['name' => $this->names($area->exists ? $area->name : null, $areaName), 'sort' => $i])->save();
+                    if (! $area->exists) {
+                        $area->needs_review = true; // a starting name: the owner's reviewer checks it (PR 111)
+                        $area->sort = $i;
+                    }
+                    $area->fill(['name' => $this->names($area->exists ? $area->name : null, $areaName)])->save();
                 }
             }
         }
