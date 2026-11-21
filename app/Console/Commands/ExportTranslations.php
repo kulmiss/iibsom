@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Support\Help\HelpCentre;
+use App\Support\Translations\ReviewRules;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
@@ -23,7 +24,8 @@ class ExportTranslations extends Command
     protected $signature = 'iibsom:translations:export
         {locale : Language code, e.g. so}
         {--path= : Where to save the CSV}
-        {--screens= : Folder with page pictures (from tools/somali-screenshots)}';
+        {--screens= : Folder with page pictures (from tools/somali-screenshots)}
+        {--review : The reviewer\'s layout (PR 112): key, screen, english, somali, max_length, notes}';
 
     protected $description = 'Export texts to a CSV so a native speaker can review the translation';
 
@@ -126,9 +128,17 @@ class ExportTranslations extends Command
             return self::FAILURE;
         }
         fwrite($handle, "\xEF\xBB\xBF"); // UTF-8 BOM so Excel shows Somali letters correctly
-        fputcsv($handle, ['key', 'english', 'translation', 'status', 'where', 'screenshot'], escape: '');
-        foreach ($rows as $row) {
-            fputcsv($handle, $row, escape: '');
+        if ($this->option('review')) {
+            // PR 112: the layout the owner asked for. "screen" = the picture, or where the text shows when there is none.
+            fputcsv($handle, ['key', 'screen', 'english', 'somali', 'max_length', 'notes'], escape: '');
+            foreach ($rows as [$key, $english, $somali, $status, $where, $picture]) {
+                fputcsv($handle, [$key, $picture !== '' ? $picture : $where, $english, $somali, ReviewRules::maxLength($key, $english), ReviewRules::note($key, $english, $status)], escape: '');
+            }
+        } else {
+            fputcsv($handle, ['key', 'english', 'translation', 'status', 'where', 'screenshot'], escape: '');
+            foreach ($rows as $row) {
+                fputcsv($handle, $row, escape: '');
+            }
         }
         fclose($handle);
 

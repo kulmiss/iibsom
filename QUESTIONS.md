@@ -81,3 +81,7 @@ The owner said: "take your recommended option for small choices, log them here".
 | 2026-11-21 | 111 | District filter: Property and Vehicles lists (after a city is chosen); switch "District filter on every list" (OFF) shows it on all lists. | Your words: property and cars, optional for all. Before, it showed on every list. A district picked on the home page or in the place picker still filters every list (only the drop-down is limited). |
 | 2026-11-21 | 111 | A district used by ads can only be turned off, not deleted. | Their ads keep it. |
 | 2026-11-21 | 111 | Fixed on the way: Admin → Cities was wider than a 360 px phone. | Found by the browser check. |
+| 2026-11-21 | 112 | Review sheet columns: key, screen, english, somali, max_length, notes. max_length = twice the English (at least 30 letters); names 60; long texts more. | Somali is often longer than English; still fits phones. |
+| 2026-11-21 | 112 | Import: if any row has a problem, nothing is written. Unchanged rows in the sheet count as checked. | Safest; the reviewer saw them. |
+| 2026-11-21 | 112 | Help articles and the 4 pages are not imported automatically (listed to change by hand). | They are long texts with headings; safer by hand in Admin → Pages / help files. |
+| 2026-11-21 | 112 | Names in the database are updated only where the Somali name is still our starter text. | An admin's own change is never overwritten. |

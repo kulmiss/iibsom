@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-21 (PR 111)_
+_Last updated: 2026-11-21 (PR 112)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -74,6 +74,7 @@ _Last updated: 2026-11-21 (PR 111)_
 - **PR 109:** scam list = `Support\Safety\ScamNumbers` (cached list, `firstListed()`, `sendAdsToReview()`), models `ScamNumber`/`ScamAppeal`, guard in `Ad::booted()` (never goes live) + `Moderation::approve()` + `AdForm::validate()` + renew. Public `ScamCheckController`; admin `Admin\ScamNumberController` + `features/scam-numbers`. Watchdog `security.scam_numbers`.
 - **PR 110:** share picture = `Support\Share\ShareImage` (bump the number in `version()` after a design change) + `ShareImageController` (`/share/{id}-{version}-{lang}.jpg`, stateless). Files in storage/app/private/share; nightly prune.
 - **PR 111:** districts = `areas` (+ `needs_review`); `LocationSeeder::addMissing()` for running sites; filter scope `BrowseController::DISTRICT_ROOTS` + switch `search.districts_all`; admin `LocationController::moveArea/destroyArea`.
+- **PR 112:** `ImportTranslations` + `Support\Translations\ReviewRules` (checks, max length) + `LangFileWriter` (changes PHP lang files by tokens, comments kept). Export `--review` layout.
 
 ## How to run
 See [docs/local-setup.md](docs/local-setup.md). Short version: `cp .env.example .env && docker compose up -d --build`, then open http://localhost:8095.
