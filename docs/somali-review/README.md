@@ -16,9 +16,19 @@ Privacy) and the names of categories, fields and places.
    - **screenshot**: a phone picture of that page, in the `screens` folder.
 3. Words like `:name`, `:count`, `:when` or `:max_photos` are filled in by the site (a name, a number, a time, a link).
    Keep them as they are, in the right place in the sentence.
-4. Send the sheet back. The developer copies the changes into `lang/so/*.php`,
-   `resources/help/so/`, `database/seeders/data/pages.php` and `database/seeders/data/somali.php`, and lists
-   checked keys in `lang/so/_reviewed.php` (their status becomes `reviewed`).
+4. Send the sheet back. The developer imports it (PR 112):
+   ```bash
+   php artisan iibsom:translations:import reviewed.csv --dry-run   # shows every change; writes nothing
+   php artisan iibsom:translations:import reviewed.csv             # writes them
+   ```
+   Every changed row is checked (`:words`, plural parts, length, no HTML). If any row has a problem, nothing is
+   written. Screen texts go into `lang/so/*.php` (comments stay); names into `database/seeders/data/somali.php`
+   and the database (only where the admin did not change them); checked keys into `lang/so/_reviewed.php`.
+   Help articles and the 4 pages are listed to change by hand (Admin → Pages, `resources/help/so/`).
+
+**For the reviewer:** send them [reviewer-guide.md](reviewer-guide.md) and the review-layout sheet:
+`php artisan iibsom:translations:export so --review --path=somali-review.csv` (columns: key, screen, english,
+somali, max_length, notes).
 
 Category, place and page texts on a live site can also be changed in the admin
 (Categories, Locations, Pages). The sheet shows the starter text.

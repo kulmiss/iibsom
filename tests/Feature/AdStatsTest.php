@@ -57,8 +57,10 @@ class AdStatsTest extends TestCase
         return $row ? ['views' => (int) $row->views, 'phone' => (int) $row->phone, 'whatsapp' => (int) $row->whatsapp, 'call' => (int) $row->call] : [];
     }
 
-    public function test_off_by_default_nothing_counted_or_shown(): void
+    public function test_on_by_default_for_launch_and_off_means_nothing_counted_or_shown(): void
     {
+        $this->assertTrue(config('features')['ad_stats']['default']); // PR 106: ON for launch
+        app(FeatureManager::class)->set('ad_stats', false);
         $this->assertFalse(feature('ad_stats'));
         $this->beacon('views')->assertNotFound();
         $this->get($this->ad->url())->assertOk()->assertDontSee('data-stats', false);

@@ -1,20 +1,48 @@
 ﻿key,english,translation,status,where,screenshot
-account.login.title,"Sign in",Gal,"needs native review",resources/views/auth/login.blade.php,auth-login.png
-account.login.heading,"Welcome to iibsom","Ku soo dhowow iibsom","needs native review",resources/views/auth/login.blade.php,auth-login.png
-account.login.intro,"Sign in to post ads and report bad ones. Browsing is free, no account needed.","Gal si aad xayeysiis u dhigto ama aad u sheegto kuwa xun. Daawashadu waa bilaash, akoon looma baahna.","needs native review",resources/views/auth/login.blade.php,auth-login.png
-account.login.google,"Continue with Google","Ku gal Google","needs native review",resources/views/auth/login.blade.php,auth-login.png
-account.login.no_password,"No password needed. We only use your name and email from Google.","Furaha sirta ah looma baahna. Google waxaan ka qaadanaa magacaaga iyo iimaylkaaga oo keliya.","needs native review",resources/views/auth/login.blade.php,auth-login.png
-account.login.terms_note,"You will accept our Terms in the next step.","Tallaabada xigta waxaad aqbali doontaa Shuruudahayaga.","needs native review",resources/views/auth/login.blade.php,auth-login.png
-account.login.cancelled,"Sign-in was cancelled. You can try again.","Galitaanka waa la joojiyey. Mar kale isku day.","needs native review",app/Http/Controllers/Auth/GoogleController.php,
-account.login.failed,"Sign-in did not work. Please try again.","Galitaanku ma shaqeyn. Fadlan mar kale isku day.","needs native review",app/Http/Controllers/Auth/GoogleController.php,
-account.login.unverified,"Your Google email is not verified yet. Please verify it with Google and try again.","Iimaylkaaga Google weli lama xaqiijin. Ka xaqiiji Google kadibna mar kale isku day.","needs native review",app/Http/Controllers/Auth/GoogleController.php,
-account.login.banned,"This account is blocked. If you think this is a mistake, contact us.","Akoonkan waa la xiray. Haddii aad u malaynayso inay khalad tahay, nala soo xiriir.","needs native review","app/Http/Controllers/Auth/GoogleController.php | app/Http/Controllers/Auth/TestSignInController.php | app/Http/Middleware/AuthenticateApiToken.php | app/Http/Middleware/LogoutBannedUsers.php",
-account.login.not_set_up,"Sign-in with Google is not set up yet on this site.","Ku gelidda Google weli laguma diyaarin boggan.","needs native review",app/Http/Controllers/Auth/GoogleController.php,
-account.login.test_title,"Test sign-in","Gelid tijaabo ah","needs native review",resources/views/auth/login.blade.php,auth-login.png
-account.login.test_note,"Only on your own computer, for testing. This box never shows on the live site.","Kaliya kombiyuutarkaaga, si aad u tijaabiso. Sanduuqan weligiis kama muuqdo bogga rasmiga ah.","needs native review",resources/views/auth/login.blade.php,auth-login.png
-account.login.test_email,"Any email","Iimayl kasta","needs native review",resources/views/auth/login.blade.php,auth-login.png
-account.login.test_button,"Sign in or sign up","Gal ama is diiwaangeli","needs native review",resources/views/auth/login.blade.php,auth-login.png
-account.login.test_staff,"Staff accounts sign in at /admin.","Akoonnada shaqaaluhu waxay ka galaan /admin.","needs native review",app/Http/Controllers/Auth/TestSignInController.php,
+account.login.title,"Sign in",Gal,"needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.heading,"Welcome to iibsom","Ku soo dhowow iibsom","needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.intro,"Sign in to post ads and report bad ones. Browsing is free, no account needed.","Gal si aad xayeysiis u dhigto ama aad u sheegto kuwa xun. Daawashadu waa bilaash, akoon looma baahna.","needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.google,"Continue with Google","Ku gal Google","needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.no_password,"With Google you need no password. We only use your name and email from Google.","Google-ka furaha sirta ah looma baahna. Google waxaan ka qaadanaa magacaaga iyo iimaylkaaga oo keliya.","needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.terms_note,"You will accept our Terms in the next step.","Tallaabada xigta waxaad aqbali doontaa Shuruudahayaga.","needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.cancelled,"Sign-in was cancelled. You can try again.","Galitaanka waa la joojiyey. Mar kale isku day.","needs native review","app/Http/Controllers/Auth/GoogleController.php | resources/views/auth/register.blade.php",
+account.login.failed,"Sign-in did not work. Please try again.","Galitaanku ma shaqeyn. Fadlan mar kale isku day.","needs native review","app/Http/Controllers/Auth/GoogleController.php | resources/views/auth/register.blade.php",
+account.login.unverified,"Your Google email is not verified yet. Please verify it with Google and try again.","Iimaylkaaga Google weli lama xaqiijin. Ka xaqiiji Google kadibna mar kale isku day.","needs native review","app/Http/Controllers/Auth/GoogleController.php | resources/views/auth/register.blade.php",
+account.login.banned,"This account is blocked. If you think this is a mistake, contact us.","Akoonkan waa la xiray. Haddii aad u malaynayso inay khalad tahay, nala soo xiriir.","needs native review","app/Http/Controllers/Auth/EmailAuthController.php | app/Http/Controllers/Auth/GoogleController.php | app/Http/Controllers/Auth/TestSignInController.php | app/Http/Middleware/AuthenticateApiToken.php | app/Http/Middleware/LogoutBannedUsers.php | resources/views/auth/register.blade.php",
+account.login.not_set_up,"Sign-in with Google is not set up yet on this site.","Ku gelidda Google weli laguma diyaarin boggan.","needs native review","app/Http/Controllers/Auth/GoogleController.php | resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.test_title,"Test sign-in","Gelid tijaabo ah","needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.test_note,"Only on your own computer, for testing. This box never shows on the live site.","Kaliya kombiyuutarkaaga, si aad u tijaabiso. Sanduuqan weligiis kama muuqdo bogga rasmiga ah.","needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.test_email,"Any email","Iimayl kasta","needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.test_button,"Sign in or sign up","Gal ama is diiwaangeli","needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.test_staff,"Staff accounts sign in at /admin.","Akoonnada shaqaaluhu waxay ka galaan /admin.","needs native review","app/Http/Controllers/Auth/EmailAuthController.php | app/Http/Controllers/Auth/TestSignInController.php | resources/views/auth/register.blade.php",
+account.login.or,or,ama,"needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.email,Email,Iimayl,"needs native review","resources/views/auth/forgot.blade.php | resources/views/auth/login.blade.php | resources/views/auth/register.blade.php | resources/views/auth/reset.blade.php",auth-login.png
+account.login.password,Password,"Furaha sirta ah","needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php | resources/views/auth/reset.blade.php",auth-login.png
+account.login.password_confirm,"Password again","Furaha sirta ah mar kale","needs native review","resources/views/auth/register.blade.php | resources/views/auth/reset.blade.php",
+account.login.password_hint,"At least 8 characters, with letters and numbers.","Ugu yaraan 8 xaraf, oo leh xarfo iyo lambarro.","needs native review","resources/views/auth/register.blade.php | resources/views/auth/reset.blade.php",
+account.login.name,"Your name",Magacaaga,"needs native review",resources/views/auth/register.blade.php,
+account.login.sign_in,"Sign in",Gal,"needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.forgot,"Forgot password?","Ma ilowday furaha sirta ah?","needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.no_account,"No account yet?","Akoon ma lihid?","needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.create,"Create an account","Samee akoon","needs native review","resources/views/auth/login.blade.php | resources/views/auth/register.blade.php",auth-login.png
+account.login.have_account,"Already have an account?","Akoon ma leedahay?","needs native review",resources/views/auth/register.blade.php,
+account.login.register_title,"Create an account","Samee akoon","needs native review",resources/views/auth/register.blade.php,
+account.login.register_intro,"It is free. We send a link to your email to confirm it.","Waa bilaash. Waxaan linki u dirnaa iimaylkaaga si aad u xaqiijiso.","needs native review",resources/views/auth/register.blade.php,
+account.login.register_button,"Create account","Samee akoon","needs native review",resources/views/auth/register.blade.php,
+account.login.wrong,"Email or password is wrong.","Iimaylka ama furaha sirta ah waa khalad.","needs native review","app/Http/Controllers/Auth/EmailAuthController.php | resources/views/auth/register.blade.php",
+account.login.too_many,"Too many tries. Please wait :seconds seconds.","Isku day badan. Fadlan sug :seconds ilbiriqsi.","needs native review","app/Http/Controllers/Auth/EmailAuthController.php | app/Http/Controllers/Auth/PasswordResetController.php | resources/views/auth/register.blade.php",
+account.login.check_email,"Check your email (:email). Open the link we sent, then sign in. Not there? Look in spam.","Eeg iimaylkaaga (:email). Fur linkiga aan kuu dirnay, kadibna gal. Ma jiro? Eeg spam-ka.","needs native review","app/Http/Controllers/Auth/EmailAuthController.php | resources/views/auth/register.blade.php",
+account.login.confirm_first,"Please confirm your email first. We sent a new link to :email.","Fadlan marka hore xaqiiji iimaylkaaga. Linki cusub ayaan u dirnay :email.","needs native review","app/Http/Controllers/Auth/EmailAuthController.php | resources/views/auth/register.blade.php",
+account.login.confirmed,"Your email is confirmed. Sign in with your password.","Iimaylkaaga waa la xaqiijiyay. Ku gal furahaaga sirta ah.","needs native review","app/Http/Controllers/Auth/EmailAuthController.php | resources/views/auth/register.blade.php",
+account.login.link_bad,"This link does not work any more. Please ask for a new one.","Linkigan hadda ma shaqeynayo. Fadlan mid cusub codso.","needs native review","app/Http/Controllers/Auth/EmailAuthController.php | app/Http/Controllers/Auth/PasswordResetController.php | resources/views/auth/register.blade.php",
+account.login.forgot_title,"Forgot your password?","Ma ilowday furaha sirta ah?","needs native review","resources/views/auth/forgot.blade.php | resources/views/auth/register.blade.php",
+account.login.forgot_intro,"Type your email. If it has an account, we send a link to choose a new password.","Qor iimaylkaaga. Haddii uu akoon leeyahay, waxaan kuu soo diraynaa linki aad ku dooranayso fure cusub.","needs native review","resources/views/auth/forgot.blade.php | resources/views/auth/register.blade.php",
+account.login.forgot_button,"Send link","Dir linkiga","needs native review","resources/views/auth/forgot.blade.php | resources/views/auth/register.blade.php",
+account.login.reset_sent,"If :email has an account, we sent a link. It works for 60 minutes. Not there? Look in spam.","Haddii :email uu akoon leeyahay, linki ayaan u dirnay. Wuxuu shaqeynayaa 60 daqiiqo. Ma jiro? Eeg spam-ka.","needs native review","app/Http/Controllers/Auth/PasswordResetController.php | resources/views/auth/register.blade.php",
+account.login.reset_title,"Choose a new password","Dooro fure sir ah oo cusub","needs native review","resources/views/auth/register.blade.php | resources/views/auth/reset.blade.php",
+account.login.reset_button,"Save new password","Kaydi furaha cusub","needs native review","resources/views/auth/register.blade.php | resources/views/auth/reset.blade.php",
+account.login.reset_done,"Your new password is saved. You are signed in.","Furahaaga cusub waa la kaydiyay. Waad gashay.","needs native review","app/Http/Controllers/Auth/PasswordResetController.php | resources/views/auth/register.blade.php",
+account.login.back,"Back to sign in","Ku noqo galitaanka","needs native review","resources/views/auth/forgot.blade.php | resources/views/auth/register.blade.php",
 account.welcome.title,"Almost done","Waad ku dhowdahay","needs native review",resources/views/account/profile-form.blade.php,account-profile-form.png
 account.welcome.intro,"Buyers will use these details to contact you. You can change them later.","Iibsadayaashu waxay faahfaahintan u isticmaali doonaan inay kula soo xiriiraan. Hadhow waad beddeli kartaa.","needs native review",resources/views/account/profile-form.blade.php,account-profile-form.png
 account.welcome.submit,"Save and continue","Keydi oo sii wad","needs native review",resources/views/account/profile-form.blade.php,account-profile-form.png
@@ -50,6 +78,22 @@ account.form.privacy_link,"Privacy Policy","Siyaasadda qarsoodiga","needs native
 account.form.terms_short,Terms,Shuruudaha,"needs native review",app/Http/Controllers/Account/ProfileController.php,
 account.validation.phone,"Please enter a Somali mobile number, for example 61 5123456.","Fadlan geli lambar mobile Soomaaliyeed, tusaale 61 5123456.","needs native review",app/Rules/SomaliMobile.php,
 account.validation.phone_blocked,"This phone number cannot be used on iibsom. Contact us if you think this is a mistake.","Lambarkan lagama isticmaali karo iibsom. Nala soo xiriir haddii aad u malaynayso inay khalad tahay.","needs native review","app/Http/Controllers/Account/ProfileController.php | app/Support/Ads/AdForm.php",
+account.phone.title,"Confirm my phone number","Xaqiiji lambarkayga taleefanka","needs native review",resources/views/account/phone.blade.php,
+account.phone.intro,"Buyers trust sellers whose number we checked. Get a short code, send it to us on WhatsApp from this number, and our team ticks ""Phone confirmed"". No SMS, no cost.","Iibsadayaashu waxay aaminaan iibiyeyaasha lambarkooda aan hubinnay. Qaado kood gaaban, ugu soo dir WhatsApp-ka lambarkan, kooxdayaduna waxay calaamadin doontaa ""Taleefanka waa la xaqiijiyay"". SMS ma jiro, lacag ma jirto.","needs native review",resources/views/account/phone.blade.php,
+account.phone.get_code,"Get my code","Qaado koodkayga","needs native review",resources/views/account/phone.blade.php,
+account.phone.code_ready,"Here is your code. Send it to us on WhatsApp from your number.","Waa kan koodkaagu. Nooga soo dir WhatsApp-ka lambarkaaga.","needs native review",app/Http/Controllers/Account/PhoneConfirmController.php,
+account.phone.your_code,"Your code",Koodkaaga,"needs native review",resources/views/account/phone.blade.php,
+account.phone.open_whatsapp,"Send it on WhatsApp","Ku dir WhatsApp","needs native review",resources/views/account/phone.blade.php,
+account.phone.whatsapp_text,"iibsom: please confirm my number. My code is :code","iibsom: fadlan xaqiiji lambarkayga. Koodkaygu waa :code","needs native review",resources/views/account/phone.blade.php,
+account.phone.whatsapp_note,"Send it from the number on your account. Our team checks messages every day.","Ka soo dir lambarka akoonkaaga. Kooxdayadu waxay eegtaa fariimaha maalin kasta.","needs native review",resources/views/account/phone.blade.php,
+account.phone.no_whatsapp,"Our team will call you on this number to confirm it. Keep this code ready.","Kooxdayadu waxay kugu soo wici doontaa lambarkan si ay u xaqiijiso. Koodkan diyaar u ahow.","needs native review",resources/views/account/phone.blade.php,
+account.phone.done,"Your number is confirmed. Buyers see ""Phone confirmed"" next to your name.","Lambarkaaga waa la xaqiijiyay. Iibsadayaashu waxay arkaan ""Taleefanka waa la xaqiijiyay"" magacaaga agtiisa.","needs native review",resources/views/account/phone.blade.php,
+account.phone.change_note,"If you change your number, the tick goes away until we confirm the new one.","Haddii aad beddesho lambarkaaga, calaamaddu way baxaysaa ilaa aan xaqiijinno kan cusub.","needs native review","resources/views/account/phone.blade.php | resources/views/account/profile-form.blade.php",account-profile-form.png
+account.phone.tick,"Phone confirmed","Taleefanka waa la xaqiijiyay","needs native review",resources/views/partials/phone-confirmed.blade.php,home.png
+account.phone.what_title,"What does this mean?","Maxay tani ka dhigan tahay?","needs native review","resources/views/account/phone.blade.php | resources/views/partials/phone-confirmed.blade.php",home.png
+account.phone.what_body,"Our team called or messaged this number and the seller answered. It does not mean we checked the item or the seller. Always see the item before you pay.","Kooxdayadu waxay wacday ama fariin u dirtay lambarkan, iibiyuhuna wuu jawaabay. Macnaheedu maaha inaan hubinnay alaabta ama iibiyaha. Had iyo jeer arag alaabta ka hor intaadan bixin.","needs native review","resources/views/account/phone.blade.php | resources/views/partials/phone-confirmed.blade.php",home.png
+account.phone.menu,"Confirm my phone number","Xaqiiji lambarkayga taleefanka","needs native review",resources/views/account/index.blade.php,account-index.png
+account.phone.menu_done,"Phone confirmed","Taleefanka waa la xaqiijiyay","needs native review",resources/views/account/index.blade.php,account-index.png
 account.verify.title,"Get the Verified badge","Hel calaamadda La Xaqiijiyey","needs native review","resources/views/account/index.blade.php | resources/views/account/verify.blade.php",account-index.png
 account.verify.badge,Verified,"La xaqiijiyey","needs native review",resources/views/partials/verified-badge.blade.php,home.png
 account.verify.badge_title,"Our team checked this seller's ID","Kooxdayadu waxay hubisay aqoonsiga iibiyahan","needs native review",resources/views/partials/verified-badge.blade.php,home.png
@@ -69,6 +113,9 @@ account.verify.verified,"You are verified. The badge shows next to your name on 
 account.verify.rejected,"We could not verify your ID: :reason","Ma aanan xaqiijin karin aqoonsigaaga: :reason","needs native review",resources/views/account/verify.blade.php,
 account.verify.try_again,"You can send a new photo below.","Waxaad hoos ka soo diri kartaa sawir cusub.","needs native review",resources/views/account/verify.blade.php,
 account.verify.privacy,"Your ID photo is never shown to buyers. It is stored encrypted and deleted as soon as our team decides.","Sawirka aqoonsigaaga weligii lama tuso iibsadayaasha. Si qarsoodi ah ayaa loo kaydiyaa, waana la tirtiraa marka kooxdayadu go'aan gaarto.","needs native review",resources/views/account/verify.blade.php,
+account.verify.free,"Free. Your ID photo is checked by our team only.","Waa bilaash. Sawirka aqoonsigaaga waxaa eegaya kooxdayada oo keliya.","needs native review",resources/views/account/verify.blade.php,
+account.verify.price_business,"For businesses the badge costs :price. Send your ID first: our team tells you how to pay.","Ganacsiyada calaamaddu waxay ku kacaysaa :price. Marka hore soo dir aqoonsigaaga: kooxdayadu waxay kuu sheegi doontaa sida loo bixiyo.","needs native review",resources/views/account/verify.blade.php,
+account.verify.expired,"Our team could not check your last photo in time, so it was deleted. Please send it again.","Kooxdayadu ma hubin karin sawirkaagii ugu dambeeyay waqtigiisa, sidaas darteed waa la tirtiray. Fadlan mar kale soo dir.","needs native review",resources/views/account/verify.blade.php,
 account.shop.title,"My shop",Dukaankayga,"needs native review","resources/views/account/index.blade.php | resources/views/account/shop.blade.php",account-index.png
 account.shop.intro,"A shop page shows your logo, opening hours and all your ads at one web address you can share.","Bogga dukaanku wuxuu muujiyaa astaantaada, saacadaha furitaanka iyo dhammaan xayeysiisyadaada hal cinwaan oo aad wadaagi karto.","needs native review",resources/views/account/shop.blade.php,
 account.shop.name,"Shop name","Magaca dukaanka","needs native review","app/Http/Controllers/Account/ShopController.php | resources/views/account/shop.blade.php",
@@ -214,7 +261,7 @@ ads.form.condition,Condition,Xaaladda,"needs native review","app/Http/Controller
 ads.form.new,New,Cusub,"needs native review","app/Http/Controllers/AdPageController.php | app/Http/Controllers/BrowseController.php | resources/views/ads/_card.blade.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php | resources/views/browse/_filters.blade.php | resources/views/browse/_quick-bar.blade.php","browse-index.png | ads-post-form.png | ads-show.png"
 ads.form.used,Used,"La isticmaalay","needs native review","app/Http/Controllers/AdPageController.php | app/Http/Controllers/BrowseController.php | resources/views/ads/_card.blade.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php | resources/views/browse/_filters.blade.php | resources/views/browse/_quick-bar.blade.php","browse-index.png | ads-post-form.png | ads-show.png"
 ads.form.city,City,Magaalada,"needs native review","app/Http/Controllers/BrowseController.php | app/Support/Ads/AdForm.php | resources/views/ads/_card.blade.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php | resources/views/browse/_quick-bar.blade.php","browse-index.png | ads-post-form.png | ads-show.png"
-ads.form.area,"Area / district","Xaafadda / degmada","needs native review","app/Http/Controllers/BrowseController.php | app/Support/Ads/AdForm.php | resources/views/ads/_card.blade.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php | resources/views/browse/_filters.blade.php | resources/views/browse/_quick-bar.blade.php","browse-index.png | ads-post-form.png | ads-show.png"
+ads.form.area,District,Degmada,"needs native review","app/Http/Controllers/BrowseController.php | app/Support/Ads/AdForm.php | resources/views/ads/_card.blade.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php | resources/views/browse/_filters.blade.php | resources/views/browse/_quick-bar.blade.php","browse-index.png | ads-post-form.png | ads-show.png"
 ads.form.area_any,"Choose area (optional)","Dooro xaafadda (ikhtiyaari)","needs native review","app/Http/Controllers/BrowseController.php | resources/views/ads/_card.blade.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php | resources/views/browse/_quick-bar.blade.php","browse-index.png | ads-post-form.png | ads-show.png"
 ads.form.choose,Choose…,Dooro…,"needs native review","app/Http/Controllers/BrowseController.php | resources/views/ads/_card.blade.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php | resources/views/browse/_quick-bar.blade.php","browse-index.png | ads-post-form.png | ads-show.png"
 ads.form.yes,Yes,Haa,"needs native review","app/Http/Controllers/AdPageController.php | app/Http/Controllers/BrowseController.php | resources/views/ads/_card.blade.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php | resources/views/browse/_quick-bar.blade.php","browse-index.png | ads-post-form.png | ads-show.png"
@@ -243,7 +290,7 @@ ads.browse.with_photos,"Only with photos","Kaliya kuwa sawirro leh","needs nativ
 ads.browse.verified_only,"Only verified sellers","Kaliya iibiyeyaal la xaqiijiyay","needs native review","app/Http/Controllers/Account/SavedSearchController.php | app/Http/Controllers/BrowseController.php | resources/views/browse/_filters.blade.php | resources/views/browse/_quick-bar.blade.php | resources/views/sellers/show.blade.php",
 ads.browse.popular,"Most viewed","Kuwa ugu badan ee la daawaday","needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/_quick-bar.blade.php | resources/views/sellers/show.blade.php",
 ads.browse.location,Location,Goobta,"needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/_quick-bar.blade.php | resources/views/sellers/show.blade.php",
-ads.browse.all_areas,"All areas","Dhammaan xaafadaha","needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/_quick-bar.blade.php | resources/views/sellers/show.blade.php",
+ads.browse.all_areas,"All districts","Dhammaan degmooyinka","needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/_quick-bar.blade.php | resources/views/sellers/show.blade.php",
 ads.browse.categories,Categories,Qaybaha,"needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/_quick-bar.blade.php | resources/views/sellers/show.blade.php",
 ads.browse.show_all_categories,"Show all categories","Tus dhammaan qaybaha","needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/_quick-bar.blade.php | resources/views/sellers/show.blade.php",
 ads.browse.price_range,":from – :to",":from – :to","needs native review","resources/views/browse/_filters.blade.php | resources/views/browse/_quick-bar.blade.php | resources/views/sellers/show.blade.php",
@@ -324,16 +371,16 @@ ads.page.report_thanks,"Thank you. Our team will check this ad.","Mahadsanid. Ko
 ads.page.report_sign_in,"Sign in to report","Gal si aad u warbixiso","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.reported,"You reported this ad. Thank you.","Waad ka warbixisay xayeysiiskan. Mahadsanid.","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.safety_title,"Stay safe","Ammaan ahaw","needs native review",resources/views/ads/show.blade.php,ads-show.png
-ads.page.safety_1,"Meet in a busy public place.","Ku kulma meel dadweyne oo mashquul ah.","needs native review","resources/views/ads/show.blade.php | resources/views/sellers/show.blade.php",ads-show.png
-ads.page.safety_2,"See the item before you pay.","Arag alaabta ka hor intaadan lacag bixin.","needs native review","resources/views/ads/show.blade.php | resources/views/sellers/show.blade.php",ads-show.png
-ads.page.safety_3,"Never send money in advance.","Weligaa lacag hore ha dirin.","needs native review",resources/views/ads/show.blade.php,ads-show.png
+ads.page.safety_1,"Meet in a busy public place.","Ku kulma meel dadweyne oo mashquul ah.","needs native review","resources/views/ads/show.blade.php | resources/views/safety/check-number.blade.php | resources/views/sellers/show.blade.php",ads-show.png
+ads.page.safety_2,"See the item before you pay.","Arag alaabta ka hor intaadan lacag bixin.","needs native review","resources/views/ads/show.blade.php | resources/views/safety/check-number.blade.php | resources/views/sellers/show.blade.php",ads-show.png
+ads.page.safety_3,"Never send money in advance.","Weligaa lacag hore ha dirin.","needs native review","resources/views/ads/show.blade.php | resources/views/safety/check-number.blade.php",ads-show.png
 ads.page.safety_more,"More safety tips","Talooyin ammaan oo dheeraad ah","needs native review","resources/views/ads/show.blade.php | resources/views/sellers/show.blade.php",ads-show.png
 ads.page.similar,"Similar ads","Xayeysiisyo la mid ah","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.not_live,"Only you can see this ad. Status: :status","Adiga oo keliya ayaa arki kara xayeysiiskan. Xaaladda: :status","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.sold,"This item is sold.","Alaabtan waa la iibiyey.","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.photo,"Photo :n of :total","Sawirka :n ee :total","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.no_photo,"No photo","Sawir ma leh","needs native review","resources/views/ads/_card.blade.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","browse-index.png | ads-post-form.png | ads-show.png"
-ads.page.negotiable,Negotiable,"Waa laga wada hadli karaa","needs native review","resources/views/ads/_card.blade.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","browse-index.png | ads-post-form.png | ads-show.png"
+ads.page.negotiable,Negotiable,"Waa laga wada hadli karaa","needs native review","app/Support/Share/ShareImage.php | resources/views/ads/_card.blade.php | resources/views/ads/post-form.blade.php | resources/views/ads/show.blade.php","browse-index.png | ads-post-form.png | ads-show.png"
 ads.page.all_photos,"All photos","Dhammaan sawirrada","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.read_more,"Read more","Akhri wax badan","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.read_less,"Show less","Muuji wax yar","needs native review",resources/views/ads/show.blade.php,ads-show.png
@@ -348,9 +395,10 @@ ads.page.details_less,"Show fewer details","Muuji faahfaahin yar","needs native 
 ads.page.mark_sold,"Already sold? Let us know","Ma la iibiyey? Noo sheeg","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.like_this_text,"Have one like this to sell?","Ma haysaa mid kan oo kale oo aad iibinayso?","needs native review",resources/views/ads/show.blade.php,ads-show.png
 ads.page.like_this_button,"Post an ad like this","Dhig xayeysiis kan oo kale","needs native review",resources/views/ads/show.blade.php,ads-show.png
-ads.safety.bot,"Something went wrong. Please try again.","Wax baa khaldamay. Fadlan mar kale isku day.","needs native review",app/Support/Safety/SpamGuard.php,
+ads.safety.bot,"Something went wrong. Please try again.","Wax baa khaldamay. Fadlan mar kale isku day.","needs native review","app/Http/Controllers/Auth/EmailAuthController.php | app/Http/Controllers/ScamCheckController.php | app/Support/Safety/SpamGuard.php",
 ads.safety.links,"Please remove web links. Buyers contact you by phone or WhatsApp.","Fadlan ka saar linkiyada internetka. Iibsadayaashu waxay kula soo xiriiraan taleefan ama WhatsApp.","needs native review",app/Support/Safety/SpamGuard.php,
 ads.safety.bad_words,"Please remove rude or unsafe words from your ad.","Fadlan xayeysiiskaaga ka saar erayada xun ama aan ammaanka ahayn.","needs native review",app/Support/Safety/SpamGuard.php,
+ads.safety.scam_number,"This phone number was reported for scams, so it cannot be used in ads. If this is a mistake, ask for a review on the ""Check a phone number"" page.","Lambarkan waxaa laga soo sheegay khiyaano, sidaas darteed laguma isticmaali karo xayeysiisyada. Haddii ay khalad tahay, codso dib-u-eegis bogga ""Hubi lambar taleefan"".","needs native review","app/Http/Controllers/Account/MyAdsController.php | app/Support/Ads/AdForm.php",
 ads.safety.drugs,"Drugs are not allowed on iibsom (khat, cannabis, narcotics, medicines that need a doctor, and anything similar). Please remove them. See the posting rules in Help.","Daroogo laguma oggola iibsom (qaad, xashiish, maandooriye, daawooyin u baahan dhakhtar iyo wax la mid ah). Fadlan ka saar. Eeg xeerarka dhigista xayeysiiska ee Caawimaadda.","needs native review",app/Support/Safety/SpamGuard.php,
 ads.close.sold_here,"Sold on iibsom","Waxaa lagu iibiyey iibsom","needs native review","app/Http/Controllers/Admin/AdController.php | resources/views/account/my-ads.blade.php",account-my-ads.png
 ads.close.sold_elsewhere,"Sold somewhere else","Meel kale ayaa lagu iibiyey","needs native review","app/Http/Controllers/Admin/AdController.php | resources/views/account/my-ads.blade.php",account-my-ads.png
@@ -397,8 +445,8 @@ ads.mine.edit_note,"After you save, our team checks the ad again before it is li
 ads.saved.title,"Saved ads","Xayeysiisyada la kaydiyey","needs native review","resources/views/account/index.blade.php | resources/views/account/saved.blade.php",account-index.png
 ads.saved.save,Save,Kaydi,"needs native review",resources/views/ads/_save-button.blade.php,
 ads.saved.saved,Saved,"La kaydiyey","needs native review",resources/views/ads/_save-button.blade.php,
-ads.saved.save_label,"Save this ad","Kaydi xayeysiiskan","needs native review","resources/views/ads/_card.blade.php | resources/views/ads/_save-button.blade.php",browse-index.png
-ads.saved.unsave_label,"Remove from saved ads","Ka saar xayeysiisyada la kaydiyey","needs native review","resources/views/ads/_card.blade.php | resources/views/ads/_save-button.blade.php",browse-index.png
+ads.saved.save_label,"Save this ad","Kaydi xayeysiiskan","needs native review","resources/views/ads/_save-button.blade.php | resources/views/layouts/app.blade.php",home.png
+ads.saved.unsave_label,"Remove from saved ads","Ka saar xayeysiisyada la kaydiyey","needs native review","resources/views/ads/_save-button.blade.php | resources/views/layouts/app.blade.php",home.png
 ads.saved.added,"Saved. Find it in Saved ads.","Waa la kaydiyey. Ka hel Xayeysiisyada la kaydiyey.","needs native review",app/Http/Controllers/Account/FavouriteController.php,
 ads.saved.removed,"Removed from your saved ads.","Waa laga saaray xayeysiisyadaada la kaydiyey.","needs native review",app/Http/Controllers/Account/FavouriteController.php,
 ads.saved.full,"You can save up to :max ads. Remove some first.","Waxaad kaydin kartaa ilaa :max xayeysiis. Marka hore qaar ka saar.","needs native review",app/Http/Controllers/Account/FavouriteController.php,
@@ -565,11 +613,33 @@ reports.reason.wrong_category,"Wrong category","Qayb khaldan","needs native revi
 reports.reason.sold,"Already sold","Horay ayaa loo iibiyey","needs native review","app/Http/Controllers/Admin/ReportController.php | resources/views/ads/show.blade.php",ads-show.png
 reports.reason.offensive,"Offensive or not allowed","Aflagaado ama aan la oggolayn","needs native review","app/Http/Controllers/Admin/ReportController.php | resources/views/ads/show.blade.php",ads-show.png
 reports.reason.other,"Something else","Wax kale","needs native review","app/Http/Controllers/Admin/ReportController.php | resources/views/ads/show.blade.php",ads-show.png
+scam.title,"Check a phone number","Hubi lambar taleefan","needs native review",resources/views/safety/check-number.blade.php,
+scam.description,"See if a phone number was reported for scams on iibsom.","Eeg haddii lambar taleefan laga soo sheegay khiyaano iibsom.","needs native review",resources/views/safety/check-number.blade.php,
+scam.intro,"Before you send money, check the seller's number. Our team marks numbers that were reported for scams and checked.","Ka hor intaadan lacag dirin, hubi lambarka iibiyaha. Kooxdayadu waxay calaamadisaa lambarrada laga soo sheegay khiyaano oo la hubiyay.","needs native review",resources/views/safety/check-number.blade.php,
+scam.phone,"Phone number","Lambarka taleefanka","needs native review",resources/views/safety/check-number.blade.php,
+scam.check,Check,Hubi,"needs native review","app/Http/Controllers/ScamCheckController.php | resources/views/ads/show.blade.php | resources/views/browse/index.blade.php | resources/views/partials/footer.blade.php | resources/views/safety/check-number.blade.php | routes/web.php","ads-show.png | browse-index.png | home.png"
+scam.not_a_number,"This is not a Somali mobile number. Type it like 61 5123456.","Kani maaha lambar mobile Soomaali ah. U qor sidan: 61 5123456.","needs native review",resources/views/safety/check-number.blade.php,
+scam.listed_title,":phone was reported for scams",":phone waxaa laga soo sheegay khiyaano","needs native review",resources/views/safety/check-number.blade.php,
+scam.listed_body,"Our team checked reports about this number. Do not send money to it. If someone asks you to, stop and report the ad.","Kooxdayadu waxay hubisay warbixinnada ku saabsan lambarkan. Lacag ha u dirin. Haddii qof kaa codsado, jooji oo ka warbixi xayeysiiska.","needs native review",resources/views/safety/check-number.blade.php,
+scam.clear_title,"No scam reports for this number","Lambarkan khiyaano lagama soo sheegin","needs native review",resources/views/safety/check-number.blade.php,
+scam.clear_body,"This does not prove the seller is honest. Always meet in a public place and see the item before you pay.","Tani ma caddaynayso in iibiyuhu daacad yahay. Had iyo jeer ku kulma meel dadweyne oo arag alaabta ka hor intaadan bixin.","needs native review",resources/views/safety/check-number.blade.php,
+scam.search_warning,"The number :phone was reported for scams. Do not send money to it.","Lambarka :phone waxaa laga soo sheegay khiyaano. Lacag ha u dirin.","needs native review",resources/views/browse/index.blade.php,browse-index.png
+scam.search_link,"What does this mean?","Maxay tani ka dhigan tahay?","needs native review",resources/views/browse/index.blade.php,browse-index.png
+scam.appeal_title,"Is this your number? Ask for a review","Ma lambarkaaga baa? Codso dib-u-eegis","needs native review",resources/views/safety/check-number.blade.php,
+scam.appeal_intro,"Tell us why this is a mistake. Our team checks it and decides. We never show your name.","Noo sheeg sababta ay khalad u tahay. Kooxdayadu way hubin doontaa oo go'aan gaari doontaa. Weligeen magacaaga ma muujinno.","needs native review",resources/views/safety/check-number.blade.php,
+scam.appeal_message,"Why should we check again?","Maxaan mar kale u hubinnaa?","needs native review","app/Http/Controllers/ScamCheckController.php | resources/views/safety/check-number.blade.php",
+scam.appeal_contact,"How can we answer you? (optional)","Sideen kuugu jawaabi karnaa? (ikhtiyaari)","needs native review","app/Http/Controllers/ScamCheckController.php | resources/views/safety/check-number.blade.php",
+scam.appeal_contact_help,"An email or a phone number. Deleted 30 days after we decide.","Iimayl ama lambar taleefan. Waa la tirtiraa 30 maalmood kadib go'aanka.","needs native review",resources/views/safety/check-number.blade.php,
+scam.appeal_send,"Send for review","U dir dib-u-eegis","needs native review",resources/views/safety/check-number.blade.php,
+scam.appeal_sent,"Thank you. Our team will check your request.","Mahadsanid. Kooxdayadu way hubin doontaa codsigaaga.","needs native review",app/Http/Controllers/ScamCheckController.php,
+scam.appeal_waiting,"A review for this number is already waiting. Our team will check it.","Dib-u-eegis lambarkan ah ayaa horey u sugaysa. Kooxdayadu way hubin doontaa.","needs native review",resources/views/safety/check-number.blade.php,
+scam.appeal_too_many,"Too many requests. Please try again in an hour.","Codsiyo badan. Fadlan isku day saacad kadib.","needs native review",app/Http/Controllers/ScamCheckController.php,
+scam.footer,"Check a phone number","Hubi lambar taleefan","needs native review","resources/views/ads/show.blade.php | resources/views/partials/footer.blade.php","ads-show.png | home.png"
 sellers.title,"Ads by :name","Xayeysiisyada :name","needs native review",resources/views/sellers/show.blade.php,
 sellers.all_ads,"All ads by this seller","Dhammaan xayeysiisyada iibiyahan","needs native review",resources/views/sellers/show.blade.php,
 sellers.live_ads,"{0} No ads right now|{1} 1 ad|[2,*] :count ads","{0} Hadda xayeysiis ma jiro|{1} 1 xayeysiis|[2,*] :count xayeysiis","needs native review",resources/views/sellers/show.blade.php,
 sellers.none,"This seller has no live ads right now.","Iibiyahan hadda ma laha xayeysiis shaqeynaya.","needs native review",resources/views/sellers/show.blade.php,
-sellers.follow,Follow,"La soco","needs native review","app/Http/Controllers/Account/FollowController.php | app/Http/Controllers/AdPageController.php | app/Http/Controllers/SellerPageController.php | app/Models/User.php | app/Support/Notify/Inbox.php | app/Support/Users/AccountSummary.php | config/features.php | resources/views/account/index.blade.php | resources/views/account/notifications/settings.blade.php | resources/views/sellers/_follow-button.blade.php",account-index.png
+sellers.follow,Follow,"La soco","needs native review","app/Http/Controllers/Account/FollowController.php | app/Http/Controllers/AdPageController.php | app/Http/Controllers/SellerPageController.php | app/Models/User.php | app/Support/Features/Dependencies.php | app/Support/Notify/Inbox.php | app/Support/Users/AccountSummary.php | config/features.php | resources/views/account/index.blade.php | resources/views/account/notifications/settings.blade.php | resources/views/sellers/_follow-button.blade.php",account-index.png
 sellers.following,Following,"Waad la socotaa","needs native review",resources/views/sellers/_follow-button.blade.php,
 sellers.follow_label,"Follow :name: get their new ads in your notifications","La soco :name: xayeysiisyadiisa cusub waxay imaanayaan ogeysiisyadaada","needs native review",resources/views/sellers/_follow-button.blade.php,
 sellers.unfollow_label,"Stop following :name","Jooji la socodka :name","needs native review",resources/views/sellers/_follow-button.blade.php,
@@ -824,13 +894,13 @@ pages.terms.body,"**Draft: to be checked by the owner before launch.**
 pages.privacy.title,Privacy,Qarsoodiga,"needs native review","Page /privacy (starter text; admin > Pages can change it)",pages-privacy.png
 pages.privacy.body,"**Draft: to be checked by the owner before launch.**
 
-- **What we keep:** your name, email (from Google), city and phone number, and the ads you post.
+- **What we keep:** your name, email (from Google or the sign-up form), city and phone number, and the ads you post. A password is kept only as a scrambled code that nobody can read back.
 - **Who sees it:** buyers see your name, city and phone number (after they tap ""Show number"").
 - **Visitors who are not signed in:** we do not store their IP address.
 - **Photos:** we remove hidden data like GPS location from every photo.
 - **Delete your data:** contact us and we will remove your account.","**Qabyo: mulkiilaha ayaa hubin doona ka hor furitaanka.**
 
-- **Waxa aan keydinno:** magacaaga, iimaylkaaga (Google), magaaladaada iyo lambarkaaga taleefanka, iyo xayeysiisyada aad dhigto.
+- **Waxa aan keydinno:** magacaaga, iimaylkaaga (Google ama foomka diiwaangelinta), magaaladaada iyo lambarkaaga taleefanka, iyo xayeysiisyada aad dhigto. Furaha sirta ah waxaa loo keydiyaa qaab qarsoon oo aan dib loo akhrin karin.
 - **Cidda arkaysa:** iibsadayaashu waxay arkaan magacaaga, magaaladaada iyo lambarkaaga (marka ay riixaan ""Muuji lambarka"").
 - **Booqdayaasha aan galin:** ma keydinno cinwaankooda IP.
 - **Sawirrada:** sawir kasta waxaan ka saarnaa xogta qarsoon sida goobta GPS.
@@ -915,7 +985,7 @@ help.post-an-ad.title,"How to post an ad","Sida loo dhigo xayeysiis","needs nati
 help.post-an-ad.body,"Posting is free.
 
 1. Tap **Sell** at the bottom of the screen (or **Post an ad** at the top).
-2. Sign in with Google. The first time, add your name, city and phone number.
+2. Sign in with Google or with your email and password. The first time, add your name, city and phone number.
 3. Choose the category, for example **Cars**.
 4. Add up to :max_photos photos. The first photo is the main one.
 5. Write a short, clear title, for example ""Toyota Vitz 2012, automatic"".
@@ -925,7 +995,7 @@ help.post-an-ad.body,"Posting is free.
 Our team checks every ad before it goes live. You can post up to :max_per_day ads a day.","Xayeysiis dhigiddu waa bilaash.
 
 1. Riix **iibi** xagga hoose ee shaashadda (ama **Dhig xayeysiis** xagga sare).
-2. Ku gal Google. Markii ugu horreysay, ku dar magacaaga, magaaladaada iyo lambarkaaga taleefanka.
+2. Ku gal Google ama iimaylkaaga iyo furaha sirta ah. Markii ugu horreysay, ku dar magacaaga, magaaladaada iyo lambarkaaga taleefanka.
 3. Dooro qaybta, tusaale **Baabuur**.
 4. Ku dar ilaa :max_photos sawir. Sawirka koowaad waa kan ugu muhiimsan.
 5. Qor cinwaan gaaban oo cad, tusaale ""Toyota Vitz 2012, otomaatig"".
@@ -1140,11 +1210,15 @@ Our team checks every report. The seller does not see who reported the ad.","Ma 
 
 Kooxdayadu way hubisaa warbixin kasta. Iibiyuhu ma arko cidda ka warbixisay.","needs native review","Help page /help/report-an-ad",
 help.your-account.title,"Your account",Akoonkaaga,"needs native review","Help page /help/your-account",help-index.png
-help.your-account.body,"- **Sign in:** tap **Sign in** and choose your Google account. We never see your Google password.
+help.your-account.body,"- **Sign in:** tap **Sign in**, then choose your Google account (we never see your Google password) or use your email and password.
+- **New with email:** tap **Create an account**, then open the link we email you before your first sign-in. No email? Look in spam.
+- **Forgot your password:** on the sign-in page tap **Forgot password?** and we email you a link (it works for 60 minutes).
 - **Change your name, city or phone:** **Account** → **Edit profile**.
 - **Your phone number:** buyers see it on your ads after they tap **Show phone number**.
 - **Language:** tap **English** or **Soomaali** at the top of any page.
-- **Delete your account:** write to us and we will remove your account and your ads. Our email is at the bottom of the [Help page](:help_url).","- **Gal:** riix **Gal** oo dooro akoonkaaga Google. Weligeen ma aragno furaha sirta ah ee Google-kaaga.
+- **Delete your account:** write to us and we will remove your account and your ads. Our email is at the bottom of the [Help page](:help_url).","- **Gal:** riix **Gal**, kadib dooro akoonkaaga Google (weligeen ma aragno furaha sirta ah ee Google-kaaga) ama isticmaal iimaylkaaga iyo furaha sirta ah.
+- **Cusub oo iimayl ah:** riix **Samee akoon**, kadib fur linkiga aan kuu soo dirno ka hor galitaankaaga ugu horreeya. Iimayl ma jiro? Eeg spam-ka.
+- **Ma ilowday furaha sirta ah:** bogga galitaanka riix **Ma ilowday furaha sirta ah?** waxaanan kuu soo dirnaa linki (wuxuu shaqeeyaa 60 daqiiqo).
 - **Beddel magacaaga, magaaladaada ama taleefankaaga:** **Akoon** → **Wax ka beddel akoonka**.
 - **Lambarkaaga taleefanka:** iibsadayaashu waxay ku arkaan xayeysiisyadaada markay riixaan **Muuji lambarka**.
 - **Luqadda:** riix **English** ama **Soomaali** xagga sare ee bog kasta.
@@ -1336,6 +1410,20 @@ catalogue.Waberi,Waberi,Waaberi,"needs native review","Category, field and place
 catalogue.Wadajir,Wadajir,Wadajir,"needs native review","Category, field and place names (starter list; admin can change them)",
 catalogue.Wardhigley,Wardhigley,Wardhiigley,"needs native review","Category, field and place names (starter list; admin can change them)",
 catalogue.Yaqshid,Yaqshid,Yaaqshiid,"needs native review","Category, field and place names (starter list; admin can change them)",
+"catalogue.Maroodi Jeex","Maroodi Jeex","Maroodi Jeex","needs native review","Category, field and place names (starter list; admin can change them)",
+catalogue.Hargeisa,Hargeisa,Hargeysa,"needs native review","Category, field and place names (starter list; admin can change them)",
+catalogue.Togdheer,Togdheer,Togdheer,"needs native review","Category, field and place names (starter list; admin can change them)",
+catalogue.Burao,Burao,Burco,"needs native review","Category, field and place names (starter list; admin can change them)",
+catalogue.Sahil,Sahil,Saaxil,"needs native review","Category, field and place names (starter list; admin can change them)",
+catalogue.Berbera,Berbera,Berbera,"needs native review","Category, field and place names (starter list; admin can change them)",
+catalogue.Awdal,Awdal,Awdal,"needs native review","Category, field and place names (starter list; admin can change them)",
+catalogue.Borama,Borama,Boorama,"needs native review","Category, field and place names (starter list; admin can change them)",
+"catalogue.26 June","26 June","26 Juun","needs native review","Category, field and place names (starter list; admin can change them)",
+"catalogue.Ahmed Dhagah","Ahmed Dhagah","Axmed Dhagax","needs native review","Category, field and place names (starter list; admin can change them)",
+"catalogue.Gacan Libah","Gacan Libah","Gacan Libaax","needs native review","Category, field and place names (starter list; admin can change them)",
+"catalogue.Ibrahim Koodbuur","Ibrahim Koodbuur","Ibraahim Koodbuur","needs native review","Category, field and place names (starter list; admin can change them)",
+"catalogue.Mohamed Haybe","Mohamed Haybe","Maxamed Haybe","needs native review","Category, field and place names (starter list; admin can change them)",
+"catalogue.Mohamed Mooge","Mohamed Mooge","Maxamed Mooge","needs native review","Category, field and place names (starter list; admin can change them)",
 "catalogue.Heavy Machinery","Heavy Machinery","Mashiinada culus","needs native review","Category, field and place names (starter list; admin can change them)",
 "catalogue.Land & Plots for Rent","Land & Plots for Rent","Dhul & Boos kiro ah","needs native review","Category, field and place names (starter list; admin can change them)",
 "catalogue.Short Stays","Short Stays","Hoy muddo gaaban","needs native review","Category, field and place names (starter list; admin can change them)",

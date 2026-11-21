@@ -51,12 +51,12 @@
                     {{ auth()->user()->initial() }}<span class="sr-only">{{ __('site.nav.my_account') }}</span>
                 </a>
             @else
-                @feature('login.google')
+                @if (sign_in_open())
                     <a href="{{ lroute('login') }}" class="icon-btn hidden lg:flex" title="{{ __('site.nav.sign_in') }}">{{ icon('user') }}<span class="sr-only">{{ __('site.nav.sign_in') }}</span></a>
-                @endfeature
+                @endif
             @endauth
 
-            @if (feature('ads.posting') && (auth()->check() || feature('login.google')))
+            @if (feature('ads.posting') && (auth()->check() || sign_in_open()))
                 <a href="{{ lroute('post') }}" class="btn-sell hidden lg:inline-flex">{{ __('site.nav.sell') }}</a>
             @endif
         </nav>

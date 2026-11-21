@@ -17,7 +17,8 @@
 return [
 
     // Sign-in
-    'login.google' => ['group' => 'Sign-in', 'default' => true, 'label' => 'Continue with Google', 'description' => 'Customers sign in with their Google account.'],
+    'login.google' => ['group' => 'Sign-in', 'default' => true, 'label' => 'Continue with Google', 'description' => 'Customers sign in with their Google account. The button shows only when the Google keys are in .env (see docs/google-signin-setup.md).'],
+    'login.email' => ['group' => 'Sign-in', 'default' => true, 'label' => 'Email and password', 'description' => 'Customers make an account with their email and a password. They must open a link in their email before the first sign-in. "Forgot password" sends a reset link.'],
     'login.test_accounts' => ['group' => 'Sign-in', 'default' => true, 'label' => 'Test sign-in (your own computer only)', 'description' => 'On your own computer (APP_ENV=local) the sign-in page also lets you sign in or sign up with just an email, so you can test without Google keys. It NEVER works on the live site, whatever this switch says.'],
     'login.phone' => ['group' => 'Sign-in', 'default' => false, 'label' => 'Phone + SMS code login', 'description' => 'Customers sign in with a code sent by SMS. Built for later.'],
 
@@ -56,6 +57,7 @@ return [
     'ads.my_ads' => ['group' => 'Ads', 'default' => true, 'label' => 'My Ads page', 'description' => 'Sellers see their ads and can edit, mark sold, renew and delete them.'],
 
     // Safety and spam
+    'safety.scam_numbers' => ['group' => 'Safety', 'default' => true, 'label' => 'Scam number warning list', 'description' => 'Staff (only) mark a phone number "Reported for scams" with a reason and proof (Admin → Scam numbers). That number cannot post and its ads wait for staff. Buyers who search or check the number see a warning, never a name. The owner can ask for a review. Watchdog alerts when a listed number tries to post.'],
     'safety.no_drugs' => ['group' => 'Safety', 'default' => true, 'label' => 'No drugs', 'description' => 'Ads (new and edited) with drug words are refused: khat, cannabis, narcotics, prescription medicines, paraphernalia. The word list is in Settings → General. Also adds "Drugs" to the report reasons and the "Drugs" filter in Ads.'],
     'safety.bad_words' => ['group' => 'Safety', 'default' => true, 'label' => 'Bad word filter', 'description' => 'Ads with words from the list in Settings are refused.'],
     'safety.block_links' => ['group' => 'Safety', 'default' => true, 'label' => 'No web links in ads', 'description' => 'Ads with web links (often scams) are refused.'],
@@ -64,6 +66,7 @@ return [
     // Contact buttons
     'contact.whatsapp' => ['group' => 'Contact', 'default' => true, 'label' => 'WhatsApp button', 'description' => 'Big WhatsApp button on the ad page.'],
     'contact.call' => ['group' => 'Contact', 'default' => true, 'label' => 'Call button', 'description' => 'Big Call button on the ad page.'],
+    'share.image' => ['group' => 'Contact', 'default' => true, 'label' => 'Share picture', 'description' => 'When an ad is shared on WhatsApp, Facebook or Telegram, the preview shows a picture made for it: the photo, title, price, city and the iibsom name (never the phone number). Made on the server and made again when the ad changes.'],
     'share.buttons' => ['group' => 'Contact', 'default' => true, 'label' => 'Share buttons', 'description' => 'Share on WhatsApp, Facebook, copy link.'],
 
     // Site content
@@ -108,6 +111,7 @@ return [
     'contact.call_back' => ['group' => 'Site', 'default' => true, 'label' => '"Request a call from the seller"', 'description' => 'On ad pages, a signed-in buyer can send their own name and number to the seller, who gets it in the bell (and by email if they want). Once per ad per day, 10 a day per buyer. Needs "Notifications bell".'],
     'favourites.price_drop' => ['group' => 'Site', 'default' => true, 'label' => 'Price drop on saved ads', 'description' => 'When a saved ad gets cheaper, people who saved it get a notification, and Saved ads shows "Cheaper: $5,000 → $4,500". Needs "Saved ads" and "Notifications bell".'],
     'sellers.page' => ['group' => 'Site', 'default' => true, 'label' => 'Seller pages', 'description' => 'Every seller gets a page with all their live ads (from the seller box on ad pages). Not shown in Google; business shops keep their own page.'],
+    'sellers.phone_confirmed' => ['group' => 'Site', 'default' => true, 'label' => '"Phone confirmed" tick', 'description' => 'A staff member confirms a seller\'s number by a call or WhatsApp and ticks it in Admin → Users. The tick shows next to the seller on ad and seller pages, with "What does this mean?". It goes away by itself when the seller changes the number. No SMS.'],
     'sellers.follow' => ['group' => 'Site', 'default' => true, 'label' => 'Follow a seller', 'description' => 'Signed-in people can follow a seller and get their new ads in the notifications bell. Sellers see only how many follow them. Needs "Seller pages".'],
     'saved_searches.manage' => ['group' => 'Site', 'default' => true, 'label' => 'Rename and pause saved searches', 'description' => 'On Saved searches, people can rename a search and pause its alerts (email and bell) without deleting it. Needs "Saved searches".'],
     'ads.close_reason' => ['group' => 'Site', 'default' => true, 'label' => 'Close an ad with a reason', 'description' => 'In My ads, "Close ad" asks why: sold on iibsom, sold elsewhere, not selling any more, other. Sold ones are marked sold; the others end now and can be renewed. Staff see the reason. OFF = the old "Mark as sold" button.'],
@@ -133,32 +137,34 @@ return [
     'admin.setup_wizard' => ['group' => 'Site', 'default' => true, 'label' => 'First-time setup wizard', 'description' => '5 short steps for the Super Admin at the first sign-in: languages, ad rules, cities, emails, demo data. Can be run again from Settings → General.'],
     'help.admin_guide' => ['group' => 'Site', 'default' => true, 'label' => 'Admin guide', 'description' => 'The "?" button next to each admin page title, the Guide page and its PDF. OFF hides them (for staff who know the admin well).'],
     'site.welcome_tour' => ['group' => 'Site', 'default' => true, 'label' => 'Welcome tour', 'description' => '3 short slides (find, sell, stay safe) shown once after a customer\'s first sign-in, and from Account → Quick tour.'],
+    'search.districts_all' => ['group' => 'Site', 'default' => false, 'label' => 'District filter on every list', 'description' => 'OFF: the district filter (Hodan, Wadajir…) shows on Property and Vehicles lists once a city is chosen. ON: on every list. Needs "More search filters".'],
     'search.more_filters' => ['group' => 'Site', 'default' => true, 'label' => 'More search filters', 'description' => 'On category and search pages: area, "posted within", only with photos, verified sellers, most viewed, quick price ranges with counts and the live "Show N results" number. OFF keeps only search, price, condition and the category fields.'],
     'catalog.hide_empty' => ['group' => 'Site', 'default' => false, 'label' => 'Hide empty sub categories', 'description' => 'Sub categories with no live ads are not shown on the home page panel and the category pages (sellers can still post in them). Turn ON once the site has many ads.'],
     'site.demo_data' => ['group' => 'Site', 'default' => false, 'label' => 'Show demo data', 'description' => 'Show the demo ads. Never ON in production.'],
 
     // Speed and API
+    'performance.compact_html' => ['group' => 'Speed', 'default' => true, 'label' => 'Smaller pages', 'description' => 'Removes the empty space the page templates leave in the HTML (about a fifth of each page), so pages arrive faster on slow phones. The pages look exactly the same.'],
     'performance.page_cache' => ['group' => 'Speed', 'default' => true, 'label' => 'Page cache', 'description' => 'Pages for visitors who are not signed in are kept for 2 minutes. Changes show at once (the cache is cleared on every change).'],
     'api' => ['group' => 'Speed', 'default' => true, 'label' => 'Public API (/api/v1)', 'description' => 'Read-only JSON for the future mobile app: categories, cities, ads. No personal data.'],
     'api.write' => ['group' => 'Speed', 'default' => false, 'label' => 'Write API (app access tokens)', 'description' => 'Signed-in users make an "app access" key on their Account page; an app can then post, edit, mark sold and delete THEIR OWN ads at /api/v1. Same checks as the website. Turn on when the mobile app is ready.'],
 
     // Phase 2: money + trust (build only when the owner says)
     'boosts' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Paid boosts', 'description' => 'Sellers pay for Top / VIP / Diamond with EVC Plus, Zaad, Sahal or eDahab and upload the receipt; staff approve it and the ad shows first in lists. Starts in TEST MODE (Settings → General).'],
-    'verified_badge' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Verified badge', 'description' => 'Sellers send a photo of their ID; staff check it and give a "Verified" badge shown next to the seller name. The ID photo is kept encrypted and deleted after the check.'],
+    'verified_badge' => ['group' => 'Phase 2', 'default' => true, 'label' => 'Verified badge', 'description' => 'Sellers send a photo of their ID; staff check it and give a "Verified" badge shown next to the seller name. The ID photo is kept encrypted on the private disk, every look is logged, and it is deleted right after the decision (or after 30 days unchecked). Free for people; a price for businesses is in Settings (0 = free).'],
     'shops' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Business shop pages', 'description' => 'Sellers make a shop page (logo, hours, all their ads) at /shop/name. It is public only while an admin has turned it on for some months (paid outside the site for now).'],
     'chat' => ['group' => 'Phase 2', 'default' => false, 'label' => 'In-website chat', 'description' => 'Buyers tap "Chat with seller" on an ad and talk inside the site (Messages). Works on shared hosting: new messages arrive every few seconds. Either side can block.'],
-    'favourites' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Favourites', 'description' => 'Save ads to a list.'],
-    'saved_searches' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Saved search alerts', 'description' => 'Get alerts for new matching ads.'],
+    'favourites' => ['group' => 'Phase 2', 'default' => true, 'label' => 'Favourites', 'description' => 'Save ads to a list.'],
+    'saved_searches' => ['group' => 'Phase 2', 'default' => true, 'label' => 'Saved search alerts', 'description' => 'Get alerts for new matching ads.'],
     'banner_ads' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Banner ads', 'description' => 'Paid banners for businesses on the home page, lists of ads and ad pages, aimed at a category and/or city, with start and end dates and click counts (admin → Home banners).'],
-    'ad_stats' => ['group' => 'Phase 2', 'default' => false, 'label' => 'Ad stats', 'description' => 'Sellers see how many people viewed each ad and tapped Show number, WhatsApp or Call (last 30 days). Only numbers are kept: nothing about the visitor.'],
+    'ad_stats' => ['group' => 'Phase 2', 'default' => true, 'label' => 'Ad stats', 'description' => 'Sellers see how many people viewed each ad and tapped Show number, WhatsApp or Call (last 30 days). Only numbers are kept: nothing about the visitor.'],
 
     // Phase 3: growth
     'price_suggestions' => ['group' => 'Phase 3', 'default' => false, 'label' => 'Price guide', 'description' => 'While posting, sellers see "Most Toyota Vitz ads are $4,500 – $7,000" from similar live and sold ads of the last 6 months (only when there are at least 5, so no single price shows).'],
     'ratings.replies' => ['group' => 'Site', 'default' => true, 'label' => 'Sellers answer ratings', 'description' => 'A seller can write one public answer under each rating they got (checked for links, bad words and drugs). Needs "seller_ratings" ON.'],
     'ratings.likes' => ['group' => 'Site', 'default' => true, 'label' => '"Helpful" on ratings', 'description' => 'Signed-in people can mark a rating as helpful (once each; a second tap takes it back). Not the seller or the buyer who wrote it. Needs "seller_ratings" ON.'],
     'seller_ratings' => ['group' => 'Phase 3', 'default' => false, 'label' => 'Seller ratings', 'description' => 'Buyers give a seller 1–5 stars (and a short comment) from the chat, only after the seller answered them. Stars show next to the seller name; staff can hide unfair ratings (admin → Ratings). Needs "In-website chat" ON.'],
-    'social.autopost' => ['group' => 'Phase 3', 'default' => false, 'label' => 'Auto-post to Facebook and Telegram', 'description' => 'Each new ad is shared once, when it first goes live, to the iibsom Facebook Page and/or Telegram channel (only the networks whose keys are in .env). Demo ads never. A failed post never stops the ad. See System health.'],
-    'diaspora' => ['group' => 'Phase 3', 'default' => false, 'label' => 'Help for buyers abroad (diaspora)', 'description' => 'On ad pages, visitors whose phone is set to a time zone outside Somalia see a safety note for buying for family from abroad, and the price in their money ("≈ €5,980"), from the exchange rates in Settings → General. Nothing about the visitor is stored.'],
+    'social.autopost' => ['group' => 'Phase 3', 'default' => true, 'label' => 'Auto-post to Facebook and Telegram', 'description' => 'Each new ad is shared once, when it first goes live, to the iibsom Facebook Page and/or Telegram channel (only the networks whose keys are in .env). Demo ads never. A failed post never stops the ad. See System health.'],
+    'diaspora' => ['group' => 'Phase 3', 'default' => true, 'label' => 'Help for buyers abroad (diaspora)', 'description' => 'On ad pages, visitors whose phone is set to a time zone outside Somalia see a safety note for buying for family from abroad, and the price in their money ("≈ €5,980"), from the exchange rates in Settings → General. Nothing about the visitor is stored.'],
     'app' => ['group' => 'Phase 3', 'default' => false, 'label' => 'Mobile app', 'description' => 'Flutter app + push notifications.'],
 
 ];

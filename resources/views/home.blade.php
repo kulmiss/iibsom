@@ -15,7 +15,7 @@
 @php($locations = \App\Support\Home\HomeSections::locations())
 @php($featured = \App\Support\Home\HomeSections::featured())
 @php($trusted = \App\Support\Home\HomeSections::trustedSellers())
-@php($canPost = feature('ads.posting') && (auth()->check() || feature('login.google')))
+@php($canPost = feature('ads.posting') && (auth()->check() || sign_in_open()))
 
 @section('content')
     @if (session('report_thanks'))

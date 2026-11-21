@@ -4,11 +4,13 @@ use App\Enums\AdStatus;
 use App\Models\Ad;
 use App\Models\ContactMessage;
 use App\Models\InboxItem;
+use App\Models\ScamAppeal;
 use App\Support\Ads\AdStats;
 use App\Support\Health\HealthChecker;
 use App\Support\Money\Boosts;
 use App\Support\Notify\Inbox;
 use App\Support\Safety\GuestReports;
+use App\Support\Share\ShareImage;
 use App\Support\Watchdog\Checks\CodeFilesCheck;
 use App\Support\Watchdog\Watchdog;
 use Illuminate\Support\Facades\Artisan;
@@ -95,6 +97,16 @@ Schedule::call(fn () => AdStats::prune())->name('ad-stats-prune')->dailyAt('03:3
 
 // Guest reports: the phone/email a guest left is removed 30 days after the report was handled.
 Schedule::call(fn () => GuestReports::pruneContacts())->name('guest-report-contacts')->dailyAt('03:40')->timezone('Africa/Mogadishu');
+
+// Scam number reviews (PR 109): the contact a person left is removed 30 days after the decision.
+Schedule::call(fn () => ScamAppeal::pruneContacts())
+    ->name('scam-appeal-contacts')->dailyAt('03:42')->timezone('Africa/Mogadishu');
+
+// Share pictures (PR 110): pictures of ads that ended or were removed are deleted.
+Schedule::call(fn () => ShareImage::prune())->name('share-images-prune')->dailyAt('03:47')->timezone('Africa/Mogadishu');
+
+// ID photos (PR 107): unchecked requests end after 30 days; photos with no use are deleted. Runs even with the switch OFF.
+Schedule::command('iibsom:verifications:clean')->name('verifications-clean')->dailyAt('03:45')->timezone('Africa/Mogadishu')->withoutOverlapping();
 
 // Paid boosts: a boost that ended goes back to a normal ad.
 Schedule::call(fn () => Boosts::endExpired())->name('end-boosts')->everyMinute()->withoutOverlapping();

@@ -15,8 +15,8 @@
             <button type="submit" class="chip gap-1.5 ring-stone-200">{{ icon('bell', 'size-4') }}{{ __('ads.searches.save') }}</button>
         </form>
     @else
-        @feature('login.google')
+        @if (sign_in_open())
             <a href="{{ lroute('login') }}" class="chip shrink-0 gap-1.5 ring-stone-200" title="{{ __('ads.searches.sign_in') }}">{{ icon('bell', 'size-4') }}{{ __('ads.searches.save') }}</a>
-        @endfeature
+        @endif
     @endauth
 @endif

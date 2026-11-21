@@ -14,8 +14,9 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Switch } from '@/components/ui/switch'
 import { ConfirmDialog } from '@/components/confirm-dialog'
 import { Page } from '@/components/layout/page'
+import { LaunchSetup } from './launch-setup'
 
-type Feature = { key: string; label: string; description: string; enabled: boolean; default: boolean; changed: boolean; effect_off: string }
+type Feature = { key: string; label: string; description: string; enabled: boolean; default: boolean; changed: boolean; effect_off: string; waiting_for: { key: string; name: string } | null }
 type Data = { summary: { on: number; off: number; changed: number }; groups: { group: string; items: Feature[] }[] }
 type Show = 'all' | 'on' | 'off' | 'changed'
 type Sort = 'page' | 'az' | 'on' | 'off'
@@ -114,7 +115,8 @@ export function FeatureSwitches() {
               <SelectItem value='off'>OFF first</SelectItem>
             </SelectContent>
           </Select>
-          <div className='flex gap-1 sm:ms-auto'>
+          <div className='flex flex-wrap gap-1 sm:ms-auto'>
+            <LaunchSetup />
             <Button variant='ghost' size='sm' onClick={() => setClosed([])} disabled={filtering}>
               <ChevronsUpDown /> Open all
             </Button>
@@ -157,7 +159,12 @@ export function FeatureSwitches() {
                       <div key={f.key} className='flex items-start gap-3 py-3' data-switch={f.key}>
                         <div className='min-w-0 flex-1'>
                           <p className='font-medium'>
-                            {f.label} {f.changed && <Badge variant='outline'>changed</Badge>}
+                            {f.label} {f.changed && <Badge variant='outline'>changed</Badge>}{' '}
+                            {f.enabled && f.waiting_for && (
+                              <Badge variant='secondary' className='bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-100' data-waiting={f.waiting_for.key} title='This switch is ON, but it shows nothing until the other switch is ON.'>
+                                Needs {f.waiting_for.name} (OFF)
+                              </Badge>
+                            )}
                           </p>
                           <p className='text-sm text-muted-foreground'>{f.description}</p>
                         </div>

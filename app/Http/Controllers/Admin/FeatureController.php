@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Support\Admin\Activity;
 use App\Support\Ads\AdCounters;
+use App\Support\Features\Dependencies;
 use App\Support\Features\FeatureManager;
+use App\Support\Features\LaunchSetup;
 use App\Support\Search\SearchTerms;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -36,12 +38,17 @@ class FeatureController extends Controller
     {
         $groups = $features->grouped();
         $all = collect($groups)->flatten(1);
+        $enabled = $all->pluck('enabled', 'key')->map(fn ($on) => (bool) $on)->all();
         $order = array_merge(array_keys(self::SECTIONS), ['Other'], array_values(self::PHASES));
 
         $sections = [];
         foreach ($groups as $group => $items) {
             foreach ($items as $f) {
-                $sections[self::section($f['key'], (string) $group)][] = $f + ['changed' => $f['enabled'] !== $f['default'], 'effect_off' => $this->effectOff($f['key'])];
+                $sections[self::section($f['key'], (string) $group)][] = $f + [
+                    'changed' => $f['enabled'] !== $f['default'],
+                    'effect_off' => $this->effectOff($f['key']),
+                    'waiting_for' => Dependencies::waitingFor($f['key'], $enabled), // "Needs Chat (OFF)" (PR 106)
+                ];
             }
         }
         uksort($sections, fn ($a, $b) => array_search($a, $order, true) <=> array_search($b, $order, true));
@@ -79,6 +86,33 @@ class FeatureController extends Controller
         return response()->json(['key' => $key, 'enabled' => $features->enabled($key)]);
     }
 
+    /** "Launch setup" (PR 106), step 1: the list of what would change. Nothing changes yet. */
+    public function launchPreview(FeatureManager $features): JsonResponse
+    {
+        return response()->json(['changes' => LaunchSetup::changes($features), 'total' => count(LaunchSetup::PRESET)]);
+    }
+
+    /** Step 2: change exactly the switches that were shown (the list is sent back, so nothing unseen changes). */
+    public function launchApply(Request $request, FeatureManager $features): JsonResponse
+    {
+        $request->validate(['keys' => ['present', 'array', 'max:100'], 'keys.*' => ['string', 'max:80']]);
+        $changes = collect(LaunchSetup::changes($features));
+        $now = $changes->pluck('key')->sort()->values()->all();
+        $seen = $request->collect('keys')->map(fn ($key): string => (string) $key)->unique()->sort()->values()->all();
+        if ($now !== $seen) {
+            return response()->json(['message' => 'The switches changed since you opened the list. Open Launch setup again.'], 409);
+        }
+
+        $by = $this->authUser($request)->id;
+        foreach ($changes as $change) {
+            $features->set($change['key'], $change['to'], $by);
+            $this->afterChange($change['key']);
+        }
+        Activity::log('feature.launch_setup', 'Launch setup: '.($changes->isEmpty() ? 'nothing to change' : $changes->map(fn ($c) => '“'.$c['label'].'” '.($c['to'] ? 'ON' : 'OFF'))->implode(', ')), null, ['keys' => $now]);
+
+        return response()->json(['changed' => $changes->count()]);
+    }
+
     public function reset(Request $request, FeatureManager $features, string $key): JsonResponse
     {
         abort_unless($features->exists($key), 404);
@@ -111,7 +145,8 @@ class FeatureController extends Controller
     private function effectOff(string $key): string
     {
         return match ($key) {
-            'login.google' => 'Nobody can sign in with Google. The sign-in page and button disappear. Signed-in people stay signed in.',
+            'login.google' => 'Nobody can sign in with Google. The Google button disappears. Signed-in people stay signed in.',
+            'login.email' => 'Nobody can sign up or sign in with email and password. Signed-in people stay signed in.',
             'ads.posting' => 'The Sell / Post ad buttons disappear and nobody can post new ads. Existing ads stay.',
             'ads.approval' => 'New ads go live at once, without a check by staff.',
             'ads.expiry' => 'Ads stop ending after the set number of days.',

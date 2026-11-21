@@ -32,7 +32,7 @@ Tests: `php artisan test` (MySQL database `iibsom_testing`).
 | [deploy-shared.md](docs/deploy-shared.md) | Going live on shared hosting (`bash tools/make-release`) |
 | [deploy-vps.md](docs/deploy-vps.md) | Going live on a VPS |
 | [cloudflare-r2.md](docs/cloudflare-r2.md) | Cloudflare, photos on R2, cache rules |
-| [google-login.md](docs/google-login.md) | Google sign-in keys |
+| [google-signin-setup.md](docs/google-signin-setup.md) | Google sign-in keys |
 | [hosting-modes.md](docs/hosting-modes.md) · [scaling.md](docs/scaling.md) | Shared vs VPS, growing |
 | [demo-data.md](docs/demo-data.md) | Demo data and photos |
 | [translations.md](docs/translations.md) · [somali-review](docs/somali-review/README.md) | Somali texts and the review sheet |

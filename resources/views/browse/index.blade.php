@@ -55,6 +55,14 @@
                 <li class="flex min-w-0 items-center gap-x-1"><span aria-hidden="true">›</span><span class="truncate" aria-current="page" data-results-count>{!! $resultsLine !!}</span></li>
             </ol>
         </nav>
+        @if (($filters['q'] ?? '') !== '' && \App\Support\Safety\ScamNumbers::listed($filters['q']))
+            {{-- PR 109: the buyer searched for a number staff marked "Reported for scams". No name, only the number. --}}
+            <p class="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 rounded-xl bg-red-50 p-3 text-sm font-medium text-red-900 ring-1 ring-red-200" role="alert" data-scam-warning>
+                {{ icon('triangle-alert', 'size-5 shrink-0') }}
+                <span>{{ __('scam.search_warning', ['phone' => \App\Support\Phone\SomaliPhone::format((string) \App\Support\Phone\SomaliPhone::normalize($filters['q']))]) }}</span>
+                <a href="{{ lroute('scam.check', ['phone' => $filters['q']]) }}" class="underline">{{ __('scam.search_link') }}</a>
+            </p>
+        @endif
         <div class="flex flex-wrap items-end justify-between gap-2">
             <div>
                 <h1 class="mt-1 text-2xl font-bold">{{ $title }}</h1>

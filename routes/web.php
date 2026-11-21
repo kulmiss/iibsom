@@ -8,6 +8,7 @@ use App\Http\Controllers\Account\FavouriteController;
 use App\Http\Controllers\Account\FollowController;
 use App\Http\Controllers\Account\MyAdsController;
 use App\Http\Controllers\Account\NotificationController;
+use App\Http\Controllers\Account\PhoneConfirmController;
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\Account\ReviewController;
 use App\Http\Controllers\Account\ReviewResponseController;
@@ -19,8 +20,10 @@ use App\Http\Controllers\Ads\AdPhotoController;
 use App\Http\Controllers\Ads\PostAdController;
 use App\Http\Controllers\Ads\PriceHintController;
 use App\Http\Controllers\AdStatsController;
+use App\Http\Controllers\Auth\EmailAuthController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Auth\TestSignInController;
 use App\Http\Controllers\BannerClickController;
 use App\Http\Controllers\BrowseController;
@@ -30,9 +33,11 @@ use App\Http\Controllers\ForYouController;
 use App\Http\Controllers\GuestReportController;
 use App\Http\Controllers\HelpController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\ScamCheckController;
 use App\Http\Controllers\SearchSuggestController;
 use App\Http\Controllers\SellerPageController;
 use App\Http\Controllers\SellerReviewsController;
+use App\Http\Controllers\ShareImageController;
 use App\Http\Controllers\ShopPageController;
 use App\Http\Controllers\SitemapController;
 use App\Models\Page;
@@ -57,11 +62,19 @@ $stateless = [EncryptCookies::class, AddQueuedCookiesToResponse::class, StartSes
 $publicRoutes = function () use ($stateless) {
     Route::view('/', 'home')->name('home');
 
-    // Sign in (Google only for customers).
-    Route::middleware(['guest', 'feature:login.google'])->group(function () {
+    // Sign in: Google (when its keys are set) and email + password (PR 105). Each way checks its own switch;
+    // the page answers 404 when no way is open.
+    Route::middleware('guest')->group(function () {
         Route::get('/login', [LoginController::class, 'show'])->name('login');
-        // Test sign-in: the owner's own computer only (APP_ENV=local); 404 everywhere else.
-        Route::post('/login/test', [TestSignInController::class, 'store'])->middleware('throttle:10,1')->name('login.test');
+        // Test sign-in: the owner's own computer only. Not even made when APP_ENV=production (404); the controller checks again.
+        if (TestSignInController::routeAllowed()) {
+            Route::post('/login/test', [TestSignInController::class, 'store'])->middleware('throttle:10,1')->name('login.test');
+        }
+        Route::post('/login/email', [EmailAuthController::class, 'login'])->middleware('throttle:20,1')->name('login.email');
+        Route::get('/register', [EmailAuthController::class, 'showRegister'])->name('register');
+        Route::post('/register', [EmailAuthController::class, 'register'])->middleware('throttle:6,1')->name('register.store');
+        Route::get('/forgot-password', [PasswordResetController::class, 'showForgot'])->name('password.request');
+        Route::post('/forgot-password', [PasswordResetController::class, 'sendLink'])->middleware('throttle:6,1')->name('password.email');
     });
 
     Route::middleware('auth')->group(function () {
@@ -138,6 +151,11 @@ $publicRoutes = function () use ($stateless) {
             });
 
             // Verified badge (Phase 2): send an ID photo.
+            // "Confirm my number" by WhatsApp code (PR 108). No SMS.
+            Route::middleware('feature:sellers.phone_confirmed')->group(function () {
+                Route::get('/account/phone', [PhoneConfirmController::class, 'show'])->name('account.phone');
+                Route::post('/account/phone/code', [PhoneConfirmController::class, 'code'])->middleware('throttle:5,60')->name('account.phone.code');
+            });
             Route::middleware('feature:verified_badge')->group(function () {
                 Route::get('/account/verify', [VerificationController::class, 'show'])->name('verify');
                 Route::post('/account/verify', [VerificationController::class, 'store'])->middleware('throttle:5,60')->name('verify.store');
@@ -181,6 +199,11 @@ $publicRoutes = function () use ($stateless) {
     Route::post('/ads/{ad}/report-guest', [GuestReportController::class, 'store'])->whereNumber('ad')
         ->middleware(['feature:ads.reports', 'feature:ads.guest_reports', 'throttle:5,10'])
         ->withoutMiddleware($stateless)->name('ad.report_guest');
+    // "Check a phone number" + ask for a review (PR 109). Not in the guest page cache (the answer depends on the number).
+    Route::middleware('feature:safety.scam_numbers')->group(function () {
+        Route::get('/check-number', [ScamCheckController::class, 'show'])->name('scam.check');
+        Route::post('/check-number/appeal', [ScamCheckController::class, 'appeal'])->middleware('throttle:10,60')->name('scam.appeal');
+    });
     // Contact form (PR 69): the page is cached for guests; sending is stateless like guest reports.
     Route::get('/contact', [ContactController::class, 'show'])->middleware('feature:site.contact_form')->name('contact');
     Route::post('/contact', [ContactController::class, 'store'])
@@ -249,6 +272,20 @@ Route::post('/ads/{ad}/event', [AdStatsController::class, 'event'])
 
 Route::get('/sitemap.xml', [SitemapController::class, 'sitemap'])->name('sitemap');
 Route::get('/robots.txt', [SitemapController::class, 'robots'])->name('robots');
+
+// Share picture for WhatsApp / Facebook / Telegram (PR 110): fixed address, no session or cookies.
+Route::get('/share/{id}-{version}-{lang}.jpg', [ShareImageController::class, 'show'])
+    ->where(['id' => '[0-9]+', 'version' => '[a-f0-9]{12}', 'lang' => '[a-z]{2}'])
+    ->middleware(['feature:share.image', 'throttle:120,1'])->withoutMiddleware($stateless)->name('ad.share_image');
+
+// Links inside emails (PR 105): fixed URLs (no language prefix), the language travels as ?lang=.
+Route::middleware('throttle:20,1')->group(function () {
+    Route::get('/auth/confirm-email/{id}/{hash}', [EmailAuthController::class, 'confirm'])->whereNumber('id')->name('auth.email.confirm');
+    Route::middleware('guest')->group(function () {
+        Route::get('/auth/reset-password/{token}', [PasswordResetController::class, 'showReset'])->name('password.reset');
+        Route::post('/auth/reset-password', [PasswordResetController::class, 'reset'])->name('password.update');
+    });
+});
 
 // Google OAuth: fixed URLs (the callback must match Google Cloud settings exactly).
 Route::middleware(['feature:login.google', 'throttle:20,1'])->group(function () {

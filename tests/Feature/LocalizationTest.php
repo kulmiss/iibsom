@@ -85,9 +85,9 @@ class LocalizationTest extends TestCase
             ->assertSee('data-lang-menu', false)
             // The spoken name starts with the visible code (PR 77, Lighthouse "label in name").
             ->assertSee('<span>SO</span><span class="sr-only"> – Luqadda: Soomaali</span>', false)
-            ->assertSeeInOrder(['>SO<', 'English', 'Soomaali'], false)
-            ->assertSee('lang="so"'.'
-'.'                       data-lang-switch="so"', false);
+            ->assertSeeInOrder(['>SO<', 'English', 'Soomaali'], false);
+        // The Somali item has lang="so" right before its switch marker (only whitespace between: PR 112 trims it).
+        $this->assertMatchesRegularExpression('/lang="so"\s+data-lang-switch="so"/', (string) $this->get('/so')->getContent());
         $this->assertMatchesRegularExpression('/data-lang-switch="so"[^>]*aria-current="true"/s', (string) $this->get('/so')->getContent());
         $this->assertDoesNotMatchRegularExpression('/data-lang-switch="en"[^>]*aria-current="true"/s', (string) $this->get('/so')->getContent());
     }

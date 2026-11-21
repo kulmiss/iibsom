@@ -77,9 +77,14 @@ return [
         'ads.renew_days_before' => 7, // "Renew" shows this many days before an ad ends
         'reports.weekly_emails' => [], // Admin → Settings → General → Weekly summary
         'reports.weekly_last_sent' => '', // e.g. "2026-W46" (set by the command)
+        // Verified badge (PR 107): individuals are always free. Businesses (sellers with a shop) pay this, in USD;
+        // 0 = free for them too (the owner's choice for launch). No payment is taken on the site for it yet.
+        'verification.business_price' => 0,
         'payments.test_mode' => true, // TEST MODE: nobody should send real money; test payments stay out of the real books
         'payments.numbers' => ['evc_plus' => '', 'zaad' => '', 'sahal' => '', 'edahab' => ''], // merchant numbers buyers pay to
         'setup.completed_at' => '', // first-time setup wizard: '' = not done yet
+        // The iibsom WhatsApp number sellers send their "confirm my number" code to (PR 108). Empty = no WhatsApp button.
+        'contact.confirm_whatsapp' => '',
         'site.support_email' => '', // shown on the Help page ("Still need help?") and as "Contact us" in the footer; empty = hidden
         // Footer (switch "site.new_footer"): social pages (empty = hidden) and which links are ON.
         'footer.social' => ['facebook' => '', 'instagram' => '', 'tiktok' => '', 'youtube' => '', 'telegram' => '', 'whatsapp' => ''],

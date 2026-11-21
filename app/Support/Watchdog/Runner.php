@@ -20,6 +20,7 @@ use App\Support\Watchdog\Checks\PricesCheck;
 use App\Support\Watchdog\Checks\QueueCheck;
 use App\Support\Watchdog\Checks\QueueWaitCheck;
 use App\Support\Watchdog\Checks\ReportsCheck;
+use App\Support\Watchdog\Checks\ScamNumbersCheck;
 use App\Support\Watchdog\Checks\SchedulerCheck;
 use App\Support\Watchdog\Checks\SignupsCheck;
 use App\Support\Watchdog\Checks\SpeedCheck;
@@ -44,7 +45,7 @@ final class Runner
     public const GROUPS = [
         'frequent' => [
             SchedulerCheck::class, CacheCheck::class, AppSettingsCheck::class, ErrorsCheck::class, QueueCheck::class, DiskCheck::class, SpeedCheck::class,
-            LoginsCheck::class, StaffCheck::class, SignupsCheck::class, BannedCheck::class,
+            LoginsCheck::class, StaffCheck::class, SignupsCheck::class, BannedCheck::class, ScamNumbersCheck::class,
             DrugsCheck::class, SpikesCheck::class, ReportsCheck::class, QueueWaitCheck::class,
         ],
         'hourly' => [UploadPhpCheck::class, CopiesCheck::class, PricesCheck::class],

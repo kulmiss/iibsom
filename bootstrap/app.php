@@ -4,6 +4,7 @@ use App\Http\Middleware\AdminAuthenticate;
 use App\Http\Middleware\AdminCan;
 use App\Http\Middleware\ApiLocale;
 use App\Http\Middleware\AuthenticateApiToken;
+use App\Http\Middleware\CompactHtml;
 use App\Http\Middleware\EnsureFeatureEnabled;
 use App\Http\Middleware\EnsureProfileComplete;
 use App\Http\Middleware\GuestPages;
@@ -41,6 +42,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             SecurityHeaders::class,
             LogoutBannedUsers::class,
+            CompactHtml::class, // inside GuestPages, so the page cache keeps the small page (PR 112)
         ]);
 
         // Not signed in → go to the sign-in page (in the current language).

@@ -44,3 +44,47 @@ The owner said: "take your recommended option for small choices, log them here".
 | 2026-11-20 | 99 | Feature switches: sections by what a switch changes (from its name), Phase 2/3 at the end; one column (open/closed cards of different heights look messy in two); closed sections remembered in this browser; while searching every match is shown open. | Easy to find; nothing hidden by mistake. |
 | 2026-11-20 | 100 | The intro under the title is turned OFF (switch `seo.intro`), not deleted. | It helped Google a little; you can switch it back ON. |
 | 2026-11-20 | 100 | "No scrollbars" covers the customer website only (not the admin), and also text boxes (they still scroll). | Your words: all except the page's own. Tell me if you want them back in text boxes or in the admin. |
+| 2026-11-21 | 105 | Passwords: at least 8 characters with letters and numbers; no check against leaked-password lists. | That check calls an outside website, which shared hosting may block. |
+| 2026-11-21 | 105 | The email link only confirms the address; the person then signs in with their password (it does not sign them in). | A link made by somebody else (who typed your email) can never sign anybody in. |
+| 2026-11-21 | 105 | Signing up again with an unconfirmed email replaces the name and password, and older links stop working. | People who mistype their password can simply sign up again. |
+| 2026-11-21 | 105 | Confirm links work 24 hours; reset links 60 minutes, once. | Slow internet: people read email later. Reset links are more dangerous, so shorter. |
+| 2026-11-21 | 105 | At most 3 sign-up emails an hour to one address; 5 wrong passwords per visitor in 5 minutes and 20 per email in 15 minutes. | Stops inbox flooding and password guessing. |
+| 2026-11-21 | 105 | Staff can't use the email sign-in or the reset link on the customer site. | Staff sign in at /admin with a 2-step code. |
+| 2026-11-21 | 105 | Google button hides when its keys are missing. | Your request; no broken button on a new site. |
+| 2026-11-21 | 105 | The test sign-in box also needs a local address (127.0.0.1, localhost, *.test). | Your request: it stays closed even if APP_ENV is set wrong on the live server. |
+| 2026-11-21 | 106 | Launch setup also turns OFF demo data, boosts, shops, banners, price guide, trusted sellers, write API, app, chat, ratings and phone login; it never touches any other switch. | The list is shown first and only those switches change. |
+| 2026-11-21 | 106 | Launch setup changes exactly the list it showed; if switches changed in the meantime it refuses and asks you to open it again. | Nothing changes that you did not see. |
+| 2026-11-21 | 106 | "Needs … (OFF)" is shown only for switches that need the other one completely (not for ones that work partly without it). | No false warnings. |
+| 2026-11-21 | 106 | Fixed on the way: with My ads OFF and Ad statistics ON, the account page showed Views / Contacts tiles linking to a page that does not open. Those tiles now follow My ads. | Found because Ad statistics became ON by default. |
+| 2026-11-21 | 107 | ID photos: a request nobody checks in 30 days ends ("Expired") and its photo is deleted; the seller can send again. | Photos are never kept longer than needed, even if staff are busy. |
+| 2026-11-21 | 107 | After a decision we keep the decision, date, staff member and the kind of ID (card / passport / licence), not the photo. | The kind of ID is not personal data and helps staff; tell me if you want it removed too. |
+| 2026-11-21 | 107 | "Business" for the badge price = a seller with a shop page. Price setting 0 by default; no payment is taken on the site. | Your instruction: the setting exists but stays 0. |
+| 2026-11-21 | 107 | Backups are database-only today, so ID photos are never in them; the docs now say to leave storage/app/private out of any file copy. | Safest without new tools. |
+| 2026-11-21 | 108 | "Phone confirmed" can be ticked by Super Admin and Moderator (the same permission as ID checks), not Support. | Same trust level as the Verified badge. |
+| 2026-11-21 | 108 | Codes look like IIB-7KQ3M (no 0/O/1/I/L), last 7 days, and the same code is shown again while fresh. | Easy to read out; not a password, only a way to match the message. |
+| 2026-11-21 | 108 | If no iibsom WhatsApp number is set, the page says staff will call instead (no broken button). | You add the number in Settings when ready. |
+| 2026-11-21 | 108 | The tick shows on ad and seller pages (not on small ad cards). | Cards are already busy; the ad page is where people decide to call. |
+| 2026-11-21 | 109 | Scam list: Super Admin and Moderator can mark numbers (the "ban users" permission); a reason and a proof note are both required. | Your rule: staff only, with proof. |
+| 2026-11-21 | 109 | Numbers written inside ad texts count too (0615…, +252 61…, 615-123-456). | Scammers often put the number in the description. |
+| 2026-11-21 | 109 | Ads of a listed number can only be rejected, not approved, until the number comes off the list. | Stops a mistake in the queue. |
+| 2026-11-21 | 109 | New public page "Check a phone number" (/check-number, also /so/…), linked in the footer and the ad page safety box; noindex. | Buyers can check before sending money; Google never lists numbers. |
+| 2026-11-21 | 109 | Review requests: anyone can send one for a listed number (no sign-in needed); one waiting request per number; 3 an hour per visitor; contact deleted 30 days after the decision. | The owner of a number may not have an account. |
+| 2026-11-21 | 109 | Watchdog alert has no number and no name (alerts go by email/Telegram). | Your rule: no personal data in alerts. |
+| 2026-11-21 | 110 | Share picture layout: photo square on the left; iibsom, title (3 lines max), price, city and the site address on the right; no photo = category name on a blue box. | Original design; nothing copied. |
+| 2026-11-21 | 110 | Phone numbers typed inside a title are left out of the picture. | Your rule: no phone number on the image. |
+| 2026-11-21 | 110 | The picture is made the first time an app asks for it, kept on the private disk, and served with a 1-week cache; the address changes when the ad changes (old address → new one). | Fast and works on shared hosting. |
+| 2026-11-21 | 110 | Telegram added next to WhatsApp, Facebook and Copy link. | Your request. |
+| 2026-11-21 | 111 | Districts = the existing "areas" (one list per city), now called District / Degmada on the site. | No second list of places; the filter and the post form already used them. |
+| 2026-11-21 | 111 | Added Hargeisa (6 districts), Burao, Berbera, Borama — all OFF until you switch them on. This changes decision #11 ("Somaliland cities not added") because you named Hargeisa. | Your instruction; nothing shows on the site until a city is ON. |
+| 2026-11-21 | 111 | I seeded districts only where I am sure of the names (Mogadishu 18, Hargeisa 6). Other big cities: add their districts in Admin → Cities and districts. | Better no district than a wrong one. |
+| 2026-11-21 | 111 | Every starting district is marked "check names" until a native speaker saves or confirms it. | Your request: a list for your review, not final. |
+| 2026-11-21 | 111 | District filter: Property and Vehicles lists (after a city is chosen); switch "District filter on every list" (OFF) shows it on all lists. | Your words: property and cars, optional for all. Before, it showed on every list. A district picked on the home page or in the place picker still filters every list (only the drop-down is limited). |
+| 2026-11-21 | 111 | A district used by ads can only be turned off, not deleted. | Their ads keep it. |
+| 2026-11-21 | 111 | Fixed on the way: Admin → Cities was wider than a 360 px phone. | Found by the browser check. |
+| 2026-11-21 | 112 | Review sheet columns: key, screen, english, somali, max_length, notes. max_length = twice the English (at least 30 letters); names 60; long texts more. | Somali is often longer than English; still fits phones. |
+| 2026-11-21 | 112 | Import: if any row has a problem, nothing is written. Unchanged rows in the sheet count as checked. | Safest; the reviewer saw them. |
+| 2026-11-21 | 112 | Help articles and the 4 pages are not imported automatically (listed to change by hand). | They are long texts with headings; safer by hand in Admin → Pages / help files. |
+| 2026-11-21 | 112 | Names in the database are updated only where the Somali name is still our starter text. | An admin's own change is never overwritten. |
+| 2026-11-21 | 112 | Lighthouse (phone) on /so dropped to 0.83 in CI, because the launch defaults add more to the home page (Popular now, Save buttons). Fixed by making the Save button on every card much smaller (one CSS class; its words once per page): the home page HTML is about 19 KB smaller. | CI limit is 0.85; a real host also compresses pages. |
+| 2026-11-21 | 112 | Also new switch "Smaller pages" (ON): removes the empty space templates leave in the HTML (about 22% of the home page). Text boxes, <pre> and scripts are never touched; the page looks the same (checked in all browser runs). | Lighthouse in CI was close to the limit (0.83–0.84). |
+| 2026-11-21 | 112 | Fixed on the way: the ad page's structured data (for Google) had PHP code inside, because Blade read the word after "@" as its own directive. Now valid JSON (test added). | Found while checking that "Smaller pages" changes nothing. |

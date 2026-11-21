@@ -24,9 +24,10 @@ class DiasporaTest extends AdminTestCase
         ]);
     }
 
-    public function test_switch_off_by_default_and_nothing_on_the_ad_page(): void
+    public function test_switch_on_by_default_for_launch_and_off_means_nothing_on_the_ad_page(): void
     {
-        $this->assertFalse(config('features')['diaspora']['default']);
+        $this->assertTrue(config('features')['diaspora']['default']); // PR 106: ON for launch
+        app(FeatureManager::class)->set('diaspora', false);
         $this->get($this->ad()->url())->assertOk()->assertDontSee('data-diaspora', false)->assertDontSee('Buying for family from abroad?');
     }
 

@@ -51,7 +51,6 @@ Google sign-in, post an ad, browse + search, ad page, My Ads, safety (reports, a
 - Seller ratings: the seller can reply once under a rating; "Report this rating" button for sellers.
 - Price guide for buyers on the ad page ("lower than most similar ads"), once there is enough real data.
 - API: OpenAPI (Swagger) file made from the routes, and "Sign in with Google" inside the app (no copy-paste key).
-- Chat: email or push when a message waits for more than an hour; "Report this chat" for staff; photos in chat.
 - Refunds for boosts (reverse ledger lines, end the boost) and pay for shop plans with the same receipt flow.
 - Ad stats on busy sites: count views in Redis and write to the database once a minute (fewer writes).
 - Verified badge on ad cards in lists, and a "Verified sellers only" filter.
@@ -62,3 +61,6 @@ Google sign-in, post an ad, browse + search, ad page, My Ads, safety (reports, a
 - ✅ (PR 23) Weekly email to the owner: new ads, users, reports, top categories.
 - Saved "Recommended for you" across devices for signed-in users (opt-in).
 - Auto-trust for good sellers (skip approval after N approved ads) — switch built, OFF per decision #9.
+
+## Not planned
+- Chat: email or push when a message waits for more than an hour; "Report this chat" for staff; photos in chat. Owner does not want chat (2026-11-20); the built chat stays OFF.

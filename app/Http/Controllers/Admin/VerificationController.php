@@ -17,7 +17,7 @@ class VerificationController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $status = in_array($request->query('status'), ['pending', 'approved', 'rejected'], true) ? $request->query('status') : 'pending';
+        $status = in_array($request->query('status'), ['pending', 'approved', 'rejected', 'expired'], true) ? $request->query('status') : 'pending';
         $page = VerificationRequest::query()->with(['user:id,name,email,phone,verified_at', 'reviewer:id,name'])
             ->where('status', $status)->orderBy($status === 'pending' ? 'created_at' : 'reviewed_at', $status === 'pending' ? 'asc' : 'desc')
             ->paginate(20);
@@ -45,12 +45,16 @@ class VerificationController extends Controller
     {
         $bytes = $verification->photoBytes();
         abort_if($bytes === null, 404);
-        Activity::log('verification.viewed', 'Looked at the ID photo of '.$verification->user->name, $verification->user);
+        // Every look is in the Activity log: who (the staff member), when, whose ID (PR 107).
+        Activity::log('verification.viewed', 'Looked at the ID photo of '.$verification->user->name, $verification->user, ['request' => $verification->id]);
 
         return response($bytes, 200, [
             'Content-Type' => 'image/jpeg',
-            'Cache-Control' => 'no-store, private',
-            'X-Robots-Tag' => 'noindex',
+            'Cache-Control' => 'no-store, no-cache, private, max-age=0',
+            'Pragma' => 'no-cache',
+            'Expires' => '0',
+            'X-Content-Type-Options' => 'nosniff',
+            'X-Robots-Tag' => 'noindex, nofollow',
             'Content-Disposition' => 'inline; filename="id.jpg"',
         ]);
     }

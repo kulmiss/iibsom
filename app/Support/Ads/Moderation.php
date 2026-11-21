@@ -8,6 +8,7 @@ use App\Models\Report;
 use App\Models\User;
 use App\Support\Admin\Activity;
 use App\Support\Notify\Inbox;
+use App\Support\Safety\ScamNumbers;
 use InvalidArgumentException;
 
 /** Approve / reject ads (used by the admin, one by one or in bulk). */
@@ -17,6 +18,9 @@ final class Moderation
     {
         if (! in_array($ad->status, [AdStatus::Pending, AdStatus::Rejected], true)) {
             throw new InvalidArgumentException('Only ads waiting for approval (or rejected) can be approved.');
+        }
+        if (ScamNumbers::blocksAd($ad)) {
+            throw new InvalidArgumentException('This ad uses a phone number on the scam list. Remove the number from the list first (Admin → Scam numbers), or reject the ad.');
         }
 
         $before = is_array($ad->approved_snapshot) ? ($ad->approved_snapshot['price'] ?? null) : null;

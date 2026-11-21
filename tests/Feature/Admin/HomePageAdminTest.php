@@ -52,6 +52,8 @@ class HomePageAdminTest extends AdminTestCase
     public function test_admin_list_shows_parts_with_what_they_still_need(): void
     {
         $this->asStaff();
+        $this->switch('ad_stats', false); // ON by default since PR 106
+        $this->switch('verified_badge', false);
         $res = $this->getJson('/admin/api/home-page')->assertOk();
         $sections = collect($res->json('sections'));
 
@@ -66,7 +68,7 @@ class HomePageAdminTest extends AdminTestCase
         $this->assertTrue($popular['enabled']);
         $this->assertSame([], $popular['waiting_for']);
 
-        // "Popular now" needs Ad statistics (OFF by default).
+        // "Popular now" needs Ad statistics (switched OFF above).
         $now = $sections->firstWhere('key', 'home.popular_now');
         $this->assertSame(['ad_stats'], array_column($now['waiting_for'], 'key'));
         // Shops OR verified badge.

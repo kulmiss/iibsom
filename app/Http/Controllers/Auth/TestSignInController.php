@@ -12,17 +12,42 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 /**
- * Test sign-in for the owner's OWN computer (switch "login.test_accounts"): customers normally sign in
- * only with Google, so without Google keys nobody could sign up, post or chat while testing.
- * Works ONLY when APP_ENV=local. On the live site (production) and anywhere else it answers 404.
+ * Test sign-in for the owner's OWN computer (switch "login.test_accounts"), so testing needs no Google keys
+ * and no real email. Works ONLY when APP_ENV=local on a local address; on the live site the route does not exist (404).
  * It does what the Google sign-in does: find or make the customer, sign in, then "Almost done" if new.
  * Never for staff accounts (they sign in to /admin with a password and 2FA).
  */
 class TestSignInController extends Controller
 {
+    /**
+     * Is the route made at all? Never when APP_ENV=production: there the address does not exist (404),
+     * also in a route cache built there. ("testing" only so the automatic tests can check the box.)
+     */
+    public static function routeAllowed(): bool
+    {
+        return ! app()->isProduction() && app()->environment(['local', 'testing']);
+    }
+
+    /**
+     * Does the box work right now? Every check must pass, so one wrong value is not enough to open it (PR 105):
+     * APP_ENV is exactly "local", it is not production, the address is the owner's own computer
+     * (localhost, 127.0.0.1, ::1, *.test, *.localhost — never iibsom.com), and the switch is ON.
+     */
     public static function available(): bool
     {
-        return app()->environment('local') && feature('login.test_accounts');
+        return app()->environment('local')
+            && ! app()->isProduction()
+            && self::isOwnComputer(request()->getHost())
+            && feature('login.test_accounts');
+    }
+
+    public static function isOwnComputer(string $host): bool
+    {
+        $host = strtolower(trim($host, '[]'));
+
+        return in_array($host, ['localhost', '127.0.0.1', '::1'], true)
+            || str_ends_with($host, '.test')
+            || str_ends_with($host, '.localhost');
     }
 
     public function store(Request $request): RedirectResponse

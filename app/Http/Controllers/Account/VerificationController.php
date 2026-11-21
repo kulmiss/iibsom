@@ -22,6 +22,8 @@ class VerificationController extends Controller
         return view('account.verify', [
             'verified' => $user->verified_at !== null,
             'latest' => $user->verificationRequests()->latest('id')->first(),
+            'businessPrice' => (int) setting('verification.business_price'),
+            'isBusiness' => $user->shop()->exists(),
         ]);
     }
 

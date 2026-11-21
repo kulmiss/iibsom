@@ -45,7 +45,7 @@ export function Users() {
   const [openId, setOpenId] = useState<number | null>(search.open ?? null)
 
   return (
-    <Page title='Users' help='users' description='Customers who signed in with Google. Tap a user to see their ads or ban them.'>
+    <Page title='Users' help='users' description='Customers (Google or email sign-in). Tap a user to see their ads, confirm their phone or ban them.'>
       <Tabs defaultValue='users' className='flex flex-1 flex-col'>
         <TabsList>
           <TabsTrigger value='users'>Users</TabsTrigger>
@@ -57,7 +57,7 @@ export function Users() {
             queryKey='users'
             columns={columns}
             filters={[{ columnId: 'state', title: 'State', options: [{ value: 'active', label: 'Active' }, { value: 'incomplete', label: 'Profile not finished' }, { value: 'banned', label: 'Banned' }, { value: 'drugs', label: 'Drugs (chat)' }] }]}
-            searchPlaceholder='Name, email, phone or #id…'
+            searchPlaceholder='Name, email, phone, #id or code…'
             csvName='users'
             rowId={(r) => String(r.id)}
             onRowClick={(u) => setOpenId(u.id)}

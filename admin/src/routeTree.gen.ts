@@ -32,6 +32,7 @@ import { Route as AuthenticatedPagesRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedPaymentsRouteImport } from './routes/_authenticated/payments'
 import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
 import { Route as AuthenticatedReviewsRouteImport } from './routes/_authenticated/reviews'
+import { Route as AuthenticatedScamNumbersRouteImport } from './routes/_authenticated/scam-numbers'
 import { Route as AuthenticatedSettingsRouteRouteImport } from './routes/_authenticated/settings/route'
 import { Route as AuthenticatedSetupRouteImport } from './routes/_authenticated/setup'
 import { Route as AuthenticatedShopsRouteImport } from './routes/_authenticated/shops'
@@ -161,6 +162,12 @@ const AuthenticatedReviewsRoute = AuthenticatedReviewsRouteImport.update({
   path: '/reviews',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedScamNumbersRoute =
+  AuthenticatedScamNumbersRouteImport.update({
+    id: '/scam-numbers',
+    path: '/scam-numbers',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedSettingsRouteRoute =
   AuthenticatedSettingsRouteRouteImport.update({
     id: '/settings',
@@ -263,6 +270,7 @@ export interface FileRoutesByFullPath {
   '/payments': typeof AuthenticatedPaymentsRoute
   '/reports': typeof AuthenticatedReportsRoute
   '/reviews': typeof AuthenticatedReviewsRoute
+  '/scam-numbers': typeof AuthenticatedScamNumbersRoute
   '/setup': typeof AuthenticatedSetupRoute
   '/shops': typeof AuthenticatedShopsRoute
   '/staff': typeof AuthenticatedStaffRoute
@@ -299,6 +307,7 @@ export interface FileRoutesByTo {
   '/payments': typeof AuthenticatedPaymentsRoute
   '/reports': typeof AuthenticatedReportsRoute
   '/reviews': typeof AuthenticatedReviewsRoute
+  '/scam-numbers': typeof AuthenticatedScamNumbersRoute
   '/setup': typeof AuthenticatedSetupRoute
   '/shops': typeof AuthenticatedShopsRoute
   '/staff': typeof AuthenticatedStaffRoute
@@ -339,6 +348,7 @@ export interface FileRoutesById {
   '/_authenticated/payments': typeof AuthenticatedPaymentsRoute
   '/_authenticated/reports': typeof AuthenticatedReportsRoute
   '/_authenticated/reviews': typeof AuthenticatedReviewsRoute
+  '/_authenticated/scam-numbers': typeof AuthenticatedScamNumbersRoute
   '/_authenticated/setup': typeof AuthenticatedSetupRoute
   '/_authenticated/shops': typeof AuthenticatedShopsRoute
   '/_authenticated/staff': typeof AuthenticatedStaffRoute
@@ -380,6 +390,7 @@ export interface FileRouteTypes {
     | '/payments'
     | '/reports'
     | '/reviews'
+    | '/scam-numbers'
     | '/setup'
     | '/shops'
     | '/staff'
@@ -416,6 +427,7 @@ export interface FileRouteTypes {
     | '/payments'
     | '/reports'
     | '/reviews'
+    | '/scam-numbers'
     | '/setup'
     | '/shops'
     | '/staff'
@@ -455,6 +467,7 @@ export interface FileRouteTypes {
     | '/_authenticated/payments'
     | '/_authenticated/reports'
     | '/_authenticated/reviews'
+    | '/_authenticated/scam-numbers'
     | '/_authenticated/setup'
     | '/_authenticated/shops'
     | '/_authenticated/staff'
@@ -646,6 +659,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedReviewsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/scam-numbers': {
+      id: '/_authenticated/scam-numbers'
+      path: '/scam-numbers'
+      fullPath: '/scam-numbers'
+      preLoaderRoute: typeof AuthenticatedScamNumbersRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/settings': {
       id: '/_authenticated/settings'
       path: '/settings'
@@ -782,6 +802,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedPaymentsRoute: typeof AuthenticatedPaymentsRoute
   AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
   AuthenticatedReviewsRoute: typeof AuthenticatedReviewsRoute
+  AuthenticatedScamNumbersRoute: typeof AuthenticatedScamNumbersRoute
   AuthenticatedSetupRoute: typeof AuthenticatedSetupRoute
   AuthenticatedShopsRoute: typeof AuthenticatedShopsRoute
   AuthenticatedStaffRoute: typeof AuthenticatedStaffRoute
@@ -809,6 +830,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedPaymentsRoute: AuthenticatedPaymentsRoute,
   AuthenticatedReportsRoute: AuthenticatedReportsRoute,
   AuthenticatedReviewsRoute: AuthenticatedReviewsRoute,
+  AuthenticatedScamNumbersRoute: AuthenticatedScamNumbersRoute,
   AuthenticatedSetupRoute: AuthenticatedSetupRoute,
   AuthenticatedShopsRoute: AuthenticatedShopsRoute,
   AuthenticatedStaffRoute: AuthenticatedStaffRoute,

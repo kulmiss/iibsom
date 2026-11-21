@@ -60,6 +60,11 @@ return [
     'Hamar Jajab' => 'Xamar Jajab', 'Hamar Weyne' => 'Xamar Weyne', 'Heliwa' => 'Heliwaa', 'Hodan' => 'Hodan', 'Howlwadaag' => 'Hawl-wadaag',
     'Kaaraan' => 'Kaaraan', 'Kaxda' => 'Kaxda', 'Shangani' => 'Shingaani', 'Shibis' => 'Shibis', 'Waberi' => 'Waaberi', 'Wadajir' => 'Wadajir',
     'Wardhigley' => 'Wardhiigley', 'Yaqshid' => 'Yaaqshiid',
+    // PR 111: Hargeisa and other big cities (starting list, needs native review).
+    'Maroodi Jeex' => 'Maroodi Jeex', 'Hargeisa' => 'Hargeysa', 'Togdheer' => 'Togdheer', 'Burao' => 'Burco', 'Sahil' => 'Saaxil',
+    'Berbera' => 'Berbera', 'Awdal' => 'Awdal', 'Borama' => 'Boorama',
+    '26 June' => '26 Juun', 'Ahmed Dhagah' => 'Axmed Dhagax', 'Gacan Libah' => 'Gacan Libaax', 'Ibrahim Koodbuur' => 'Ibraahim Koodbuur',
+    'Mohamed Haybe' => 'Maxamed Haybe', 'Mohamed Mooge' => 'Maxamed Mooge',
 
     // PR 93: more categories (owner: "keep ours and add theirs"). Needs native review.
     'Heavy Machinery' => 'Mashiinada culus', 'Land & Plots for Rent' => 'Dhul & Boos kiro ah', 'Short Stays' => 'Hoy muddo gaaban',

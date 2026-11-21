@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\PageAdminController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ReviewController;
+use App\Http\Controllers\Admin\ScamNumberController;
 use App\Http\Controllers\Admin\SearchController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\SetupController;
@@ -121,6 +122,19 @@ Route::prefix('admin/api')->group(function () {
             Route::post('/verifications/{verification}/reject', [VerificationController::class, 'reject']);
             Route::post('/users/{user}/unverify', [VerificationController::class, 'revoke']);
         });
+        // Scam number list (PR 109): staff who can ban users.
+        Route::middleware(['feature:safety.scam_numbers', 'admin.can:users.ban'])->group(function () {
+            Route::get('/scam-numbers', [ScamNumberController::class, 'index']);
+            Route::post('/scam-numbers', [ScamNumberController::class, 'store'])->middleware('throttle:60,1');
+            Route::post('/scam-numbers/{number}/remove', [ScamNumberController::class, 'remove']);
+            Route::get('/scam-appeals', [ScamNumberController::class, 'appeals']);
+            Route::post('/scam-appeals/{appeal}/decide', [ScamNumberController::class, 'decide']);
+        });
+        // "Phone confirmed" tick (PR 108): same permission as the ID checks.
+        Route::middleware(['feature:sellers.phone_confirmed', 'admin.can:users.verify'])->group(function () {
+            Route::post('/users/{user}/phone-confirmed', [UserController::class, 'confirmPhone']);
+            Route::delete('/users/{user}/phone-confirmed', [UserController::class, 'unconfirmPhone']);
+        });
         Route::get('/blocked-phones', [BlockedPhoneController::class, 'index'])->middleware('admin.can:users.view');
         Route::post('/blocked-phones', [BlockedPhoneController::class, 'store'])->middleware('admin.can:users.ban');
         Route::delete('/blocked-phones/{blockedPhone}', [BlockedPhoneController::class, 'destroy'])->middleware('admin.can:users.ban');
@@ -151,12 +165,16 @@ Route::prefix('admin/api')->group(function () {
             Route::get('/cities/{city}/areas', [LocationController::class, 'areas']);
             Route::post('/cities/{city}/areas', [LocationController::class, 'storeArea']);
             Route::put('/areas/{area}', [LocationController::class, 'updateArea']);
+            Route::post('/areas/{area}/move', [LocationController::class, 'moveArea']);
+            Route::delete('/areas/{area}', [LocationController::class, 'destroyArea']);
         });
 
         // Feature switches
         Route::middleware('admin.can:features.manage')->group(function () {
             Route::get('/features', [FeatureController::class, 'index']);
             Route::get('/home-page', [HomePageController::class, 'index'])->middleware('feature:admin.home_page');
+            Route::get('/features/launch', [FeatureController::class, 'launchPreview'])->name('admin.api.features.launch');
+            Route::post('/features/launch', [FeatureController::class, 'launchApply'])->name('admin.api.features.launch.apply');
             Route::put('/features/{key}', [FeatureController::class, 'update'])->where('key', '[a-z0-9._]+');
             Route::delete('/features/{key}', [FeatureController::class, 'reset'])->where('key', '[a-z0-9._]+');
         });

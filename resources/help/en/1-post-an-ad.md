@@ -3,7 +3,7 @@
 Posting is free.
 
 1. Tap **Sell** at the bottom of the screen (or **Post an ad** at the top).
-2. Sign in with Google. The first time, add your name, city and phone number.
+2. Sign in with Google or with your email and password. The first time, add your name, city and phone number.
 3. Choose the category, for example **Cars**.
 4. Add up to :max_photos photos. The first photo is the main one.
 5. Write a short, clear title, for example "Toyota Vitz 2012, automatic".

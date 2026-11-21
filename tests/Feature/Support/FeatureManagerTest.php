@@ -24,10 +24,15 @@ class FeatureManagerTest extends TestCase
         $this->assertFalse($this->features()->enabled('login.phone'));
     }
 
-    public function test_every_phase_2_and_3_feature_is_off_by_default(): void
+    public function test_every_phase_2_and_3_feature_is_off_by_default_except_the_owners_launch_list(): void
     {
+        // The owner turned these ON for launch (2026-11-21, PR 106). Every other Phase 2/3 switch stays OFF.
+        $launch = ['favourites', 'saved_searches', 'ad_stats', 'verified_badge', 'social.autopost', 'diaspora'];
+        foreach ($launch as $key) {
+            $this->assertTrue($this->features()->enabled($key), "{$key} is ON for launch");
+        }
         foreach (config('features') as $key => $definition) {
-            if (in_array($definition['group'], ['Phase 2', 'Phase 3'], true)) {
+            if (in_array($definition['group'], ['Phase 2', 'Phase 3'], true) && ! in_array($key, $launch, true)) {
                 $this->assertFalse($this->features()->enabled($key), "{$key} must be OFF by default");
             }
         }

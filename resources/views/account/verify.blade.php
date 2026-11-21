@@ -14,6 +14,14 @@
             <p class="mt-4 rounded-xl bg-brand-50 p-4 text-brand-900 ring-1 ring-brand-200">{{ __('account.verify.pending') }}</p>
         @else
             <p class="mt-2 text-stone-600">{{ __('account.verify.intro') }}</p>
+            {{-- Price (PR 107): always free for people; a business (seller with a shop) pays only if the owner set a price. --}}
+            <p class="mt-3 flex items-start gap-2 rounded-xl bg-white p-3 text-sm text-stone-700 ring-1 ring-stone-200" data-verify-price>
+                {{ icon('badge-check', 'size-4 mt-0.5 shrink-0 text-brand-700') }}
+                <span>{{ $businessPrice > 0 && $isBusiness ? __('account.verify.price_business', ['price' => '$'.number_format($businessPrice)]) : __('account.verify.free') }}</span>
+            </p>
+            @if ($latest?->status === 'expired')
+                <p class="mt-4 rounded-xl bg-amber-50 p-4 text-sm text-amber-900 ring-1 ring-amber-200" data-verify-expired>{{ __('account.verify.expired') }}</p>
+            @endif
             @if ($latest?->status === 'rejected')
                 <p class="mt-4 rounded-xl bg-red-50 p-4 text-sm text-red-900 ring-1 ring-red-200">
                     {{ __('account.verify.rejected', ['reason' => $latest->reason]) }}<br>{{ __('account.verify.try_again') }}

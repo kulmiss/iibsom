@@ -20,6 +20,7 @@
             'contact' => ! $footer->on('contact') ? null : (feature('site.contact_form') ? [lroute('contact'), __('site.footer.contact')]
                 : ($supportEmail !== '' ? ['mailto:'.$supportEmail, __('site.footer.contact')] : null)),
             'safety' => $footer->on('safety') ? [lroute('page', ['slug' => 'safety']), __('site.footer.safety')] : null,
+            'check_number' => feature('safety.scam_numbers') ? [lroute('scam.check'), __('scam.footer')] : null, // PR 109
             'keep_safe' => feature('help.centre') && feature('help.how_we_keep_safe') ? [lroute('help.show', ['article' => 'how-we-keep-you-safe']), __('site.footer.keep_safe')] : null,
             'help' => $footer->on('help') && feature('help.centre') ? [lroute('help'), __('site.footer.faq')] : null,
         ]);

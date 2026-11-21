@@ -12,7 +12,7 @@ use Throwable;
  */
 final class Signals
 {
-    public const NAMES = ['admin_login_failed', 'login_failed', 'banned_retry'];
+    public const NAMES = ['admin_login_failed', 'login_failed', 'banned_retry', 'scam_post_try'];
 
     public static function hit(string $name): void
     {

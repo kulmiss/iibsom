@@ -28,7 +28,9 @@ type General = {
   weekly_emails: string[]
   weekly_last_sent: string | null
   support_email: string
+  confirm_whatsapp: string
   payments_test_mode: boolean
+  verify_business_price: number
   payment_numbers: Record<string, string>
   payment_methods: Record<string, string>
   diaspora_rates: Record<string, number | string>
@@ -54,6 +56,7 @@ function GeneralForm({ initial }: { initial: General }) {
   const [form, setForm] = useState<General>(initial)
   const boostsOn = useAuthStore((st) => !!st.user?.boosts)
   const diasporaOn = useAuthStore((st) => !!st.user?.diaspora)
+  const verifiedOn = useAuthStore((st) => !!st.user?.verified_badge)
   const [emails, setEmails] = useState(initial.weekly_emails.join('\n'))
 
   const save = useMutation({
@@ -92,6 +95,7 @@ function GeneralForm({ initial }: { initial: General }) {
     ['words', 'Safety words'],
     ['emails', 'Emails'],
     ...(boostsOn ? [['payments', 'Payments']] : []),
+    ...(verifiedOn ? [['verified', 'Verified badge']] : []),
     ...(diasporaOn ? [['abroad', 'Buyers abroad']] : []),
     ['footer', 'Footer'],
   ]
@@ -175,6 +179,11 @@ function GeneralForm({ initial }: { initial: General }) {
               <Input id='support_email' type='email' value={form.support_email} onChange={(e) => setForm({ ...form, support_email: e.target.value })} placeholder='help@iibsom.com' />
               <p className='text-xs text-muted-foreground'>Shown on the Help page and as &quot;Contact us&quot; in the footer. Empty = not shown.</p>
             </div>
+            <div className='grid content-start gap-1.5' data-setting>
+              <Label htmlFor='confirm_whatsapp'>iibsom WhatsApp number for “Confirm my number”</Label>
+              <Input id='confirm_whatsapp' type='tel' value={form.confirm_whatsapp} onChange={(e) => setForm({ ...form, confirm_whatsapp: e.target.value })} placeholder='+252 61 000 0000' />
+              <p className='text-xs text-muted-foreground'>Sellers send their code to this number; staff match it in Users and tick “Phone confirmed”. Empty = no WhatsApp button (staff call the seller instead).</p>
+            </div>
           </div>
         </Part>
 
@@ -194,6 +203,16 @@ function GeneralForm({ initial }: { initial: General }) {
                   <Input id={`pay-${key}`} inputMode='tel' value={form.payment_numbers[key] ?? ''} onChange={(e) => setForm({ ...form, payment_numbers: { ...form.payment_numbers, [key]: e.target.value } })} placeholder='Empty = not offered' />
                 </div>
               ))}
+            </div>
+          </Part>
+        )}
+
+        {verifiedOn && (
+          <Part id='verified' title='Verified badge' desc='People who are not a business always get the badge for free.'>
+            <div className='grid content-start gap-1.5' data-setting='verify_business_price'>
+              <Label htmlFor='verify_business_price'>Price for businesses (US dollars)</Label>
+              <Input id='verify_business_price' type='number' min={0} max={1000} className='max-w-32' value={form.verify_business_price} onChange={(e) => setForm({ ...form, verify_business_price: Number(e.target.value) })} />
+              <p className='text-xs text-muted-foreground'>Businesses = sellers with a shop page. 0 = free (recommended for launch). Nothing is paid on the site for this yet: staff tell the business how to pay.</p>
             </div>
           </Part>
         )}

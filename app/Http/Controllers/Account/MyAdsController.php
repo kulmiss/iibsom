@@ -10,6 +10,7 @@ use App\Support\Ads\AdForm;
 use App\Support\Ads\AdStats;
 use App\Support\Cache\PageCache;
 use App\Support\Catalog;
+use App\Support\Safety\ScamNumbers;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
@@ -147,6 +148,11 @@ class MyAdsController extends Controller
     {
         $this->own($request, $ad);
         abort_unless(feature('ads.expiry') && $this->canRenew($ad), 404);
+        if (ScamNumbers::blocksAd($ad)) { // PR 109
+            ScamNumbers::postTried($this->authUser($request));
+
+            return redirect(lroute('account.ads'))->with('error', __('ads.safety.scam_number'));
+        }
 
         $ad->status = AdStatus::Live;
         $ad->closed_reason = null;

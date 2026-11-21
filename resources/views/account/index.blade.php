@@ -17,13 +17,14 @@
         </div>
 
         @if ($dash)
-            {{-- Dashboard (PR 79): own numbers only, each a link to the page with the details. --}}
+            {{-- Dashboard (PR 79): own numbers only, each a link to the page with the details. Views and contacts link to
+                 My ads, so they show only while My ads is ON (found when Ad statistics became ON by default, PR 106). --}}
             @php($sum = \App\Support\Users\AccountSummary::for($user))
             @php($tiles = array_values(array_filter([
                 feature('ads.my_ads') ? ['list', __('account.dash.live'), $sum['live'], lroute('account.ads')] : null,
                 feature('ads.my_ads') && $sum['waiting'] > 0 ? ['clock', __('account.dash.waiting'), $sum['waiting'], lroute('account.ads', ['tab' => 'pending'])] : null,
-                $sum['views'] !== null ? ['eye', __('account.dash.views'), $sum['views'], lroute('account.ads')] : null,
-                $sum['contacts'] !== null ? ['phone', __('account.dash.contacts'), $sum['contacts'], lroute('account.ads')] : null,
+                feature('ads.my_ads') && $sum['views'] !== null ? ['eye', __('account.dash.views'), $sum['views'], lroute('account.ads')] : null,
+                feature('ads.my_ads') && $sum['contacts'] !== null ? ['phone', __('account.dash.contacts'), $sum['contacts'], lroute('account.ads')] : null,
                 $sum['unread'] !== null ? ['message-circle', __('account.dash.unread'), $sum['unread'], lroute('chat')] : null,
                 $sum['saved'] !== null ? ['bookmark', __('account.dash.saved'), $sum['saved'], lroute('saved')] : null,
                 $sum['followers'] !== null ? ['users', __('account.dash.followers'), $sum['followers'], lroute('seller.show', ['user' => $user->id])] : null,
@@ -58,6 +59,14 @@
                     {{ icon('user', 'size-5 text-brand-700') }}<span class="flex-1">{{ __('account.account.edit_profile') }}</span>{{ icon('chevron-right', 'size-4 text-stone-400') }}
                 </a>
             </li>
+            @if (feature('sellers.phone_confirmed') && filled($user->phone))
+                <li>
+                    <a href="{{ lroute('account.phone') }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50" data-phone-menu>
+                        {{ icon('phone', 'size-5 text-brand-700') }}<span class="flex-1">{{ $user->phone_confirmed_at ? __('account.phone.menu_done') : __('account.phone.menu') }}</span>
+                        @if ($user->phone_confirmed_at){{ icon('check', 'size-4 text-emerald-700') }}@else{{ icon('chevron-right', 'size-4 text-stone-400') }}@endif
+                    </a>
+                </li>
+            @endif
             @feature('ads.my_ads')
                 <li>
                     <a href="{{ lroute('account.ads') }}" class="flex items-center gap-3 px-5 py-4 hover:bg-stone-50">

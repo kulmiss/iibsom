@@ -29,6 +29,9 @@
                     · {{ trans_choice('sellers.live_ads', $total, ['count' => $total]) }}
                     @if ($followers > 0) · {{ trans_choice('sellers.followers', $followers, ['count' => $followers]) }}@endif
                 </p>
+                @if ($seller->hasConfirmedPhone())
+                    <div class="mt-1.5">@include('partials.phone-confirmed')</div>
+                @endif
                 @feature('sellers.badges')
                     @php($tenure = \App\Support\Users\SellerBadges::tenure($seller))
                     @php($fast = \App\Support\Users\SellerBadges::repliesFast($seller))

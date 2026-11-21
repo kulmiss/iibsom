@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Cache\PageCache;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -23,6 +24,26 @@ class User extends Authenticatable
 
     public const CUSTOMER = 'customer';
 
+    protected static function booted(): void
+    {
+        // The database removes their ID-check rows by itself (cascade), without model events:
+        // delete the encrypted ID photos first, so no file is left behind (PR 107).
+        static::deleting(function (User $user): void {
+            $user->verificationRequests()->get()->each(fn (VerificationRequest $v) => $v->delete());
+        });
+
+        // "Phone confirmed" belongs to one number (PR 108): a new number loses the tick and any waiting code.
+        static::updating(function (User $user): void {
+            if ($user->isDirty('phone') && ($user->getOriginal('phone_confirmed_at') !== null || $user->getOriginal('phone_confirm_code') !== null)) {
+                $user->phone_confirmed_at = null;
+                $user->phone_confirmed_by = null;
+                $user->phone_confirm_code = null;
+                $user->phone_confirm_code_at = null;
+                PageCache::bump(); // the tick shows on cached ad and seller pages
+            }
+        });
+    }
+
     protected function casts(): array
     {
         return [
@@ -33,6 +54,8 @@ class User extends Authenticatable
             'banned_at' => 'datetime',
             'phone_has_whatsapp' => 'boolean',
             'verified_at' => 'datetime',
+            'phone_confirmed_at' => 'datetime',
+            'phone_confirm_code_at' => 'datetime',
             'password' => 'hashed',
             'two_factor_secret' => 'encrypted',
             'two_factor_recovery_codes' => 'encrypted:array',
@@ -154,6 +177,12 @@ class User extends Authenticatable
     public function shop(): HasOne
     {
         return $this->hasOne(Shop::class);
+    }
+
+    /** Shows the "Phone confirmed" tick (PR 108; only while its switch is ON). */
+    public function hasConfirmedPhone(): bool
+    {
+        return $this->phone_confirmed_at !== null && filled($this->phone) && feature('sellers.phone_confirmed');
     }
 
     /** Shows the "Verified" badge (only while the switch is ON). */

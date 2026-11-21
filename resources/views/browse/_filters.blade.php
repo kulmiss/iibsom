@@ -57,6 +57,10 @@
             </ul>
         </div>
 
+        {{-- A district chosen elsewhere stays chosen while other filters change (PR 111: no drop-down on this list). --}}
+        @if ($area && $areas->isEmpty())
+            <input type="hidden" name="area" value="{{ $area->id }}">
+        @endif
         {{-- Location: region → city → area --}}
         @if (count($cities) > 1 || $areas->isNotEmpty())
             <div>

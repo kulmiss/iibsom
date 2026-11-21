@@ -23,8 +23,7 @@ import {
   Store,
   ToggleRight,
   UserCog,
-  Users,
-} from 'lucide-react'
+  Users, ShieldAlert } from 'lucide-react'
 import { type StaffUser } from '@/stores/auth-store'
 import { type SidebarData } from '../types'
 
@@ -43,6 +42,7 @@ export const sidebarData: SidebarData = {
         { title: 'Reports', url: '/reports', icon: Flag, permission: 'reports.view' },
         { title: 'Messages', url: '/messages', icon: Mail, permission: 'messages.manage', feature: 'contact_form' },
         { title: 'Users', url: '/users', icon: Users, permission: 'users.view' },
+        { title: 'Scam numbers', url: '/scam-numbers', icon: ShieldAlert, permission: 'users.ban', feature: 'scam_numbers' },
         { title: 'ID checks', url: '/verifications', icon: BadgeCheck, permission: 'users.verify', feature: 'verified_badge' },
         { title: 'Ratings', url: '/reviews', icon: Star, permission: 'reviews.manage', feature: 'seller_ratings' },
         { title: 'Shops', url: '/shops', icon: Store, permission: 'shops.manage', feature: 'shops' },
@@ -53,7 +53,7 @@ export const sidebarData: SidebarData = {
       title: 'Catalogue',
       items: [
         { title: 'Categories', url: '/categories', icon: FolderTree, permission: 'categories.manage' },
-        { title: 'Cities and areas', url: '/locations', icon: MapPin, permission: 'locations.manage' },
+        { title: 'Cities and districts', url: '/locations', icon: MapPin, permission: 'locations.manage' },
       ],
     },
     {
@@ -90,7 +90,7 @@ export const sidebarData: SidebarData = {
 
 /** The menu for this staff member (items they may not use, or switched OFF, are removed). */
 export function visibleNavGroups(can: (permission: string) => boolean, user: StaffUser | null): SidebarData['navGroups'] {
-  const allowed = (item: { permission?: string; feature?: 'guide' | 'verified_badge' | 'seller_ratings' | 'shops' | 'boosts' | 'contact_form' | 'home_page' | 'watchdog' }) => (!item.permission || can(item.permission)) && (!item.feature || !!user?.[item.feature])
+  const allowed = (item: { permission?: string; feature?: 'guide' | 'verified_badge' | 'seller_ratings' | 'shops' | 'boosts' | 'contact_form' | 'home_page' | 'watchdog' | 'scam_numbers' }) => (!item.permission || can(item.permission)) && (!item.feature || !!user?.[item.feature])
   return sidebarData.navGroups
     .map((group) => ({
       ...group,

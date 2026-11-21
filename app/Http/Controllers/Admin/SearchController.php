@@ -45,10 +45,13 @@ class SearchController extends Controller
 
         if ($user->hasPermission('users.view')) {
             $phone = SomaliPhone::normalize($q);
+            // A "confirm my number" code from a WhatsApp message (PR 108), with or without the "IIB-".
+            $code = preg_match('/^(IIB-?)?([A-Z0-9]{5})$/i', trim($q), $m) ? 'IIB-'.strtoupper($m[2]) : null;
             $people = User::query()
                 ->when(! feature('site.demo_data'), fn ($b) => $b->where('is_demo', false))
                 ->where(fn ($b) => $b->where('name', 'like', $like)->orWhere('email', 'like', $like)
                     ->when($phone, fn ($b) => $b->orWhere('phone', $phone))
+                    ->when($code, fn ($b) => $b->orWhere('phone_confirm_code', $code))
                     ->when(ctype_digit($number), fn ($b) => $b->orWhere('id', (int) $number)))
                 ->orderByDesc('id')->limit(self::PER_GROUP)->get(['id', 'name', 'email', 'role', 'banned_at']);
             $groups['users'] = $people->map(fn (User $u) => [

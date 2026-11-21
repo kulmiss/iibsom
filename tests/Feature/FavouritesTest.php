@@ -41,10 +41,12 @@ class FavouritesTest extends TestCase
         app(FeatureManager::class)->set('favourites', true);
     }
 
-    public function test_off_by_default_and_hidden_everywhere(): void
+    public function test_on_by_default_for_launch_and_off_hides_it_everywhere(): void
     {
         $ad = $this->ad();
 
+        $this->assertTrue(config('features')['favourites']['default']); // PR 106: ON for launch
+        app(FeatureManager::class)->set('favourites', false);
         $this->assertFalse(feature('favourites'));
         $this->actingAs($this->buyer)->get('/account/saved')->assertNotFound();
         $this->actingAs($this->buyer)->postJson("/favourites/{$ad->id}")->assertNotFound();

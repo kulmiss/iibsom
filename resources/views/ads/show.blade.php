@@ -14,8 +14,23 @@
     <meta property="og:title" content="{{ $ad->title }} · {{ $ad->priceLabel() }}">
     <meta property="og:description" content="{{ $desc }}">
     <meta property="og:url" content="{{ $ad->url() }}">
-    @if ($cover)
+    <meta property="og:site_name" content="iibsom">
+    <meta property="og:locale" content="{{ app()->getLocale() === 'so' ? 'so_SO' : 'en_US' }}">
+    {{-- Share picture (PR 110): photo + title + price + city, made for WhatsApp / Facebook / Telegram. --}}
+    @php($shareImage = \App\Http\Controllers\ShareImageController::urlFor($ad))
+    @if ($shareImage)
+        <meta property="og:image" content="{{ $shareImage }}">
+        <meta property="og:image:type" content="image/jpeg">
+        <meta property="og:image:width" content="{{ \App\Support\Share\ShareImage::WIDTH }}">
+        <meta property="og:image:height" content="{{ \App\Support\Share\ShareImage::HEIGHT }}">
+        <meta property="og:image:alt" content="{{ $ad->title }} · {{ $ad->priceLabel() }}">
+        <meta name="twitter:image" content="{{ $shareImage }}">
+    @elseif ($cover)
         <meta property="og:image" content="{{ $cover->url('large') }}">
+    @endif
+    <meta name="twitter:title" content="{{ $ad->title }} · {{ $ad->priceLabel() }}">
+    <meta name="twitter:description" content="{{ $desc }}">
+    @if ($cover)
         {{-- Preload exactly what the <picture> below will choose (AVIF when the browser supports it). --}}
         @if ($cover->url('medium', 'avif') !== $cover->url('medium'))
             <link rel="preload" as="image" type="image/avif" imagesrcset="{{ $cover->url('medium', 'avif') }} 900w, {{ $cover->url('large', 'avif') }} 1600w" imagesizes="(min-width: 1024px) 720px, 100vw" fetchpriority="high">
@@ -27,9 +42,10 @@
     @unless ($ad->isLive())
         <meta name="robots" content="noindex">
     @endunless
-    {{-- Structured data so Google can show price and photo --}}
+    {{-- Structured data so Google can show price and photo. The "context" key is written in two parts below:
+         written in one piece, Blade reads it as its own directive and put PHP code into this JSON (found in PR 112). --}}
     <script type="application/ld+json" nonce="{{ \Illuminate\Support\Facades\Vite::cspNonce() }}">{!! json_encode(array_filter([
-        '@context' => 'https://schema.org',
+        '@'.'context' => 'https://schema.org',
         '@type' => 'Product',
         'name' => $ad->title,
         'description' => $desc,
@@ -198,6 +214,9 @@
                                 @endif
                             </p>
                             <p class="text-xs text-stone-500">{{ $ad->user->city?->label }} · {{ __('ads.page.member_since', ['date' => mdate($ad->user->created_at, 'M Y')]) }}</p>
+                            @if ($ad->user->hasConfirmedPhone())
+                                <div class="mt-1">@include('partials.phone-confirmed')</div>
+                            @endif
                             @if (feature('sellers.page'))
                                 <a href="{{ lroute('seller.show', ['user' => $ad->user_id]) }}" class="text-xs font-medium text-brand-700 hover:underline" data-seller-link>{{ trans_choice('ads.page.seller_ads', max(1, $sellerLiveAds), ['count' => $sellerLiveAds]) }} →</a>
                             @else
@@ -260,7 +279,7 @@
                                 </form>
                             @endif
                         @else
-                            @if (feature('login.google') || \App\Http\Controllers\Auth\TestSignInController::available())
+                            @if (sign_in_open())
                                 <a href="{{ lroute('login') }}" class="mt-2 flex w-full items-center justify-center gap-2 rounded-lg px-3 py-3 font-semibold text-brand-800 ring-1 ring-brand-200 hover:bg-brand-50" title="{{ __('notify.call_back.sign_in') }}">{{ icon('phone-call', 'size-5') }} {{ __('notify.call_back.button') }}</a>
                             @endif
                         @endauth
@@ -310,9 +329,9 @@
                                     </details>
                                 @endfeature
                             @else
-                                @feature('login.google')
+                                @if (sign_in_open())
                                     <a href="{{ lroute('login') }}" class="mt-2 flex w-full items-center justify-center gap-2 rounded-lg px-3 py-3 font-semibold text-brand-800 ring-1 ring-brand-200 hover:bg-brand-50" title="{{ __('chat.sign_in') }}">{{ icon('message-circle', 'size-5') }} {{ __('chat.start') }}</a>
-                                @endfeature
+                                @endif
                             @endauth
                         @endif
                     @endfeature
@@ -324,6 +343,7 @@
                     <section class="flex flex-wrap items-center gap-2 rounded-xl bg-white p-4 ring-1 ring-stone-200" data-share data-url="{{ $ad->url() }}" data-title="{{ $ad->title }}">
                         <span class="text-sm font-semibold">{{ __('ads.page.share') }}:</span>
                         <a class="chip bg-stone-50 ring-stone-200" target="_blank" rel="noopener" href="https://wa.me/?text={{ rawurlencode($ad->title.' '.$ad->url()) }}">{{ __('ads.page.share_whatsapp') }}</a>
+                        <a class="chip bg-stone-50 ring-stone-200" target="_blank" rel="noopener" href="https://t.me/share/url?url={{ rawurlencode($ad->url()) }}&amp;text={{ rawurlencode($ad->title.' · '.$ad->priceLabel()) }}" data-share-telegram>Telegram</a>
                         <a class="chip bg-stone-50 ring-stone-200" target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u={{ rawurlencode($ad->url()) }}">{{ __('ads.page.share_facebook') }}</a>
                         <button type="button" class="chip bg-stone-50 ring-stone-200" data-copy data-done="{{ __('ads.page.copied') }}">{{ __('ads.page.copy_link') }}</button>
                     </section>
@@ -338,6 +358,9 @@
                             <li>{{ __('ads.page.safety_3') }}</li>
                         </ul>
                         <a href="{{ lroute('page', ['slug' => 'safety']) }}" class="mt-2 inline-block text-sm font-medium text-brand-800 underline">{{ __('ads.page.safety_more') }}</a>
+                        @feature('safety.scam_numbers')
+                            <a href="{{ lroute('scam.check') }}" class="mt-2 ms-3 inline-block text-sm font-medium text-brand-800 underline" data-scam-link>{{ __('scam.footer') }}</a>
+                        @endfeature
                     </section>
                 @endfeature
 
@@ -410,7 +433,7 @@
                                     </form>
                                 </details>
                             @endif
-                        @elseif (feature('login.google'))
+                        @elseif (sign_in_open())
                             <a href="{{ lroute('login') }}" class="text-sm font-medium text-red-700 underline">{{ __('ads.page.report_sign_in') }}</a>
                         @endif
                     </section>

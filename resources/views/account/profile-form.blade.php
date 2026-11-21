@@ -39,6 +39,9 @@
                            class="form-input rounded-l-none" aria-describedby="phone-help">
                 </div>
                 <p id="phone-help" class="form-help">{{ __('account.form.phone_help') }}</p>
+                @if (feature('sellers.phone_confirmed') && ($user->phone_confirmed_at ?? null))
+                    <p class="form-help text-amber-800" data-phone-change-note>{{ __('account.phone.change_note') }}</p>
+                @endif
                 @error('phone') <p class="form-error">{{ $message }}</p> @enderror
 
                 <label class="mt-3 flex items-center gap-2 text-sm">

@@ -68,6 +68,8 @@ return [
             'label' => 'Sudden sign-ups', 'help' => 'Many new accounts in one hour can be robots.'],
         'security.banned' => ['area' => 'security', 'group' => 'frequent', 'level' => 'warning', 'on' => true, 'every' => '5 min', 'limit' => 3, 'unit' => 'tries in 1 hour',
             'label' => 'Banned people trying again', 'help' => 'Banned users signing in, or blocked phone numbers used to post or in a profile.'],
+        'security.scam_numbers' => ['area' => 'security', 'group' => 'frequent', 'level' => 'warning', 'on' => true, 'every' => '5 min', 'limit' => 1, 'unit' => 'tries in 1 hour',
+            'label' => 'Scam number tried to post', 'help' => 'A phone number on the scam list (Admin → Scam numbers) was used to post or renew an ad. It was stopped.'],
         'security.code_files' => ['area' => 'security', 'group' => 'daily', 'level' => 'warning', 'on' => true, 'every' => 'daily',
             'label' => 'Code files changed', 'help' => 'Compares a fingerprint of the code folders with the night before. After you update the site, run: php artisan iibsom:watchdog:baseline'],
         'security.upload_php' => ['area' => 'security', 'group' => 'hourly', 'level' => 'urgent', 'on' => true, 'every' => 'hourly',
