@@ -143,6 +143,7 @@ return [
     'site.demo_data' => ['group' => 'Site', 'default' => false, 'label' => 'Show demo data', 'description' => 'Show the demo ads. Never ON in production.'],
 
     // Speed and API
+    'performance.compact_html' => ['group' => 'Speed', 'default' => true, 'label' => 'Smaller pages', 'description' => 'Removes the empty space the page templates leave in the HTML (about a fifth of each page), so pages arrive faster on slow phones. The pages look exactly the same.'],
     'performance.page_cache' => ['group' => 'Speed', 'default' => true, 'label' => 'Page cache', 'description' => 'Pages for visitors who are not signed in are kept for 2 minutes. Changes show at once (the cache is cleared on every change).'],
     'api' => ['group' => 'Speed', 'default' => true, 'label' => 'Public API (/api/v1)', 'description' => 'Read-only JSON for the future mobile app: categories, cities, ads. No personal data.'],
     'api.write' => ['group' => 'Speed', 'default' => false, 'label' => 'Write API (app access tokens)', 'description' => 'Signed-in users make an "app access" key on their Account page; an app can then post, edit, mark sold and delete THEIR OWN ads at /api/v1. Same checks as the website. Turn on when the mobile app is ready.'],
