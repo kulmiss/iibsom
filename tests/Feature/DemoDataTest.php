@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Enums\AdStatus;
 use App\Models\Ad;
 use App\Models\AdminActivity;
+use App\Models\Category;
 use App\Models\Payment;
 use App\Models\Report;
 use App\Models\User;
@@ -52,18 +52,24 @@ class DemoDataTest extends TestCase
     {
         $seeder = $this->seedDemo();
 
-        $this->assertGreaterThanOrEqual(300, Ad::where('is_demo', true)->count());
+        $this->assertSame(DemoSeeder::ADS, Ad::where('is_demo', true)->count());
         $this->assertGreaterThanOrEqual(60, User::where('is_demo', true)->where('role', User::CUSTOMER)->count());
         $this->assertGreaterThanOrEqual(15, Report::where('is_demo', true)->count());
         $this->assertSame(0, Ad::where('is_demo', false)->count());
 
-        // Every status, pending queue, history of 3+ months.
-        foreach (AdStatus::cases() as $status) {
-            $this->assertTrue(Ad::where('status', $status)->exists(), "no {$status->value} ads");
+        // All live and shown (owner, 2026-11-21), history of 3+ months.
+        $this->assertSame(DemoSeeder::ADS, Ad::live()->where('is_demo', true)->count());
+        $this->assertSame(0, Ad::whereHas('user', fn ($q) => $q->whereNotNull('banned_at'))->count()); // a banned seller has no live ads
+        $this->assertSame(0, Ad::whereNull('approved_snapshot')->count());
+        // Titles are medium size, not very short (owner, 2026-11-21), and fit the 80-letter limit.
+        foreach (Ad::pluck('title') as $title) {
+            $this->assertGreaterThanOrEqual(DemoSeeder::MEDIUM_TITLE, mb_strlen($title), $title);
+            $this->assertLessThanOrEqual(80, mb_strlen($title), $title);
         }
-        $this->assertGreaterThanOrEqual(20, Ad::where('status', AdStatus::Pending)->count());
-        $this->assertGreaterThanOrEqual(5, Ad::where('status', AdStatus::Pending)->whereNotNull('approved_snapshot')->count()); // "Edited" examples
-        $this->assertSame(0, Ad::whereIn('status', [AdStatus::Live, AdStatus::Sold, AdStatus::Expired])->whereNull('approved_snapshot')->count());
+        // Every sub category has 3+ ads, so no category page is empty.
+        $perCategory = Ad::query()->selectRaw('category_id, count(*) as n')->groupBy('category_id')->pluck('n', 'category_id');
+        $few = Category::whereNotNull('parent_id')->get()->filter(fn ($c) => ($perCategory[$c->id] ?? 0) < DemoSeeder::PER_CATEGORY);
+        $this->assertSame([], $few->pluck('slug')->values()->all());
         $this->assertTrue(Ad::min('created_at') < now()->subDays(90));
         $this->assertGreaterThan(200, AdminActivity::where('is_demo', true)->count());
 

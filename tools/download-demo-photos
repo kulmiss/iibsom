@@ -6,6 +6,7 @@
  *   php tools/download-demo-photos            # get missing photos
  *   php tools/download-demo-photos --fresh    # start again
  *   php tools/download-demo-photos --credits  # only rebuild CREDITS.md (after you delete a photo you don't like)
+ *   php tools/download-demo-photos --empty    # only kinds that have no photo yet (faster)
  *
  * Don't like a photo? Delete its file, add its source_url to database/demo/photos-rejected.json,
  * run with --credits. Rules used: no people (above all no children), the photo shows the thing in the title.
@@ -14,6 +15,7 @@
  *   1. Pexels   (set PEXELS_API_KEY)      – Pexels licence, free to use
  *   2. Unsplash (set UNSPLASH_ACCESS_KEY) – Unsplash licence, free to use
  *   3. Openverse (no key)                 – only CC0, Public Domain or CC BY (credit given)
+ *   4. Wikimedia Commons (no key)         – same licences, used when Openverse has too few or is rate-limited
  *
  * Writes database/demo/photos/<kind>-<n>.jpg (max 800 px, EXIF removed),
  * database/demo/photos.json and CREDITS.md. Safe to run again: it skips what it has.
@@ -26,7 +28,7 @@ const REJECTED = __DIR__.'/../database/demo/photos-rejected.json'; // source URL
 const UA = 'iibsom-demo-photos/1.0 (+https://iibsom.com)';
 
 // Photo words come from database/demo/content.php (4th value of each title).
-// Kinds used by 2+ titles get 2 photos, others 1. File names: <kind-slug>-<n>.jpg
+// Kinds used by 2+ titles get 3 photos, others 2. File names: <kind-slug>-<n>.jpg
 $wanted = [];
 foreach (require __DIR__.'/../database/demo/content.php' as $category => $items) {
     foreach ($items as $item) {
@@ -34,8 +36,8 @@ foreach (require __DIR__.'/../database/demo/content.php' as $category => $items)
             continue; // services and jobs: no photo, like most real ones
         }
         $kind = slugify($item[3]);
-        $wanted[$kind] ??= ['query' => $item[3], 'category' => $category, 'count' => 0];
-        $wanted[$kind]['count'] = min(2, $wanted[$kind]['count'] + 1);
+        $wanted[$kind] ??= ['query' => $item[3], 'category' => $category, 'count' => 1];
+        $wanted[$kind]['count'] = min(3, $wanted[$kind]['count'] + 1);
     }
 }
 
@@ -68,11 +70,14 @@ if (in_array('--credits', $argv, true)) {
 
 foreach ($wanted as $slug => ['query' => $query, 'category' => $category, 'count' => $count]) {
     $missing = $count - count($have[$slug] ?? []);
-    if ($missing <= 0) {
+    if ($missing <= 0 || (in_array('--empty', $argv, true) && ! empty($have[$slug]))) {
         continue;
     }
 
     $found = $pexels ? pexels($query, $pexels) : ($unsplash ? unsplash($query, $unsplash) : openverse($query));
+    if (count($found) < $missing + 2) {
+        $found = [...$found, ...commons($query)];
+    }
     // Photos already used, or rejected by hand (people, children, wrong thing): never again.
     $used = [...array_column($have[$slug] ?? [], 'source_url'), ...$rejected];
 
@@ -153,6 +158,51 @@ function openverse(string $q): array
     }
 
     return $out;
+}
+
+/** Wikimedia Commons search. Only CC0, Public Domain and CC BY (no SA, NC or ND). */
+function commons(string $q): array
+{
+    $url = 'https://commons.wikimedia.org/w/api.php?'.http_build_query([
+        'action' => 'query', 'format' => 'json', 'generator' => 'search', 'gsrsearch' => $q.' filetype:bitmap',
+        'gsrnamespace' => 6, 'gsrlimit' => 20, 'prop' => 'imageinfo', 'iiprop' => 'url|extmetadata|size', 'iiurlwidth' => 960,
+    ]);
+    $data = json_decode(http($url) ?? '{}', true);
+    $pages = $data['query']['pages'] ?? [];
+    usort($pages, fn ($a, $b) => ($a['index'] ?? 0) <=> ($b['index'] ?? 0));
+    $out = [];
+    foreach ($pages as $page) {
+        $info = $page['imageinfo'][0] ?? null;
+        $meta = $info['extmetadata'] ?? [];
+        $licence = trim(strip_tags((string) ($meta['LicenseShortName']['value'] ?? '')));
+        if (! $info || ! commonsLicenceOk($licence) || ($info['width'] ?? 0) < 640) {
+            continue;
+        }
+        $creator = trim(html_entity_decode(strip_tags((string) ($meta['Artist']['value'] ?? 'Unknown'))));
+        $out[] = [
+            'download' => (string) preg_replace('/\?.*$/', '', (string) ($info['thumburl'] ?? $info['url'])),
+            'fallback' => (string) $info['url'],
+            'title' => mb_substr(preg_replace('/^File:|\.\w+$/', '', (string) $page['title']) ?? '', 0, 120),
+            'creator' => mb_substr($creator !== '' ? $creator : 'Unknown', 0, 80),
+            'creator_url' => '',
+            'source_url' => (string) $info['descriptionurl'],
+            'licence' => $licence,
+            'licence_url' => (string) ($meta['LicenseUrl']['value'] ?? ''),
+            'provider' => 'Wikimedia Commons',
+        ];
+    }
+
+    return $out;
+}
+
+function commonsLicenceOk(string $licence): bool
+{
+    $l = strtolower($licence);
+    if (preg_match('/\b(sa|nc|nd)\b|gfdl/', $l) === 1) {
+        return false;
+    }
+
+    return $l === 'cc0' || str_starts_with($l, 'public domain') || str_starts_with($l, 'pd') || preg_match('/^cc by \d/', $l) === 1;
 }
 
 function pexels(string $q, string $key): array

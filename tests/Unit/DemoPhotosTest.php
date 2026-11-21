@@ -40,13 +40,49 @@ class DemoPhotosTest extends TestCase
     {
         foreach ($this->photos() as $p) {
             $this->assertFileExists($this->root().'/photos/'.$p['file']);
-            $this->assertMatchesRegularExpression('/^(CC0 1\.0|Public Domain Mark|CC BY [\d.]+|Pexels License|Unsplash License)$/', (string) $p['licence'], $p['file']);
+            $this->assertMatchesRegularExpression('/^(CC0( 1\.0)?|Public Domain( Mark)?|PD[- ].*|CC BY [\d.]+|Pexels License|Unsplash License)$/i', (string) $p['licence'], $p['file']);
             $this->assertNotEmpty($p['source_url'], $p['file']);
         }
         // No photo file without an entry (it would have no credit).
         $listed = array_column($this->photos(), 'file');
         foreach (glob($this->root().'/photos/*.jpg') ?: [] as $file) {
             $this->assertContains(basename($file), $listed);
+        }
+    }
+
+    /** Every demo ad has a photo (owner, 2026-11-21): every title has photo words, and an ad always gets 1–3. */
+    public function test_every_title_has_photo_words_and_every_ad_gets_a_photo(): void
+    {
+        $without = [];
+        foreach (require $this->root().'/content.php' as $category => $items) {
+            foreach ($items as $item) {
+                if (! isset($item[3]) || trim((string) $item[3]) === '') {
+                    $without[] = "{$category}: {$item[0]}";
+                }
+            }
+        }
+        $this->assertSame([], $without);
+
+        mt_srand(1);
+        for ($i = 0; $i < 200; $i++) {
+            $picked = DemoSeeder::pickPhotos(['a.jpg', 'b.jpg', 'c.jpg', 'd.jpg']);
+            $this->assertGreaterThanOrEqual(1, count($picked));
+            $this->assertLessThanOrEqual(3, count($picked));
+        }
+        $this->assertSame(['a.jpg'], DemoSeeder::pickPhotos(['a.jpg']));
+        $this->assertSame([], DemoSeeder::pickPhotos([]));
+    }
+
+    public function test_short_titles_get_a_few_more_words(): void
+    {
+        $this->assertStringStartsWith('Plumber – ', DemoSeeder::mediumTitle('Plumber', 'services'));
+        $this->assertGreaterThanOrEqual(DemoSeeder::MEDIUM_TITLE, mb_strlen(DemoSeeder::mediumTitle('Plumber', 'services')));
+        $long = 'Toyota Land Cruiser 2015, V8, full option';
+        $this->assertSame($long, DemoSeeder::mediumTitle($long, 'vehicles'));
+        foreach (require $this->root().'/content.php' as $items) {
+            foreach ($items as $item) {
+                $this->assertLessThanOrEqual(80, mb_strlen(DemoSeeder::mediumTitle($item[0], 'services')), $item[0]);
+            }
         }
     }
 
