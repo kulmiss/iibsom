@@ -36,9 +36,14 @@ use RuntimeException;
  */
 class DemoSeeder extends Seeder
 {
-    public const ADS = 300;
+    /** All live, all with photos (owner, 2026-11-21). */
+    public const ADS = 500;
 
-    public const PENDING = 24;
+    /** Every sub category gets at least this many ads, so no category page is empty. */
+    public const PER_CATEGORY = 3;
+
+    /** Titles shorter than this get a few more words (see mediumTitle()). */
+    public const MEDIUM_TITLE = 30;
 
     public const USERS = 64;
 
@@ -81,21 +86,22 @@ class DemoSeeder extends Seeder
         $photoPool = $this->photoPool();
 
         $made = [];
-        Ad::withoutEvents(function () use (&$made, $content, $categories, $users, $mogadishu, $areas, $moderator, $photoPool) {
-            for ($i = 0; $i < self::ADS + self::PENDING; $i++) {
-                $slug = $this->pickCategory(array_map('strval', array_keys($content)));
+        $sellers = array_values(array_filter($users, fn (User $u) => $u->banned_at === null)); // a banned seller has no live ads
+        Ad::withoutEvents(function () use (&$made, $content, $categories, $sellers, $mogadishu, $areas, $moderator, $photoPool) {
+            $turn = [];
+            foreach ($this->plan(array_values(array_filter(array_map('strval', array_keys($content)), fn ($s) => $categories->has($s)))) as $slug) {
+                // Titles take turns, so each category shows different ads.
+                $items = $content[$slug];
+                $item = $items[($turn[$slug] = ($turn[$slug] ?? -1) + 1) % count($items)];
+                [$title, $min, $max] = $item;
                 $category = $categories->get($slug);
                 if (! $category) {
-                    continue;
+                    continue; // never: plan() only uses categories that exist
                 }
-                $item = $content[$slug][array_rand($content[$slug])];
-                [$title, $min, $max] = $item;
-                $ad = $this->ad($category, $title, $min, $max, $users[array_rand($users)], $mogadishu->id, $areas, $moderator, $i >= self::ADS);
+                $title = $this->mediumTitle($title, (string) $category->parent?->slug);
+                $ad = $this->ad($category, $title, $min, $max, $sellers[array_rand($sellers)], $mogadishu->id, $areas, $moderator);
                 // Only photos of the same kind as the title (a Toyota ad never shows a Nissan).
                 $this->photos($ad, isset($item[3]) ? ($photoPool[self::kind($item[3])] ?? []) : []);
-                if ($i >= self::ADS && $i % 4 === 0) {
-                    $this->wasApprovedThenEdited($ad, $moderator);
-                }
                 $made[] = $ad;
             }
         });
@@ -174,6 +180,27 @@ class DemoSeeder extends Seeder
         return $users;
     }
 
+    /**
+     * Which category each ad goes in: every category PER_CATEGORY times, the rest by weight, mixed up.
+     *
+     * @param  list<string>  $slugs
+     * @return list<string>
+     */
+    private function plan(array $slugs): array
+    {
+        $plan = [];
+        foreach ($slugs as $slug) {
+            array_push($plan, ...array_fill(0, self::PER_CATEGORY, $slug));
+        }
+        while (count($plan) < self::ADS) {
+            $plan[] = $this->pickCategory($slugs);
+        }
+        $plan = array_slice($plan, 0, self::ADS);
+        shuffle($plan);
+
+        return $plan;
+    }
+
     /** Popular categories get more ads, like on a real site. */
     /** @param  list<string>  $slugs */
     private function pickCategory(array $slugs): string
@@ -192,20 +219,12 @@ class DemoSeeder extends Seeder
     }
 
     /** @param  list<int>  $areas */
-    private function ad(Category $category, string $title, int $min, int $max, User $user, int $cityId, array $areas, User $moderator, bool $pending): Ad
+    private function ad(Category $category, string $title, int $min, int $max, User $user, int $cityId, array $areas, User $moderator): Ad
     {
-        $age = $pending ? mt_rand(5, 60 * 30) : mt_rand(60 * 3, self::HISTORY_DAYS * 1440); // minutes
+        $age = mt_rand(60 * 3, self::HISTORY_DAYS * 1440); // minutes
         $created = $this->now->subMinutes($age);
         $reviewed = $created->addMinutes(mt_rand(20, 300))->min($this->now);
         $days = $age / 1440;
-
-        $status = match (true) {
-            $pending => AdStatus::Pending,
-            mt_rand(1, 100) <= 5 => AdStatus::Rejected,
-            $days > 60 => [AdStatus::Expired, AdStatus::Expired, AdStatus::Sold, AdStatus::Live][mt_rand(0, 3)],
-            mt_rand(1, 100) <= 8 => AdStatus::Sold,
-            default => AdStatus::Live,
-        };
 
         $price = $max > 0 ? $this->nicePrice(mt_rand($min, $max)) : null;
 
@@ -214,7 +233,7 @@ class DemoSeeder extends Seeder
             'city_id' => $cityId,
             'area_id' => $areas ? $areas[array_rand($areas)] : null,
             'title' => $title,
-            'description' => $this->description($category, $title),
+            'description' => $this->description($category, Str::before($title, ' – ')), // the short name reads better in the text
             'price' => $price,
             'price_negotiable' => $price === null || mt_rand(1, 3) === 1,
             'condition' => $category->has_condition ? (mt_rand(1, 3) === 1 ? 'new' : 'used') : null,
@@ -223,49 +242,44 @@ class DemoSeeder extends Seeder
         $ad->forceFill([
             'user_id' => $user->id,
             'slug' => Str::limit(Str::slug($title), 100, ''),
-            'status' => $status,
+            'status' => AdStatus::Live,
             'is_demo' => true,
             'content_hash' => hash('sha256', 'demo|'.Str::uuid()),
             'created_at' => $created,
             'updated_at' => $reviewed,
         ]);
 
-        if ($status !== AdStatus::Pending) {
-            $ad->reviewed_by = $moderator->id;
-            $ad->reviewed_at = $reviewed->toMutable();
-        }
-        if ($status === AdStatus::Rejected) {
-            $ad->rejection_reason = ['Photos are not clear or not real', 'Wrong category', 'Price is missing or not real', 'Duplicate ad'][mt_rand(0, 3)];
-        }
-        if (in_array($status, [AdStatus::Live, AdStatus::Sold, AdStatus::Expired], true)) {
-            $ad->published_at = $reviewed->toMutable();
-            $ad->expires_at = ($status === AdStatus::Live && $days > 55
-                ? $this->now->addDays(mt_rand(3, 50))        // renewed by the seller
-                : $reviewed->addDays(60))->toMutable();
-            if ($status === AdStatus::Expired) {
-                $ad->expires_at = $this->now->subDays(mt_rand(1, max(1, (int) $days - 60)))->toMutable();
-            }
-        }
-        if ($status === AdStatus::Sold) {
-            $ad->sold_at = $reviewed->addDays(mt_rand(1, 20))->min($this->now)->toMutable();
-        }
+        $ad->reviewed_by = $moderator->id;
+        $ad->reviewed_at = $reviewed->toMutable();
+        $ad->published_at = $reviewed->toMutable();
+        $ad->expires_at = ($days > 55
+            ? $this->now->addDays(mt_rand(3, 50))        // renewed by the seller
+            : $reviewed->addDays(60))->toMutable();
 
         $ad->save();
 
         return $ad;
     }
 
-    /** A waiting ad that was live before: the seller lowered the price and added a line (shows "Edited" in the admin). */
-    private function wasApprovedThenEdited(Ad $ad, User $moderator): void
+    /**
+     * Short titles get a few more words, like real sellers write (owner, 2026-11-21: "medium size, not very short").
+     * "Plumber" → "Plumber – fast and honest work in Mogadishu". Long titles stay as they are.
+     */
+    public static function mediumTitle(string $title, string $parent): string
     {
-        $before = AdSnapshot::take($ad);
-        $before['price'] = $ad->price !== null ? $this->nicePrice((int) round($ad->price * 1.1)) : null;
-        $before['description'] = Str::before($ad->description, "\n\n");
-        $ad->forceFill([
-            'approved_snapshot' => $before,
-            'published_at' => CarbonImmutable::parse($ad->created_at)->subDays(10)->toMutable(),
-            'reviewed_by' => $moderator->id,
-        ])->save();
+        if (mb_strlen($title) >= self::MEDIUM_TITLE) {
+            return $title;
+        }
+        $extra = match ($parent) {
+            'vehicles' => ['clean, ready to drive', 'good condition, papers ready', 'well kept, fair price', 'no problems, call to see it'],
+            'property' => ['near the main road', 'water and electricity ready', 'good area, see it today', 'quiet and safe area'],
+            'livestock', 'agriculture' => ['healthy, good price', 'fresh from the farm', 'good quality, delivery possible', 'ready now, fair price'],
+            'services' => ['fast and honest work in Mogadishu', 'trusted, many years of experience', 'call or WhatsApp today', 'good price, every day'],
+            'jobs' => ['full time in Mogadishu', 'apply today, good salary', 'start this month', 'send your CV by WhatsApp'],
+            default => ['good condition, fair price', 'original, delivery in Mogadishu', 'clean and ready to use', 'good quality, price negotiable'],
+        };
+
+        return $title.' – '.$extra[mt_rand(0, count($extra) - 1)];
     }
 
     private function nicePrice(int $price): int
@@ -398,17 +412,29 @@ class DemoSeeder extends Seeder
         return $pool;
     }
 
+    /**
+     * 1 to 3 photos of the right kind for one ad. Never none when there are photos (every demo ad has a photo).
+     *
+     * @param  list<string>  $files
+     * @return list<string>
+     */
+    public static function pickPhotos(array $files): array
+    {
+        if (! $files) {
+            return [];
+        }
+        shuffle($files);
+
+        return array_slice($files, 0, mt_rand(1, min(3, count($files))));
+    }
+
     /** @var array<string, array{disk: ?string, variants: ?array<string, array<string, string>>, width: ?int, height: ?int}|null> each photo is made into sizes only once (null = failed) */
     private array $processed = [];
 
     /** @param  list<string>  $files */
     private function photos(Ad $ad, array $files): void
     {
-        if (! $files || mt_rand(1, 12) === 1) {
-            return; // some sellers post without photos
-        }
-        shuffle($files);
-        foreach (array_slice($files, 0, mt_rand(1, min(3, count($files)))) as $sort => $file) {
+        foreach (self::pickPhotos($files) as $sort => $file) {
             if (! array_key_exists($file, $this->processed)) {
                 $this->processed[$file] = $this->process($ad, $file);
             }

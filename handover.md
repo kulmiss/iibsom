@@ -1,6 +1,6 @@
 # Handover
 
-_Last updated: 2026-11-21 (PR 112)_
+_Last updated: 2026-11-21 (PR 113)_
 
 ## Current state
 - **PR 1 (foundation):** Laravel 13 base, Docker for local (port 8095), CI (tests on MySQL, Pint, Composer/npm audit, gitleaks, Docker build), project memory files. Public site shows a "coming soon" page.
@@ -74,6 +74,7 @@ _Last updated: 2026-11-21 (PR 112)_
 - **PR 109:** scam list = `Support\Safety\ScamNumbers` (cached list, `firstListed()`, `sendAdsToReview()`), models `ScamNumber`/`ScamAppeal`, guard in `Ad::booted()` (never goes live) + `Moderation::approve()` + `AdForm::validate()` + renew. Public `ScamCheckController`; admin `Admin\ScamNumberController` + `features/scam-numbers`. Watchdog `security.scam_numbers`.
 - **PR 110:** share picture = `Support\Share\ShareImage` (bump the number in `version()` after a design change) + `ShareImageController` (`/share/{id}-{version}-{lang}.jpg`, stateless). Files in storage/app/private/share; nightly prune.
 - **PR 111:** districts = `areas` (+ `needs_review`); `LocationSeeder::addMissing()` for running sites; filter scope `BrowseController::DISTRICT_ROOTS` + switch `search.districts_all`; admin `LocationController::moveArea/destroyArea`.
+- **PR 113 (demo data):** `DemoSeeder` makes `ADS` = 500 live ads, `PER_CATEGORY` = 3 per sub category (`plan()`), `pickPhotos()` always 1–3; `tools/download-demo-photos` has a Wikimedia Commons source (`commons()`, `commonsLicenceOk()`).
 - **PR 112:** `ImportTranslations` + `Support\Translations\ReviewRules` (checks, max length) + `LangFileWriter` (changes PHP lang files by tokens, comments kept). Export `--review` layout.
 
 ## How to run

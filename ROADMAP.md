@@ -35,7 +35,6 @@ Google sign-in, post an ad, browse + search, ad page, My Ads, safety (reports, a
 - A multi-choice field type ("Features: NFC, 120Hz, IP68…") shown as a tidy list on ad pages (seen on Jiji, PR 82).
 - Shop opening hours as days + times (not free text), so shop pages can say "Open now" (PR 82).
 - A 600 px phone-size photo for ad pages, so ads with very large first photos also load in under 1.5 s on slow phones (PR 80).
-- New demo photos that match every demo ad (free licence), so fewer cards show "No photo" (PR 79: the workspace could not download new photos).
 - Touch-drag to reorder photos on phones (PR 78 kept the ‹ › buttons).
 - An "updated on" date on ad pages (needs a separate edit date).
 - One SVG sprite for icons, to make big pages (home) smaller before compression.

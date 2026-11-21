@@ -88,3 +88,10 @@ The owner said: "take your recommended option for small choices, log them here".
 | 2026-11-21 | 112 | Lighthouse (phone) on /so dropped to 0.83 in CI, because the launch defaults add more to the home page (Popular now, Save buttons). Fixed by making the Save button on every card much smaller (one CSS class; its words once per page): the home page HTML is about 19 KB smaller. | CI limit is 0.85; a real host also compresses pages. |
 | 2026-11-21 | 112 | Also new switch "Smaller pages" (ON): removes the empty space templates leave in the HTML (about 22% of the home page). Text boxes, <pre> and scripts are never touched; the page looks the same (checked in all browser runs). | Lighthouse in CI was close to the limit (0.83–0.84). |
 | 2026-11-21 | 112 | Fixed on the way: the ad page's structured data (for Google) had PHP code inside, because Blade read the word after "@" as its own directive. Now valid JSON (test added). | Found while checking that "Smaller pages" changes nothing. |
+| 2026-11-21 | 113 | Demo approval queue is now empty (all demo ads live). To test the queue, post an ad as a customer. | Owner asked for all live. |
+| 2026-11-21 | 113 | Every sub category gets 3 ads first, the other 77 go to busy categories by weight (cars, phones, houses…). Titles take turns inside a category. | No empty category page; looks like a real site. |
+| 2026-11-21 | 113 | Demo photos: 2 per kind, 3 when 2+ titles share the kind. | More variety without many more files. |
+| 2026-11-21 | 113 | Wikimedia Commons added as a second free source (Openverse allows about 200 searches a day). | Enough photos in one run. |
+| 2026-11-21 | 113 | Ads go only to demo users who are not banned. | A banned seller with live ads looks wrong. |
+| 2026-11-21 | 113 | Titles under 30 letters get " – " plus a short line that fits the main category (cars: "clean, ready to drive"; jobs: "apply today, good salary"…). The ad text uses the short name. | Owner asked for medium titles; no need to rewrite 464 titles by hand. |
+| 2026-11-21 | 113 | New downloader option `--empty`: only fills kinds with no photo. | Faster re-runs. |
