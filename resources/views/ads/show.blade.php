@@ -42,9 +42,10 @@
     @unless ($ad->isLive())
         <meta name="robots" content="noindex">
     @endunless
-    {{-- Structured data so Google can show price and photo --}}
+    {{-- Structured data so Google can show price and photo. The "context" key is written in two parts below:
+         written in one piece, Blade reads it as its own directive and put PHP code into this JSON (found in PR 112). --}}
     <script type="application/ld+json" nonce="{{ \Illuminate\Support\Facades\Vite::cspNonce() }}">{!! json_encode(array_filter([
-        '@context' => 'https://schema.org',
+        '@'.'context' => 'https://schema.org',
         '@type' => 'Product',
         'name' => $ad->title,
         'description' => $desc,

@@ -24,6 +24,7 @@ class CompactHtmlTest extends TestCase
 
     public function test_pages_are_smaller_and_keep_line_breaks_scripts_and_text_boxes(): void
     {
+        $this->freezeTime(); // "posted 1 second ago" must be the same on both pages
         $ad = Ad::factory()->live()->create([
             'title' => 'Toyota Vitz',
             'description' => "Line one\n    indented line two\n\n\nline five",

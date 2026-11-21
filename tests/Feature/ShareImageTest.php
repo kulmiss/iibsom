@@ -58,6 +58,18 @@ class ShareImageTest extends TestCase
         $this->assertStringContainsString('https://wa.me/?text=', $html);
     }
 
+    public function test_structured_data_on_the_ad_page_is_valid_json(): void
+    {
+        // Found by the PR 112 checks: Blade read "@context" as a directive and put PHP code into the JSON.
+        $html = (string) $this->get($this->ad->url())->assertOk()->getContent();
+        preg_match('#<script type="application/ld\+json"[^>]*>(.*?)</script>#s', $html, $m);
+        $data = json_decode($m[1] ?? '', true);
+        $this->assertIsArray($data);
+        $this->assertSame('https://schema.org', $data['@context']);
+        $this->assertSame('Product', $data['@type']);
+        $this->assertStringNotContainsString('<?php', $m[1]);
+    }
+
     public function test_the_picture_is_a_1200_by_630_jpeg_cached_and_without_session_or_cookie(): void
     {
         $url = $this->shareUrl();
